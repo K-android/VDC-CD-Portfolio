@@ -91,6 +91,54 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   );
 };
 
+const WorkloadGif = ({ 
+  src, 
+  alt, 
+  className, 
+  isArch,
+  forcePlay = false
+}: { 
+  src: string; 
+  alt: string; 
+  className?: string; 
+  isArch: boolean;
+  forcePlay?: boolean;
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const staticUrl = React.useMemo(() => {
+    if (!src) return "";
+    // Google Drive check
+    if (src.includes('lh3.googleusercontent.com/d/')) {
+      const id = src.split('/').pop();
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    }
+    // Giphy check
+    if (src.includes('giphy.com/media/')) {
+      // Giphy static version often uses _s suffix
+      return src.replace('/giphy.gif', '/giphy_s.gif');
+    }
+    return src;
+  }, [src]);
+
+  return (
+    <div 
+      className="w-full h-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <img 
+        src={forcePlay || isHovered ? src : staticUrl} 
+        alt={alt}
+        referrerPolicy="no-referrer"
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+        className={className}
+      />
+    </div>
+  );
+};
+
 const CodeSnippet = () => (
   <div className="bg-black p-4 rounded border border-terminal-border font-mono text-xs text-neon-cyan overflow-hidden">
     <div className="flex gap-2 mb-2 opacity-50">
@@ -546,22 +594,22 @@ export default function App() {
     },
     {
       id: "BIM_05",
-      title: "Algorithmic Space Planning (Pending)",
+      title: "The MEP Component Automator",
       role: "VDC Engineer",
-      hook: "Live demonstration of automated spatial data.",
-      description: "(To be built) A live demonstration of automated spatial data (e.g., dragging a room boundary and watching the square footage and occupancy data update instantly).",
+      hook: "Automated placement and configuration of MEP systems.",
+      description: "An algorithmic workflow developed to automate the generation, placement, and parameter synchronization of MEP components within a BIM model.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
-      metric: "Dynamic",
-      gifUrl: "https://media.giphy.com/media/3o7TKMGpxXfQC9cc4o/giphy.gif",
-      tags: ["Vectorworks", "Marionette", "Space Tool"],
+      metric: "Automation",
+      gifUrl: "https://lh3.googleusercontent.com/d/1dR5ajQdvGdR3YJOvScsAu_uteRfCiuVt",
+      tags: ["Vectorworks", "Marionette", "BIM Model"],
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-5/800/450?grayscale",
         steps: [
-          "Define room boundaries and circulation paths.",
-          "Execute Marionette node for seating population.",
-          "Optimize layouts based on daylight and proximity.",
-          "Generate furniture schedules and installation plans."
+          "Define mechanical system parameters and clearance requirements.",
+          "Execute Marionette algorithms for component placement.",
+          "Synchronize parameters across the BIM model for real-time coordination.",
+          "Generate automated reports and system verification schedules."
         ]
       }
     },
@@ -900,13 +948,13 @@ export default function App() {
                 </button>
 
                 <a 
-                  href="https://drive.google.com/uc?export=download&id=1pHAos4G_oIKuOWMPQTNVlVRcqrQ0VWpQ" 
+                  href="https://drive.google.com/file/d/1pHAos4G_oIKuOWMPQTNVlVRcqrQ0VWpQ/view?usp=sharing" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative w-full sm:w-auto px-8 py-4 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-700 ${
+                  className={`group relative w-full sm:w-auto px-8 py-4 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] ${
                     isArch 
-                    ? "bg-white text-black hover:bg-black hover:text-white border-black border" 
-                    : "bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border-neon-cyan border"
+                    ? "bg-white text-black hover:bg-black hover:text-white border-black border hover:shadow-lg" 
+                    : "bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border-neon-cyan border hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]"
                   }`}
                 >
                   <Download className="w-5 h-5" />
@@ -1018,12 +1066,10 @@ export default function App() {
                   }`}
                 >
                   <div className="aspect-video md:aspect-square overflow-hidden relative">
-                    <img 
+                    <WorkloadGif 
                       src={item.gifUrl} 
                       alt={item.title}
-                      referrerPolicy="no-referrer"
-                      onContextMenu={(e) => e.preventDefault()}
-                      onDragStart={(e) => e.preventDefault()}
+                      isArch={isArch}
                       className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${
                         isArch 
                         ? "grayscale group-hover:grayscale-0" 
@@ -1135,12 +1181,10 @@ export default function App() {
                   }`}
                 >
                     <div className="aspect-video md:aspect-square overflow-hidden relative">
-                      <img 
+                      <WorkloadGif 
                         src={item.gifUrl} 
                         alt={item.title}
-                        referrerPolicy="no-referrer"
-                        onContextMenu={(e) => e.preventDefault()}
-                        onDragStart={(e) => e.preventDefault()}
+                        isArch={isArch}
                         className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${
                           isArch 
                           ? "grayscale group-hover:grayscale-0" 
@@ -1650,13 +1694,12 @@ export default function App() {
                         01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
                       </div>
                       <div className={`aspect-video border relative overflow-hidden transition-all duration-700 ${isArch ? "border-gray-100 bg-gray-50" : "brutalist-border bg-black"}`}>
-                        <img 
+                        <WorkloadGif 
                           src={selectedArsenalItem.gifUrl} 
                           alt="Workflow GIF"
-                          onContextMenu={(e) => e.preventDefault()}
-                          onDragStart={(e) => e.preventDefault()}
+                          isArch={isArch}
+                          forcePlay={true}
                           className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-60"}`}
-                          referrerPolicy="no-referrer"
                         />
                         {!isArch && (
                           <div className="absolute top-2 left-2 px-2 py-1 bg-black/50 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/20">
