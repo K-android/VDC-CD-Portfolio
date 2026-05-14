@@ -72,7 +72,7 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
-      className="flex flex-wrap justify-center lg:justify-start gap-3 mt-8"
+      className="flex flex-wrap justify-center lg:justify-start gap-3"
     >
       {tools.map((tool) => (
         <motion.div 
@@ -96,15 +96,18 @@ const WorkloadGif = ({
   alt, 
   className, 
   isArch,
-  forcePlay = false
+  forcePlay = false,
+  play
 }: { 
   src: string; 
   alt: string; 
   className?: string; 
   isArch: boolean;
   forcePlay?: boolean;
+  play?: boolean;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isInternalHovered, setIsInternalHovered] = useState(false);
+  const active = play !== undefined ? play : (forcePlay || isInternalHovered);
   
   const staticUrl = React.useMemo(() => {
     if (!src) return "";
@@ -124,11 +127,11 @@ const WorkloadGif = ({
   return (
     <div 
       className="w-full h-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsInternalHovered(true)}
+      onMouseLeave={() => setIsInternalHovered(false)}
     >
       <img 
-        src={forcePlay || isHovered ? src : staticUrl} 
+        src={active ? src : staticUrl} 
         alt={alt}
         referrerPolicy="no-referrer"
         onContextMenu={(e) => e.preventDefault()}
@@ -136,6 +139,121 @@ const WorkloadGif = ({
         className={className}
       />
     </div>
+  );
+};
+
+const ProjectCard = ({ 
+  item, 
+  isArch, 
+  onClick 
+}: any) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div 
+      variants={{
+        hidden: { opacity: 0, y: 15 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+      }}
+      whileHover={{ y: -8 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+      className={`group relative overflow-hidden border transition-all duration-700 cursor-pointer flex flex-col h-full ${
+        isArch 
+        ? "border-gray-100 bg-white hover:border-black hover:shadow-2xl hover:shadow-black/5" 
+        : "border-terminal-border bg-black/40 hover:border-neon-cyan hover:shadow-[0_0_30px_rgba(0,255,255,0.05)]"
+      }`}
+    >
+      {/* Status Bar / Metric Badge */}
+      <div className={`p-3 border-b flex justify-between items-center bg-opacity-50 backdrop-blur-sm transition-colors duration-700 ${
+        isArch ? "border-gray-100 bg-gray-50/50" : "border-terminal-border bg-black/50"
+      }`}>
+        <div className="flex items-center gap-2">
+          <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${isArch ? "bg-black" : `bg-${item.color}`}`} />
+          <span className={`font-mono text-[9px] uppercase tracking-widest ${isArch ? "text-gray-400" : "text-gray-500"}`}>
+            Output_Metric
+          </span>
+        </div>
+        <div className={`font-mono text-[10px] font-bold px-2 py-0.5 border transition-all duration-700 ${
+          isArch 
+          ? "border-black text-black bg-white" 
+          : `border-${item.color} text-${item.color} shadow-[0_0_10px_rgba(var(--color-${item.color}),0.2)]`
+        }`}>
+          {item.metric}
+        </div>
+      </div>
+
+      <div className="aspect-[16/11] overflow-hidden relative">
+        <WorkloadGif 
+          src={item.gifUrl} 
+          alt={item.title}
+          isArch={isArch}
+          play={isHovered}
+          className={`w-full h-full object-cover transition-all duration-1000 scale-100 group-hover:scale-105 pointer-events-none select-none ${
+            isArch 
+            ? "grayscale group-hover:grayscale-0" 
+            : "opacity-40 group-hover:opacity-80"
+          }`}
+        />
+        {/* Engineering Scanner Effect */}
+        {!isArch && (
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-neon-cyan/30 shadow-[0_0_10px_rgba(0,255,255,0.5)] opacity-0 group-hover:opacity-100 group-hover:animate-scan z-10" />
+        )}
+        
+        <div className={`absolute inset-0 transition-opacity duration-700 ${isArch ? "bg-black/5 opacity-0 group-hover:opacity-100" : "bg-neon-cyan/5 opacity-0 group-hover:opacity-100"}`} />
+        
+        <div className={`absolute top-4 right-4 p-3 rounded-full border transition-all duration-700 bg-black/80 backdrop-blur-md z-20 ${
+          isArch 
+          ? "border-gray-200 text-black hidden" 
+          : `border-${item.color}/30 text-${item.color} scale-90 group-hover:scale-100`
+        }`}>
+          {item.icon}
+        </div>
+      </div>
+
+      <div className="p-6 md:p-8 flex-grow">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h4 className={`text-xl md:text-2xl font-medium tracking-tight mb-1 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+              {item.title}
+            </h4>
+            {item.role && (
+              <div className={`text-[10px] md:text-[11px] font-mono tracking-widest uppercase transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-orange"}`}>
+                {item.role}
+              </div>
+            )}
+          </div>
+          {item.category && (
+            <div className="flex items-center gap-2">
+              <span className={`text-[8px] md:text-[9px] font-mono px-2 py-1 border transition-colors duration-700 ${isArch ? "border-black text-black" : "border-neon-cyan text-neon-cyan"}`}>
+                {item.category}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {item.hook && (
+          <div className={`text-[10px] md:text-[11px] font-mono mb-4 py-2 border-y transition-colors duration-700 border-dashed ${isArch ? "text-gray-600 italic border-gray-100" : "text-neon-cyan border-terminal-border"}`}>
+            {`// ${item.hook}`}
+          </div>
+        )}
+        
+        <p className={`text-sm md:text-base mb-8 line-clamp-3 leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
+          {item.description}
+        </p>
+
+        <div className="mt-auto">
+          <div className="flex flex-wrap gap-2 mb-6">
+            {item.tags.map(tag => (
+              <span key={tag} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"}`}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -157,6 +275,51 @@ const CodeSnippet = () => (
     </pre>
   </div>
 );
+
+const HeroTerminal = () => {
+  const [logs, setLogs] = useState<string[]>([]);
+  const logPool = [
+    "ATTACHING_REVIT_DATABASE...",
+    "PARSING_ISO_19650_SCHEMA",
+    "MAPPING_SPATIAL_PARAMETERS",
+    "OPTIMIZING_COMPONENT_PLACEMENT",
+    "VERIFYING_CLEARANCE_CLASHES",
+    "SYNCING_COBIE_METADATA",
+    "GENERATING_AUTOMATION_NODES",
+    "VALIDATING_LOD_400_GEOMETRY",
+    "PUSHING_DATA_TO_POWERBI",
+    "CALCULATING_VOLUME_M3",
+    "DETECTION_LATENCY: 12ms",
+    "SYSTEM_STATUS: NOMINAL"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogs(prev => {
+        const next = [...prev, logPool[Math.floor(Math.random() * logPool.length)]];
+        if (next.length > 8) return next.slice(1);
+        return next;
+      });
+    }, 1500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="font-mono text-[9px] text-neon-cyan/60 p-4 space-y-1">
+      {logs.map((log, i) => (
+        <motion.div 
+          key={`${log}-${i}`}
+          initial={{ opacity: 0, x: -5 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2"
+        >
+          <span className="text-neon-orange opacity-50">{">"}</span> {log}
+        </motion.div>
+      ))}
+      <div className="w-1 h-3 bg-neon-cyan/50 animate-pulse inline-block ml-1" />
+    </div>
+  );
+};
 
 const DataTable = () => (
   <div className="bg-black rounded border border-terminal-border font-mono text-[10px] overflow-hidden">
@@ -510,7 +673,7 @@ export default function App() {
       color: "neon-cyan",
       metric: "Firm-Wide Scale",
       content: <CodeSnippet />,
-      gifUrl: "https://media.giphy.com/media/3o7TKMGpxXfQC9cc4o/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/1m17edUmGzmk5KxO9aepinIVhFUjyCMjU",
       tags: ["Revit API", "Dynamo", "Python"],
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-1/800/450?grayscale",
@@ -532,7 +695,7 @@ export default function App() {
       color: "neon-orange",
       metric: "100% Accuracy",
       content: <DataTable />,
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
       tags: ["Dynamo", "Excel"],
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-2/800/450?grayscale",
@@ -870,6 +1033,14 @@ export default function App() {
 
       {/* Progress Indicator */}
       <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col gap-4 items-center">
+        {/* Scroll Progress Bar */}
+        <div className={`absolute -right-4 top-0 bottom-0 w-1 transition-colors duration-700 rounded-full ${isArch ? "bg-gray-100" : "bg-terminal-border/40"}`}>
+          <motion.div 
+            style={{ scaleY: useScroll().scrollYProgress }}
+            className={`absolute top-0 left-0 w-full origin-top transition-colors duration-700 rounded-full ${isArch ? "bg-black" : "bg-neon-cyan shadow-[0_0_15px_rgba(0,242,255,0.6)]"}`}
+          />
+        </div>
+
         <button 
           onClick={() => handleSectionChange(activeSection - 1)}
           disabled={activeSection === 0}
@@ -881,14 +1052,14 @@ export default function App() {
         >
           <ChevronUp className="w-4 h-4" />
         </button>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 relative">
           {SECTIONS.map((_, i) => (
             <button 
               key={i}
               onClick={() => handleSectionChange(i)}
-              className={`w-1 h-8 rounded-full transition-all duration-500 ${
+              className={`w-1 h-8 rounded-full transition-all duration-500 z-10 ${
                 activeSection === i 
-                ? (isArch ? "bg-black h-12" : "bg-neon-cyan h-12") 
+                ? (isArch ? "bg-black h-12" : "bg-neon-cyan h-12 shadow-[0_0_10px_rgba(0,255,255,0.8)]") 
                 : (isArch ? "bg-gray-100" : "bg-terminal-border")
               }`}
             />
@@ -929,10 +1100,17 @@ export default function App() {
                 )}
               </h1>
               <p className={`text-xs md:text-sm font-mono mb-6 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
-                {isArch ? "Exploring the intersection of tectonic form and phenomenological impact." : "Specializing in BIM Automation, Algorithmic Design, and Computational Workflows."}
+                {isArch ? "Exploring the intersection of tectonic form and phenomenological impact." : "Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering."}
               </p>
               
-              <SoftwareStack isArch={isArch} />
+              <div className="mt-8">
+                {!isArch && (
+                  <div className="font-mono text-[9px] text-neon-cyan/40 mb-2 tracking-[0.2em]">
+                    [STACK_COMPONENTS]
+                  </div>
+                )}
+                <SoftwareStack isArch={isArch} />
+              </div>
 
               <div className="mt-8 md:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                 <button 
@@ -963,11 +1141,12 @@ export default function App() {
               </div>
             </div>
             
-            <div className={`relative aspect-video lg:aspect-square border overflow-hidden block transition-all duration-700 min-h-[300px] mx-auto w-full max-w-2xl lg:max-w-none ${
+            <div className={`relative aspect-video lg:aspect-square border overflow-hidden block transition-all duration-700 min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-2xl lg:max-w-none ${
               isArch 
               ? "border-gray-100 bg-gray-50/50" 
-              : "brutalist-border bg-terminal-border/10"
+              : "brutalist-border bg-black"
             }`}>
+              {/* Background Technical Grid */}
               <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${isArch ? "opacity-5" : "opacity-20"}`}>
                 <div className="w-full h-full grid grid-cols-12 grid-rows-12">
                   {Array.from({ length: 144 }).map((_, i) => (
@@ -975,6 +1154,22 @@ export default function App() {
                   ))}
                 </div>
               </div>
+
+              {!isArch && (
+                <>
+                  {/* Digital VDC Background Elements */}
+                  <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-neon-cyan/20 text-right leading-tight z-0">
+                    BIM_DATA_STREAM_8829<br/>
+                    COORD_SYS: WGS84<br/>
+                    EPSG: 3857<br/>
+                    LOD: 400
+                  </div>
+                  
+                  {/* Scanning HUD Overlay */}
+                  <div className="absolute inset-x-0 top-1/2 h-[1px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,255,255,0.3)] animate-scan z-20 pointer-events-none" />
+                </>
+              )}
+
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-black/5">
                 {isArch ? (
                   <img 
@@ -987,24 +1182,46 @@ export default function App() {
                     onDragStart={(e) => e.preventDefault()}
                   />
                 ) : (
-                  <video 
-                    key="bim-video"
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline
-                    preload="auto"
-                    onContextMenu={(e) => e.preventDefault()}
-                    className="w-full h-full object-cover opacity-90 transition-all duration-1000 pointer-events-none select-none"
-                  >
-                    <source src="https://drive.google.com/uc?export=download&id=14J3YA_Cq_zr7A7m5rzQtmrLQflBX-bno" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div className="relative w-full h-full group">
+                    <video 
+                      key="bim-video"
+                      autoPlay 
+                      loop 
+                      muted 
+                      playsInline
+                      preload="auto"
+                      onContextMenu={(e) => e.preventDefault()}
+                      className="w-full h-full object-cover opacity-60 transition-all duration-1000 pointer-events-none select-none"
+                    >
+                      <source src="https://drive.google.com/uc?export=download&id=14J3YA_Cq_zr7A7m5rzQtmrLQflBX-bno" type="video/mp4" />
+                    </video>
+                    
+                    {/* Hero Terminal Overlay for BIM Mode */}
+                    <div className="absolute top-8 left-8 w-48 md:w-64 bg-black/80 backdrop-blur-md border border-terminal-border/50 z-30 hidden md:block">
+                      <div className="bg-terminal-border/20 px-3 py-1 border-b border-terminal-border/50 flex justify-between items-center">
+                        <span className="font-mono text-[8px] text-neon-cyan uppercase tracking-widest">LIVE_PROCESS_LOGGER</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                      </div>
+                      <HeroTerminal />
+                    </div>
+
+                    {/* Data Points / Geometric Overlay */}
+                    <div className="absolute inset-0 z-10 pointer-events-none opacity-50">
+                       <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-neon-cyan/10 rotate-45 animate-spin-slow" />
+                       <div className="absolute bottom-1/4 left-1/3 w-16 h-16 border border-neon-orange/10 -rotate-12" />
+                    </div>
+                  </div>
                 )}
               </div>
-              <div className={`absolute bottom-4 left-4 font-mono text-[10px] transition-colors duration-700 ${isArch ? "text-gray-300" : "text-neon-cyan/60"}`}>
-                {isArch ? "[ARCH_STUDIO_v1.0]" : "[SYSTEM_RENDER_ID: 0x449031731270]"}
+              <div className={`absolute bottom-4 left-4 font-mono text-[10px] transition-colors duration-700 z-30 ${isArch ? "text-gray-300" : "text-neon-cyan/60"}`}>
+                {isArch ? "[ARCH_STUDIO_v1.0]" : "[CORE_VD_v2.4_ENGINE]"}
               </div>
+              
+              {!isArch && (
+                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-neon-orange/40 z-30 uppercase tracking-[0.2em]">
+                  Secure_Link::Established
+                </div>
+              )}
             </div>
           </div>
         </ParallaxSection>
@@ -1027,9 +1244,9 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className={`text-xl md:text-2xl font-medium tracking-tighter transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}
+                  className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-cyan/80"}`}
                 >
-                  The Workflows
+                  <span className="opacity-40">{"["}</span> ACTIVE_WORKFLOWS_V2.0 <span className="opacity-40">{"]"}</span>
                 </motion.h3>
               )}
             </div>
@@ -1048,87 +1265,15 @@ export default function App() {
                   }
                 }
               }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
             >
               {arsenal.filter(item => !isArch || item.category !== 'Fabrication').map((item) => (
-                <motion.div 
-                  key={item.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 10 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-                  }}
-                  whileHover={{ y: -5 }}
-                  onClick={() => setSelectedArsenalItem(item)}
-                  className={`group relative overflow-hidden border transition-all duration-700 cursor-pointer ${
-                    isArch 
-                    ? "border-gray-100 bg-white hover:border-black" 
-                    : "border-terminal-border bg-black/40 hover:border-neon-cyan"
-                  }`}
-                >
-                  <div className="aspect-video md:aspect-square overflow-hidden relative">
-                    <WorkloadGif 
-                      src={item.gifUrl} 
-                      alt={item.title}
-                      isArch={isArch}
-                      className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${
-                        isArch 
-                        ? "grayscale group-hover:grayscale-0" 
-                        : "opacity-40 group-hover:opacity-100"
-                      }`}
-                    />
-                    <div className={`absolute inset-0 transition-opacity duration-700 ${isArch ? "bg-black/5 opacity-0 group-hover:opacity-100" : "bg-neon-cyan/10 opacity-0 group-hover:opacity-100"}`} />
-                    <div className={`absolute top-2 right-2 px-2 py-1 font-mono text-[8px] transition-colors duration-700 ${isArch ? "bg-black text-white" : "bg-neon-orange text-black"}`}>
-                      {item.id}
-                    </div>
-                    <div className={`absolute bottom-2 left-2 p-2 rounded border transition-all duration-700 ${
-                      isArch 
-                      ? "bg-white/80 border-gray-100 text-black" 
-                      : `bg-black/80 border-${item.color}/20 text-${item.color}`
-                    }`}>
-                      {item.icon}
-                    </div>
-                  </div>
-                  <div className="p-4 md:p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className={`text-base md:text-lg font-medium tracking-tight transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
-                        {item.title}
-                      </h4>
-                      {item.category && (
-                        <div className="flex items-center gap-1 md:gap-2">
-                          {item.isVerified && (
-                            <ShieldCheck className={`w-2.5 h-2.5 md:w-3 md:h-3 ${isArch ? "text-black" : "text-neon-cyan"}`} />
-                          )}
-                          <span className={`text-[7px] md:text-[8px] font-mono px-1.5 md:px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-black text-black" : "border-neon-cyan text-neon-cyan"}`}>
-                            {item.category}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    {item.role && (
-                      <div className={`text-[9px] md:text-[10px] font-mono mb-1 md:mb-2 transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-orange"}`}>
-                        {item.role}
-                      </div>
-                    )}
-                    {item.hook && (
-                      <div className={`text-[9px] md:text-[10px] font-mono mb-3 md:mb-4 transition-colors duration-700 ${isArch ? "text-gray-600 italic" : "text-neon-cyan"}`}>
-                        {item.hook}
-                      </div>
-                    )}
-                    <p className={`text-xs md:text-sm mb-4 md:mb-6 line-clamp-2 md:line-clamp-3 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
-                      {item.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
-                      {item.tags.map(tag => (
-                        <span key={tag} className={`text-[7px] md:text-[8px] font-mono px-1.5 md:px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border text-gray-500"}`}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className={`flex items-center gap-2 font-mono text-[9px] md:text-[10px] font-bold uppercase ${isArch ? "text-gray-400" : `text-${item.color}`}`}>
-                      {item.metric}
-                    </div>
-                  </div>
-                </motion.div>
+                <ProjectCard 
+                  key={item.id} 
+                  item={item} 
+                  isArch={isArch} 
+                  onClick={() => setSelectedArsenalItem(item)} 
+                />
               ))}
             </motion.div>
           </div>
@@ -1147,6 +1292,15 @@ export default function App() {
               >
                 Section_02 // Fabrication & Hands-on
               </motion.h2>
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-orange"}`}
+              >
+                <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
+              </motion.h3>
             </div>
 
             <motion.div 
@@ -1163,89 +1317,17 @@ export default function App() {
                   }
                 }
               }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
             >
               {arsenal.filter(item => item.category === 'Fabrication').map((item) => (
-                <motion.div 
-                  key={item.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 10 },
-                    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-                  }}
-                  whileHover={{ y: -5 }}
-                  onClick={() => setSelectedArsenalItem(item)}
-                  className={`group relative overflow-hidden border transition-all duration-700 cursor-pointer ${
-                    isArch 
-                    ? "border-gray-100 bg-white hover:border-black" 
-                    : "border-terminal-border bg-black/40 hover:border-neon-cyan"
-                  }`}
-                >
-                    <div className="aspect-video md:aspect-square overflow-hidden relative">
-                      <WorkloadGif 
-                        src={item.gifUrl} 
-                        alt={item.title}
-                        isArch={isArch}
-                        className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${
-                          isArch 
-                          ? "grayscale group-hover:grayscale-0" 
-                          : "opacity-40 group-hover:opacity-100"
-                        }`}
-                      />
-                      <div className={`absolute inset-0 transition-opacity duration-700 ${isArch ? "bg-black/5 opacity-0 group-hover:opacity-100" : "bg-neon-cyan/10 opacity-0 group-hover:opacity-100"}`} />
-                      <div className={`absolute top-2 right-2 px-2 py-1 font-mono text-[8px] transition-colors duration-700 ${isArch ? "bg-black text-white" : "bg-neon-orange text-black"}`}>
-                        {item.id}
-                      </div>
-                      <div className={`absolute bottom-2 left-2 p-2 rounded border transition-all duration-700 ${
-                        isArch 
-                        ? "bg-white/80 border-gray-100 text-black" 
-                        : `bg-black/80 border-${item.color}/20 text-${item.color}`
-                      }`}>
-                        {item.icon}
-                      </div>
-                    </div>
-                    <div className="p-4 md:p-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className={`text-base md:text-lg font-medium tracking-tight transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
-                          {item.title}
-                        </h4>
-                        {item.category && (
-                          <div className="flex items-center gap-1 md:gap-2">
-                            {item.isVerified && (
-                              <ShieldCheck className={`w-2.5 h-2.5 md:w-3 md:h-3 ${isArch ? "text-black" : "text-neon-cyan"}`} />
-                            )}
-                            <span className={`text-[7px] md:text-[8px] font-mono px-1.5 md:px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-black text-black" : "border-neon-cyan text-neon-cyan"}`}>
-                              {item.category}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      {item.role && (
-                        <div className={`text-[9px] md:text-[10px] font-mono mb-1 md:mb-2 transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-orange"}`}>
-                          {item.role}
-                        </div>
-                      )}
-                      {item.hook && (
-                        <div className={`text-[9px] md:text-[10px] font-mono mb-3 md:mb-4 transition-colors duration-700 ${isArch ? "text-gray-600 italic" : "text-neon-cyan"}`}>
-                          {item.hook}
-                        </div>
-                      )}
-                      <p className={`text-xs md:text-sm mb-4 md:mb-6 line-clamp-2 md:line-clamp-3 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
-                        {item.description}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
-                        {item.tags.map(tag => (
-                          <span key={tag} className={`text-[7px] md:text-[8px] font-mono px-1.5 md:px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border text-gray-500"}`}>
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      <div className={`flex items-center gap-2 font-mono text-[9px] md:text-[10px] font-bold uppercase ${isArch ? "text-gray-400" : `text-${item.color}`}`}>
-                        {item.metric}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                <ProjectCard 
+                  key={item.id} 
+                  item={item} 
+                  isArch={isArch} 
+                  onClick={() => setSelectedArsenalItem(item)} 
+                />
+              ))}
+            </motion.div>
             </div>
           </ParallaxSection>
         )}
@@ -1267,9 +1349,9 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className={`text-lg md:text-2xl font-medium tracking-tighter transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}
+                className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-blue"}`}
               >
-                Professional Experience
+                <span className="opacity-40">{"{"}</span> DEPLOYMENT_LOG_03 <span className="opacity-40">{"}"}</span>
               </motion.h3>
             </div>
 
