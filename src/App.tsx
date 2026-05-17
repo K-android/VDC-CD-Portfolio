@@ -444,7 +444,7 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
     <section 
       ref={ref} 
       id={id} 
-      className="min-h-screen w-full flex items-center justify-center relative py-20 px-6 overflow-hidden"
+      className="min-h-[60vh] md:min-h-[85vh] w-full flex items-center justify-center relative py-10 md:py-12 px-6 overflow-hidden"
     >
       <motion.div 
         style={{ y, opacity, scale }}
@@ -460,6 +460,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
   const [mode, setMode] = useState<'bim' | 'arch'>('bim');
+  const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [isSending, setIsSending] = useState(false);
@@ -508,6 +509,11 @@ export default function App() {
   };
 
   const isArch = mode === 'arch';
+
+  const visibleSections = SECTIONS.filter(s => {
+    if (s === 'fabrication') return isArch;
+    return true;
+  });
 
   const archArsenal: ArsenalItem[] = [
     {
@@ -874,6 +880,30 @@ export default function App() {
 
   const arsenal = isArch ? archArsenal : bimArsenal;
 
+  const GlitchText = ({ text }: { text: string }) => {
+    if (isArch) return <>{text}</>;
+    return (
+      <span className="relative inline-block overflow-hidden">
+        <motion.span
+          initial={{ x: 0 }}
+          animate={{ x: [-1, 1, -1, 0], opacity: [1, 0.8, 1] }}
+          transition={{ duration: 0.2, repeat: Infinity, repeatDelay: Math.random() * 5 + 2 }}
+          className="relative z-10"
+        >
+          {text}
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.5, 0], x: [-2, 2, -2] }}
+          transition={{ duration: 0.1, repeat: Infinity, repeatDelay: Math.random() * 5 + 2 }}
+          className="absolute inset-0 z-0 text-neon-cyan/30 translate-x-[1px]"
+        >
+          {text}
+        </motion.span>
+      </span>
+    );
+  };
+
   const experience: ExperienceData[] = [
     {
       year: "Dec 2025 - Present",
@@ -908,7 +938,6 @@ export default function App() {
   ];
 
   const handleSectionChange = (index: number) => {
-    const visibleSections = SECTIONS.filter(s => isArch || s !== 'fabrication');
     if (index >= 0 && index < visibleSections.length) {
       const sectionId = visibleSections[index].toLowerCase();
       const element = document.getElementById(sectionId);
@@ -921,7 +950,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 2;
-      const sectionElements = SECTIONS.map(s => document.getElementById(s.toLowerCase()));
+      const sectionElements = visibleSections.map(s => document.getElementById(s.toLowerCase()));
       
       sectionElements.forEach((el, i) => {
         if (el && scrollPosition >= el.offsetTop && scrollPosition < el.offsetTop + el.offsetHeight) {
@@ -931,11 +960,85 @@ export default function App() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    
+    // Simulate initial system check for BIM mode feel
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
+  }, [visibleSections]);
+
+  const loadingVariants = {
+    initial: { opacity: 1 },
+    exit: { 
+      opacity: 0,
+      transition: { duration: 0.8, ease: "circOut" }
+    }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
 
   return (
     <div className={`min-h-screen w-full transition-colors duration-700 ${isArch ? "bg-white text-gray-900 font-serif" : "bg-terminal-bg text-gray-300 font-sans"} relative overflow-x-hidden`}>
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div 
+            variants={loadingVariants}
+            initial="initial"
+            exit="exit"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-terminal-bg"
+          >
+            <div className="w-12 h-12 relative mb-6">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border-2 border-neon-cyan/20 rounded-full"
+              />
+              <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-1 border-2 border-neon-orange/40 rounded-full border-t-transparent"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Box className="w-4 h-4 text-neon-cyan" />
+              </div>
+            </div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0.5, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="font-mono text-[10px] text-neon-cyan tracking-[0.4em] uppercase"
+            >
+              System_Initializing...
+            </motion.div>
+            <div className="absolute bottom-12 w-48 h-[1px] bg-white/5">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.8, ease: "easeInOut" }}
+                className="h-full bg-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.5)]"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AmbientBackground isArch={isArch} />
       
       {/* Header / Nav */}
@@ -962,7 +1065,7 @@ export default function App() {
 
         {/* Desktop Nav */}
         <div className={`hidden md:flex gap-6 font-mono text-xs uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-600" : "text-gray-500"}`}>
-          {SECTIONS.filter(s => isArch || s !== 'fabrication').map((s, i) => (
+          {visibleSections.map((s, i) => (
             <button 
               key={s}
               onClick={() => handleSectionChange(i)}
@@ -998,7 +1101,7 @@ export default function App() {
               >
                 <Box className="w-8 h-8 rotate-45" />
               </button>
-              {SECTIONS.filter(s => isArch || s !== 'fabrication').map((s, i) => (
+              {visibleSections.map((s, i) => (
                 <button 
                   key={s}
                   onClick={() => {
@@ -1053,7 +1156,7 @@ export default function App() {
           <ChevronUp className="w-4 h-4" />
         </button>
         <div className="flex flex-col gap-2 relative">
-          {SECTIONS.map((_, i) => (
+          {visibleSections.map((_, i) => (
             <button 
               key={i}
               onClick={() => handleSectionChange(i)}
@@ -1067,7 +1170,7 @@ export default function App() {
         </div>
         <button 
           onClick={() => handleSectionChange(activeSection + 1)}
-          disabled={activeSection === SECTIONS.length - 1}
+          disabled={activeSection === visibleSections.length - 1}
           className={`p-2 border transition-colors ${
             isArch 
             ? "border-gray-200 hover:bg-black hover:text-white" 
@@ -1079,40 +1182,53 @@ export default function App() {
       </div>
 
       <main className="relative z-10">
-        <ParallaxSection id="hero" index={0} setActiveSection={setActiveSection}>
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
+        <ParallaxSection id="hero" index={visibleSections.indexOf('hero')} setActiveSection={setActiveSection}>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            animate={isLoading ? "hidden" : "show"}
+            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10"
+          >
             <div className={`flex flex-col ${isArch ? "text-center lg:text-left" : "text-center lg:text-left"}`}>
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 md:mb-6 mx-auto lg:mx-0 transition-all duration-700 ${
+              <motion.div 
+                variants={fadeInUp}
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 md:mb-6 mx-auto lg:mx-0 transition-all duration-700 ${
                 isArch 
                 ? "border-gray-200 bg-gray-50 text-gray-500" 
                 : "border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan"
               }`}>
                 <Activity className="w-3 h-3" /> {isArch ? "Portfolio: Architectural Design" : "System Online: Data Engineering"}
-              </div>
-              <div className={`mb-2 md:mb-4 font-mono text-[10px] md:text-sm uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
+              </motion.div>
+              <motion.div 
+                variants={fadeInUp}
+                className={`mb-2 md:mb-4 font-mono text-[10px] md:text-sm uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
                 Karthikraj V Nadar, {isArch ? "Architect & Spatial Visionary." : "Junior VDC Engineer & BIM Data Developer."}
-              </div>
-              <h1 className={`text-xl md:text-4xl font-medium tracking-tighter leading-tight mb-4 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+              </motion.div>
+              <motion.h1 
+                variants={fadeInUp}
+                className={`text-xl md:text-4xl font-medium tracking-tighter leading-tight mb-4 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
                 {isArch ? (
                   <>Sculpting <span className="text-gray-400">Space</span>, Light, and the Human <span className="text-gray-300">Experience</span>.</>
                 ) : (
-                  <>Automating <span className="text-neon-cyan">AEC workflows</span> and managing <span className="text-neon-orange">ISO 19650</span> facility data.</>
+                  <>Automating <GlitchText text="AEC workflows" /> and managing <GlitchText text="ISO 19650" /> facility data.</>
                 )}
-              </h1>
-              <p className={`text-xs md:text-sm font-mono mb-6 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
+              </motion.h1>
+              <motion.p 
+                variants={fadeInUp}
+                className={`text-xs md:text-sm font-mono mb-6 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
                 {isArch ? "Exploring the intersection of tectonic form and phenomenological impact." : "Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering."}
-              </p>
+              </motion.p>
               
-              <div className="mt-8">
+              <motion.div variants={fadeInUp} className="mt-8">
                 {!isArch && (
                   <div className="font-mono text-[9px] text-neon-cyan/40 mb-2 tracking-[0.2em]">
                     [STACK_COMPONENTS]
                   </div>
                 )}
                 <SoftwareStack isArch={isArch} />
-              </div>
+              </motion.div>
 
-              <div className="mt-8 md:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <motion.div variants={fadeInUp} className="mt-8 md:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                 <button 
                   onClick={() => handleSectionChange(1)}
                   className={`group relative w-full sm:w-auto px-8 py-4 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-700 ${
@@ -1138,10 +1254,15 @@ export default function App() {
                   <Download className="w-5 h-5" />
                   Download Resume
                 </a>
-              </div>
+              </motion.div>
             </div>
             
-            <div className={`relative aspect-video lg:aspect-square border overflow-hidden block transition-all duration-700 min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-2xl lg:max-w-none ${
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0, scale: 0.95, x: 20 },
+                show: { opacity: 1, scale: 1, x: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className={`relative aspect-video lg:aspect-square border overflow-hidden block transition-all duration-700 min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-2xl lg:max-w-none ${
               isArch 
               ? "border-gray-100 bg-gray-50/50" 
               : "brutalist-border bg-black"
@@ -1183,18 +1304,15 @@ export default function App() {
                   />
                 ) : (
                   <div className="relative w-full h-full group">
-                    <video 
-                      key="bim-video"
-                      autoPlay 
-                      loop 
-                      muted 
-                      playsInline
-                      preload="auto"
-                      onContextMenu={(e) => e.preventDefault()}
+                    <img 
+                      key={`bim-hero-gif-${mode}`}
+                      src="https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN" 
+                      alt="BIM Hero GIF"
+                      referrerPolicy="no-referrer"
                       className="w-full h-full object-cover opacity-60 transition-all duration-1000 pointer-events-none select-none"
-                    >
-                      <source src="https://drive.google.com/uc?export=download&id=14J3YA_Cq_zr7A7m5rzQtmrLQflBX-bno" type="video/mp4" />
-                    </video>
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
+                    />
                     
                     {/* Hero Terminal Overlay for BIM Mode */}
                     <div className="absolute top-8 left-8 w-48 md:w-64 bg-black/80 backdrop-blur-md border border-terminal-border/50 z-30 hidden md:block">
@@ -1222,28 +1340,27 @@ export default function App() {
                   Secure_Link::Established
                 </div>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </ParallaxSection>
 
-        <ParallaxSection id="arsenal" index={1} setActiveSection={setActiveSection}>
-          <div>
+        <ParallaxSection id="arsenal" index={visibleSections.indexOf('arsenal')} setActiveSection={setActiveSection}>
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <div className="mb-12">
               <motion.h2 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                variants={fadeInUp}
                 className={`text-xs font-mono uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-cyan"}`}
               >
                 {isArch ? "Section_01 // Projects" : "Section_01 // Automation_Stack"}
               </motion.h2>
               {!isArch && (
                 <motion.h3 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  variants={fadeInUp}
                   className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-cyan/80"}`}
                 >
                   <span className="opacity-40">{"["}</span> ACTIVE_WORKFLOWS_V2.0 <span className="opacity-40">{"]"}</span>
@@ -1253,18 +1370,7 @@ export default function App() {
 
             <motion.div 
               key={`arsenal-${isArch}`}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.05 }}
-              variants={{
-                hidden: { opacity: 0 },
-                show: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.05
-                  }
-                }
-              }}
+              variants={staggerContainer}
               className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
             >
               {arsenal.filter(item => !isArch || item.category !== 'Fabrication').map((item) => (
@@ -1276,79 +1382,67 @@ export default function App() {
                 />
               ))}
             </motion.div>
-          </div>
+          </motion.div>
         </ParallaxSection>
 
         {isArch && (
-          <ParallaxSection id="fabrication" index={2} setActiveSection={setActiveSection}>
-            <div>
-              <div className="mb-12">
-              <motion.h2 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className={`text-xs font-mono uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-cyan"}`}
-              >
-                Section_02 // Fabrication & Hands-on
-              </motion.h2>
-              <motion.h3 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-orange"}`}
-              >
-                <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
-              </motion.h3>
-            </div>
-
-            <motion.div 
-              key={`fabrication-${isArch}`}
+          <ParallaxSection id="fabrication" index={visibleSections.indexOf('fabrication')} setActiveSection={setActiveSection}>
+            <motion.div
+              variants={staggerContainer}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.05 }}
-              variants={{
-                hidden: { opacity: 0 },
-                show: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.05
-                  }
-                }
-              }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
+              viewport={{ once: true, amount: 0.1 }}
             >
-              {arsenal.filter(item => item.category === 'Fabrication').map((item) => (
-                <ProjectCard 
-                  key={item.id} 
-                  item={item} 
-                  isArch={isArch} 
-                  onClick={() => setSelectedArsenalItem(item)} 
-                />
-              ))}
+              <div className="mb-12">
+                <motion.h2 
+                  variants={fadeInUp}
+                  className={`text-xs font-mono uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-cyan"}`}
+                >
+                  Section_02 // Fabrication & Hands-on
+                </motion.h2>
+                <motion.h3 
+                  variants={fadeInUp}
+                  className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-orange"}`}
+                >
+                  <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
+                </motion.h3>
+              </div>
+
+              <motion.div 
+                key={`fabrication-${isArch}`}
+                variants={staggerContainer}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
+              >
+                {arsenal.filter(item => item.category === 'Fabrication').map((item) => (
+                  <ProjectCard 
+                    key={item.id} 
+                    item={item} 
+                    isArch={isArch} 
+                    onClick={() => setSelectedArsenalItem(item)} 
+                  />
+                ))}
+              </motion.div>
             </motion.div>
-            </div>
           </ParallaxSection>
         )}
 
-        <ParallaxSection id="experience" index={isArch ? 3 : 2} setActiveSection={setActiveSection}>
-          <div className="w-full max-w-4xl mx-auto">
+        <ParallaxSection id="experience" index={visibleSections.indexOf('experience')} setActiveSection={setActiveSection}>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+            className="w-full max-w-4xl mx-auto"
+          >
             <div className="mb-8 md:mb-12 text-center">
               <motion.h2 
-                initial={{ opacity: 0, y: -10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                variants={fadeInUp}
                 className={`text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] mb-2 md:mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-blue"}`}
               >
                 {isArch ? "Section_03 // Career_Path" : "Section_03 // Deployment_History"}
               </motion.h2>
               <motion.h3 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                variants={fadeInUp}
                 className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-blue"}`}
               >
                 <span className="opacity-40">{"{"}</span> DEPLOYMENT_LOG_03 <span className="opacity-40">{"}"}</span>
@@ -1360,25 +1454,13 @@ export default function App() {
               <div className={`absolute left-4 md:left-1/2 top-0 bottom-0 w-px transition-colors duration-700 ${isArch ? "bg-gray-100" : "bg-terminal-border"}`} />
               
               <motion.div 
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.05 }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.05
-                    }
-                  }
-                }}
                 className="space-y-8 md:space-y-12"
               >
                 {experience.map((exp, idx) => (
                   <motion.div 
                     key={idx} 
                     variants={{
-                      hidden: { opacity: 0, x: idx % 2 === 0 ? 50 : -50 },
+                      hidden: { opacity: 0, x: idx % 2 === 0 ? 30 : -30 },
                       show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
                     }}
                     className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
@@ -1473,10 +1555,10 @@ export default function App() {
                 )}
               </motion.button>
             </div>
-          </div>
+          </motion.div>
         </ParallaxSection>
 
-        <ParallaxSection id="terminal" index={isArch ? 4 : 3} setActiveSection={setActiveSection}>
+        <ParallaxSection id="terminal" index={visibleSections.indexOf('terminal')} setActiveSection={setActiveSection}>
           <motion.div 
             initial="hidden"
             whileInView="show"
