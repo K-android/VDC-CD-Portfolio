@@ -1206,11 +1206,12 @@ export default function App() {
               </motion.div>
               <motion.h1 
                 variants={fadeInUp}
-                className={`text-xl md:text-4xl font-medium tracking-tighter leading-tight mb-4 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+                className="text-4xl md:text-7xl font-light tracking-tighter leading-tight mb-6"
+              >
                 {isArch ? (
                   <>Sculpting <span className="text-gray-400">Space</span>, Light, and the Human <span className="text-gray-300">Experience</span>.</>
                 ) : (
-                  <>Automating <GlitchText text="AEC workflows" /> and managing <GlitchText text="ISO 19650" /> facility data.</>
+                  <>Automating <span className="text-neon-cyan">AEC workflows</span> and managing <span className="text-neon-orange">ISO 19650</span> facility data.</>
                 )}
               </motion.h1>
               <motion.p 
