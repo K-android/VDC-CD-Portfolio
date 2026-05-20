@@ -1187,7 +1187,7 @@ export default function App() {
             variants={staggerContainer}
             initial="hidden"
             animate={isLoading ? "hidden" : "show"}
-            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 pt-16 md:pt-20 lg:pt-0"
+            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10"
           >
             <div className={`flex flex-col ${isArch ? "text-center lg:text-left" : "text-center lg:text-left"}`}>
               <motion.div 
@@ -1206,7 +1206,7 @@ export default function App() {
               </motion.div>
               <motion.h1 
                 variants={fadeInUp}
-                className="text-4xl md:text-7xl font-light tracking-tighter leading-[1.1] md:leading-[1.05] mb-4 md:mb-5"
+                className={`text-xl md:text-4xl font-medium tracking-tighter leading-tight mb-4 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}
               >
                 {isArch ? (
                   <>Sculpting <span className="text-gray-400">Space</span>, Light, and the Human <span className="text-gray-300">Experience</span>.</>
