@@ -1187,26 +1187,26 @@ export default function App() {
             variants={staggerContainer}
             initial="hidden"
             animate={isLoading ? "hidden" : "show"}
-            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10"
+            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10 pt-16 md:pt-20 lg:pt-0"
           >
             <div className={`flex flex-col ${isArch ? "text-center lg:text-left" : "text-center lg:text-left"}`}>
               <motion.div 
                 variants={fadeInUp}
-                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 md:mb-6 mx-auto lg:mx-0 transition-all duration-700 ${
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-3 md:mb-4 mx-auto lg:mx-0 transition-all duration-700 whitespace-nowrap ${
                 isArch 
                 ? "border-gray-200 bg-gray-50 text-gray-500" 
                 : "border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan"
               }`}>
-                <Activity className="w-3 h-3" /> {isArch ? "Portfolio: Architectural Design" : "System Online: Data Engineering"}
+                <Activity className="w-3 h-3 shrink-0" /> <span className="pr-1">{isArch ? "Portfolio: Architectural Design" : "System Online: Data Engineering"}</span>
               </motion.div>
               <motion.div 
                 variants={fadeInUp}
-                className={`mb-2 md:mb-4 font-mono text-[10px] md:text-sm uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
+                className={`mb-1.5 md:mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
                 Karthikraj V Nadar, {isArch ? "Architect & Spatial Visionary." : "Junior VDC Engineer & BIM Data Developer."}
               </motion.div>
               <motion.h1 
                 variants={fadeInUp}
-                className="text-4xl md:text-7xl font-light tracking-tighter leading-tight mb-6"
+                className="text-4xl md:text-7xl font-light tracking-tighter leading-[1.1] md:leading-[1.05] mb-4 md:mb-5"
               >
                 {isArch ? (
                   <>Sculpting <span className="text-gray-400">Space</span>, Light, and the Human <span className="text-gray-300">Experience</span>.</>
@@ -1216,7 +1216,7 @@ export default function App() {
               </motion.h1>
               <motion.p 
                 variants={fadeInUp}
-                className={`text-xs md:text-sm font-mono mb-6 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
+                className={`text-xs md:text-sm font-mono mb-4 md:mb-5 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
                 {isArch ? "Exploring the intersection of tectonic form and phenomenological impact." : "Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering."}
               </motion.p>
               
