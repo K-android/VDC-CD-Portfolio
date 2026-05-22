@@ -459,6 +459,22 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
+
+  const vdcTimelineRef = useRef<HTMLDivElement>(null);
+  const archTimelineRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: vdcScroll } = useScroll({
+    target: vdcTimelineRef,
+    offset: ["start center", "end center"]
+  });
+
+  const { scrollYProgress: archScroll } = useScroll({
+    target: archTimelineRef,
+    offset: ["start center", "end center"]
+  });
+
+  const vdcScaleY = useSpring(vdcScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const archScaleY = useSpring(archScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const [mode, setMode] = useState<'bim' | 'arch'>('bim');
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -509,11 +525,10 @@ export default function App() {
   };
 
   const isArch = mode === 'arch';
+  const [terminalMode, setTerminalMode] = useState<'bim' | 'arch'>('bim');
+  const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
 
-  const visibleSections = SECTIONS.filter(s => {
-    if (s === 'fabrication') return isArch;
-    return true;
-  });
+  const visibleSections = ["landing", "vdc-section", "arch-section", "terminal"];
 
   const archArsenal: ArsenalItem[] = [
     {
@@ -552,21 +567,23 @@ export default function App() {
     },
     {
       id: "ARCH_02",
-      title: "Spatial Phenomenology",
-      description: "Designing spaces that evoke emotional responses through careful manipulation of scale, proportion, and sequence.",
+      title: "Sadhu Residence Complex",
+      role: "Architectural Designer & BIM Modeler",
+      hook: "Modular prefabrication meeting minimalistic, tranquil spiritual living.",
+      description: "Designed a modular, prefabricated residential community tailored for sadhus. Crafted precise Revit 3D modeling and detailed documentation for prefab wall/slab modules, and produced atmospheric, high-fidelity renders using Twinmotion & Snaptrude.",
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
-      metric: "Experiential",
-      gifUrl: "https://media.giphy.com/media/3o7TKMGpxXfQC9cc4o/giphy.gif",
-      tags: ["Concept Design", "Human Scale", "Modeling"],
+      metric: "Prefab Modules",
+      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
       category: "Conceptual",
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/arch-workflow-1/800/450?grayscale",
+        screenshotUrl: "https://picsum.photos/seed/sadhu-prefab/800/450?grayscale",
         steps: [
-          "Analyze site context and historical precedents.",
-          "Develop conceptual massing based on human scale.",
-          "Iterate through physical and digital models.",
-          "Refine spatial sequences and transitions."
+          "Establish minimalistic spatial needs and rigid modular grids.",
+          "Author precise Revit parametric families for prefabricated wall and slab modules.",
+          "Integrate models dynamically between Snaptrude for rapid spatial alignment and Revit.",
+          "Render tranquil landscapes and atmospheric materials in Twinmotion."
         ]
       }
     },
@@ -671,6 +688,41 @@ export default function App() {
   const bimArsenal: ArsenalItem[] = [
     {
       id: "BIM_01",
+      title: "The LLM Fabrication Engine",
+      role: "Computational Design Technologist",
+      hook: "Generative AI API integration with physical CNC digital fabrication.",
+      description: "Engineered a live API bridge between LLM logic (Gemini) and physical CNC manufacturing. The script dynamically generates optimal façade panelization constraints via JSON parsing, applies them to complex NURBS surfaces, and automatically unrolls the geometry into 2D cut-sheets for direct laser-cutter fabrication.",
+      icon: <Cpu className="w-6 h-6 text-neon-cyan" />,
+      color: "neon-cyan",
+      metric: "Generative API",
+      gifUrl: "https://lh3.googleusercontent.com/d/11sFI5d1bszNSdrgzSsTwC6NF1POaMzv1",
+      tags: ["Python API", "Grasshopper", "Digital Fabrication", "JSON"],
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-llm/800/450?grayscale",
+        steps: [
+          "Connect Grasshopper environment to Gemini API.",
+          "Parse spatial panelization constraints from JSON return structure.",
+          "Map geometric constraints to complex NURBS surfaces dynamically.",
+          "Automate flat unrolling into production-ready 2D cut-sheets."
+        ]
+      },
+      details: {
+        overview: "The LLM Fabrication Engine establishes a direct link between modern large language model (LLM) APIs and precise physical fabrication pipelines. It translates descriptive, multi-modal prompts into standard geometric configurations without requiring manual CAD parameter manipulation.",
+        challenge: "Generating deterministic, CNC-ready flat sheet templates from conversational, non-deterministic language models.",
+        solution: "Implemented an integrated Grasshopper & Python routine that structures Gemini's responses into verified JSON schemas, drives spatial panelling calculations, and outputs high-fidelity structural outputs.",
+        images: [
+          "https://lh3.googleusercontent.com/d/12OMyHxHu87uIA87fmB3QJI-tMzHIi-yP",
+          "https://lh3.googleusercontent.com/d/1OcgT2rCg6SVvVPYAgdgDyYfOwD2FybaL",
+          "https://lh3.googleusercontent.com/d/1IUveGylPhmxyzS9J_zx8uIraB55FaoF2",
+          "https://lh3.googleusercontent.com/d/1dyxHja4d3dCKcpRFqSjX2eCH8K4ETuqW",
+          "https://lh3.googleusercontent.com/d/13DjBQVbIlicd12rixmddFV8VlEfY8nHy",
+          "https://lh3.googleusercontent.com/d/16ElVn3XPrb32whEeHODV-F-qKOKaHDKG",
+          "https://lh3.googleusercontent.com/d/1qVkvKXWhYvBXgHevFDyVhxJJ4YUvt28t"
+        ]
+      }
+    },
+    {
+      id: "BIM_02",
       title: "The Generative Documentation Engine",
       role: "BIM Automation Lead",
       hook: "Bypassing Revit UI limitations to automate large-scale sheet generation.",
@@ -692,7 +744,7 @@ export default function App() {
       }
     },
     {
-      id: "BIM_02",
+      id: "BIM_03",
       title: "The 5D Data Harvester",
       role: "VDC Data Engineer",
       hook: "Scrubbing massive Revit models to extract exact facility parameters.",
@@ -710,27 +762,6 @@ export default function App() {
           "Apply regex-based scrubbing logic.",
           "Cross-reference with project financial spreadsheets.",
           "Export verified 5D data to Enterprise ERP."
-        ]
-      }
-    },
-    {
-      id: "BIM_03",
-      title: "The Parametric Geometry Framework",
-      role: "Computational Designer",
-      hook: "Automated massing and spatial generation.",
-      description: "An algorithmic script that reads mathematical inputs to automatically generate complex spatial massing. I proved I understand computational logic and parametric relationships.",
-      icon: <Layers className="w-6 h-6 text-neon-blue" />,
-      color: "neon-blue",
-      metric: "Computational",
-      gifUrl: "https://media.giphy.com/media/3o7TKMGpxXfQC9cc4o/giphy.gif",
-      tags: ["Rhino", "Grasshopper"],
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-3/800/450?grayscale",
-        steps: [
-          "Initialize spatial parameters via mathematical inputs.",
-          "Execute recursive subdivision algorithm.",
-          "Map generated meshes to Revit native families.",
-          "Validate topology and deploy to cloud database."
         ]
       }
     },
@@ -939,7 +970,7 @@ export default function App() {
 
   const handleSectionChange = (index: number) => {
     if (index >= 0 && index < visibleSections.length) {
-      const sectionId = visibleSections[index].toLowerCase();
+      const sectionId = visibleSections[index];
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -949,17 +980,23 @@ export default function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-      const sectionElements = visibleSections.map(s => document.getElementById(s.toLowerCase()));
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
       
-      sectionElements.forEach((el, i) => {
+      visibleSections.forEach((id, i) => {
+        const el = document.getElementById(id);
         if (el && scrollPosition >= el.offsetTop && scrollPosition < el.offsetTop + el.offsetHeight) {
           setActiveSection(i);
+          // Sync modes based on active scroll section
+          if (id === "vdc-section") {
+            setMode('bim');
+          } else if (id === "arch-section") {
+            setMode('arch');
+          }
         }
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Simulate initial system check for BIM mode feel
     const timer = setTimeout(() => setIsLoading(false), 2000);
@@ -968,7 +1005,7 @@ export default function App() {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timer);
     };
-  }, [visibleSections]);
+  }, []);
 
   const loadingVariants = {
     initial: { opacity: 1 },
@@ -993,6 +1030,9 @@ export default function App() {
     hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
+
+  const isModalArch = selectedArsenalItem ? (selectedArsenalItem.id.startsWith("ARCH") || selectedArsenalItem.category === "Fabrication") : false;
+  const isHeaderArch = isArch;
 
   return (
     <div className={`min-h-screen w-full transition-colors duration-700 ${isArch ? "bg-white text-gray-900 font-serif" : "bg-terminal-bg text-gray-300 font-sans"} relative overflow-x-hidden`}>
@@ -1042,36 +1082,39 @@ export default function App() {
       <AmbientBackground isArch={isArch} />
       
       {/* Header / Nav */}
-      <header className={`fixed top-0 w-full z-[60] backdrop-blur-md border-b px-4 md:px-6 py-3 md:py-4 flex justify-between items-center transition-all duration-700 ${isArch ? "bg-white/80 border-gray-100" : "bg-terminal-bg/80 border-terminal-border"}`}>
+      <header className={`fixed top-0 w-full z-[60] backdrop-blur-md border-b px-4 md:px-6 py-3 md:py-3.5 flex justify-between items-center transition-all duration-700 ${isHeaderArch ? "bg-white/80 border-gray-100/80" : "bg-terminal-bg/80 border-terminal-border"}`}>
         <div className="flex items-center gap-3 md:gap-4">
           <div className="flex items-center gap-2">
-            <Terminal className={`w-4 h-4 md:w-5 md:h-5 ${isArch ? "text-gray-400" : "text-neon-cyan"}`} />
-            <span className={`font-mono font-semibold tracking-tighter text-xs md:text-sm transition-colors duration-700 ${isArch ? "text-black" : "text-white"}`}>KARTHIKRAJ_NADAR</span>
+            <Terminal className={`w-4 h-4 md:w-5 md:h-5 ${isHeaderArch ? "text-gray-400" : "text-neon-cyan"}`} />
+            <span className={`font-mono font-semibold tracking-tighter text-xs md:text-sm transition-colors duration-700 ${isHeaderArch ? "text-black" : "text-white"}`}>KARTHIKRAJ_NADAR</span>
           </div>
           
-          {/* Mode Toggle */}
+          {/* Snap-thru Jumping Portal instead of a raw state-switch */}
           <button 
-            onClick={() => setMode(isArch ? 'bim' : 'arch')}
-            className={`flex items-center gap-2 px-2 md:px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest transition-all duration-500 ${
-              isArch 
-              ? "bg-black text-white border-black" 
-              : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan/20"
+            onClick={() => {
+              const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[8px] md:text-[9px] font-mono uppercase tracking-widest transition-all duration-500 ${
+              isHeaderArch 
+              ? "bg-black text-white border-black hover:bg-gray-800" 
+              : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan/25"
             }`}
           >
-            {isArch ? <Box className="w-3 h-3" /> : <Layers className="w-3 h-3" />}
-            <span className="hidden sm:inline">Switch to </span>{isArch ? "BIM_MODE" : "ARCH_MODE"}
+            {isHeaderArch ? <Terminal className="w-2.5 h-2.5 animate-pulse" /> : <Box className="w-2.5 h-2.5" />}
+            <span className="hidden sm:inline">Portal to </span>{isHeaderArch ? "VDC_CORE" : "ARCH_STUDIO"}
           </button>
         </div>
 
         {/* Desktop Nav */}
-        <div className={`hidden md:flex gap-6 font-mono text-xs uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-600" : "text-gray-500"}`}>
+        <div className={`hidden md:flex gap-6 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-700 ${isHeaderArch ? "text-gray-600" : "text-gray-500"}`}>
           {visibleSections.map((s, i) => (
             <button 
               key={s}
               onClick={() => handleSectionChange(i)}
-              className={`hover:text-neon-cyan transition-colors ${activeSection === i ? (isArch ? "text-black font-bold" : "text-neon-cyan") : ""}`}
+              className={`hover:text-neon-cyan transition-colors ${activeSection === i ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan") : ""}`}
             >
-              {isArch ? (s === 'arsenal' ? 'projects' : s === 'terminal' ? 'about me' : s === 'fabrication' ? 'fabrication' : s) : (s === 'arsenal' ? 'workflows' : s)}
+              {s === 'landing' ? 'Gateway' : s === 'vdc-section' ? 'VDC Core' : s === 'arch-section' ? 'Arch Studio' : 'Contact & Bio'}
             </button>
           ))}
         </div>
@@ -1079,7 +1122,7 @@ export default function App() {
         {/* Mobile Menu Toggle */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`md:hidden p-2 transition-colors ${isArch ? "text-black" : "text-neon-cyan"}`}
+          className={`p-2 transition-colors ${isHeaderArch ? "text-black hover:bg-gray-100" : "text-neon-cyan hover:bg-white/5"}`}
         >
           {isMenuOpen ? <Box className="w-5 h-5 rotate-45" /> : <Layers className="w-5 h-5" />}
         </button>
@@ -1091,8 +1134,8 @@ export default function App() {
               initial={{ opacity: 0, x: "100%" }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
-              className={`fixed inset-0 z-[70] md:hidden flex flex-col items-center justify-center gap-8 font-mono text-lg uppercase tracking-[0.3em] transition-colors duration-700 ${
-                isArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
+              className={`fixed inset-0 z-[70] flex flex-col items-center justify-center gap-8 font-mono text-lg uppercase tracking-[0.3em] transition-colors duration-700 ${
+                isHeaderArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
               }`}
             >
               <button 
@@ -1110,23 +1153,24 @@ export default function App() {
                   }}
                   className={`hover:scale-110 transition-transform ${activeSection === i ? "font-bold underline underline-offset-8" : ""}`}
                 >
-                  {isArch ? (s === 'arsenal' ? 'projects' : s === 'terminal' ? 'about me' : s === 'fabrication' ? 'fabrication' : s) : (s === 'arsenal' ? 'workflows' : s)}
+                  {s === 'landing' ? 'Gateway' : s === 'vdc-section' ? 'VDC Core' : s === 'arch-section' ? 'Arch Studio' : 'Contact & Bio'}
                 </button>
               ))}
               <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="text-[10px] opacity-40">Switch Environment</div>
+                <div className="text-[10px] opacity-40">Jump Location</div>
                 <button 
                   onClick={() => {
-                    setMode(isArch ? 'bim' : 'arch');
+                    const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                     setIsMenuOpen(false);
                   }}
                   className={`px-6 py-3 border font-mono text-xs uppercase tracking-widest transition-all duration-500 ${
-                    isArch 
+                    isHeaderArch 
                     ? "bg-black text-white border-black" 
                     : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
                   }`}
                 >
-                  {isArch ? "Initialize BIM_MODE" : "Initialize ARCH_MODE"}
+                  {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
                 </button>
               </div>
             </motion.div>
@@ -1137,10 +1181,10 @@ export default function App() {
       {/* Progress Indicator */}
       <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col gap-4 items-center">
         {/* Scroll Progress Bar */}
-        <div className={`absolute -right-4 top-0 bottom-0 w-1 transition-colors duration-700 rounded-full ${isArch ? "bg-gray-100" : "bg-terminal-border/40"}`}>
+        <div className={`absolute -right-4 top-0 bottom-0 w-1 transition-colors duration-700 rounded-full ${isHeaderArch ? "bg-gray-100" : "bg-terminal-border/40"}`}>
           <motion.div 
             style={{ scaleY: useScroll().scrollYProgress }}
-            className={`absolute top-0 left-0 w-full origin-top transition-colors duration-700 rounded-full ${isArch ? "bg-black" : "bg-neon-cyan shadow-[0_0_15px_rgba(0,242,255,0.6)]"}`}
+            className={`absolute top-0 left-0 w-full origin-top transition-colors duration-700 rounded-full ${isHeaderArch ? "bg-black" : "bg-neon-cyan shadow-[0_0_15px_rgba(0,242,255,0.6)]"}`}
           />
         </div>
 
@@ -1148,7 +1192,7 @@ export default function App() {
           onClick={() => handleSectionChange(activeSection - 1)}
           disabled={activeSection === 0}
           className={`p-2 border transition-colors ${
-            isArch 
+            isHeaderArch 
             ? "border-gray-200 hover:bg-black hover:text-white" 
             : "brutalist-border hover:bg-neon-cyan hover:text-black"
           } disabled:opacity-20`}
@@ -1162,8 +1206,8 @@ export default function App() {
               onClick={() => handleSectionChange(i)}
               className={`w-1 h-8 rounded-full transition-all duration-500 z-10 ${
                 activeSection === i 
-                ? (isArch ? "bg-black h-12" : "bg-neon-cyan h-12 shadow-[0_0_10px_rgba(0,255,255,0.8)]") 
-                : (isArch ? "bg-gray-100" : "bg-terminal-border")
+                ? (isHeaderArch ? "bg-black h-12" : "bg-neon-cyan h-12 shadow-[0_0_10px_rgba(0,255,255,0.8)]") 
+                : (isHeaderArch ? "bg-gray-100" : "bg-terminal-border")
               }`}
             />
           ))}
@@ -1172,7 +1216,7 @@ export default function App() {
           onClick={() => handleSectionChange(activeSection + 1)}
           disabled={activeSection === visibleSections.length - 1}
           className={`p-2 border transition-colors ${
-            isArch 
+            isHeaderArch 
             ? "border-gray-200 hover:bg-black hover:text-white" 
             : "brutalist-border hover:bg-neon-cyan hover:text-black"
           } disabled:opacity-20`}
@@ -1182,382 +1226,504 @@ export default function App() {
       </div>
 
       <main className="relative z-10">
-        <ParallaxSection id="hero" index={visibleSections.indexOf('hero')} setActiveSection={setActiveSection}>
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            animate={isLoading ? "hidden" : "show"}
-            className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-10"
+        {/* STAGE 1: Vertical Split landing Gateway */}
+        <section id="landing" className="min-h-screen md:h-screen w-full relative flex flex-col md:flex-row bg-[#080b0e] overflow-y-auto md:overflow-hidden">
+          {/* VDC Side (Left) */}
+          <div 
+            onMouseEnter={() => setHoveredSide('left')}
+            onMouseLeave={() => setHoveredSide(null)}
+            className={`flex-1 md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
+              hoveredSide === 'left' ? 'md:w-[54%] bg-[#06080a]' : hoveredSide === 'right' ? 'md:w-[46%] opacity-40 bg-black' : 'md:w-[50%] bg-[#0c0f12]'
+            }`}
           >
-            <div className={`flex flex-col ${isArch ? "text-center lg:text-left" : "text-center lg:text-left"}`}>
-              <motion.div 
-                variants={fadeInUp}
-                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-3 md:mb-4 mx-auto lg:mx-0 transition-all duration-700 whitespace-nowrap ${
-                isArch 
-                ? "border-gray-200 bg-gray-50 text-gray-500" 
-                : "border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan"
-              }`}>
-                <Activity className="w-3 h-3 shrink-0" /> <span className="pr-1">{isArch ? "Portfolio: Architectural Design" : "System Online: Data Engineering"}</span>
-              </motion.div>
-              <motion.div 
-                variants={fadeInUp}
-                className={`mb-1.5 md:mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
-                Karthikraj V Nadar, {isArch ? "Architect & Spatial Visionary." : "Junior VDC Engineer & BIM Data Developer."}
-              </motion.div>
-              <motion.h1 
-                variants={fadeInUp}
-                className={`text-xl md:text-4xl font-medium tracking-tighter leading-tight mb-4 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}
-              >
-                {isArch ? (
-                  <>Sculpting <span className="text-gray-400">Space</span>, Light, and the Human <span className="text-gray-300">Experience</span>.</>
-                ) : (
-                  <>Automating <span className="text-neon-cyan">AEC workflows</span> and managing <span className="text-neon-orange">ISO 19650</span> facility data.</>
-                )}
-              </motion.h1>
-              <motion.p 
-                variants={fadeInUp}
-                className={`text-xs md:text-sm font-mono mb-4 md:mb-5 max-w-xl mx-auto lg:mx-0 transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
-                {isArch ? "Exploring the intersection of tectonic form and phenomenological impact." : "Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering."}
-              </motion.p>
-              
-              <motion.div variants={fadeInUp} className="mt-8">
-                {!isArch && (
-                  <div className="font-mono text-[9px] text-neon-cyan/40 mb-2 tracking-[0.2em]">
-                    [STACK_COMPONENTS]
-                  </div>
-                )}
-                <SoftwareStack isArch={isArch} />
-              </motion.div>
-
-              <motion.div variants={fadeInUp} className="mt-8 md:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                <button 
-                  onClick={() => handleSectionChange(1)}
-                  className={`group relative w-full sm:w-auto px-8 py-4 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-700 ${
-                    isArch 
-                    ? "bg-black text-white hover:bg-gray-800" 
-                    : "bg-neon-cyan text-black hover:bg-white"
-                  }`}
-                >
-                  {isArch ? "Explore Works" : "Initialize Workflows"}
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <a 
-                  href="https://drive.google.com/file/d/1pHAos4G_oIKuOWMPQTNVlVRcqrQ0VWpQ/view?usp=sharing" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group relative w-full sm:w-auto px-8 py-4 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] ${
-                    isArch 
-                    ? "bg-white text-black hover:bg-black hover:text-white border-black border hover:shadow-lg" 
-                    : "bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border-neon-cyan border hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]"
-                  }`}
-                >
-                  <Download className="w-5 h-5" />
-                  Download Resume
-                </a>
-              </motion.div>
+            {/* Fine Tech Grid Background */}
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
+              <div className="w-full h-full grid grid-cols-12 grid-[auto-rows_minmax(0,1fr)]">
+                {Array.from({ length: 144 }).map((_, i) => (
+                  <div key={i} className="border-[0.5px] border-neon-cyan" />
+                ))}
+              </div>
             </div>
             
-            <motion.div 
-              variants={{
-                hidden: { opacity: 0, scale: 0.95, x: 20 },
-                show: { opacity: 1, scale: 1, x: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-              }}
-              className={`relative aspect-video lg:aspect-square border overflow-hidden block transition-all duration-700 min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-2xl lg:max-w-none ${
-              isArch 
-              ? "border-gray-100 bg-gray-50/50" 
-              : "brutalist-border bg-black"
-            }`}>
-              {/* Background Technical Grid */}
-              <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${isArch ? "opacity-5" : "opacity-20"}`}>
-                <div className="w-full h-full grid grid-cols-12 grid-rows-12">
-                  {Array.from({ length: 144 }).map((_, i) => (
-                    <div key={i} className={`border-[0.5px] ${isArch ? "border-black" : "border-neon-cyan/20"}`} />
-                  ))}
+            {/* Scanning Laser Line */}
+            <div className="absolute inset-x-0 h-[2px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,255,255,0.4)] animate-scan z-20 pointer-events-none" />
+
+            {/* Left Header Overlay */}
+            <div className="absolute top-4 left-4 font-mono text-[8px] text-neon-cyan/30 tracking-[0.2em] hidden md:block">
+              SECURE_LINK::ACTIVE_PORT_3000
+            </div>
+
+            {/* Left Gateway Content */}
+            <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md">
+              <motion.div 
+                animate={{ scale: hoveredSide === 'left' ? 1.05 : 1 }}
+                className="w-10 h-10 md:w-12 md:h-12 rounded border border-neon-cyan/40 bg-black/50 flex items-center justify-center mb-4 md:mb-6 shadow-[0_0_15px_rgba(0,255,255,0.15)]"
+              >
+                <Terminal className="w-5 h-5 md:w-6 md:h-6 text-neon-cyan" />
+              </motion.div>
+              
+              <span className="font-mono text-[8px] md:text-[9px] tracking-[0.3em] text-neon-cyan uppercase mb-1.5 md:mb-2 bg-neon-cyan/5 px-2 py-0.5 md:px-2.5 md:py-1 border border-neon-cyan/10">
+                SYSTEMS_CORE_LINK
+              </span>
+              
+              <h2 className="font-mono font-bold text-lg sm:text-xl md:text-[2.25rem] text-white tracking-widest leading-[1.1] mb-3 md:mb-4 uppercase">
+                VDC &amp; SYSTEMS<br />
+                <span className="text-neon-cyan">ARCHITECTURE</span>
+              </h2>
+              
+              <p className="font-mono text-[10px] sm:text-xs md:text-[11px] text-gray-400 mb-6 md:mb-8 max-w-xs leading-relaxed">
+                Platform-level workflow automations, BIM data scripting, and ISO 19650 protocols to drive complex deliveries.
+              </p>
+
+              {/* Action Button */}
+              <button
+                onClick={() => {
+                  const el = document.getElementById("vdc-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-5 py-2.5 md:px-6 md:py-3 font-mono text-[10px] md:text-xs uppercase tracking-widest border border-neon-cyan bg-black text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_30px_rgba(0,255,255,0.5)]"
+              >
+                Access VDC_Core
+              </button>
+            </div>
+            
+            <div className="absolute bottom-4 left-4 font-mono text-[8px] text-gray-500">
+              [VDC_PORTFOLIO_LINK]
+            </div>
+          </div>
+
+          {/* Architecture Side (Right) */}
+          <div 
+            onMouseEnter={() => setHoveredSide('right')}
+            onMouseLeave={() => setHoveredSide(null)}
+            className={`flex-1 md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
+              hoveredSide === 'right' ? 'md:w-[54%] bg-white' : hoveredSide === 'left' ? 'md:w-[46%] opacity-40 bg-gray-50' : 'md:w-[50%] bg-gray-50'
+            }`}
+          >
+            {/* Fine Museum Grid Background */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+              <div className="w-full h-full grid grid-cols-[repeat(24,1fr)] grid-[auto-rows_minmax(0,1fr)]">
+                {Array.from({ length: 576 }).map((_, i) => (
+                  <div key={i} className="border-[0.5px] border-black" />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Header Overlay */}
+            <div className="absolute top-4 right-4 font-serif italic text-[10px] text-gray-400 tracking-[0.1em] hidden md:block">
+              Studio Arch // Vol I
+            </div>
+
+            {/* Right Gateway Content */}
+            <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md font-serif">
+              <motion.div 
+                animate={{ scale: hoveredSide === 'right' ? 1.05 : 1 }}
+                className="w-10 h-10 md:w-12 md:h-12 rounded border border-black/10 bg-white flex items-center justify-center mb-4 md:mb-6 shadow-sm"
+              >
+                <Box className="w-5 h-5 md:w-6 md:h-6 text-black" />
+              </motion.div>
+              
+              <span className="italic text-[10px] md:text-xs tracking-widest text-gray-400 mb-1.5 md:mb-2 font-serif font-light">
+                STUDIO_ARCH_v1.0
+              </span>
+              
+              <h2 className="italic font-medium text-lg sm:text-xl md:text-[2.25rem] text-black tracking-tight leading-[1.1] mb-3 md:mb-4 uppercase">
+                ARCHITECTURAL<br />
+                <span className="font-sans font-light tracking-[0.2em] text-gray-500">DESIGN</span>
+              </h2>
+              
+              <p className="font-sans font-light text-[10px] sm:text-xs text-gray-500 mb-6 md:mb-8 max-w-xs leading-relaxed">
+                Sculpting tectonic structures, modular assemblies, and biophilic patterns. Merging prefabricated materiality with Net Zero.
+              </p>
+
+              {/* Action Button */}
+              <button
+                onClick={() => {
+                  const el = document.getElementById("arch-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-5 py-2.5 md:px-6 md:py-3 font-sans font-medium text-[10px] md:text-xs uppercase tracking-widest border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300 hover:shadow-lg"
+              >
+                Enter Arch_Studio
+              </button>
+            </div>
+            
+            <div className="absolute bottom-4 right-4 font-sans text-[8px] text-gray-400 uppercase tracking-widest">
+              [ARCHITECTURAL_WORKS]
+            </div>
+          </div>
+        </section>
+
+        {/* STAGE 2: VDC & Systems Architecture Continuous Section */}
+        <section id="vdc-section" className="bg-[#0c0f12] text-gray-300 font-sans w-full py-20 px-6 md:px-12 border-b border-terminal-border/20 relative">
+          <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
+            
+            {/* VDC Sub Hero Header Grid */}
+            <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
+              <div className="flex flex-col text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 w-fit whitespace-nowrap">
+                  <Activity className="w-3 h-3 shrink-0" /> <span className="pr-1 font-mono">System Online: Data Engineering</span>
+                </div>
+                
+                <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-neon-cyan">
+                  KARTHIKRAJ V NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
+                </div>
+                
+                <h1 className="text-2xl md:text-5xl font-mono tracking-tighter leading-[1.1] mb-4 text-white uppercase font-bold">
+                  Automating <span className="text-neon-cyan animate-pulse">AEC workflows</span> and managing <span className="text-neon-orange">ISO 19650</span> facility data.
+                </h1>
+                
+                <p className="text-xs md:text-sm font-mono mb-6 max-w-xl text-gray-400">
+                  Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering.
+                </p>
+                
+                <div className="mt-4">
+                  <div className="font-mono text-[9px] text-neon-cyan/40 mb-2 tracking-[0.2em] uppercase">
+                    [STACK_COMPONENTS]
+                  </div>
+                  <SoftwareStack isArch={false} />
+                </div>
+                
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <button 
+                    onClick={() => {
+                      const el = document.getElementById("vdc-workflows");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-neon-cyan text-black hover:bg-white"
+                  >
+                    Initialize Workflows
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a 
+                    href="https://drive.google.com/file/d/1pHAos4G_oIKuOWMPQTNVlVRcqrQ0VWpQ/view?usp=sharing" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border border-neon-cyan hover:shadow-[0_0_20px_rgba(0,242,255,0.2)]"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download Resume
+                  </a>
                 </div>
               </div>
 
-              {!isArch && (
-                <>
-                  {/* Digital VDC Background Elements */}
-                  <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-neon-cyan/20 text-right leading-tight z-0">
-                    BIM_DATA_STREAM_8829<br/>
-                    COORD_SYS: WGS84<br/>
-                    EPSG: 3857<br/>
-                    LOD: 400
+              {/* Hero Image Component for VDC */}
+              <div className="relative aspect-video lg:aspect-square border border-terminal-border/40 bg-black overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
+                <div className="absolute inset-0 opacity-20 pointer-events-none">
+                  <div className="w-full h-full grid grid-cols-12 grid-rows-12">
+                    {Array.from({ length: 144 }).map((_, i) => (
+                      <div key={i} className="border-[0.5px] border-neon-cyan/20" />
+                    ))}
                   </div>
-                  
-                  {/* Scanning HUD Overlay */}
-                  <div className="absolute inset-x-0 top-1/2 h-[1px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,255,255,0.3)] animate-scan z-20 pointer-events-none" />
-                </>
-              )}
-
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-black/5">
-                {isArch ? (
-                  <img 
-                    key="arch-hero-gif"
-                    src="https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH" 
-                    alt="Arch Hero GIF"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none"
-                    onContextMenu={(e) => e.preventDefault()}
-                    onDragStart={(e) => e.preventDefault()}
-                  />
-                ) : (
+                </div>
+                <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-neon-cyan/20 text-right leading-tight z-0">
+                  BIM_DATA_STREAM_8829<br/>
+                  COORD_SYS: WGS84<br/>
+                  LOD: 400
+                </div>
+                <div className="absolute inset-x-0 top-1/2 h-[1px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,242,255,0.3)] animate-scan z-20 pointer-events-none" />
+                
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   <div className="relative w-full h-full group">
                     <img 
-                      key={`bim-hero-gif-${mode}`}
                       src="https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN" 
                       alt="BIM Hero GIF"
                       referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover opacity-60 transition-all duration-1000 pointer-events-none select-none"
-                      onContextMenu={(e) => e.preventDefault()}
-                      onDragStart={(e) => e.preventDefault()}
+                      className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
                     />
-                    
-                    {/* Hero Terminal Overlay for BIM Mode */}
-                    <div className="absolute top-8 left-8 w-48 md:w-64 bg-black/80 backdrop-blur-md border border-terminal-border/50 z-30 hidden md:block">
-                      <div className="bg-terminal-border/20 px-3 py-1 border-b border-terminal-border/50 flex justify-between items-center">
-                        <span className="font-mono text-[8px] text-neon-cyan uppercase tracking-widest">LIVE_PROCESS_LOGGER</span>
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                      </div>
-                      <HeroTerminal />
-                    </div>
-
-                    {/* Data Points / Geometric Overlay */}
-                    <div className="absolute inset-0 z-10 pointer-events-none opacity-50">
-                       <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-neon-cyan/10 rotate-45 animate-spin-slow" />
-                       <div className="absolute bottom-1/4 left-1/3 w-16 h-16 border border-neon-orange/10 -rotate-12" />
-                    </div>
                   </div>
-                )}
-              </div>
-              <div className={`absolute bottom-4 left-4 font-mono text-[10px] transition-colors duration-700 z-30 ${isArch ? "text-gray-300" : "text-neon-cyan/60"}`}>
-                {isArch ? "[ARCH_STUDIO_v1.0]" : "[CORE_VD_v2.4_ENGINE]"}
-              </div>
-              
-              {!isArch && (
-                <div className="absolute bottom-4 right-4 font-mono text-[8px] text-neon-orange/40 z-30 uppercase tracking-[0.2em]">
-                  Secure_Link::Established
                 </div>
-              )}
-            </motion.div>
-          </motion.div>
-        </ParallaxSection>
-
-        <ParallaxSection id="arsenal" index={visibleSections.indexOf('arsenal')} setActiveSection={setActiveSection}>
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <div className="mb-12">
-              <motion.h2 
-                variants={fadeInUp}
-                className={`text-xs font-mono uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-cyan"}`}
-              >
-                {isArch ? "Section_01 // Projects" : "Section_01 // Automation_Stack"}
-              </motion.h2>
-              {!isArch && (
-                <motion.h3 
-                  variants={fadeInUp}
-                  className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-cyan/80"}`}
-                >
-                  <span className="opacity-40">{"["}</span> ACTIVE_WORKFLOWS_V2.0 <span className="opacity-40">{"]"}</span>
-                </motion.h3>
-              )}
+                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-neon-cyan/60 z-30">
+                  [CORE_VD_v2.4_ENGINE]
+                </div>
+              </div>
             </div>
 
-            <motion.div 
-              key={`arsenal-${isArch}`}
-              variants={staggerContainer}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
-            >
-              {arsenal.filter(item => !isArch || item.category !== 'Fabrication').map((item) => (
+            {/* VDC WORKFLOWS / PORTFOLIO */}
+            <div id="vdc-workflows" className="pt-16 border-t border-terminal-border/15 scroll-mt-24">
+              <div className="mb-12">
+                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-cyan">
+                  Section_01 // Automation_Stack
+                </h2>
+                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-cyan/80 font-bold">
+                  <span className="opacity-40">{"["}</span> ACTIVE_WORKFLOWS <span className="opacity-40">{"]"}</span>
+                </h3>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+              {bimArsenal.map((item) => (
                 <ProjectCard 
                   key={item.id} 
                   item={item} 
-                  isArch={isArch} 
+                  isArch={false} 
                   onClick={() => setSelectedArsenalItem(item)} 
                 />
               ))}
-            </motion.div>
-          </motion.div>
-        </ParallaxSection>
+            </div>
+          </div>
 
-        {isArch && (
-          <ParallaxSection id="fabrication" index={visibleSections.indexOf('fabrication')} setActiveSection={setActiveSection}>
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.1 }}
-            >
-              <div className="mb-12">
-                <motion.h2 
-                  variants={fadeInUp}
-                  className={`text-xs font-mono uppercase tracking-[0.3em] mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-cyan"}`}
-                >
-                  Section_02 // Fabrication & Hands-on
-                </motion.h2>
-                <motion.h3 
-                  variants={fadeInUp}
-                  className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-orange"}`}
-                >
-                  <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
-                </motion.h3>
-              </div>
-
-              <motion.div 
-                key={`fabrication-${isArch}`}
-                variants={staggerContainer}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12"
-              >
-                {arsenal.filter(item => item.category === 'Fabrication').map((item) => (
-                  <ProjectCard 
-                    key={item.id} 
-                    item={item} 
-                    isArch={isArch} 
-                    onClick={() => setSelectedArsenalItem(item)} 
-                  />
-                ))}
-              </motion.div>
-            </motion.div>
-          </ParallaxSection>
-        )}
-
-        <ParallaxSection id="experience" index={visibleSections.indexOf('experience')} setActiveSection={setActiveSection}>
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.1 }}
-            className="w-full max-w-4xl mx-auto"
-          >
-            <div className="mb-8 md:mb-12 text-center">
-              <motion.h2 
-                variants={fadeInUp}
-                className={`text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] mb-2 md:mb-4 transition-colors duration-700 ${isArch ? "text-gray-800" : "text-neon-blue"}`}
-              >
-                {isArch ? "Section_03 // Career_Path" : "Section_03 // Deployment_History"}
-              </motion.h2>
-              <motion.h3 
-                variants={fadeInUp}
-                className={`text-lg md:text-xl font-mono uppercase tracking-[0.1em] transition-colors duration-700 ${isArch ? "text-black italic" : "text-neon-blue"}`}
-              >
-                <span className="opacity-40">{"{"}</span> DEPLOYMENT_LOG_03 <span className="opacity-40">{"}"}</span>
-              </motion.h3>
+          {/* VDC CAREER HISTORY */}
+          <div className="pt-16 border-t border-terminal-border/15">
+            <div className="mb-12 text-center">
+              <h2 className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-blue">
+                Section_02 // Professional_Journey
+              </h2>
+              <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-blue font-bold">
+                <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>
+              </h3>
             </div>
 
-            <div className="max-w-3xl mx-auto relative px-4 md:px-0">
-              {/* Timeline Line */}
-              <div className={`absolute left-4 md:left-1/2 top-0 bottom-0 w-px transition-colors duration-700 ${isArch ? "bg-gray-100" : "bg-terminal-border"}`} />
-              
+            <div ref={vdcTimelineRef} className="max-w-3xl mx-auto relative px-4 md:px-0">
+              {/* Background Line */}
+              <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-terminal-border/20" />
+              {/* Glowing Interactive Scroll Line */}
               <motion.div 
-                className="space-y-8 md:space-y-12"
-              >
+                style={{ scaleY: vdcScaleY }} 
+                className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gradient-to-b from-neon-cyan via-neon-blue to-neon-orange origin-top shadow-[0_0_10px_#00f2ff,0_0_20px_#00f2ff]" 
+              />
+              <div className="space-y-8 md:space-y-12 font-mono">
                 {experience.map((exp, idx) => (
-                  <motion.div 
+                  <div 
                     key={idx} 
-                    variants={{
-                      hidden: { opacity: 0, x: idx % 2 === 0 ? 30 : -30 },
-                      show: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
-                    }}
                     className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                   >
-                    {/* Timeline Dot */}
-                    <div className={`absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border transition-all duration-700 z-10 ${
-                      isArch 
-                      ? "bg-white border-black" 
-                      : "bg-black border-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.5)]"
-                    }`} />
-                    
+                    <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-black border-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.5)] z-10" />
                     <div className={`pl-10 md:pl-0 md:w-1/2 ${idx % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
-                      <span className={`text-[10px] md:text-xs font-mono mb-1 block transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-orange"}`}>
+                      <span className="text-[10px] md:text-xs font-mono mb-1 block text-neon-orange">
                         {exp.year}
                       </span>
-                      <h4 className={`text-base md:text-lg font-medium mb-1 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+                      <h4 className="text-base md:text-lg font-mono font-medium mb-1 text-white">
                         {exp.company}
                       </h4>
-                      <div className={`text-[10px] md:text-xs font-mono mb-2 md:mb-3 transition-colors duration-700 ${isArch ? "text-gray-500" : "text-neon-blue"}`}>
+                      <div className="text-[10px] md:text-xs font-mono mb-2 md:mb-3 text-neon-blue">
                         {exp.role}
                       </div>
-                      <p className={`text-xs md:text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-400 italic" : "text-gray-400 font-mono"}`}>
+                      <p className="text-xs md:text-sm leading-relaxed text-gray-400 font-mono">
                         {exp.description}
                       </p>
                     </div>
                     <div className="hidden md:block md:w-1/2" />
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
-            </div>
-
-            {/* Certification Badge */}
-            <div className="mt-12 md:mt-20 flex flex-col items-center">
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className={`p-1 rounded-full ${isArch ? "bg-gray-50" : "bg-neon-cyan/10 shadow-[0_0_20px_rgba(0,255,255,0.1)]"}`}
-              >
-                <div className={`border-2 border-dashed p-3 md:p-4 rounded-full flex items-center justify-center ${isArch ? "border-gray-200" : "border-neon-cyan/30"}`}>
-                  <img 
-                    src="https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt" 
-                    alt="ISO 19650 Certification" 
-                    onContextMenu={(e) => e.preventDefault()}
-                    onDragStart={(e) => e.preventDefault()}
-                    className={`w-16 h-16 md:w-24 md:h-24 object-contain pointer-events-none select-none ${isArch ? "grayscale opacity-80" : "brightness-110"}`}
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              </motion.div>
-              <div className="mt-4 text-center px-6">
-                <div className={`text-[8px] md:text-[10px] font-mono uppercase tracking-[0.2em] mb-1 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
-                  Verified Credential
-                </div>
-                <div className={`text-xs md:text-sm font-medium ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
-                  ISO 19650 Information Management Expert (Level 3)
-                </div>
-                <div className={`text-[8px] md:text-[10px] font-mono mt-1 ${isArch ? "text-gray-400" : "text-gray-500"}`}>
-                  Powered by Plannerly
-                </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Mode Switcher CTA */}
-            <div className="mt-12 md:mt-20 flex flex-col items-center gap-6 px-6">
-              <div className={`text-[8px] md:text-[10px] font-mono uppercase tracking-[0.3em] transition-colors duration-700 ${isArch ? "text-gray-300" : "text-neon-cyan/40"}`}>
-                {isArch ? "Explore the VDC Core" : "Return to Arch Studio"}
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setMode(isArch ? 'bim' : 'arch');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className={`w-full sm:w-auto px-8 py-4 border font-mono text-xs uppercase tracking-[0.2em] transition-all duration-700 flex items-center justify-center gap-3 ${
-                  isArch 
-                  ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                  : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black shadow-[0_0_20px_rgba(0,255,255,0.2)]"
-                }`}
-              >
-                {isArch ? (
-                  <>
-                    <Zap className="w-4 h-4" />
-                    Initialize BIM Mode
-                  </>
-                ) : (
-                  <>
-                    <Layers className="w-4 h-4" />
-                    Initialize Arch Mode
-                  </>
-                )}
-              </motion.button>
+        {/* STAGE 3: Massive Transition Gate Banner */}
+        <div id="transition-banner" className="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-[#0c0f12] via-[#0d1013] to-white border-y border-gray-100 py-16 px-6">
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+            <div className="w-full h-full grid grid-cols-12 grid-rows-12">
+              {Array.from({ length: 144 }).map((_, i) => (
+                <div key={i} className="border-[0.5px] border-black" />
+              ))}
+            </div>
+          </div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center z-10 max-w-2xl w-full px-6 py-10 md:py-12 bg-[#0c0f12]/80 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]"
+          >
+            <div className="inline-block font-mono text-[9px] md:text-xs text-center text-neon-orange tracking-[0.4em] uppercase mb-5 font-bold border border-neon-orange/25 bg-neon-orange/5 px-3.5 py-1 rounded-full">
+              --- MULTI-DISCIPLINARY COUPLING ---
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-medium text-white uppercase tracking-wider mb-5 leading-tight font-serif italic">
+              ARCHITECTURAL DESIGN &amp; <br />
+              <span className="font-sans font-light text-neon-cyan tracking-widest block mt-2 text-2xl md:text-4xl not-italic">PROJECT EXECUTION</span>
+            </h2>
+            
+            <p className="text-xs md:text-sm font-mono text-gray-300 max-w-lg mx-auto leading-relaxed">
+              Morphing from the logical terminal of automated BIM scripting to the physical landscape of tectonic materiality. Tectonic form meets modular assemblies.
+            </p>
+            
+            <div className="mt-8 flex justify-center gap-2 items-center font-sans animate-bounce">
+              <div className="w-8 h-[1px] bg-white/20" />
+              <span className="text-[9px] font-mono tracking-widest text-[#00f2ff] font-bold">SCROLL DOWN TO STUDY</span>
+              <div className="w-8 h-[1px] bg-white/20" />
             </div>
           </motion.div>
-        </ParallaxSection>
+        </div>
+
+        {/* STAGE 4: Architectural Design Studio Continuous Section */}
+        <section id="arch-section" className="bg-white text-gray-900 font-serif w-full py-20 px-6 md:px-12 border-b border-gray-100 relative">
+          <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
+            
+            {/* Arch Sub-Hero Header Grid */}
+            <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center font-serif">
+              <div className="flex flex-col text-left font-serif">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-200 bg-gray-50 text-gray-500 text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 w-fit whitespace-nowrap">
+                  <Activity className="w-3 h-3 shrink-0 animate-pulse" /> <span className="pr-1 font-mono">Portfolio: Architectural Design</span>
+                </div>
+                
+                <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-gray-400">
+                  Karthikraj V Nadar, Architect &amp; Spatial Visionary.
+                </div>
+                
+                <h1 className="text-2xl md:text-5xl font-serif font-light tracking-tighter leading-[1.1] mb-4 text-black italic">
+                  Sculpting <span className="text-gray-400 font-normal">Space</span>, Light, and the Human <span className="text-gray-300 font-normal">Experience</span>.
+                </h1>
+                
+                <p className="text-xs md:text-sm italic font-sans mb-6 max-w-xl text-gray-500 leading-relaxed">
+                  Exploring the intersection of tectonic form and phenomenological impact. Formulating award-winning bio-architectural layouts.
+                </p>
+                
+                <div className="mt-4">
+                  <div className="font-mono text-[9px] text-gray-400 mb-2 tracking-[0.2em] uppercase font-bold">
+                    [DESIGN_COMPLIANCE]
+                  </div>
+                  <SoftwareStack isArch={true} />
+                </div>
+                
+                <div className="mt-8 flex flex-col sm:flex-row gap-4 font-sans">
+                  <button 
+                    onClick={() => {
+                      const el = document.getElementById("arch-works");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-black text-white hover:bg-gray-800"
+                  >
+                    Explore Works
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+
+                  <a 
+                    href="https://drive.google.com/file/d/1pHAos4G_oIKuOWMPQTNVlVRcqrQ0VWpQ/view?usp=sharing" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-white text-black hover:bg-black hover:text-white border border-black hover:shadow-lg"
+                  >
+                    <Download className="w-5 h-5" />
+                    Download Resume
+                  </a>
+                </div>
+              </div>
+
+              {/* Hero Image Component for Arch */}
+              <div className="relative aspect-video lg:aspect-square border border-gray-100 bg-gray-50 overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+                  <div className="w-full h-full grid grid-cols-12 grid-rows-12">
+                    {Array.from({ length: 144 }).map((_, i) => (
+                      <div key={i} className="border-[0.5px] border-black" />
+                    ))}
+                  </div>
+                </div>
+                <div className="absolute inset-x-0 top-1/2 h-[1px] bg-black/10 z-20 pointer-events-none" />
+                
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH" 
+                    alt="Arch Hero GIF"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
+                  />
+                </div>
+                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-gray-500 z-30 font-bold">
+                  [ARCH_STUDIO_v1.0]
+                </div>
+              </div>
+            </div>
+
+            {/* ARCH PROJECTS */}
+            <div id="arch-works" className="pt-16 border-t border-gray-100 scroll-mt-24">
+              <div className="mb-12">
+                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
+                  Section_01 // Projects
+                </h2>
+                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-black font-bold">
+                  <span className="opacity-40 font-serif">{"{"}</span> CORE_FOLIO_V1.0 <span className="opacity-40 font-serif">{"}"}</span>
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                {archArsenal.filter(item => item.category !== 'Fabrication').map((item) => (
+                  <ProjectCard 
+                    key={item.id} 
+                    item={item} 
+                    isArch={true} 
+                    onClick={() => setSelectedArsenalItem(item)} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* ARCH FABRICATION */}
+            <div className="pt-16 border-t border-gray-100 font-serif">
+              <div className="mb-12 font-serif">
+                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
+                  Section_02 // Fabrication &amp; Hands-on
+                </h2>
+                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-black italic font-bold">
+                  <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 font-sans">
+                {archArsenal.filter(item => item.category === 'Fabrication').map((item) => (
+                  <ProjectCard 
+                    key={item.id} 
+                    item={item} 
+                    isArch={true} 
+                    onClick={() => setSelectedArsenalItem(item)} 
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* ARCH CAREER PATH */}
+            <div className="pt-16 border-t border-gray-100 font-serif">
+              <div className="mb-12 text-center font-mono font-bold">
+                <h2 className="text-[10px] md:text-xs uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
+                  Section_03 // Professional_Journey
+                </h2>
+                <h3 className="text-lg md:text-xl uppercase tracking-[0.1em] text-black italic font-serif font-bold">
+                  <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>
+                </h3>
+              </div>
+
+              <div ref={archTimelineRef} className="max-w-3xl mx-auto relative px-4 md:px-0 font-serif">
+                {/* Background Line */}
+                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gray-100" />
+                {/* Glowing Interactive Scroll Line */}
+                <motion.div 
+                  style={{ scaleY: archScaleY }} 
+                  className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-black origin-top shadow-[0_0_10px_rgba(0,0,0,0.25)]" 
+                />
+                <div className="space-y-8 md:space-y-12">
+                  {experience.map((exp, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                    >
+                      <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-white border-black z-10" />
+                      <div className={`pl-10 md:pl-0 md:w-1/2 ${idx % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
+                        <span className="text-[10px] md:text-xs font-mono mb-1 block text-gray-400 font-bold">
+                          {exp.year}
+                        </span>
+                        <h4 className="text-base md:text-lg font-medium mb-1 text-black italic">
+                          {exp.company}
+                        </h4>
+                        <div className="text-[10px] md:text-xs font-mono mb-2 md:mb-3 text-gray-500 font-sans">
+                          {exp.role}
+                        </div>
+                        <p className="text-xs md:text-sm leading-relaxed text-gray-500 italic">
+                          {exp.description}
+                        </p>
+                      </div>
+                      <div className="hidden md:block md:w-1/2" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
 
         <ParallaxSection id="terminal" index={visibleSections.indexOf('terminal')} setActiveSection={setActiveSection}>
           <motion.div 
@@ -1789,7 +1955,7 @@ export default function App() {
                   <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
                     <Github className="w-4 h-4" />
                   </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
+                  <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
                     <Linkedin className="w-4 h-4" />
                   </a>
                   <a href="mailto:karthikraj.v.nadar@gmail.com" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
@@ -1821,19 +1987,19 @@ export default function App() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className={`w-full max-w-5xl border overflow-hidden flex flex-col h-full md:max-h-[90vh] transition-all duration-700 ${
-                isArch ? "bg-white border-gray-200" : "bg-terminal-bg border-terminal-border"
+                isModalArch ? "bg-white border-gray-200" : "bg-terminal-bg border-terminal-border"
               }`}
             >
               {/* Modal Header */}
-              <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-all duration-700 ${isArch ? "bg-gray-50 border-gray-100" : "bg-black/50 border-terminal-border"}`}>
+              <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-all duration-700 ${isModalArch ? "bg-gray-50 border-gray-100" : "bg-black/50 border-terminal-border"}`}>
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className={`p-2 rounded border transition-all duration-700 ${
-                    isArch ? "bg-white border-gray-200 text-black" : `bg-${selectedArsenalItem.color}/10 border-${selectedArsenalItem.color}/20 text-${selectedArsenalItem.color}`
+                    isModalArch ? "bg-white border-gray-200 text-black" : `bg-${selectedArsenalItem.color}/10 border-${selectedArsenalItem.color}/20 text-${selectedArsenalItem.color}`
                   }`}>
                     {selectedArsenalItem.icon}
                   </div>
                   <div>
-                    <h4 className={`text-sm md:text-lg font-medium uppercase tracking-tighter transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+                    <h4 className={`text-sm md:text-lg font-medium uppercase tracking-tighter transition-colors duration-700 ${isModalArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
                       {selectedArsenalItem.title}
                     </h4>
                     <div className="text-[8px] md:text-[10px] font-mono text-gray-500 uppercase tracking-widest">
