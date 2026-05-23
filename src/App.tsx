@@ -574,11 +574,11 @@ export default function App() {
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Prefab Modules",
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
       tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
       category: "Conceptual",
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/sadhu-prefab/800/450?grayscale",
+        screenshotUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
         steps: [
           "Establish minimalistic spatial needs and rigid modular grids.",
           "Author precise Revit parametric families for prefabricated wall and slab modules.",
