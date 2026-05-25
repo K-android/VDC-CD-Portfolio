@@ -1397,7 +1397,7 @@ export default function App() {
                   </button>
 
                   <a 
-                    href="https://drive.google.com/file/d/1kFrES9rHbMtKvonYpDor0wMecebhu1f-/view?usp=sharing" 
+                    href="https://drive.google.com/file/d/1vU9ymieO9uISVZSdGznHRbVlwQ3fUpOU/view?usp=sharing" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border border-neon-cyan hover:shadow-[0_0_20px_rgba(0,242,255,0.2)]"
@@ -1593,7 +1593,7 @@ export default function App() {
                   </button>
 
                   <a 
-                    href="https://drive.google.com/file/d/1kFrES9rHbMtKvonYpDor0wMecebhu1f-/view?usp=sharing" 
+                    href="https://drive.google.com/file/d/1vU9ymieO9uISVZSdGznHRbVlwQ3fUpOU/view?usp=sharing" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-white text-black hover:bg-black hover:text-white border border-black hover:shadow-lg"
