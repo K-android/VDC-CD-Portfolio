@@ -28,6 +28,7 @@ import {
   Play,
   Zap
 } from "lucide-react";
+import SlidesGallery from "./components/SlidesGallery";
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
@@ -856,28 +857,6 @@ export default function App() {
       }
     },
     {
-      id: "BIM_08",
-      title: "Corporate Data Standards",
-      role: "Information Manager",
-      hook: "ISO 19650 Information Management (Expert).",
-      description: "I implemented ISO 19650 compliant workflows for large-scale corporate asset portfolios. I am a certified expert.",
-      icon: <FileText className="w-6 h-6 text-neon-cyan" />,
-      color: "neon-cyan",
-      metric: "ISO 19650",
-      gifUrl: "https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt",
-      tags: ["ISO 19650", "Information Management", "Expert"],
-      isVerified: true,
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-8/800/450?grayscale",
-        steps: [
-          "Define Organizational Information Requirements (OIR).",
-          "Establish Common Data Environment (CDE) protocols.",
-          "Audit project models for data naming and structure.",
-          "Validate Asset Information Models (AIM) for handover."
-        ]
-      }
-    },
-    {
       id: "BIM_09",
       title: "Constructability Proof",
       role: "VDC Engineer",
@@ -1355,7 +1334,7 @@ export default function App() {
         </section>
 
         {/* STAGE 2: VDC & Systems Architecture Continuous Section */}
-        <section id="vdc-section" className="bg-[#0c0f12] text-gray-300 font-sans w-full py-20 px-6 md:px-12 border-b border-terminal-border/20 relative">
+        <section id="vdc-section" className="bg-[#0c0f12] text-gray-300 font-sans w-full py-20 px-6 md:px-12 relative">
           <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
             
             {/* VDC Sub Hero Header Grid */}
@@ -1513,7 +1492,7 @@ export default function App() {
         </section>
 
         {/* STAGE 3: Massive Transition Gate Banner */}
-        <div id="transition-banner" className="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-[#0c0f12] via-[#0d1013] to-white border-y border-gray-100 py-16 px-6">
+        <div id="transition-banner" className="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-[#0c0f12] via-[#0d1013] to-white border-b border-gray-100 py-16 px-6">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
             <div className="w-full h-full grid grid-cols-12 grid-rows-12">
               {Array.from({ length: 144 }).map((_, i) => (
@@ -1986,8 +1965,8 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className={`w-full max-w-5xl border overflow-hidden flex flex-col h-full md:max-h-[90vh] transition-all duration-700 ${
-                isModalArch ? "bg-white border-gray-200" : "bg-terminal-bg border-terminal-border"
+              className={`w-full max-w-7xl border overflow-hidden flex flex-col h-full md:max-h-[92vh] transition-all duration-700 ${
+                isModalArch ? "bg-white border-gray-200 shadow-2xl" : "bg-terminal-bg border-terminal-border shadow-[0_0_50px_rgba(0,0,0,0.8)]"
               }`}
             >
               {/* Modal Header */}
@@ -1999,7 +1978,7 @@ export default function App() {
                     {selectedArsenalItem.icon}
                   </div>
                   <div>
-                    <h4 className={`text-sm md:text-lg font-medium uppercase tracking-tighter transition-colors duration-700 ${isModalArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+                    <h4 className={`text-sm md:text-xl font-semibold uppercase tracking-tighter transition-colors duration-700 ${isModalArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
                       {selectedArsenalItem.title}
                     </h4>
                     <div className="text-[8px] md:text-[10px] font-mono text-gray-500 uppercase tracking-widest">
@@ -2009,7 +1988,7 @@ export default function App() {
                 </div>
                 <button 
                   onClick={() => setSelectedArsenalItem(null)}
-                  className={`p-2 transition-colors border ${isArch ? "border-gray-200 hover:bg-black hover:text-white" : "brutalist-border hover:bg-white hover:text-black"}`}
+                  className={`p-2 transition-colors border ${isArch ? "border-gray-200 hover:bg-black hover:text-white pointer-events-auto cursor-pointer" : "brutalist-border hover:bg-white hover:text-black pointer-events-auto cursor-pointer"}`}
                 >
                   <Box className="w-4 h-4 md:w-5 md:h-5 rotate-45" />
                 </button>
@@ -2017,23 +1996,23 @@ export default function App() {
 
               {/* Modal Content */}
               <div className="flex-grow overflow-y-auto p-4 md:p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-8 md:gap-12">
                   {/* Left: Media & Workflow */}
                   <div className="space-y-8">
                     <div className="space-y-2">
                       <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
                         01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
                       </div>
-                      <div className={`aspect-video border relative overflow-hidden transition-all duration-700 ${isArch ? "border-gray-100 bg-gray-50" : "brutalist-border bg-black"}`}>
+                      <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
                         <WorkloadGif 
                           src={selectedArsenalItem.gifUrl} 
                           alt="Workflow GIF"
                           isArch={isArch}
                           forcePlay={true}
-                          className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-60"}`}
+                          className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
                         />
                         {!isArch && (
-                          <div className="absolute top-2 left-2 px-2 py-1 bg-black/50 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/20">
+                          <div className="absolute top-3 left-3 px-2 py-1 bg-black/55 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/25">
                             RAW_FEED_STREAMING...
                           </div>
                         )}
@@ -2066,6 +2045,14 @@ export default function App() {
                         {selectedArsenalItem.content}
                       </div>
                     )}
+
+                    {/* Google Slides Integration */}
+                    <div className="space-y-2 pt-4">
+                      <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-terminal-border"}`}>
+                        03_{isArch ? "Slideshow_Gallery" : "Systems_Presentation_Deck"}
+                      </div>
+                      <SlidesGallery projectId={selectedArsenalItem.id} isArch={isArch} />
+                    </div>
                   </div>
 
                   {/* Right: Detailed Content */}
