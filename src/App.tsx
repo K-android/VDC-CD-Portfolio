@@ -28,7 +28,6 @@ import {
   Play,
   Zap
 } from "lucide-react";
-import SlidesGallery from "./components/SlidesGallery";
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
@@ -589,26 +588,6 @@ export default function App() {
       }
     },
     {
-      id: "ARCH_03",
-      title: "Tectonic Assemblies",
-      description: "Exploring the intersection of material, structure, and detail to create expressive architectural forms.",
-      icon: <Box className="w-6 h-6 text-gray-400" />,
-      color: "gray-400",
-      metric: "Materiality",
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
-      tags: ["Fabrication", "Detailing", "Structure"],
-      category: "Research",
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/arch-workflow-2/800/450?grayscale",
-        steps: [
-          "Research material properties and fabrication methods.",
-          "Develop structural systems that integrate with design intent.",
-          "Create detailed construction drawings and prototypes.",
-          "Coordinate with consultants for technical feasibility."
-        ]
-      }
-    },
-    {
       id: "ARCH_04",
       title: "The Caffeine Lab",
       role: "Interior Designer",
@@ -919,31 +898,31 @@ export default function App() {
       year: "Dec 2025 - Present",
       company: "IMK Architects",
       role: "Architectural Intern",
-      description: "Navigating complex project coordination and assisting in large-scale architectural delivery. Managing digital 3D modeling pipelines and spatial coordination. Developed Python and Dynamo toolkits to automate repetitive data entry."
+      description: "Assisting with large-scale design coordination and modeling pipelines. Writing custom scripts to automate repetitive drawing and data entry tasks."
     },
     {
       year: "Jan 2025 - Present",
       company: "Self-Employed",
       role: "3D Visualizer",
-      description: "Managed end-to-end digital delivery pipelines, translating complex client requirements into highly accurate 3D architectural models. Produced high-fidelity architectural visualizations and photorealistic renders using Enscape, D5 Render, and Twinmotion."
+      description: "Modeling and rendering detailed, photorealistic 3D spaces for client projects using Twinmotion and D5."
     },
     {
       year: "July 2025 - Sept 2025",
       company: "E.D.P Consultants",
       role: "Architectural Intern",
-      description: "Prepared detailed working drawings and refined layouts for residential projects with a focus on accessibility and Vaastu compliance. Developed 3D models and high-quality renders for client presentations."
+      description: "Created construction drawing sets, layouts, and high-quality 3D renders for residential client presentations."
     },
     {
       year: "Sept 2024 - May 2025",
       company: "Anvaya",
       role: "Simulation Lead",
-      description: "Directed building performance and environmental simulations for the Health and Well-being division of the Solar Decathlon India challenge. Optimized design outcomes for large-scale Construction Worker Housing."
+      description: "Managed energy-efficiency simulations and environmental studies for housing designs."
     },
     {
       year: "Dec 2021 - March 2026",
       company: "BMS College of Architecture",
       role: "Bachelor of Architecture (B.Arch)",
-      description: "Focusing on the intersection of traditional architecture and computational BIM workflows."
+      description: "Studying modern architectural systems and automated modeling workflows."
     }
   ];
 
@@ -1312,7 +1291,7 @@ export default function App() {
               </h2>
               
               <p className="font-sans font-light text-[10px] sm:text-xs text-gray-500 mb-6 md:mb-8 max-w-xs leading-relaxed">
-                Sculpting tectonic structures, modular assemblies, and biophilic patterns. Merging prefabricated materiality with Net Zero.
+                Designing elegant, functional buildings with a focus on sustainable materials and comfortable layouts.
               </p>
 
               {/* Action Button */}
@@ -1353,7 +1332,7 @@ export default function App() {
                 </h1>
                 
                 <p className="text-xs md:text-sm font-mono mb-6 max-w-xl text-gray-400">
-                  Weaponizing data to eliminate project latency and automate the impossible. Scaling BIM logic through high-fidelity VDC engineering.
+                  Building automated workflows to expedite projects. Using reliable data models to ensure simple and scalable delivery.
                 </p>
                 
                 <div className="mt-4">
@@ -1518,7 +1497,7 @@ export default function App() {
             </h2>
             
             <p className="text-xs md:text-sm font-mono text-gray-300 max-w-lg mx-auto leading-relaxed">
-              Morphing from the logical terminal of automated BIM scripting to the physical landscape of tectonic materiality. Tectonic form meets modular assemblies.
+              Where computation meets physical space. Connecting the power of automated drawings with sensible, real-world building design.
             </p>
             
             <div className="mt-8 flex justify-center gap-2 items-center font-sans animate-bounce">
@@ -1548,8 +1527,8 @@ export default function App() {
                   Sculpting <span className="text-gray-400 font-normal">Space</span>, Light, and the Human <span className="text-gray-300 font-normal">Experience</span>.
                 </h1>
                 
-                <p className="text-xs md:text-sm italic font-sans mb-6 max-w-xl text-gray-500 leading-relaxed">
-                  Exploring the intersection of tectonic form and phenomenological impact. Formulating award-winning bio-architectural layouts.
+                <p className="text-xs md:text-sm font-sans mb-6 max-w-xl text-gray-500 leading-relaxed">
+                  Designing layouts and buildings that put comfort and eco-friendly standards first. Creating spaces with a focus on natural light and structural simplicity.
                 </p>
                 
                 <div className="mt-4">
@@ -2046,13 +2025,7 @@ export default function App() {
                       </div>
                     )}
 
-                    {/* Google Slides Integration */}
-                    <div className="space-y-2 pt-4">
-                      <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-terminal-border"}`}>
-                        03_{isArch ? "Slideshow_Gallery" : "Systems_Presentation_Deck"}
-                      </div>
-                      <SlidesGallery projectId={selectedArsenalItem.id} isArch={isArch} />
-                    </div>
+
                   </div>
 
                   {/* Right: Detailed Content */}
