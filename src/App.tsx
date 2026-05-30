@@ -26,7 +26,8 @@ import {
   ShieldCheck,
   Hammer,
   Play,
-  Zap
+  Zap,
+  Maximize2
 } from "lucide-react";
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
@@ -74,9 +75,9 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
       viewport={{ once: true }}
       className="flex flex-wrap justify-center lg:justify-start gap-3"
     >
-      {tools.map((tool) => (
+      {tools.map((tool, idx) => (
         <motion.div 
-          key={`${isArch ? 'arch' : 'bim'}-${tool.name}`}
+          key={`${isArch ? 'arch' : 'bim'}-${tool.name}-${idx}`}
           variants={item}
           className={`px-3 py-1 border text-[10px] font-mono transition-all duration-700 ${
             isArch 
@@ -91,13 +92,118 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   );
 };
 
+const getDriveId = (url: string) => {
+  if (!url) return null;
+  const clean = url.split('#')[0];
+  
+  if (clean.includes('lh3.googleusercontent.com/d/')) {
+    const parts = clean.split('lh3.googleusercontent.com/d/');
+    if (parts.length > 1) {
+      return parts[1].split('/')[0].split('?')[0];
+    }
+  }
+  
+  if (clean.includes('drive.google.com/thumbnail')) {
+    const match = clean.match(/[?&]id=([^&]+)/);
+    if (match) {
+      return match[1];
+    }
+  }
+
+  if (clean.includes('drive.google.com/file/d/')) {
+    const parts = clean.split('/file/d/');
+    if (parts.length > 1) {
+      return parts[1].split('/')[0].split('?')[0];
+    }
+  }
+
+  return null;
+};
+
+const getYoutubeId = (url: string) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
+
+const getStaticThumbnailUrl = (src: string) => {
+  if (!src) return "";
+  const clean = src.split('#')[0];
+  
+  if (clean.includes('drive.google.com/file/d/')) {
+    const parts = clean.split('/file/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+    }
+  }
+
+  if (clean.includes('lh3.googleusercontent.com/d/')) {
+    const parts = clean.split('lh3.googleusercontent.com/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+    }
+  }
+
+  if (clean.includes('drive.google.com/thumbnail')) {
+    const match = clean.match(/[?&]id=([^&]+)/);
+    if (match) {
+      return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w800`;
+    }
+  }
+
+  if (clean.includes('giphy.com/media/')) {
+    return clean.replace('/giphy.gif', '/giphy_s.gif');
+  }
+
+  const ytId = getYoutubeId(clean);
+  if (ytId) {
+    return `https://img.youtube.com/vi/${ytId}/0.jpg`;
+  }
+
+  return clean;
+};
+
+const getPlayableVideoUrl = (url: string) => {
+  if (!url) return "";
+  const clean = url.split('#')[0];
+  
+  if (clean.includes('lh3.googleusercontent.com/d/')) {
+    const parts = clean.split('lh3.googleusercontent.com/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/uc?export=download&id=${id}`;
+    }
+  }
+  
+  if (clean.includes('drive.google.com/thumbnail')) {
+    const match = clean.match(/[?&]id=([^&]+)/);
+    if (match) {
+      return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+    }
+  }
+
+  if (clean.includes('drive.google.com/file/d/')) {
+    const parts = clean.split('/file/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/uc?export=download&id=${id}`;
+    }
+  }
+  
+  return clean;
+};
+
 const WorkloadGif = ({ 
   src, 
   alt, 
   className, 
   isArch,
   forcePlay = false,
-  play
+  play,
+  isInModal = false
 }: { 
   src: string; 
   alt: string; 
@@ -105,24 +211,95 @@ const WorkloadGif = ({
   isArch: boolean;
   forcePlay?: boolean;
   play?: boolean;
+  isInModal?: boolean;
 }) => {
   const [isInternalHovered, setIsInternalHovered] = useState(false);
   const active = play !== undefined ? play : (forcePlay || isInternalHovered);
-  
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  const isVideo = React.useMemo(() => {
+    if (!src) return false;
+    return src.includes("#video") || src.toLowerCase().endsWith(".mp4") || src.toLowerCase().endsWith(".mov") || src.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
+  }, [src]);
+
+  React.useEffect(() => {
+    if (isVideo && videoRef.current) {
+      if (active) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [active, isVideo]);
+
   const staticUrl = React.useMemo(() => {
     if (!src) return "";
     // Google Drive check
     if (src.includes('lh3.googleusercontent.com/d/')) {
-      const id = src.split('/').pop();
+      const id = src.split('/').pop()?.split('#')[0];
       return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
     }
     // Giphy check
     if (src.includes('giphy.com/media/')) {
-      // Giphy static version often uses _s suffix
       return src.replace('/giphy.gif', '/giphy_s.gif');
     }
     return src;
   }, [src]);
+
+  if (isVideo && isInModal) {
+    const googleDriveId = getDriveId(src);
+    if (googleDriveId) {
+      return (
+        <div 
+          className="w-full h-full relative"
+          onMouseEnter={() => setIsInternalHovered(true)}
+          onMouseLeave={() => setIsInternalHovered(false)}
+        >
+          {active ? (
+            <iframe
+              src={`https://drive.google.com/file/d/${googleDriveId}/preview?autoplay=1&mute=1`}
+              className={`${className} border-0 pointer-events-auto`}
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
+          ) : (
+            <img 
+              src={staticUrl} 
+              alt={alt}
+              referrerPolicy="no-referrer"
+              className={className}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+            />
+          )}
+        </div>
+      );
+    }
+
+    const cleanSrc = getPlayableVideoUrl(src);
+    return (
+      <div 
+        className="w-full h-full relative"
+        onMouseEnter={() => setIsInternalHovered(true)}
+        onMouseLeave={() => setIsInternalHovered(false)}
+      >
+        <video 
+          ref={videoRef}
+          src={cleanSrc} 
+          loop 
+          muted 
+          playsInline
+          className={className}
+          poster={staticUrl}
+        />
+        {!active && (
+          <div className="absolute inset-0 bg-black/10 flex items-center justify-center pointer-events-none">
+            {/* Subtle overlay when paused */}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div 
@@ -131,7 +308,7 @@ const WorkloadGif = ({
       onMouseLeave={() => setIsInternalHovered(false)}
     >
       <img 
-        src={active ? src : staticUrl} 
+        src={isVideo ? staticUrl : (active ? src : staticUrl)} 
         alt={alt}
         referrerPolicy="no-referrer"
         onContextMenu={(e) => e.preventDefault()}
@@ -245,8 +422,8 @@ const ProjectCard = ({
 
         <div className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-6">
-            {item.tags.map(tag => (
-              <span key={tag} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"}`}>
+            {item.tags.map((tag, idx) => (
+              <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"}`}>
                 {tag}
               </span>
             ))}
@@ -376,6 +553,7 @@ interface ArsenalItem {
     images?: string[];
     reportUrl?: string;
     videoUrl?: string;
+    sheetsUrl?: string;
   };
 }
 
@@ -459,6 +637,7 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
+  const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; googleDriveId: string | null; alt: string } | null>(null);
 
   const vdcTimelineRef = useRef<HTMLDivElement>(null);
   const archTimelineRef = useRef<HTMLDivElement>(null);
@@ -634,33 +813,68 @@ export default function App() {
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Upcycled",
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/1BEgKY95IEr5g9vbVArBGeUGZe8lnuU53#video",
       tags: ["Fabrication", "Materiality", "On-Site Assembly"],
       category: "Fabrication",
       details: {
         overview: "The Recycled Bus Pavilion was a live design-build project aimed at demonstrating the potential of 'upcycling' industrial waste into community infrastructure.",
         challenge: "Working with a rigid, pre-existing structural shell (the bus) and adapting it to a new, open-ended public function while ensuring structural safety.",
         solution: "We stripped the bus to its chassis and reinforced it with reclaimed steel sections. The design featured a modular seating system and a translucent roof made from recycled polycarbonate sheets, creating a lightweight, airy community hub.",
-        images: ["https://picsum.photos/seed/bus1/800/450?grayscale", "https://picsum.photos/seed/bus2/800/450?grayscale"]
+        images: [
+          "https://lh3.googleusercontent.com/d/1BEgKY95IEr5g9vbVArBGeUGZe8lnuU53#video",
+          "https://lh3.googleusercontent.com/d/1KZwCamzNHbMIJW9zjc__BPriQxhLQold#video",
+          "https://lh3.googleusercontent.com/d/1XgZsHYRfq3RkWR-FSGAd9tEdbRK2aSAK#video",
+          "https://lh3.googleusercontent.com/d/1Nqeb36k13kD_g49etHZ38_or4WD_icIG#video",
+          "https://lh3.googleusercontent.com/d/1AsSVINu4uc7BdGmYxWBPvlA0Fed4Z_se#video",
+          "https://drive.google.com/thumbnail?id=1RmOX0EQAvEfpyMT2BvwEKyJCvsyrDaiw&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1c47f6sBJ3JMR6g8IwiECxdT3ZTS01HPO&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1cnzuWz90XbBcYdk50dSv31Uwh4fT5QYo&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=17VGEDYhfZh7FtjveivJ2fo2aleEOh26s&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1c0-tHAs0wqzvkj-d1OkutYU9OG-zot5j&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1gEbLBx6NJpVI2DF4m0dI6nn4FX47SAq3&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1oqomgOTfwlPTFn0exM3TTItAFF-a1xbi&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1EMMDNaPpprvKI0BsZs4bBxm-pvKKQtiu&sz=w1600#image"
+        ],
+        reportUrl: "https://drive.google.com/file/d/1AWBJs4XvGkUiEFGJieSWM8milptVdicH/view?usp=sharing",
+        sheetsUrl: "https://drive.google.com/file/d/1t0PizcvO4hwx5g5Uye9kqVQv4B9mGvtR/view?usp=sharing",
+        videoUrl: "https://www.youtube.com/watch?v=BOTCKXvGRNY"
       }
     },
     {
       id: "ARCH_07",
-      title: "Bamboo Grid Pavilion",
+      title: "Bamboo Pavilion",
       role: "Fabrication Lead",
       hook: "Exploring parametric joinery in organic materials.",
       description: "A lightweight, modular pavilion constructed entirely from bamboo. Focuses on sustainable joinery and rapid on-site assembly.",
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Sustainable",
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk",
       tags: ["Bamboo", "Parametric Design", "Hands-on"],
       category: "Fabrication",
       details: {
-        overview: "The Bamboo Grid Pavilion was an experimental structure that merged traditional bamboo construction with computational design logic.",
+        overview: "The Bamboo Pavilion was an experimental structure that merged traditional bamboo construction with computational design logic.",
         challenge: "Bamboo is a non-standard material with varying diameters and strengths, making precise joinery difficult for a complex grid shell.",
         solution: "We developed a parametric joint system that could accommodate variations in bamboo culm size. The entire structure was prefabricated in modules and assembled on-site in less than 48 hours.",
-        images: ["https://picsum.photos/seed/bamboo1/800/450?grayscale", "https://picsum.photos/seed/bamboo2/800/450?grayscale"]
+        images: [
+          "https://lh3.googleusercontent.com/d/1Bmav4R81p33aN0dg1aKeX6VBJ9aGkeVY#image",
+          "https://lh3.googleusercontent.com/d/1EodFSHDesqz-0X1meS0jtxiG0LEnCoSL#image",
+          "https://lh3.googleusercontent.com/d/1D3I9CqpZmVTto_OYqQD2YWHZhzF-KeXO#image",
+          "https://drive.google.com/thumbnail?id=1NBbn76DHD2EhFslwUl9ePKT-e5dLQGg2&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1DNk35mYcu532xHIBGXCkzYuJNmTeypSl&sz=w1600#image",
+          "https://drive.google.com/thumbnail?id=1142oZ-CPY8KvshZShnowDzb3M_weMLuA&sz=w1600#image",
+          "https://lh3.googleusercontent.com/d/1UJHea_8A_tBCrKK8W0L9PFHvMtC57euo#video",
+          "https://lh3.googleusercontent.com/d/1CTH0xsGyd1tFl__3V7rZDWXjmv7qmJVY#video",
+          "https://lh3.googleusercontent.com/d/14V_8GGVsARfhPVS8es_QddTrvQBCxifw#video",
+          "https://lh3.googleusercontent.com/d/1PJ5Fki5jFwaJOIjAmFjBmaXKXW3iXtsp#video",
+          "https://lh3.googleusercontent.com/d/1jgjEnmP-41gyoudomhwtHAgpY9v36V5m#video",
+          "https://lh3.googleusercontent.com/d/1w_oKE_o4wsF2vz-R4VoCb8yIWcZDEQst#video",
+          "https://lh3.googleusercontent.com/d/12OIBjZ9IUXwNKrr47oZms-cRkXu8bH0G#video",
+          "https://lh3.googleusercontent.com/d/17bRW4JZ7LvQ6JgA0VvGYBhm4oUe-k256#video",
+          "https://lh3.googleusercontent.com/d/1a08B1mG9J6AyX_5kN00pree_QeFeMHo6#video",
+          "https://lh3.googleusercontent.com/d/1A01VUrxvpTiarTeOCzGPfs_ew0TXZNX#video",
+          "https://lh3.googleusercontent.com/d/1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk#video"
+        ]
       }
     }
   ];
@@ -816,22 +1030,22 @@ export default function App() {
     },
     {
       id: "BIM_07",
-      title: "Climate Automation",
+      title: "The Multi-Objective Eco-Parametric Solver",
       role: "Simulation Lead",
-      hook: "Automating environmental and solar analysis.",
-      description: "I automated environmental and solar analysis to achieve Net-Zero performance targets at the massing stage.",
+      hook: "Generative optimization linking Galapagos and Ladybug.",
+      description: "A generative optimization workflow linking the Galapagos evolutionary engine and Ladybug environmental analytics to calibrate complex facade and pergola geometries. The algorithm optimizes material volume versus carbon-shading profiles, automatically parsing spatial constraints to output real-time data charts straight to the Grasshopper canvas for rapid stakeholder alignment.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
-      metric: "Net-Zero",
+      metric: "Generative",
       gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
-      tags: ["Ladybug", "Honeybee", "Net-Zero"],
+      tags: ["Galapagos", "Ladybug", "Grasshopper", "Parametric"],
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-7/800/450?grayscale",
         steps: [
-          "Import massing geometry into Ladybug/Honeybee.",
-          "Execute solar radiation and daylighting analysis.",
-          "Iterate facade design based on heat map outputs.",
-          "Validate performance against Net-Zero targets."
+          "Construct complex facade and pergola parametric geometries in Grasshopper.",
+          "Link the Galapagos evolutionary engine to evaluate and optimize solar shading performance via Ladybug analytics.",
+          "Calibrate the algorithm to evaluate material volume metrics against active carbon-shading profiles.",
+          "Parse spatial and structural constraints dynamically to stream real-time data charts straight to the canvas."
         ]
       }
     },
@@ -1575,7 +1789,7 @@ export default function App() {
                 
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   <img 
-                    src="https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH" 
+                    src="https://lh3.googleusercontent.com/d/13GmqWLU2dj4391dNM13FuLjcie7fDsKe" 
                     alt="Arch Hero GIF"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
@@ -1982,12 +2196,13 @@ export default function App() {
                       <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
                         01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
                       </div>
-                      <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
+                      <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center group/pviz justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
                         <WorkloadGif 
                           src={selectedArsenalItem.gifUrl} 
                           alt="Workflow GIF"
                           isArch={isArch}
                           forcePlay={true}
+                          isInModal={true}
                           className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
                         />
                         {!isArch && (
@@ -1995,6 +2210,29 @@ export default function App() {
                             RAW_FEED_STREAMING...
                           </div>
                         )}
+                        {/* Hover overlay to expand */}
+                        <div 
+                          onClick={() => {
+                            const isVid = selectedArsenalItem.gifUrl.includes("#video") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mp4") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mov") || selectedArsenalItem.gifUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
+                            const gdId = getDriveId(selectedArsenalItem.gifUrl);
+                            setExpandedMedia({
+                              src: selectedArsenalItem.gifUrl,
+                              isVideo: isVid,
+                              googleDriveId: gdId,
+                              alt: "Process Visualization"
+                            });
+                          }}
+                          className="absolute inset-0 bg-black/40 opacity-0 group-hover/pviz:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-20 pointer-events-auto"
+                        >
+                          <div className={`flex items-center gap-2 px-3 py-1.5 border font-mono text-[10px] tracking-widest uppercase transition-all duration-500 transform scale-95 group-hover/pviz:scale-100 ${
+                            isArch 
+                              ? "border-black bg-white text-black font-bold shadow-lg" 
+                              : "border-neon-cyan bg-black/90 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                          }`}>
+                            <Maximize2 className="w-3.5 h-3.5" />
+                            Expand View
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -2068,32 +2306,55 @@ export default function App() {
                           </p>
                         </div>
 
-                        {selectedArsenalItem.details.reportUrl && (
+                        {(selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl) && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                               08_Documentation
                             </div>
                             <div className="flex flex-wrap gap-4">
-                              <a 
-                                href={selectedArsenalItem.details.reportUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
-                                  isArch 
-                                  ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                  : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
-                                }`}
-                              >
-                                <FileText className="w-3 h-3" />
-                                View Full Report
-                              </a>
-
-                              {selectedArsenalItem.details.videoUrl && (
+                              {selectedArsenalItem.details.reportUrl && (
                                 <a 
-                                  href={selectedArsenalItem.details.videoUrl}
+                                  href={selectedArsenalItem.details.reportUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
+                                    isArch 
+                                    ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                  }`}
+                                >
+                                  <FileText className="w-3 h-3" />
+                                  View Full Report
+                                </a>
+                              )}
+
+                              {selectedArsenalItem.details.sheetsUrl && (
+                                <a 
+                                  href={selectedArsenalItem.details.sheetsUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
+                                    isArch 
+                                    ? "border-black bg-white text-black hover:bg-black hover:text-white" 
+                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                  }`}
+                                >
+                                  <Layers className="w-3 h-3" />
+                                  View Sheets
+                                </a>
+                              )}
+
+                              {selectedArsenalItem.details.videoUrl && (
+                                <button 
+                                  onClick={() => {
+                                    setExpandedMedia({
+                                      src: selectedArsenalItem.details.videoUrl,
+                                      isVideo: true,
+                                      googleDriveId: getDriveId(selectedArsenalItem.details.videoUrl),
+                                      alt: "Full Presentation Movie"
+                                    });
+                                  }}
+                                  className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 pointer-events-auto cursor-pointer ${
                                     isArch 
                                     ? "border-black bg-white text-black hover:bg-black hover:text-white" 
                                     : "brutalist-border bg-neon-orange/10 text-neon-orange hover:bg-neon-orange hover:text-black"
@@ -2101,7 +2362,7 @@ export default function App() {
                                 >
                                   <Play className="w-3 h-3" />
                                   Watch Full Movie
-                                </a>
+                                </button>
                               )}
                             </div>
                           </div>
@@ -2113,18 +2374,59 @@ export default function App() {
                               09_{isArch ? "Technical_Gallery" : "System_Drawings"}
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {selectedArsenalItem.details.images.map((img, idx) => (
-                                <div key={idx} className={`aspect-video border relative overflow-hidden transition-all duration-700 ${isArch ? "border-gray-100 bg-gray-50" : "brutalist-border bg-black"}`}>
-                                  <img 
-                                    src={img} 
-                                    alt={`Gallery ${idx}`}
-                                    onContextMenu={(e) => e.preventDefault()}
-                                    onDragStart={(e) => e.preventDefault()}
-                                    className={`w-full h-full object-cover transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-60 hover:opacity-100"}`}
-                                    referrerPolicy="no-referrer"
-                                  />
-                                </div>
-                              ))}
+                              {selectedArsenalItem.details.images.map((img, idx) => {
+                                const isVideo = img.includes("#video") || img.toLowerCase().endsWith(".mp4") || img.toLowerCase().endsWith(".mov") || img.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk") || !!getYoutubeId(img);
+                                const googleDriveId = getDriveId(img);
+                                const thumbSrc = getStaticThumbnailUrl(img);
+                                return (
+                                  <div 
+                                    key={idx} 
+                                    onClick={() => {
+                                      setExpandedMedia({
+                                        src: img,
+                                        isVideo,
+                                        googleDriveId,
+                                        alt: `Gallery Item ${idx + 1}`
+                                      });
+                                    }}
+                                    className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
+                                      isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
+                                    }`}
+                                  >
+                                    {/* Thumbnail Image */}
+                                    <img 
+                                      src={thumbSrc} 
+                                      alt={`Gallery Item ${idx + 1}`}
+                                      onContextMenu={(e) => e.preventDefault()}
+                                      onDragStart={(e) => e.preventDefault()}
+                                      className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                        isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                      }`}
+                                      referrerPolicy="no-referrer"
+                                    />
+
+                                    {/* Subtle Overlay Badge */}
+                                    <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 ${
+                                      isArch 
+                                        ? "bg-white/80 backdrop-blur text-black border-gray-200" 
+                                        : "bg-black/80 backdrop-blur text-gray-400 border-gray-800"
+                                    }`}>
+                                      {isVideo ? "VIDEO_FEED" : "IMAGE_FILE"}
+                                    </div>
+
+                                    {/* Play / Expand Overlay */}
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                      <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                        isArch 
+                                          ? "bg-white border-black text-black shadow-lg" 
+                                          : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                      }`}>
+                                        {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
                         )}
@@ -2155,6 +2457,104 @@ export default function App() {
                   <span>STATUS: READY</span>
                 </div>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {expandedMedia && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedMedia(null)}
+            className="fixed inset-0 z-[110] flex flex-col items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-2xl cursor-zoom-out"
+          >
+            {/* Elegant Header Info bar */}
+            <div className="absolute top-4 left-4 right-4 flex justify-between items-center pointer-events-none z-10 font-mono text-[9px] md:text-[10px] tracking-widest text-gray-500 uppercase">
+              <div className="flex items-center gap-2">
+                <span className={isArch ? "text-white" : "text-neon-cyan animate-pulse"}>●</span>
+                <span>{expandedMedia.alt}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="hidden sm:inline">CLICK OUTSIDE OR BUTTON TO CLOSE</span>
+                <Box className="w-3.5 h-3.5 rotate-45 text-gray-400" />
+              </div>
+            </div>
+
+            {/* Media Canvas Box */}
+            <motion.div
+              initial={{ scale: 0.95, y: 15, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 15, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`relative w-full max-w-5xl max-h-[82vh] aspect-video overflow-hidden flex items-center justify-center shadow-2xl pointer-events-auto border transition-all duration-700 ${
+                isArch ? "border-gray-800 bg-black shadow-[0_30px_100px_rgba(0,0,0,0.9)]" : "border-terminal-border bg-black shadow-[0_0_80px_rgba(0,243,255,0.15)]"
+              }`}
+            >
+              {expandedMedia.isVideo ? (
+                (() => {
+                  const ytId = getYoutubeId(expandedMedia.src);
+                  if (ytId) {
+                    return (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
+                        className="w-full h-full border-0 absolute inset-0"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                      />
+                    );
+                  }
+                  if (expandedMedia.googleDriveId) {
+                    return (
+                      <iframe
+                        src={`https://drive.google.com/file/d/${expandedMedia.googleDriveId}/preview?autoplay=1`}
+                        className="w-full h-full border-0 absolute inset-0"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                      />
+                    );
+                  }
+                  const cleanPlayable = getPlayableVideoUrl(expandedMedia.src);
+                  return (
+                    <video 
+                      src={cleanPlayable}
+                      controls
+                      autoPlay
+                      loop
+                      playsInline
+                      className="w-full h-full object-contain absolute inset-0"
+                    />
+                  );
+                })()
+              ) : (
+                (() => {
+                  const googleDriveId = getDriveId(expandedMedia.src);
+                  const fullSrc = googleDriveId 
+                    ? `https://lh3.googleusercontent.com/d/${googleDriveId}` 
+                    : expandedMedia.src.split('#')[0];
+                  return (
+                    <img 
+                      src={fullSrc} 
+                      alt={expandedMedia.alt}
+                      className="w-full h-full object-contain select-none absolute inset-0"
+                      referrerPolicy="no-referrer"
+                    />
+                  );
+                })()
+              )}
+
+              {/* Close Button overlay */}
+              <button
+                onClick={() => setExpandedMedia(null)}
+                className={`absolute top-4 right-4 p-2 transition-all z-25 border text-white ${
+                  isArch 
+                    ? "bg-white/10 hover:bg-white hover:text-black border-white/20" 
+                    : "bg-black/80 hover:bg-white hover:text-black border-terminal-border hover:border-white"
+                }`}
+              >
+                <Box className="w-4 h-4 rotate-45" />
+              </button>
             </motion.div>
           </motion.div>
         )}
