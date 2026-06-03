@@ -911,19 +911,19 @@ export default function App() {
       title: "Villa Project - IMK internship",
       role: "Architectural Intern",
       hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
-      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork families in Autodesk Revit. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
+      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Bespoke Villa",
       gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Revit", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
+      tags: ["Vectorworks", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
       category: "Conceptual",
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
         steps: [
           "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
           "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
-          "Model custom modular millwork families in high-fidelity LOD 350 within Revit.",
+          "Model custom modular millwork in high-fidelity LOD 350 within Vectorworks.",
           "Iterate multi-scenario lighting passes and natural materials inside Twinmotion."
         ]
       },
