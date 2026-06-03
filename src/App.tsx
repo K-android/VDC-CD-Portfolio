@@ -322,7 +322,9 @@ const WorkloadGif = ({
 const ProjectCard = ({ 
   item, 
   isArch, 
-  onClick 
+  onClick,
+  onShowScript,
+  onShowVideo
 }: any) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -342,25 +344,6 @@ const ProjectCard = ({
         : "border-terminal-border bg-black/40 hover:border-neon-cyan hover:shadow-[0_0_30px_rgba(0,255,255,0.05)]"
       }`}
     >
-      {/* Status Bar / Metric Badge */}
-      <div className={`p-3 border-b flex justify-between items-center bg-opacity-50 backdrop-blur-sm transition-colors duration-700 ${
-        isArch ? "border-gray-100 bg-gray-50/50" : "border-terminal-border bg-black/50"
-      }`}>
-        <div className="flex items-center gap-2">
-          <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${isArch ? "bg-black" : `bg-${item.color}`}`} />
-          <span className={`font-mono text-[9px] uppercase tracking-widest ${isArch ? "text-gray-400" : "text-gray-500"}`}>
-            Output_Metric
-          </span>
-        </div>
-        <div className={`font-mono text-[10px] font-bold px-2 py-0.5 border transition-all duration-700 ${
-          isArch 
-          ? "border-black text-black bg-white" 
-          : `border-${item.color} text-${item.color} shadow-[0_0_10px_rgba(var(--color-${item.color}),0.2)]`
-        }`}>
-          {item.metric}
-        </div>
-      </div>
-
       <div className="aspect-[16/11] overflow-hidden relative">
         <WorkloadGif 
           src={item.gifUrl} 
@@ -380,6 +363,25 @@ const ProjectCard = ({
         
         <div className={`absolute inset-0 transition-opacity duration-700 ${isArch ? "bg-black/5 opacity-0 group-hover:opacity-100" : "bg-neon-cyan/5 opacity-0 group-hover:opacity-100"}`} />
         
+        {item.scriptUrl && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onShowScript) {
+                onShowScript(item.scriptUrl, item.title);
+              }
+            }}
+            className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-30 pointer-events-auto shadow-md ${
+              isArch 
+                ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
+                : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
+            }`}
+          >
+            <Code2 className="w-3.5 h-3.5 animate-pulse" />
+            Show Script
+          </button>
+        )}
+
         <div className={`absolute top-4 right-4 p-3 rounded-full border transition-all duration-700 bg-black/80 backdrop-blur-md z-20 ${
           isArch 
           ? "border-gray-200 text-black hidden" 
@@ -542,6 +544,7 @@ interface ArsenalItem {
   tags: string[];
   category?: string;
   isVerified?: boolean;
+  scriptUrl?: string;
   workflow?: {
     screenshotUrl: string;
     steps: string[];
@@ -637,7 +640,7 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
-  const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; googleDriveId: string | null; alt: string } | null>(null);
+  const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
 
   const vdcTimelineRef = useRef<HTMLDivElement>(null);
   const archTimelineRef = useRef<HTMLDivElement>(null);
@@ -737,8 +740,22 @@ export default function App() {
         solution: "We implemented passive cooling strategies including earth-air heat exchangers and radiant cooling. My role involved extensive performance simulation to validate these strategies, resulting in a 40% reduction in predicted energy use compared to the baseline.",
         images: [
           "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
-          "https://picsum.photos/seed/housing1/800/450?grayscale", 
-          "https://picsum.photos/seed/housing2/800/450?grayscale"
+          "https://lh3.googleusercontent.com/d/1PSV1JocI5rfTI7YN3pJTuZfHfC7VrErr",
+          "https://lh3.googleusercontent.com/d/1Cva8sA6rByHMMdrSopwZ9nExSzl7tua2",
+          "https://lh3.googleusercontent.com/d/1F7hEXo7cFfefXcQZkAtw8VD1ORVlbUF5",
+          "https://lh3.googleusercontent.com/d/1VsF-1b3fSI0iGVvb5gw7YUcfE1bwk8v6",
+          "https://lh3.googleusercontent.com/d/1T6NhY_HzNaA5KmDZ8gGQwsL7Q4VgAwDt",
+          "https://lh3.googleusercontent.com/d/1_uB4eu_Sdt_0MJNhG5vjkc9qqWocySVb#video",
+          "https://lh3.googleusercontent.com/d/1lP5dsWK4keZJ-mVAUGqbfzbCTjTECsyB#video",
+          "https://lh3.googleusercontent.com/d/1HGwlS9XXgMU6SRxc6KdCuYKbJffCh3-r#video",
+          "https://lh3.googleusercontent.com/d/1dB5qahGlL_OdCbpCnj0zgwUxDsLn_Xa1#video",
+          "https://lh3.googleusercontent.com/d/1x3k1iHMCjOgRUqC4u8oy97EonAP1Gi56#video",
+          "https://lh3.googleusercontent.com/d/1op-zIIk9ZTYHpaqFzP1jlqkWUBet1u8V#video",
+          "https://lh3.googleusercontent.com/d/1NZ5bClvC2fRsykZkFubZosvNEPCWZiof#video",
+          "https://lh3.googleusercontent.com/d/1tZkbfwAA5Al8zqCDQAPOIu1DmZKL_axo#video",
+          "https://lh3.googleusercontent.com/d/1IJbgeznNn0qwVKCBzD--ZleqbjowBO7k#video",
+          "https://lh3.googleusercontent.com/d/1pIA11NoDFafX6hNuXCDvp6XaoLvVVa9d#video",
+          "https://lh3.googleusercontent.com/d/1N93o2rnSNbHFxC524i330sgD4Y2YqmMO#video"
         ],
         reportUrl: "https://drive.google.com/file/d/1CqV2ZUK7VDxh0zOxQze9lkTSIEavsr12/view?usp=sharing",
         videoUrl: "https://youtu.be/g0VIh64HiT8?si=hyFN6JXnnG_pqM5A"
@@ -782,7 +799,18 @@ export default function App() {
         overview: "The Caffeine Lab is a boutique coffee house designed to be a sanctuary for urban dwellers. The project emphasizes the 'third space' concept—a place between home and work where community and creativity thrive.",
         challenge: "The primary challenge was to transform a narrow, deep commercial space with limited natural light into a vibrant and inviting environment without feeling claustrophobic.",
         solution: "We utilized a 'light-well' strategy, using reflective surfaces and a central skylight to pull light deep into the plan. A palette of raw, honest materials—exposed brick, reclaimed timber, and brushed brass—was used to create a layered, tactile experience.",
-        images: ["https://picsum.photos/seed/cafe1/800/450?grayscale", "https://picsum.photos/seed/cafe2/800/450?grayscale"]
+        images: [
+          "https://lh3.googleusercontent.com/d/18Rc73l485-6jt6jQ-mz3lmv8lhe_uX3G",
+          "https://lh3.googleusercontent.com/d/1wJxO8h7b4A6IzYVI8EEb5jJXyeIZgucl",
+          "https://lh3.googleusercontent.com/d/1E-dMneOtLIUghE4uBpNibLrO6X3VYWfE",
+          "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
+          "https://lh3.googleusercontent.com/d/10y2165C4vd8zanDADmq0-G2_QGnSjcQV",
+          "https://lh3.googleusercontent.com/d/1wfnsQ87DBOiZwghYvPcCcq7GGzmu5Itr",
+          "https://lh3.googleusercontent.com/d/1Iw_O4cMCPSFnQERK25agt88qj8jySHcb",
+          "https://lh3.googleusercontent.com/d/1tmAzBTbdJ5bV7EK-kZcv7fJXfjfxqZy5",
+          "https://lh3.googleusercontent.com/d/1EDB2yaMs74pxZ15dvY3DSqRv0ZcabRxU",
+          "https://lh3.googleusercontent.com/d/1rTdEEaAGJgyhweJcCYPDhf-VH3UzPJbu"
+        ]
       }
     },
     {
@@ -813,7 +841,7 @@ export default function App() {
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Upcycled",
-      gifUrl: "https://lh3.googleusercontent.com/d/1BEgKY95IEr5g9vbVArBGeUGZe8lnuU53#video",
+      gifUrl: "https://lh3.googleusercontent.com/d/1UueeMY09uP6M6tZWtjhFKjzENJhUIpEs",
       tags: ["Fabrication", "Materiality", "On-Site Assembly"],
       category: "Fabrication",
       details: {
@@ -821,6 +849,7 @@ export default function App() {
         challenge: "Working with a rigid, pre-existing structural shell (the bus) and adapting it to a new, open-ended public function while ensuring structural safety.",
         solution: "We stripped the bus to its chassis and reinforced it with reclaimed steel sections. The design featured a modular seating system and a translucent roof made from recycled polycarbonate sheets, creating a lightweight, airy community hub.",
         images: [
+          "https://lh3.googleusercontent.com/d/1UueeMY09uP6M6tZWtjhFKjzENJhUIpEs",
           "https://lh3.googleusercontent.com/d/1BEgKY95IEr5g9vbVArBGeUGZe8lnuU53#video",
           "https://lh3.googleusercontent.com/d/1KZwCamzNHbMIJW9zjc__BPriQxhLQold#video",
           "https://lh3.googleusercontent.com/d/1XgZsHYRfq3RkWR-FSGAd9tEdbRK2aSAK#video",
@@ -876,6 +905,93 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk#video"
         ]
       }
+    },
+    {
+      id: "ARCH_08",
+      title: "Villa Project - IMK internship",
+      role: "Architectural Intern",
+      hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
+      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork families in Autodesk Revit. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
+      icon: <Box className="w-6 h-6 text-gray-400" />,
+      color: "gray-400",
+      metric: "Bespoke Villa",
+      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+      tags: ["Revit", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
+      category: "Conceptual",
+      workflow: {
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+        steps: [
+          "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
+          "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
+          "Model custom modular millwork families in high-fidelity LOD 350 within Revit.",
+          "Iterate multi-scenario lighting passes and natural materials inside Twinmotion."
+        ]
+      },
+      details: {
+        overview: "Developed as part of a rigorous design team during the IMK Internship, this private luxury residential villa project represents an seamless synthesis of luxury-class scale with regional climatic adaptability.",
+        challenge: "Maintaining a sense of spatial transparency and expansive views across the double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
+        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sunpath vectors by 70% while distributing soft, uniform daylight throughout core living volumes.",
+        images: [
+          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+          "https://picsum.photos/seed/villainterior/800/450?grayscale",
+          "https://picsum.photos/seed/villaexterior/800/450?grayscale",
+          "https://picsum.photos/seed/villaplan/800/450?grayscale"
+        ]
+      }
+    },
+    {
+      id: "ARCH_09",
+      title: "Aura One office - Academic",
+      role: "Lead Student Architect",
+      hook: "High-performance ecological commercial tower with a self-shading double skin.",
+      description: "An academic exploration of highly responsive commercial centers in Mangaluru. Integrated advanced Ladybug environmental analysis within Grasshopper to configure a self-shading double-skin facade that filters glare and daylight factors automatically.",
+      icon: <Layers className="w-6 h-6 text-gray-400" />,
+      color: "gray-400",
+      metric: "Academic Core",
+      gifUrl: "https://lh3.googleusercontent.com/d/1-13UZk0cblRjpTkrX_fwUGymHhEtcTYW",
+      tags: ["Grasshopper", "Ladybug Analysis", "Double-Skin Facade", "Commercial Architecture", "Academic"],
+      category: "Exterior",
+      workflow: {
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1hG1dISPuq8c91Xk-BLArl32al89adqXa",
+        steps: [
+          "Formulate structural grids and flexible zoning parameters for grade-A office layouts.",
+          "Write Grasshopper scripts to link solar path nodes directly with glass deflection metrics.",
+          "Simulate annual Daylight Glare Probability (DGP) using Ladybug/Honeybee plugins.",
+          "Draft highly-detailed structural connections for double-skin cavity framing."
+        ]
+      },
+      details: {
+        overview: "Aura One is a premium commercial concept designed around occupant wellness and self-sustaining micro-climates. The project challenges typical standard office designs by carving out internal multi-story green pocket gardens.",
+        challenge: "Designing a high-glass facade that preserves uniform interior daylight while preventing localized glare discomfort and heavy cooling peak loads.",
+        solution: "Developed an intelligent, responsive double skin facade. By dynamically optimizing individual glass louvers using Grasshopper routines, we successfully kept annual interior daylight factors above 3.5% across 90% of the desk area, while reducing overall cooling peak loads by 24%.",
+        images: [
+          "https://lh3.googleusercontent.com/d/1J8LFl6eA-Y2cUSSrwCO1Gqom_ABPS9yL",
+          "https://lh3.googleusercontent.com/d/1_PI1qIU5K80hSqPvxvmVok-Je7HtJ0BK",
+          "https://lh3.googleusercontent.com/d/1qe771x3P1_-J9rPqr6EKyKIO8Sn10h_U",
+          "https://lh3.googleusercontent.com/d/1zqzgQq6FCJ9REyhh3JqsZN9-gaBD6tIp",
+          "https://lh3.googleusercontent.com/d/1_t21ROExAPN-LgzrucRXE4X7Kej7M213",
+          "https://lh3.googleusercontent.com/d/19fTGQagul-Bh_0TclKU-BOSVlaTtgTfw",
+          "https://lh3.googleusercontent.com/d/1581Brz6nZrc053tWYmMUtbHiu-UUJa2n",
+          "https://lh3.googleusercontent.com/d/1mwr6jAV-xBsp8xb0HmL2vX4Z1_4egzcp",
+          "https://lh3.googleusercontent.com/d/1kqP--ijCQry4owJqse1-e2Xbse6Pbs24",
+          "https://lh3.googleusercontent.com/d/1hG1dISPuq8c91Xk-BLArl32al89adqXa",
+          "https://lh3.googleusercontent.com/d/1fEyhMZY41Wuyc4_9yPdsWdQC4R07lfHe#video",
+          "https://lh3.googleusercontent.com/d/1R8NTkmalwYDmrUqX43hW-8un9nkDYD6G",
+          "https://lh3.googleusercontent.com/d/1M5E67OFU8072ZB8nEW93bxNv4H2n7AKP",
+          "https://lh3.googleusercontent.com/d/1gE8L7uXdB4AdOLcaOlPSp67XqDR3Y-CE",
+          "https://lh3.googleusercontent.com/d/1idP_OHCVF7PUxrscYPqms53g3COkbyQM",
+          "https://lh3.googleusercontent.com/d/1VYpZ0k2exBkERJotymz3BkTsPfKneVwe",
+          "https://lh3.googleusercontent.com/d/1a1yxLTXN2c_h8cikVHPFW_4B8tqREk9d",
+          "https://lh3.googleusercontent.com/d/1aSDa36ogz5AIxmFFNso7mKOnHOjlED8U",
+          "https://lh3.googleusercontent.com/d/1s4YrypXR0ECMfMbqkYBbK6BJCh0hcevg",
+          "https://lh3.googleusercontent.com/d/1JrQCaLKYu6gz-jx97bkCBN9IT66Iqz7t",
+          "https://lh3.googleusercontent.com/d/1w4xMU7JuhLuiDK87oJ6wRgdjWrClJaRg",
+          "https://lh3.googleusercontent.com/d/1GKGxoVfMSALH9uVTptNtIMokcmbNBzQu",
+          "https://lh3.googleusercontent.com/d/1TBeTL0ZMJSw8pJHZPyKCABrVBFtksAVp",
+          "https://lh3.googleusercontent.com/d/1KZczMWj_PuuDu75q6pksqJePr41OHGtz",
+          "https://lh3.googleusercontent.com/d/1uGbrj_Lno6yqSiJrI-jtnIJL2kPkzvDc"
+        ]
+      }
     }
   ];
 
@@ -912,7 +1028,8 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/13DjBQVbIlicd12rixmddFV8VlEfY8nHy",
           "https://lh3.googleusercontent.com/d/16ElVn3XPrb32whEeHODV-F-qKOKaHDKG",
           "https://lh3.googleusercontent.com/d/1qVkvKXWhYvBXgHevFDyVhxJJ4YUvt28t"
-        ]
+        ],
+        videoUrl: "https://drive.google.com/file/d/1fDtI938u2nmjRT0IjXtdQlvTGsM5LdAS/view?usp=sharing"
       }
     },
     {
@@ -935,6 +1052,12 @@ export default function App() {
           "Synchronize metadata across all documentation sets.",
           "Generate PDF/DWG exports with automated naming."
         ]
+      },
+      details: {
+        overview: "Automated large-scale sheet generation by reading Excel matrices directly into Revit, completely bypassing standard API limit bottlenecks.",
+        challenge: "Generating hundreds of sheets manually can take days and is highly prone to numbering and naming errors.",
+        solution: "Engineered a robust Dynamo and Python-based scripting suite that automates view alignment, template creation, and batch scaling from Excel data.",
+        videoUrl: "https://drive.google.com/file/d/1qFTWKJWqE4zKuuKalI5X7WSVZlWd4bUl/view?usp=sharing"
       }
     },
     {
@@ -957,6 +1080,12 @@ export default function App() {
           "Cross-reference with project financial spreadsheets.",
           "Export verified 5D data to Enterprise ERP."
         ]
+      },
+      details: {
+        overview: "A specialized data extraction and scrubbing workflow built to harvest exact facility parameters from complex Revit models.",
+        challenge: "Extracting precise quantities, material volumes, and facility parameters from large models usually yields fragmented and inconsistent data.",
+        solution: "Engineered customized Dynamo and Python databases to cross-reference scheduling templates and output formatted, reliable Bill of Quantities data directly to financial spreadsheets.",
+        videoUrl: "https://drive.google.com/file/d/1AiHanx4MA9nFEWaQotQpyHroxkHZcOuo/view?usp=sharing"
       }
     },
     {
@@ -983,7 +1112,8 @@ export default function App() {
         overview: "Streamlining multidisciplinary model coordination through automated clash detection and resolution.",
         challenge: "Managing thousands of clashes across complex structural and MEP systems without manual oversight.",
         solution: "Implemented a federated model coordination pipeline in Navisworks that automated clash grouping and prioritized critical intersections for site teams.",
-        reportUrl: "https://drive.google.com/file/d/1LetvlyhbGmUM-43bKoJR2OVGJQCNutWJ/view?usp=sharing"
+        reportUrl: "https://drive.google.com/file/d/1LetvlyhbGmUM-43bKoJR2OVGJQCNutWJ/view?usp=sharing",
+        videoUrl: "https://drive.google.com/file/d/18k015r2LpCsmPb_POW3cQBtCoSXsIQ27/view?usp=sharing"
       }
     },
     {
@@ -1005,6 +1135,12 @@ export default function App() {
           "Synchronize parameters across the BIM model for real-time coordination.",
           "Generate automated reports and system verification schedules."
         ]
+      },
+      details: {
+        overview: "An algorithmic workflow to automate the placement, routing, and parameter synchronization of mechanical, electrical, and plumbing elements in complex projects.",
+        challenge: "Manually sizing, routing, and parameterizing components across extensive networks leads to coordinate errors and massive delays.",
+        solution: "Engineered customized Vectorworks Marionette algorithms to automatically layout and dynamically assign parameters, ensuring complete coordination and accurate specification schedules.",
+        videoUrl: "https://drive.google.com/file/d/10JAIqWYDsFVJFuBhUsFo730E31IfPLFe/view?usp=sharing"
       }
     },
     {
@@ -1026,6 +1162,12 @@ export default function App() {
           "Configure appearance profiles for installation states.",
           "Execute 4D simulation to identify sequence conflicts."
         ]
+      },
+      details: {
+        overview: "A comprehensive 4D sequence simulation integrating detailed project schedules directly with federated 3D models.",
+        challenge: "Visualizing complex timelines and finding sequence conflicts in multi-phase projects is incredibly difficult using flat charts.",
+        solution: "Established dynamic linkage between schedule tasks and BIM parameters in Navisworks Manage, simulating the complete construction sequence over time and mitigating sequence conflicts.",
+        videoUrl: "https://drive.google.com/file/d/1lEe6jypAKbT_Fe0CXXVDaV3yXgarNeeF/view?usp=sharing"
       }
     },
     {
@@ -1417,9 +1559,6 @@ export default function App() {
               </div>
             </div>
             
-            {/* Scanning Laser Line */}
-            <div className="absolute inset-x-0 h-[2px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,255,255,0.4)] animate-scan z-20 pointer-events-none" />
-
             {/* Left Header Overlay */}
             <div className="absolute top-4 left-4 font-mono text-[8px] text-neon-cyan/30 tracking-[0.2em] hidden md:block">
               SECURE_LINK::ACTIVE_PORT_3000
@@ -1631,6 +1770,22 @@ export default function App() {
                   item={item} 
                   isArch={false} 
                   onClick={() => setSelectedArsenalItem(item)} 
+                  onShowScript={(scriptUrl: string, title: string) => {
+                    setExpandedMedia({
+                      src: scriptUrl,
+                      isVideo: false,
+                      googleDriveId: getDriveId(scriptUrl),
+                      alt: `Script: ${title}`
+                    });
+                  }}
+                  onShowVideo={(gifUrl: string, title: string) => {
+                    setExpandedMedia({
+                      src: gifUrl,
+                      isVideo: true,
+                      googleDriveId: getDriveId(gifUrl),
+                      alt: `Video: ${title}`
+                    });
+                  }}
                 />
               ))}
             </div>
@@ -1787,13 +1942,30 @@ export default function App() {
                 </div>
                 <div className="absolute inset-x-0 top-1/2 h-[1px] bg-black/10 z-20 pointer-events-none" />
                 
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center overflow-hidden group/hero">
                   <img 
                     src="https://lh3.googleusercontent.com/d/13GmqWLU2dj4391dNM13FuLjcie7fDsKe" 
                     alt="Arch Hero GIF"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover/hero:bg-black/10 transition-all duration-300 flex items-end justify-end p-4">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedMedia({
+                          src: "https://lh3.googleusercontent.com/d/13L6_w4Eu0yGSNAaxq0zbR9dTiAjc95Df",
+                          isVideo: false,
+                          googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/13L6_w4Eu0yGSNAaxq0zbR9dTiAjc95Df"),
+                          alt: "Architectural Studio Grasshopper Script"
+                        });
+                      }}
+                      className="px-4 py-2 bg-black text-white hover:bg-[#00f2ff] hover:text-black border border-white/20 hover:border-[#00f2ff] text-[10px] font-mono tracking-widest uppercase flex items-center gap-2 shadow-2xl transition-all duration-300 z-30 transform active:scale-95 pointer-events-auto cursor-pointer"
+                    >
+                      <Code2 className="w-4 h-4 animate-pulse" />
+                      Show Script
+                    </button>
+                  </div>
                 </div>
                 <div className="absolute bottom-4 left-4 font-mono text-[10px] text-gray-500 z-30 font-bold">
                   [ARCH_STUDIO_v1.0]
@@ -1819,6 +1991,14 @@ export default function App() {
                     item={item} 
                     isArch={true} 
                     onClick={() => setSelectedArsenalItem(item)} 
+                    onShowScript={(scriptUrl: string, title: string) => {
+                      setExpandedMedia({
+                        src: scriptUrl,
+                        isVideo: false,
+                        googleDriveId: getDriveId(scriptUrl),
+                        alt: `Script: ${title}`
+                      });
+                    }}
                   />
                 ))}
               </div>
@@ -1842,6 +2022,14 @@ export default function App() {
                     item={item} 
                     isArch={true} 
                     onClick={() => setSelectedArsenalItem(item)} 
+                    onShowScript={(scriptUrl: string, title: string) => {
+                      setExpandedMedia({
+                        src: scriptUrl,
+                        isVideo: false,
+                        googleDriveId: getDriveId(scriptUrl),
+                        alt: `Script: ${title}`
+                      });
+                    }}
                   />
                 ))}
               </div>
@@ -2210,6 +2398,27 @@ export default function App() {
                             RAW_FEED_STREAMING...
                           </div>
                         )}
+                        {selectedArsenalItem.scriptUrl && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedMedia({
+                                src: selectedArsenalItem.scriptUrl!,
+                                isVideo: false,
+                                googleDriveId: getDriveId(selectedArsenalItem.scriptUrl!),
+                                alt: `Grasshopper Script - ${selectedArsenalItem.title}`
+                              });
+                            }}
+                            className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-[30] pointer-events-auto shadow-md ${
+                              isArch 
+                                ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
+                                : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
+                            }`}
+                          >
+                            <Code2 className="w-3.5 h-3.5 animate-pulse" />
+                            Show Script
+                          </button>
+                        )}
                         {/* Hover overlay to expand */}
                         <div 
                           onClick={() => {
@@ -2218,6 +2427,7 @@ export default function App() {
                             setExpandedMedia({
                               src: selectedArsenalItem.gifUrl,
                               isVideo: isVid,
+                              isGif: !isVid,
                               googleDriveId: gdId,
                               alt: "Process Visualization"
                             });
@@ -2306,13 +2516,13 @@ export default function App() {
                           </p>
                         </div>
 
-                        {(selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl) && (
+                        {((selectedArsenalItem.details && (selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl || selectedArsenalItem.details.videoUrl)) || selectedArsenalItem.scriptUrl) && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                               08_Documentation
                             </div>
                             <div className="flex flex-wrap gap-4">
-                              {selectedArsenalItem.details.reportUrl && (
+                              {selectedArsenalItem.details?.reportUrl && (
                                 <a 
                                   href={selectedArsenalItem.details.reportUrl}
                                   target="_blank"
@@ -2328,7 +2538,7 @@ export default function App() {
                                 </a>
                               )}
 
-                              {selectedArsenalItem.details.sheetsUrl && (
+                              {selectedArsenalItem.details?.sheetsUrl && (
                                 <a 
                                   href={selectedArsenalItem.details.sheetsUrl}
                                   target="_blank"
@@ -2344,13 +2554,13 @@ export default function App() {
                                 </a>
                               )}
 
-                              {selectedArsenalItem.details.videoUrl && (
+                              {selectedArsenalItem.details?.videoUrl && (
                                 <button 
                                   onClick={() => {
                                     setExpandedMedia({
-                                      src: selectedArsenalItem.details.videoUrl,
+                                      src: selectedArsenalItem.details!.videoUrl!,
                                       isVideo: true,
-                                      googleDriveId: getDriveId(selectedArsenalItem.details.videoUrl),
+                                      googleDriveId: getDriveId(selectedArsenalItem.details!.videoUrl!),
                                       alt: "Full Presentation Movie"
                                     });
                                   }}
@@ -2360,8 +2570,29 @@ export default function App() {
                                     : "brutalist-border bg-neon-orange/10 text-neon-orange hover:bg-neon-orange hover:text-black"
                                   }`}
                                 >
-                                  <Play className="w-3 h-3" />
+                                  <Play className="w-3 h-3 animate-pulse" />
                                   Watch Full Movie
+                                </button>
+                              )}
+
+                              {selectedArsenalItem.scriptUrl && (
+                                <button 
+                                  onClick={() => {
+                                    setExpandedMedia({
+                                      src: selectedArsenalItem.scriptUrl!,
+                                      isVideo: false,
+                                      googleDriveId: getDriveId(selectedArsenalItem.scriptUrl!),
+                                      alt: "Grasshopper Script"
+                                    });
+                                  }}
+                                  className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 pointer-events-auto cursor-pointer ${
+                                    isArch 
+                                    ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                  }`}
+                                >
+                                  <Code2 className="w-3 h-3 animate-pulse" />
+                                  Show Script
                                 </button>
                               )}
                             </div>
@@ -2433,18 +2664,7 @@ export default function App() {
                       </>
                     )}
 
-                    <div className={`p-6 border space-y-4 transition-all duration-700 ${isArch ? "border-gray-100 bg-gray-50" : "brutalist-border bg-terminal-border/10"}`}>
-                      <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{isArch ? "Impact_Metric" : "Performance_Metric"}</div>
-                      <div className="flex justify-between items-end">
-                        <div className={`text-xl md:text-2xl font-medium tracking-tighter transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
-                          {selectedArsenalItem.metric}
-                        </div>
-                        <Activity className={`w-6 h-6 transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan animate-pulse"}`} />
-                      </div>
-                      <div className={`h-1 w-full rounded-full overflow-hidden transition-colors duration-700 ${isArch ? "bg-gray-200" : "bg-terminal-border"}`}>
-                        <div className={`h-full w-[92%] transition-colors duration-700 ${isArch ? "bg-black" : "bg-neon-cyan"}`} />
-                      </div>
-                    </div>
+                    {/* Removed Performance/Impact Metric box */}
                   </div>
                 </div>
               </div>
@@ -2530,8 +2750,14 @@ export default function App() {
               ) : (
                 (() => {
                   const googleDriveId = getDriveId(expandedMedia.src);
+                  const isAnimatedGif = expandedMedia.isGif || 
+                                        expandedMedia.alt === "Process Visualization" || 
+                                        expandedMedia.src.toLowerCase().includes("gif") || 
+                                        expandedMedia.src.includes("1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH");
                   const fullSrc = googleDriveId 
-                    ? `https://lh3.googleusercontent.com/d/${googleDriveId}` 
+                    ? (isAnimatedGif 
+                        ? `https://drive.google.com/uc?export=download&id=${googleDriveId}` 
+                        : `https://lh3.googleusercontent.com/d/${googleDriveId}`) 
                     : expandedMedia.src.split('#')[0];
                   return (
                     <img 
