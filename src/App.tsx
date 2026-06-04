@@ -829,7 +829,31 @@ export default function App() {
         overview: "Karunya Hospice is a 50-bed palliative care facility that redefines the environment of end-of-life care. It moves away from the clinical 'hospital' feel towards a domestic, nature-centric sanctuary.",
         challenge: "Balancing the high medical requirements of palliative care with a non-institutional, peaceful atmosphere that supports both patients and their grieving families.",
         solution: "The design uses a decentralized pavilion layout connected by sensory gardens. Each patient room has a private view of nature and direct access to outdoor terraces, ensuring that no patient is ever isolated from the natural world.",
-        images: ["https://picsum.photos/seed/hospice1/800/450?grayscale", "https://picsum.photos/seed/hospice2/800/450?grayscale"]
+        images: [
+          "https://lh3.googleusercontent.com/d/1_Gcehq-yN--25n8qKIkSLTGIleQGQqve",
+          "https://lh3.googleusercontent.com/d/1wPuVIXSD99yWsCg5AcQxJCC07R3VT3Bi",
+          "https://lh3.googleusercontent.com/d/10eT2Y5ITVC2rjeHDXCh-yPD0Af-pk14j",
+          "https://lh3.googleusercontent.com/d/12TPa10Mxy8wJ9Da9DOFD48-xJM4t3uiY",
+          "https://lh3.googleusercontent.com/d/1KclgbyOUEM5eTVfDpOocFjSuVom3Xr_B",
+          "https://lh3.googleusercontent.com/d/1cOskWjIzbsqhV1jlYbwSRFUgCJI14n2U",
+          "https://lh3.googleusercontent.com/d/1wGJdJN6ZXf2WK28EafESDcnviVNcKF-p",
+          "https://lh3.googleusercontent.com/d/13KSTSMy3wsQBVQJFRsasLFePVawzWjIR",
+          "https://lh3.googleusercontent.com/d/1DGOkd7MY8sSAgzt0TzWYzW0ahkriXY7_",
+          "https://lh3.googleusercontent.com/d/1L6LOgUmekOk3XJK2rji7DtpdAkReZ8_b",
+          "https://lh3.googleusercontent.com/d/1znclz2rFpl0BS2zJfp9w7nrHm2QCgAFk",
+          "https://lh3.googleusercontent.com/d/1zfEJf3Tm6qnhkQPXa4saAn0MZTtu_iii",
+          "https://lh3.googleusercontent.com/d/1-qHLRSlDroUqLxAvqcYv14LNOM1vulwd",
+          "https://lh3.googleusercontent.com/d/1V3yL6NdCiARmGbKN4b80j2h9fRx3gN0M",
+          "https://lh3.googleusercontent.com/d/1vk8Blck2gZZrDQDAxt-OEU9oJFQF1IBq",
+          "https://lh3.googleusercontent.com/d/1uZE-A0Cy92pzz7gWfdFr5vdeaa7TBMEc",
+          "https://lh3.googleusercontent.com/d/1uKUbCflYtDqzWmYiSwtsjbL95Uxfw0q6",
+          "https://lh3.googleusercontent.com/d/1La6OD3SJ0vYjtlG8GseC5b6iHqDwtgIW",
+          "https://lh3.googleusercontent.com/d/1waqzjq0LVjsh2vZuRcIX3rFrNMho5KTD",
+          "https://lh3.googleusercontent.com/d/1EwxzT95gIriGk_KPSlspFuGd0dxOJQqw",
+          "https://lh3.googleusercontent.com/d/1Btke20IAGtI8itws0GujFR2-nvKGDpgs",
+          "https://lh3.googleusercontent.com/d/1vtmSPO5cY0bEyPfHB6q-8TK_N-EWR0Bw",
+          "https://lh3.googleusercontent.com/d/1M5toemwPLORhUg-EygnGVp5G2zPyYqpH"
+        ]
       }
     },
     {
