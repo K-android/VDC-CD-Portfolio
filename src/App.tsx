@@ -27,8 +27,11 @@ import {
   Hammer,
   Play,
   Zap,
-  Maximize2
+  Maximize2,
+  Globe
 } from "lucide-react";
+
+import { AECWebAppsCabinet } from "./components/AECWebAppsCabinet.tsx";
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
@@ -639,6 +642,7 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
+  const [isAppsActive, setIsAppsActive] = useState(false);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
   const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
 
@@ -711,6 +715,14 @@ export default function App() {
   const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
 
   const visibleSections = ["landing", "vdc-section", "arch-section", "terminal"];
+
+  const menuItems = [
+    { id: "landing", label: "Gateway", isSection: true, index: 0, elementId: "landing" },
+    { id: "vdc-section", label: "VDC Core", isSection: true, index: 1, elementId: "vdc-section" },
+    { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
+    { id: "arch-section", label: "Arch Studio", isSection: true, index: 2, elementId: "arch-section" },
+    { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
+  ];
 
   const archArsenal: ArsenalItem[] = [
     {
@@ -1203,7 +1215,7 @@ export default function App() {
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "Generative",
-      gifUrl: "https://media.giphy.com/media/l41lTfuxR4R8E/giphy.gif",
+      gifUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
       tags: ["Galapagos", "Ladybug", "Grasshopper", "Parametric"],
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-7/800/450?grayscale",
@@ -1213,6 +1225,12 @@ export default function App() {
           "Calibrate the algorithm to evaluate material volume metrics against active carbon-shading profiles.",
           "Parse spatial and structural constraints dynamically to stream real-time data charts straight to the canvas."
         ]
+      },
+      details: {
+        overview: "A generative optimization workflow linking Galapagos evolutionary solver with Ladybug spatial analytics.",
+        challenge: "Balancing material minimization with maximum active shading efficacy over multi-seasonal paths.",
+        solution: "Established a closed-loop parametric solver that feeds real-time sunpath data directly into geometric iterations, producing highly efficient architectural pergolas and facades.",
+        videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing"
       }
     },
     {
@@ -1332,6 +1350,23 @@ export default function App() {
           }
         }
       });
+
+      // Track if vdc-apps is active (within viewport)
+      const appsEl = document.getElementById("vdc-apps");
+      const vdcSecEl = document.getElementById("vdc-section");
+      if (appsEl && vdcSecEl) {
+        const appsAbsoluteTop = vdcSecEl.offsetTop + appsEl.offsetTop;
+        const archSecEl = document.getElementById("arch-section");
+        const appsAbsoluteBottom = archSecEl ? archSecEl.offsetTop : appsAbsoluteTop + appsEl.offsetHeight;
+        
+        if (scrollPosition >= appsAbsoluteTop && scrollPosition < appsAbsoluteBottom) {
+          setIsAppsActive(true);
+        } else {
+          setIsAppsActive(false);
+        }
+      } else {
+        setIsAppsActive(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -1446,15 +1481,29 @@ export default function App() {
 
         {/* Desktop Nav */}
         <div className={`hidden md:flex gap-6 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-700 ${isHeaderArch ? "text-gray-600" : "text-gray-500"}`}>
-          {visibleSections.map((s, i) => (
-            <button 
-              key={s}
-              onClick={() => handleSectionChange(i)}
-              className={`hover:text-neon-cyan transition-colors ${activeSection === i ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan") : ""}`}
-            >
-              {s === 'landing' ? 'Gateway' : s === 'vdc-section' ? 'VDC Core' : s === 'arch-section' ? 'Arch Studio' : 'Contact & Bio'}
-            </button>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = item.id === "vdc-apps"
+              ? isAppsActive
+              : item.id === "vdc-section"
+              ? (activeSection === 1 && !isAppsActive)
+              : (activeSection === item.index);
+            return (
+              <button 
+                key={item.id}
+                onClick={() => {
+                  if (item.isSection) {
+                    handleSectionChange(item.index!);
+                  } else {
+                    const el = document.getElementById(item.elementId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className={`hover:text-neon-cyan transition-colors ${isActive ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan") : ""}`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -1482,18 +1531,30 @@ export default function App() {
               >
                 <Box className="w-8 h-8 rotate-45" />
               </button>
-              {visibleSections.map((s, i) => (
-                <button 
-                  key={s}
-                  onClick={() => {
-                    handleSectionChange(i);
-                    setIsMenuOpen(false);
-                  }}
-                  className={`hover:scale-110 transition-transform ${activeSection === i ? "font-bold underline underline-offset-8" : ""}`}
-                >
-                  {s === 'landing' ? 'Gateway' : s === 'vdc-section' ? 'VDC Core' : s === 'arch-section' ? 'Arch Studio' : 'Contact & Bio'}
-                </button>
-              ))}
+              {menuItems.map((item) => {
+                const isActive = item.id === "vdc-apps"
+                  ? isAppsActive
+                  : item.id === "vdc-section"
+                  ? (activeSection === 1 && !isAppsActive)
+                  : (activeSection === item.index);
+                return (
+                  <button 
+                    key={item.id}
+                    onClick={() => {
+                      if (item.isSection) {
+                        handleSectionChange(item.index!);
+                      } else {
+                        const el = document.getElementById(item.elementId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                      setIsMenuOpen(false);
+                    }}
+                    className={`hover:scale-110 transition-transform ${isActive ? "font-bold underline underline-offset-8" : ""}`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
               <div className="mt-8 flex flex-col items-center gap-4">
                 <div className="text-[10px] opacity-40">Jump Location</div>
                 <button 
@@ -1815,11 +1876,25 @@ export default function App() {
             </div>
           </div>
 
+          {/* VDC WEB APPS / TOOLS */}
+          <div id="vdc-apps" className="pt-16 border-t border-terminal-border/15 scroll-mt-24">
+            <div className="mb-8">
+              <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-orange">
+                Section_02 // Custom_Web_Applications_&_Web_Tools
+              </h2>
+              <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-orange/80 font-bold">
+                <span className="opacity-40">{"["}</span> APPS_&_WEB_TOOLS <span className="opacity-40">{"]"}</span>
+              </h3>
+            </div>
+
+            <AECWebAppsCabinet />
+          </div>
+
           {/* VDC CAREER HISTORY */}
           <div className="pt-16 border-t border-terminal-border/15">
             <div className="mb-12 text-center">
               <h2 className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-blue">
-                Section_02 // Professional_Journey
+                Section_03 // Professional_Journey
               </h2>
               <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-blue font-bold">
                 <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>

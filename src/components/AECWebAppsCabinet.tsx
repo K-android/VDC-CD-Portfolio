@@ -1,0 +1,451 @@
+import React, { useState, useEffect } from "react";
+import { 
+  Globe, 
+  ExternalLink, 
+  Database, 
+  Sparkles, 
+  Cpu, 
+  CheckCircle2, 
+  Zap, 
+  ArrowRight, 
+  Activity, 
+  Terminal, 
+  Layers, 
+  Workflow, 
+  RefreshCw,
+  FolderOpen
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { AECWorkflowHub } from "./AECWorkflowHub.tsx";
+
+export const AECWebAppsCabinet: React.FC = () => {
+  const [selectedSandbox, setSelectedSandbox] = useState<boolean>(false);
+  const [currentTab1, setCurrentTab1] = useState<"desc" | "features" | "process">("desc");
+  const [currentTab2, setCurrentTab2] = useState<"desc" | "features" | "process">("desc");
+  
+  // Real-time animation states for the BIM Metric Portal visualizer
+  const [telemetryLogs, setTelemetryLogs] = useState<string[]>([
+    "SYS_INIT: Initializing Webhook listener on port 3000...",
+    "DB_CONN: Firestore server cluster live. Active channel: #vdc-telemetry",
+    "LISTENER: Awaiting incoming local Revit desktop webhook streams..."
+  ]);
+  const [takeoffsCount, setTakeoffsCount] = useState(1480);
+  const [lastUpdated, setLastUpdated] = useState("Just Now");
+  
+  // Simulate incoming Webhook telemetry stream logs for BIM Metric Portal
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const entities = ["Wall_Family_Interior", "Structural_Column_HSS", "Floor_Slab_Reinforced", "Cable_Tray_Egress_Route", "Conduit_Run_MEP_Shielded"];
+      const randomEntity = entities[Math.floor(Math.random() * entities.length)];
+      const randomVolume = (Math.random() * 45 + 5).toFixed(2);
+      const uuid = Math.floor(Math.random() * 900000 + 100000);
+      
+      const newLog = `WEBHOOK_RECV [0.01h]: Extracted parameters for Element_${uuid} (${randomEntity}) // Vol: ${randomVolume}m³ // ISO-19650_OK`;
+      
+      setTelemetryLogs(prev => {
+        const next = [...prev, newLog];
+        if (next.length > 5) next.shift();
+        return next;
+      });
+      setTakeoffsCount(prev => prev + 1);
+      
+      // Update timer stamp
+      const seconds = Math.floor(Math.random() * 4) + 1;
+      setLastUpdated(`${seconds}s ago`);
+    }, 4000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="space-y-16">
+      {/* 2-COLUMN STACKED HIGH-TECH APPS CABINET */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 text-left">
+        
+        {/* APP 1: AEC AUTOMATOR HUB */}
+        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-neon-orange/45 hover:shadow-[0_0_30px_rgba(249,115,22,0.03)] transition-all duration-500 h-full">
+          {/* Header */}
+          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neon-orange font-bold">// DESK_APP_01</span>
+              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
+                AEC Automator Hub
+              </h4>
+            </div>
+
+          </div>
+
+          {/* Interactive Screen Layout Mockup / Hero Image Column */}
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+            {/* Visual Engineering Grid Background */}
+            <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
+            
+
+
+            {/* Actual Google Drive Hero Image */}
+            <img 
+              src="https://drive.google.com/thumbnail?id=1uD54l3GD2t-ul_kan00c_rV124uxlOa8&sz=w1000"
+              alt="AEC Automator Hub Preview"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85]"
+            />
+            
+            {/* Dark gradient mapping overlays matches dashboard design cleanly */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <span className="w-1.5 h-1.5 bg-neon-orange rounded-full animate-pulse" />
+              Live System Preview
+            </div>
+          </div>
+
+          {/* Description & Actionable Tabs */}
+          <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
+            <div>
+              {/* App Navigation Tab Buttons */}
+              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs font-bold leading-none">
+                <button
+                  onClick={() => setCurrentTab1("desc")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab1 === "desc" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Desc
+                </button>
+                <button
+                  onClick={() => setCurrentTab1("features")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab1 === "features" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Key Highlights
+                </button>
+                <button
+                  onClick={() => setCurrentTab1("process")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab1 === "process" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Process
+                </button>
+              </div>
+
+              {/* Tab Contents */}
+              <div className="min-h-[140px] font-mono">
+                <AnimatePresence mode="wait">
+                  {currentTab1 === "desc" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3"
+                    >
+                      <p className="text-gray-300 text-sm leading-relaxed font-sans font-medium">
+                        A centralized cloud-based command center developed to discover, rank, and track computational design automation pipelines—bridging the gap between software engineering, AI, and sustainable building performance.
+                      </p>
+                      <div className="text-neon-cyan text-[10.5px] border-l-2 border-neon-orange pl-3 py-1 bg-neon-orange/[0.01]">
+                        // AEC Automator Hub: An AI-Driven Workflow Optimization & Lifecycle Dashboard.
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab1 === "features" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-2.5 text-xs text-gray-300"
+                    >
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-orange shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Algorithmic ROI Ranking</strong>: Developed a telemetry dashboard that categorizes tasks (Architecture, BIM, Structural, MEP) and ranks their automation potential based on corporate time-saving metrics.
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-orange shrink-0 mt-0.5" />
+                        <div>
+                          <strong>AI-Agentic System Frameworks</strong>: Conceptualized and mapped out next-generation integration pipelines, including autonomous regulatory code compliance engines using LLMs and live generative carbon tracking.
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-orange shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Interactive Automation Advisor</strong>: Integrated an intelligent interface utilizing large language models to provide on-demand workflow strategies for manual desktop CAD problems.
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab1 === "process" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                    >
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span>Track active computational design automation pipelines securely.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span>Formulate regulatory compliance routines and live carbon lifecycle estimates.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span>Deliver on-demand PyRevit/Dynamo strategies with the LLM code sandbox.</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Stack tags */}
+              <div className="flex flex-wrap gap-2 mt-6">
+                {["React", "Tailwind CSS", "Vercel Deployment", "VDC Strategy", "Generative Design Logic", "LLM API Integration (Gemini)", "Carbon Analytics (LCA) Frameworks"].map((tag) => (
+                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Glowing Interactive Portal & Vercel Launcher Buttons */}
+            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <button
+                onClick={() => setSelectedSandbox(true)}
+                className="w-full md:w-auto font-mono text-[10.5px] px-3.5 py-2 hover:bg-neutral-900 border border-terminal-border/30 text-gray-400 hover:text-white rounded font-medium transition-all flex items-center justify-center gap-1.5 active:scale-95 text-left"
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>Try Interactive Sandbox</span>
+              </button>
+              <a
+                href="https://aec-auto-hub.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-neon-orange/15 hover:bg-neon-orange border border-neon-orange/30 text-neon-orange hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(249,115,22,0.1)] active:scale-95"
+              >
+                <Globe className="w-4 h-4" />
+                <span>Launch Live Website</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* APP 2: BIM METRIC PORTAL & WEBHOOK API GATEWAY */}
+        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-neon-cyan/45 hover:shadow-[0_0_30px_rgba(0,242,255,0.03)] transition-all duration-500 h-full">
+          {/* Header */}
+          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neon-cyan font-bold">// DESK_APP_02</span>
+              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
+                BIM Metric Portal & API Gateway
+              </h4>
+            </div>
+
+          </div>
+
+          {/* Real-time Telemetry Screen Mockup / Hero Image Column */}
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+            {/* Visual Engineering Grid Background */}
+            <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
+            
+
+
+            {/* Actual Google Drive Hero Image */}
+            <img 
+              src="https://drive.google.com/thumbnail?id=13Rvm3c9bgRm3vDWsufo4b4pvnWvIoCDo&sz=w1000"
+              alt="BIM Metric Portal Preview"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85]"
+            />
+            
+            {/* Dark gradient mapping overlays matches dashboard design cleanly */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+              Live System Preview
+            </div>
+          </div>
+
+          {/* Description & Actionable Tabs */}
+          <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
+            <div>
+              {/* App Navigation Tab Buttons */}
+              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs">
+                <button
+                  onClick={() => setCurrentTab2("desc")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab2 === "desc" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Desc
+                </button>
+                <button
+                  onClick={() => setCurrentTab2("features")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab2 === "features" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Key Highlights
+                </button>
+                <button
+                  onClick={() => setCurrentTab2("process")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab2 === "process" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  BIM Process
+                </button>
+              </div>
+
+              {/* Tab Contents */}
+              <div className="min-h-[140px] font-mono">
+                <AnimatePresence mode="wait">
+                  {currentTab2 === "desc" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3"
+                    >
+                      <p className="text-gray-300 text-sm leading-relaxed font-sans font-medium">
+                        A live connected Virtual Design & Construction (VDC) data hub designed to eliminate the traditional 3-day wait time for drawing coordination and cost takeoffs by streaming local BIM telemetry straight to a high-availability cloud database.
+                      </p>
+                      <div className="text-neon-cyan text-[10.5px] border-l-2 border-neon-cyan pl-3 py-1 bg-neon-cyan/[0.01]">
+                        // Cutting data extraction latency down to absolute zero — synchronizing quantities straight from building design saved states to server nodes.
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab2 === "features" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-2.5 text-xs text-gray-300"
+                    >
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Real-Time Data Streaming</strong>: Replaced manual spreadsheet compilation with a custom Webhook API, cutting data latency down to absolute zero (<strong>0.01 Hours</strong>).
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <div>
+                          <strong>ISO-19650 Automated Standardizer</strong>: An algorithmic staging area that parses messy element parameters, formatting them automatically to globally compliant BIM structures.
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Fault-Tolerant Cache Architecture</strong>: Built local fallback configurations that preserve structural data integrity during network drops or Revit/Dynamo application crashes.
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab2 === "process" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                    >
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span>Stream BIM local save metadata to server via custom Dynamo Webhook.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span>Parse messy parameter values & auto-format to standard ISO-19650 requirements.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span>Update Firestore collections to stream live quantities straight to the Dashboard.</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Stack tags */}
+              <div className="flex flex-wrap gap-2 mt-6">
+                {["Node.js API", "Firestore", "React Interface", "Revit & Dynamo Integration", "ISO-19650 Compliance"].map((tag) => (
+                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Glowing Website Launcher Button */}
+            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <span className="text-[10px] text-gray-500 font-mono tracking-wider">// CLOUD RUN METRIC GATEWAY</span>
+              <a
+                href="https://bim-metric-portal-boqs-tracker-111136556527.asia-southeast1.run.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-neon-cyan/15 hover:bg-neon-cyan border border-neon-cyan/30 text-neon-cyan hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,242,255,0.1)] active:scale-95"
+              >
+                <Globe className="w-4 h-4" />
+                <span>Launch Live Website</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* FULL PREVIEWS MODAL (INTERACTIVE SANDBOX FOR AEC WORKFLOW HUB) */}
+      <AnimatePresence>
+        {selectedSandbox && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[50] flex flex-col p-4 md:p-8"
+          >
+            <div className="w-full max-w-6xl mx-auto flex flex-col h-full bg-[#05080a] border border-terminal-border/40 rounded-lg overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+              {/* Close Header */}
+              <div className="p-4 border-b border-terminal-border/20 bg-terminal-header flex justify-between items-center bg-black/40">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
+                  <span className="font-mono text-xs text-neon-orange font-bold uppercase tracking-widest">
+                    Interactive AEC Automation Workspace / Sandbox Environment
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setSelectedSandbox(false)}
+                  className="font-mono text-xs px-3 py-1 bg-red-950/20 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all rounded"
+                >
+                  [ESC] Exit Sandbox
+                </button>
+              </div>
+
+              {/* Scrollable Workspace Wrapper */}
+              <div className="flex-grow overflow-y-auto p-4 md:p-8">
+                <div className="text-left max-w-5xl mx-auto space-y-6">
+                  <div>
+                    <h3 className="text-lg font-mono text-white tracking-wide uppercase flex items-center gap-2">
+                      <FolderOpen className="w-5 h-5 text-neon-orange" />
+                      Active Sandbox Console // AI-driven AEC Workflow Hub
+                    </h3>
+                    <p className="text-xs text-gray-400 font-sans mt-1">
+                      Execute draft workflows, isolate parameter indices, and command the generative AI Gemini Advisor directly on live schemas below.
+                    </p>
+                  </div>
+                  
+                  <AECWorkflowHub />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
