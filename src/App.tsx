@@ -560,6 +560,10 @@ interface ArsenalItem {
     reportUrl?: string;
     videoUrl?: string;
     sheetsUrl?: string;
+    comparisonTable?: {
+      headers: string[];
+      rows: string[][];
+    };
   };
 }
 
@@ -774,6 +778,39 @@ export default function App() {
       }
     },
     {
+      id: "ARCH_08",
+      title: "Villa Project - IMK internship",
+      role: "Architectural Intern",
+      hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
+      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
+      icon: <Box className="w-6 h-6 text-gray-400" />,
+      color: "gray-400",
+      metric: "Bespoke Villa",
+      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+      tags: ["Vectorworks", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
+      category: "Conceptual",
+      workflow: {
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+        steps: [
+          "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
+          "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
+          "Model custom modular millwork in high-fidelity LOD 350 within Vectorworks.",
+          "Iterate multi-scenario lighting passes and natural materials inside Twinmotion."
+        ]
+      },
+      details: {
+        overview: "Developed as part of a rigorous design team during the IMK Internship, this private luxury residential villa project represents an seamless synthesis of luxury-class scale with regional climatic adaptability.",
+        challenge: "Maintaining a sense of spatial transparency and expansive views across the double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
+        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sunpath vectors by 70% while distributing soft, uniform daylight throughout core living volumes.",
+        images: [
+          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+          "https://picsum.photos/seed/villainterior/800/450?grayscale",
+          "https://picsum.photos/seed/villaexterior/800/450?grayscale",
+          "https://picsum.photos/seed/villaplan/800/450?grayscale"
+        ]
+      }
+    },
+    {
       id: "ARCH_02",
       title: "Sadhu Residence Complex",
       role: "Architectural Designer & BIM Modeler",
@@ -792,36 +829,6 @@ export default function App() {
           "Author precise Revit parametric families for prefabricated wall and slab modules.",
           "Integrate models dynamically between Snaptrude for rapid spatial alignment and Revit.",
           "Render tranquil landscapes and atmospheric materials in Twinmotion."
-        ]
-      }
-    },
-    {
-      id: "ARCH_04",
-      title: "The Caffeine Lab",
-      role: "Interior Designer",
-      hook: "A sensory experience defined by materiality and light.",
-      description: "Contemporary cafe interior focusing on the tactile experience of materials. Uses raw concrete, warm wood, and strategic lighting.",
-      icon: <Cpu className="w-6 h-6 text-gray-400" />,
-      color: "gray-400",
-      metric: "Atmospheric",
-      gifUrl: "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
-      tags: ["Interior Design", "Materiality", "Lighting Design"],
-      category: "Interior",
-      details: {
-        overview: "The Caffeine Lab is a boutique coffee house designed to be a sanctuary for urban dwellers. The project emphasizes the 'third space' concept—a place between home and work where community and creativity thrive.",
-        challenge: "The primary challenge was to transform a narrow, deep commercial space with limited natural light into a vibrant and inviting environment without feeling claustrophobic.",
-        solution: "We utilized a 'light-well' strategy, using reflective surfaces and a central skylight to pull light deep into the plan. A palette of raw, honest materials—exposed brick, reclaimed timber, and brushed brass—was used to create a layered, tactile experience.",
-        images: [
-          "https://lh3.googleusercontent.com/d/18Rc73l485-6jt6jQ-mz3lmv8lhe_uX3G",
-          "https://lh3.googleusercontent.com/d/1wJxO8h7b4A6IzYVI8EEb5jJXyeIZgucl",
-          "https://lh3.googleusercontent.com/d/1E-dMneOtLIUghE4uBpNibLrO6X3VYWfE",
-          "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
-          "https://lh3.googleusercontent.com/d/10y2165C4vd8zanDADmq0-G2_QGnSjcQV",
-          "https://lh3.googleusercontent.com/d/1wfnsQ87DBOiZwghYvPcCcq7GGzmu5Itr",
-          "https://lh3.googleusercontent.com/d/1Iw_O4cMCPSFnQERK25agt88qj8jySHcb",
-          "https://lh3.googleusercontent.com/d/1tmAzBTbdJ5bV7EK-kZcv7fJXfjfxqZy5",
-          "https://lh3.googleusercontent.com/d/1EDB2yaMs74pxZ15dvY3DSqRv0ZcabRxU",
-          "https://lh3.googleusercontent.com/d/1rTdEEaAGJgyhweJcCYPDhf-VH3UzPJbu"
         ]
       }
     },
@@ -860,7 +867,7 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/1uZE-A0Cy92pzz7gWfdFr5vdeaa7TBMEc",
           "https://lh3.googleusercontent.com/d/1uKUbCflYtDqzWmYiSwtsjbL95Uxfw0q6",
           "https://lh3.googleusercontent.com/d/1La6OD3SJ0vYjtlG8GseC5b6iHqDwtgIW",
-          "https://lh3.googleusercontent.com/d/1waqzjq0LVjsh2vZuRcIX3rFrNMho5KTD",
+          "https://lh3.googleusercontent.com/d/1waqzjq0LVsh2vZuRcIX3rFrNMho5KTD",
           "https://lh3.googleusercontent.com/d/1EwxzT95gIriGk_KPSlspFuGd0dxOJQqw",
           "https://lh3.googleusercontent.com/d/1Btke20IAGtI8itws0GujFR2-nvKGDpgs",
           "https://lh3.googleusercontent.com/d/1vtmSPO5cY0bEyPfHB6q-8TK_N-EWR0Bw",
@@ -943,39 +950,6 @@ export default function App() {
       }
     },
     {
-      id: "ARCH_08",
-      title: "Villa Project - IMK internship",
-      role: "Architectural Intern",
-      hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
-      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
-      icon: <Box className="w-6 h-6 text-gray-400" />,
-      color: "gray-400",
-      metric: "Bespoke Villa",
-      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Vectorworks", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
-      category: "Conceptual",
-      workflow: {
-        screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-        steps: [
-          "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
-          "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
-          "Model custom modular millwork in high-fidelity LOD 350 within Vectorworks.",
-          "Iterate multi-scenario lighting passes and natural materials inside Twinmotion."
-        ]
-      },
-      details: {
-        overview: "Developed as part of a rigorous design team during the IMK Internship, this private luxury residential villa project represents an seamless synthesis of luxury-class scale with regional climatic adaptability.",
-        challenge: "Maintaining a sense of spatial transparency and expansive views across the double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
-        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sunpath vectors by 70% while distributing soft, uniform daylight throughout core living volumes.",
-        images: [
-          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-          "https://picsum.photos/seed/villainterior/800/450?grayscale",
-          "https://picsum.photos/seed/villaexterior/800/450?grayscale",
-          "https://picsum.photos/seed/villaplan/800/450?grayscale"
-        ]
-      }
-    },
-    {
       id: "ARCH_09",
       title: "Aura One office - Academic",
       role: "Lead Student Architect",
@@ -1026,6 +1000,36 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/1TBeTL0ZMJSw8pJHZPyKCABrVBFtksAVp",
           "https://lh3.googleusercontent.com/d/1KZczMWj_PuuDu75q6pksqJePr41OHGtz",
           "https://lh3.googleusercontent.com/d/1uGbrj_Lno6yqSiJrI-jtnIJL2kPkzvDc"
+        ]
+      }
+    },
+    {
+      id: "ARCH_04",
+      title: "The Caffeine Lab",
+      role: "Interior Designer",
+      hook: "A sensory experience defined by materiality and light.",
+      description: "Contemporary cafe interior focusing on the tactile experience of materials. Uses raw concrete, warm wood, and strategic lighting.",
+      icon: <Cpu className="w-6 h-6 text-gray-400" />,
+      color: "gray-400",
+      metric: "Atmospheric",
+      gifUrl: "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
+      tags: ["Interior Design", "Materiality", "Lighting Design"],
+      category: "Interior",
+      details: {
+        overview: "The Caffeine Lab is a boutique coffee house designed to be a sanctuary for urban dwellers. The project emphasizes the 'third space' concept—a place between home and work where community and creativity thrive.",
+        challenge: "The primary challenge was to transform a narrow, deep commercial space with limited natural light into a vibrant and inviting environment without feeling claustrophobic.",
+        solution: "We utilized a 'light-well' strategy, using reflective surfaces and a central skylight to pull light deep into the plan. A palette of raw, honest materials—exposed brick, reclaimed timber, and brushed brass—was used to create a layered, tactile experience.",
+        images: [
+          "https://lh3.googleusercontent.com/d/18Rc73l485-6jt6jQ-mz3lmv8lhe_uX3G",
+          "https://lh3.googleusercontent.com/d/1wJxO8h7b4A6IzYVI8EEb5jJXyeIZgucl",
+          "https://lh3.googleusercontent.com/d/1E-dMneOtLIUghE4uBpNibLrO6X3VYWfE",
+          "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
+          "https://lh3.googleusercontent.com/d/10y2165C4vd8zanDADmq0-G2_QGnSjcQV",
+          "https://lh3.googleusercontent.com/d/1wfnsQ87DBOiZwghYvPcCcq7GGzmu5Itr",
+          "https://lh3.googleusercontent.com/d/1Iw_O4cMCPSFnQERK25agt88qj8jySHcb",
+          "https://lh3.googleusercontent.com/d/1tmAzBTbdJ5bV7EK-kZcv7fJXfjfxqZy5",
+          "https://lh3.googleusercontent.com/d/1EDB2yaMs74pxZ15dvY3DSqRv0ZcabRxU",
+          "https://lh3.googleusercontent.com/d/1rTdEEaAGJgyhweJcCYPDhf-VH3UzPJbu"
         ]
       }
     }
@@ -1235,32 +1239,52 @@ export default function App() {
     },
     {
       id: "BIM_09",
-      title: "Constructability Proof",
-      role: "VDC Engineer",
-      hook: "Bridging computational data with physical assembly.",
-      description: "I bridged the gap between design and fabrication through detailed assembly modeling and site-ready shop drawings.",
-      icon: <Hammer className="w-6 h-6 text-neon-orange" />,
+      title: "Rhino-to-Revit API Interoperability Pipeline",
+      role: "Workflow Automation & Computational Research",
+      hook: "AI-driven topology serialization & real-time BIM compilation.",
+      description: "Addressing the critical loss of data integrity when translating segmented geometries from Rhino/Grasshopper to Autodesk Revit via an AI-driven serialization bridge parsing pure topological data.",
+      icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
-      metric: "Site-Ready",
-      gifUrl: "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
-      tags: ["Solar Decathlon", "Fabrication", "Assembly"],
+      metric: "45s Compile",
+      gifUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
+      tags: ["Grasshopper 3D", "Revit API", "Raven AI", "JSON", "Python"],
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-9/800/450?grayscale",
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
         steps: [
-          "Develop high-LOD assembly models (LOD 400).",
-          "Extract precise cutting lists and fabrication data.",
-          "Simulate assembly sequences for site logistics.",
-          "Verify as-built conditions against design intent."
+          "The Geometry Engine (Grasshopper): Generated a complex, 5,000-piece Biomimetic Space Frame using a Voronoi algorithm.",
+          "Topological Extraction: Extracted pure mathematical and topological data from the algorithm, cleanly separating the system into 4,500 struts (Lines) and 1,200 joints (Points).",
+          "The Serialization Bridge (Raven AI): Packaged this clean topological data into a lightweight JSON payload, bypassing traditional, heavy file exports.",
+          "The Revit API Listener: Fired the JSON package directly into the Revit API via a custom listener script, instantly reading the node matrix and mapping the data to native elements."
         ]
       },
       details: {
-        overview: "Bridging computational data with physical assembly. Solar Decathlon Net-Zero Grand Winner & Hands-on fabrication.",
-        challenge: "Translating complex simulation data into physical construction tolerances.",
-        solution: "Developed a custom fabrication pipeline that mapped simulation outputs directly to CNC and manual assembly guides.",
+        overview: "The project addresses a critical bottleneck in the AEC industry: the loss of data integrity and parametric intelligence when translating complex, highly segmented geometry from Rhino/Grasshopper into native BIM environments like Autodesk Revit.",
+        challenge: "Rather than exporting 'dead' meshes or manually remodeling complex elements, this project uses an AI-driven serialization bridge to parse pure topological data.",
+        solution: "Translating abstract geometric structures into fully parametric, native Revit components in under a minute.",
         images: [
-          "https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH",
-          "https://picsum.photos/seed/bamboo1/800/450?grayscale"
-        ]
+          "https://lh3.googleusercontent.com/d/1ySj-S4Cu5uqlWjv6UhVHQXj67Q9Cp7zI",
+          "https://lh3.googleusercontent.com/d/1sPPimcIWeztPLW6ClSUCM3XRLvQ_ZEY_",
+          "https://lh3.googleusercontent.com/d/1UuKn3FCJ0VMBINEO5lnmmAnt66mHlG5H",
+          "https://lh3.googleusercontent.com/d/1IEq87jiytcp-kmovxKTB06Mx0MgIeej2",
+          "https://lh3.googleusercontent.com/d/19NIG86AOjoITlBvUJ6MauwYXAbpCf3Hs",
+          "https://lh3.googleusercontent.com/d/17hced_pgHNJQoYY1fGrdpY1btoQyBIMO",
+          "https://lh3.googleusercontent.com/d/1RQGFTa_pYMWC32QYx1uTJdFHZajkzgld",
+          "https://lh3.googleusercontent.com/d/1BbpHEAEukpRAOjkjetrVYiH74h2f5p6x",
+          "https://lh3.googleusercontent.com/d/1fE6fOeTeXnLfYv_FcF-V42KX3MYVH0Zq",
+          "https://lh3.googleusercontent.com/d/1KwFfnUiN1-mXyk2aLf3IuscjpmUzHY2k",
+          "https://lh3.googleusercontent.com/d/1bAsk7xTDzf3u3tUyAPMfvibnHxuCc8mV",
+          "https://lh3.googleusercontent.com/d/1dNSoBn_mPFNXdPjBtReXrptMrMCyaNT7",
+          "https://lh3.googleusercontent.com/d/16LSgJrKuY8L6ckAAv2D4MDEKfhT9PgE6",
+          "https://lh3.googleusercontent.com/d/10kH71GxRRO92OOBFbNj3k2SA9fhePPfx"
+        ],
+        comparisonTable: {
+          headers: ["Metric", "Traditional Workflow", "Automated API Pipeline"],
+          rows: [
+            ["Translation Time", "~3 Weeks (Manual modeling/clunky mesh cleanup)", "45 Seconds"],
+            ["Geometry Quality", "'Dead' static meshes, loss of metadata", "100% Native BIM Elements"],
+            ["Downstream Utility", "Poor; requires manual scheduling and reconstruction", "Automated CNC Cut-List & Ready"]
+          ]
+        }
       }
     }
   ];
@@ -2694,6 +2718,48 @@ export default function App() {
                                   Show Script
                                 </button>
                               )}
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedArsenalItem.details.comparisonTable && (
+                          <div className="space-y-4 pt-4">
+                            <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
+                              08_Key_Metrics_&_Performance_Impact
+                            </div>
+                            <div className="overflow-x-auto border brutalist-border bg-black/40">
+                              <table className={`w-full text-left font-mono text-xs border-collapse ${isArch ? "border-gray-200" : "border-terminal-border/20"}`}>
+                                <thead>
+                                  <tr className={isArch ? "bg-gray-100/80 border-b border-gray-200" : "bg-black/60 border-b border-terminal-border/20"}>
+                                    {selectedArsenalItem.details.comparisonTable.headers.map((hdr, idx) => (
+                                      <th key={idx} className={`p-3 font-bold uppercase tracking-wider text-[10px] ${isArch ? "text-gray-700 font-sans" : "text-neon-cyan"}`}>
+                                        {hdr}
+                                      </th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody className={`divide-y ${isArch ? "divide-gray-100" : "divide-terminal-border/10"}`}>
+                                  {selectedArsenalItem.details.comparisonTable.rows.map((row, rIdx) => (
+                                    <tr key={rIdx} className={`transition-colors duration-500 ${isArch ? "hover:bg-gray-50/50" : "hover:bg-white/[0.01]"}`}>
+                                      {row.map((cell, cIdx) => {
+                                        const isAutomatedCol = cIdx === 2;
+                                        return (
+                                          <td 
+                                            key={cIdx} 
+                                            className={`p-3 align-middle text-[11px] ${
+                                              isAutomatedCol
+                                                ? (isArch ? "text-emerald-600 font-bold bg-emerald-50/15" : "text-neon-orange font-bold bg-neon-orange/[0.02]")
+                                                : (cIdx === 0 ? (isArch ? "text-black font-semibold font-sans" : "text-white font-semibold") : (isArch ? "text-gray-500 font-sans" : "text-gray-400"))
+                                            }`}
+                                          >
+                                            {cell}
+                                          </td>
+                                        );
+                                      })}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         )}
