@@ -130,6 +130,48 @@ const getYoutubeId = (url: string) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
+const getGalleryItemType = (imgUrl: string, idx: number, projectId: string): "render" | "drawing" | "video" => {
+  if (imgUrl.includes("#video") || imgUrl.toLowerCase().endsWith(".mp4") || imgUrl.toLowerCase().endsWith(".mov") || imgUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk") || !!getYoutubeId(imgUrl)) {
+    return "video";
+  }
+  
+  const urlLower = imgUrl.toLowerCase();
+  
+  if (projectId === "ARCH_08") {
+    if (urlLower.includes("plan") || idx === 3) return "drawing";
+    return "render";
+  }
+  if (projectId === "ARCH_02") {
+    if (urlLower.includes("detail") || urlLower.includes("design") || urlLower.includes("blueprint") || urlLower.includes("plan")) return "drawing";
+    return "render";
+  }
+  
+  if (
+    urlLower.includes("plan") || 
+    urlLower.includes("detail") || 
+    urlLower.includes("drawing") || 
+    urlLower.includes("sheet") || 
+    urlLower.includes("vector") || 
+    urlLower.includes("cad") || 
+    urlLower.includes("blueprint") || 
+    urlLower.includes("section") || 
+    urlLower.includes("elevation") || 
+    urlLower.includes("diagram") ||
+    urlLower.includes("layout") ||
+    urlLower.includes("draft") ||
+    urlLower.includes("dwg") ||
+    (projectId === "ARCH_01" && [2, 3, 4, 5].includes(idx)) ||
+    (projectId === "ARCH_05" && [4, 5, 6, 7, 8, 9, 10, 11, 12].includes(idx)) ||
+    (projectId === "ARCH_06" && (urlLower.includes("daiw") || urlLower.includes("hppo") || urlLower.includes("cnzu") || urlLower.includes("7vge") || urlLower.includes("thas") || urlLower.includes("gebl") || urlLower.includes("oqom") || urlLower.includes("emmd"))) ||
+    (projectId === "ARCH_07" && (urlLower.includes("bmbn") || urlLower.includes("dnk3") || urlLower.includes("1142"))) ||
+    (projectId === "ARCH_09" && [3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16].includes(idx))
+  ) {
+    return "drawing";
+  }
+  
+  return "render";
+};
+
 const getStaticThumbnailUrl = (src: string) => {
   if (!src) return "";
   const clean = src.split('#')[0];
@@ -245,10 +287,10 @@ const getSimLogsForProject = (id: string, stepIdx: number) => {
       ][stepIdx];
     case "BIM_07":
       return [
-        ">> Constructing parametric louvers and pergolas grid facade layout inside Rhino.\n>> Initializing variables: rotAngle, extDepth, pPitch.",
-        ">> Initializing evolutionary engine...\n>> Gen 1: Solar shading value 52% | Carbon index 1.25\n>> Gen 50: Optimized shading to 83% and reduced volume by 12%!",
-        ">> Computing embodied footprint using active database indicators.",
-        ">> Synchronizing Grasshopper UI elements with real-time performance curves."
+        ">> Formulating parametric louver definitions and active sun vectors inside Rhino.\n>> Setting independent variable bounds: rotAngle [0-90°], louvDepth [100-400mm], spacing [150-500mm].",
+        ">> Running Galapagos evolutionary engine (Single-weighted objective score)...\n>> Gen 20 reached. Best weighted fitness score: 0.812 (Convergence locked).",
+        ">> Dispatching Wallacei Pareto optimization (Independent dual targets)...\n>> Generation 50 computed. Mapping non-dominated design spaces.\n>> Pareto Front generated with 34 distinct optimal candidate structures.",
+        ">> Benchmarking solvers. Wallacei selection achieved further 18% weight savings vs Galapagos at same solar shade rating.\n>> Pipeline complete. Data charts synchronized successfully."
       ][stepIdx];
     case "BIM_09":
       return [
@@ -344,15 +386,15 @@ const getFlowchartData = (projectId: string, steps: string[]) => {
       };
     case "BIM_07":
       return {
-        start: { title: "LOCAL SUN DATA", subtitle: "Solar Angle & Weather Coordinates", desc: "Loads regional epw radiation conditions" },
+        start: { title: "CLIMATE DATA ENGINES", subtitle: "Solar Angle & Weather Matrices", desc: "Loads regional epw and solar radiation files" },
         nodes: [
-          { title: "Facade Option Modeler", subtitle: "Draws customizable facade options including louvers and horizontal sunshades", metric: "Rhino Solver" },
-          { title: "Shape Optimizer", subtitle: "Adjusts dimensions and angles automatedly to balance lighting and thermal efficiency", metric: "Adaptive Loops" },
-          { title: "Heat Absorption Calc", subtitle: "Measures sun radiation heat load hitting glazing surfaces", metric: "Sensors Dynamic" },
-          { title: "Performance Graph", subtitle: "Displays calculated heat shield results on active workspace panel", metric: "Metrics Synced" }
+          { title: "Parametric Facade Modeler", subtitle: "Formulates customizable louver dimensions and spacing vectors", metric: "Grasshopper Solver" },
+          { title: "Galapagos Single-Loop", subtitle: "Computes single weighted score using solar heat and volume variables", metric: "Genetic Algorithm" },
+          { title: "Wallacei Pareto Engine", subtitle: "Computes independent Pareto-front trade space of shade indices, cost, & mass", metric: "Evolutionary Engine" },
+          { title: "Chart Plots on Canvas", subtitle: "Visualizes parallel coordinates and benchmark graphs", metric: "18% Weight Reduced" }
         ],
-        decision: { title: "SHADING EFFICIENCY TARGET", gate: "Does facade exclude shade profiles >= 80% of direct heat?", yes: "TARGET COMPLETED", no: "ROTATION NEEDED", desc: "Ensures window thermal levels remain balanced" },
-        end: { title: "CLEAN FACADE FINALIZED", subtitle: "Sustainable Architecture", desc: "Facade details exported, achieving 83% cooling shade with 12% aluminum savings" }
+        decision: { title: "PARETO FRONT SELECTION", gate: "Do options provide >= 80% shade & active mass reduction?", yes: "EXCELLED SELECTION", no: "RE-RUN SOLVERS", desc: "Evaluates multi-dimensional trade space to find non-dominated options" },
+        end: { title: "BENCHMARKED WRITER", subtitle: "Sustainable Architecture", desc: "Custom facade geometry exported with optimal balance of carbon, cost, and active shade" }
       };
     case "BIM_09":
       return {
@@ -1077,6 +1119,7 @@ export default function App() {
   const [activeSimStep, setActiveSimStep] = useState<number>(-1);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
   const [isSimRunning, setIsSimRunning] = useState<boolean>(false);
+  const [galleryFilter, setGalleryFilter] = useState<'all' | 'render' | 'drawing' | 'video'>('all');
 
   // Clear simulator on selection change
   useEffect(() => {
@@ -1084,7 +1127,69 @@ export default function App() {
     setActiveSimStep(-1);
     setSimulationLogs([]);
     setIsSimRunning(false);
+    setGalleryFilter('all');
   }, [selectedArsenalItem]);
+
+  // Comprehensive Visual Protection Layer (Block Saving, Copying, and Downloading of Media)
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      // Completely block right clicks across the page to secure source layers
+      e.preventDefault();
+    };
+
+    const handleDragStart = (e: DragEvent) => {
+      // Prevent any image, video, canvas, or iframe from being dragged out of the window coordinates
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'IMG' || target.tagName === 'VIDEO' || target.tagName === 'IFRAME' || target.tagName === 'CANVAS')) {
+        e.preventDefault();
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isMac = navigator.platform && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const isCmdOrCtrl = isMac ? e.metaKey : e.ctrlKey;
+      
+      // Ctrl+S / Cmd+S (Prevent saving page / assets compile)
+      if (isCmdOrCtrl && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+      }
+      
+      // Ctrl+U / Cmd+Option+U (Prevent View Source)
+      if ((isCmdOrCtrl && e.key.toLowerCase() === 'u') || (isMac && isCmdOrCtrl && e.altKey && e.key.toLowerCase() === 'u')) {
+        e.preventDefault();
+      }
+
+      // Ctrl+Shift+I / Cmd+Option+I (Prevent Inspect inspector)
+      if ((isCmdOrCtrl && e.shiftKey && e.key.toLowerCase() === 'i') || (isMac && isCmdOrCtrl && e.altKey && e.key.toLowerCase() === 'i')) {
+        e.preventDefault();
+      }
+
+      // Ctrl+Shift+C / Cmd+Option+C / Inspect visual trigger
+      if ((isCmdOrCtrl && e.shiftKey && e.key.toLowerCase() === 'c') || (isMac && isCmdOrCtrl && e.altKey && e.key.toLowerCase() === 'c')) {
+        e.preventDefault();
+      }
+
+      // Ctrl+Shift+J / Cmd+Option+J (Prevent Console drawer)
+      if ((isCmdOrCtrl && e.shiftKey && e.key.toLowerCase() === 'j') || (isMac && isCmdOrCtrl && e.altKey && e.key.toLowerCase() === 'j')) {
+        e.preventDefault();
+      }
+
+      // F12 (Inspect Developer console key)
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const runWorkflowSimulation = (projectId: string, steps: string[]) => {
     if (isSimRunning) return;
@@ -1264,7 +1369,7 @@ export default function App() {
     },
     {
       id: "ARCH_02",
-      title: "Sadhu Residence Complex",
+      title: "Sadhu Nivas Residence",
       role: "Architectural Designer & BIM Modeler",
       hook: "Modular prefabrication meeting minimalistic, tranquil spiritual living.",
       description: "Designed a modular, prefabricated residential community tailored for sadhus. Crafted precise Revit 3D modeling and detailed documentation for prefab wall/slab modules, and produced atmospheric, high-fidelity renders using Twinmotion & Snaptrude.",
@@ -1281,6 +1386,31 @@ export default function App() {
           "Author precise Revit parametric families for prefabricated wall and slab modules.",
           "Integrate models dynamically between Snaptrude for rapid spatial alignment and Revit.",
           "Render tranquil landscapes and atmospheric materials in Twinmotion."
+        ]
+      },
+      details: {
+        overview: "The Sadhu Residence Complex is a visionary, non-institutional modular residential compound designed to support the minimalistic lifestyles and intense meditative routines of spiritual practitioners (sadhus).",
+        challenge: "Balancing strict architectural modular grids required for low-cost prefabrication with warm, tranquil, and atmospheric spatial qualities appropriate for deep contemplation.",
+        solution: "Engineered high-LOD Revit families for a repeating 3m x 3m precast wall/slab structural shell. Optimized layout groupings to maximize private courtyard thresholds, rendering the spiritual landscape in Twinmotion to assure acoustic safety and visual peace.",
+        images: [
+          "https://lh3.googleusercontent.com/d/1wTF4ThR7toYkbOtAQS_bQ226Ou_NIAM2",
+          "https://lh3.googleusercontent.com/d/1Ds1UzgVlSWSDZu2sLBM8VJ7RR3k4ks5c",
+          "https://lh3.googleusercontent.com/d/1tz7_0qKj9O7gMb9Y_9LRu1Nwm2kzzIYg",
+          "https://lh3.googleusercontent.com/d/1Di8ozi0jUXqKojYWEaZ-KM3EYMsBVHep",
+          "https://lh3.googleusercontent.com/d/1GsP_RnRX4wjf2BPgk93AzGhAxbzsbvyp",
+          "https://lh3.googleusercontent.com/d/1W1shkPhmOT2Y-nhdv1_-D6hbkm-Sc8gx",
+          "https://lh3.googleusercontent.com/d/16UI9YEMQHAphksfgTeCE6sBbBgC-jg0U",
+          "https://lh3.googleusercontent.com/d/1KI8zKEskTYvEeUbJUo87o86QdEdA9_m1",
+          "https://lh3.googleusercontent.com/d/1J3j_7LYpiKy8qrM9SZu7dc_vAECn4z2i",
+          "https://lh3.googleusercontent.com/d/1cm0tohPLT8u_WnCNwzvoqi46rwLeCHsO",
+          "https://lh3.googleusercontent.com/d/15wp51CpGqduNTeQLAXVpk7dBN9vS99Ku",
+          "https://lh3.googleusercontent.com/d/1c4xsY78BVQDV2jomVFD8aeMzM_s-3uGU",
+          "https://lh3.googleusercontent.com/d/1BpGCi_vwo8EG9yCysuWydBhmudsMEl8l",
+          "https://lh3.googleusercontent.com/d/1gMFMRcdBS6DYQN7ZN5WRX8HGB_ELZhVJ",
+          "https://lh3.googleusercontent.com/d/1lsUqSn-K-O5hI56tiHRXObaJwX_xeadE",
+          "https://lh3.googleusercontent.com/d/1aV_9MlRN_LWOAUA-bFk0i82I119RBRMD",
+          "https://lh3.googleusercontent.com/d/1v3uwvGvv0nB4Dx0KahIp3X47xKVCWxff",
+          "https://lh3.googleusercontent.com/d/12YaZiM-2dt8hQbGtk_VQd2rewL44zXsS"
         ]
       }
     },
@@ -1665,28 +1795,45 @@ export default function App() {
     {
       id: "BIM_07",
       title: "The Multi-Objective Eco-Parametric Solver",
-      role: "Simulation Lead",
-      hook: "Generative optimization linking Galapagos and Ladybug.",
-      description: "A generative optimization workflow linking the Galapagos evolutionary engine and Ladybug environmental analytics to calibrate complex facade and pergola geometries. The algorithm optimizes material volume versus carbon-shading profiles, automatically parsing spatial constraints to output real-time data charts straight to the Grasshopper canvas for rapid stakeholder alignment.",
+      role: "Simulation Lead & Computational Designer",
+      hook: "Single vs. Multi-Objective Generative Evolutionary Solvers: Galapagos vs. Wallacei",
+      description: "A generative optimization study benchmarking Galapagos (Single-Objective Genetic Algorithm) against Wallacei (Multi-Objective Evolutionary Engine) linked with Ladybug environmental analytics. This workflow evaluates structural material mass and carbon-shading profiles simultaneously, allowing stakeholders to contrast simple single-fitness curves with multi-dimensional Pareto-front exploration.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
-      metric: "Generative",
+      metric: "Comparative",
       gifUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
-      tags: ["Galapagos", "Ladybug", "Grasshopper", "Parametric"],
+      tags: ["Galapagos", "Wallacei", "Ladybug", "Grasshopper", "Multi-Objective", "Pareto Front"],
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-7/800/450?grayscale",
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
         steps: [
-          "Construct complex facade and pergola parametric geometries in Grasshopper.",
-          "Link the Galapagos evolutionary engine to evaluate and optimize solar shading performance via Ladybug analytics.",
-          "Calibrate the algorithm to evaluate material volume metrics against active carbon-shading profiles.",
-          "Parse spatial and structural constraints dynamically to stream real-time data charts straight to the canvas."
+          "Formulate parametric facade & louver dimensions inside Grasshopper combined with Ladybug climate engines.",
+          "Configure a Galapagos evolutionary loop using a unified weighted fitness function for single-objective optimization.",
+          "Deploy a Wallacei multi-objective solver to evaluate Pareto-front trade-offs between shading, expense, and total mass.",
+          "Compile comparative data visualizations directly on-canvas to benchmark performance curves and outputs."
         ]
       },
       details: {
-        overview: "A generative optimization workflow linking Galapagos evolutionary solver with Ladybug spatial analytics.",
-        challenge: "Balancing material minimization with maximum active shading efficacy over multi-seasonal paths.",
-        solution: "Established a closed-loop parametric solver that feeds real-time sunpath data directly into geometric iterations, producing highly efficient architectural pergolas and facades.",
-        videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing"
+        overview: "A deep comparative benchmark study contrasting single-objective (Galapagos) vs. multi-objective (Wallacei) genetic engines. By aligning both algorithms with Ladybug's solar heat gain calculations, we evaluated their geometric output, convergence velocity, and practical constructability across key building elevations.",
+        challenge: "Single-objective algorithms like Galapagos require merging disparate criteria (such as material volume and heat deflection) into a single, artificial 'weighted score' function. This tends to hide critical spatial trade-offs and risks local minima trap-states. In contrast, multi-objective engines require advanced selection frameworks but natively present non-dominated solution sets.",
+        solution: "Established a parallel comparative solver layout within Grasshopper. While Galapagos achieved rapid convergence toward a singular high-mass grid layout, Wallacei generated a multi-dimensional Pareto-front cloud. This provided stakeholders with 30+ optimized facade options which achieved a further 18% structural weight reduction while maintaining exceptional year-round shading.",
+        videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing",
+        comparisonTable: {
+          headers: ["Optimized Parameters", "Galapagos (Single-Objective)", "Wallacei (Multi-Objective)"],
+          rows: [
+            ["Optimization Target", "Single weighted index (Shading x 0.7 - Mass x 0.3)", "Multi-Criteria Pareto Front (Shading, Mass, Cost independently)"],
+            ["Average Search Gen Time", "7-12 Generations (Fast convergence but prone to local minima)", "40-60 Generations (Explaining multi-dimensional trade space)"],
+            ["Structural Volume Impact", "Sub-optimal mass; compromized envelope structures to meet single scores", "Optimized mass (18% reduction) aligned with actual structural loads"],
+            ["Decision Flexibility", "Static selection: single 'winner' geometry output", "Interactive Pareto-optimal cloud (30+ elegant design options)"],
+            ["Stakeholder Insight", "Limited design variation; difficult to explain specific trade-offs", "Rich interactive parallel coordinate plots and cluster analysis charts"]
+          ]
+        },
+        images: [
+          "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F#render",
+          "https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN#render",
+          "https://lh3.googleusercontent.com/d/1ySj-S4Cu5uqlWjv6UhVHQXj67Q9Cp7zI#drawing",
+          "https://lh3.googleusercontent.com/d/1sPPimcIWeztPLW6ClSUCM3XRLvQ_ZEY_#drawing",
+          "https://lh3.googleusercontent.com/d/1UuKn3FCJ0VMBINEO5lnmmAnt66mHlG5H#drawing"
+        ]
       }
     },
     {
@@ -2955,71 +3102,188 @@ export default function App() {
                 <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-8 md:gap-12">
                   {/* Left: Media & Workflow */}
                   <div className="space-y-8">
-                    <div className="space-y-2">
-                      <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
-                        01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
-                      </div>
-                      <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center group/pviz justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
-                        <WorkloadGif 
-                          src={selectedArsenalItem.gifUrl} 
-                          alt="Workflow GIF"
-                          isArch={isArch}
-                          forcePlay={true}
-                          isInModal={true}
-                          className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
-                        />
-                        {!isArch && (
-                          <div className="absolute top-3 left-3 px-2 py-1 bg-black/55 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/25">
-                            RAW_FEED_STREAMING...
+                    {selectedArsenalItem.id === "BIM_07" ? (
+                      <div className="space-y-4">
+                        <div className="text-[10px] font-mono uppercase tracking-widest text-[#00f3ff] flex items-center justify-between">
+                          <span>01_Comparative_Process_Visualization</span>
+                          <span className="text-[8px] text-gray-500">[Galapagos vs. Wallacei]</span>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Option A: Galapagos (Single-Objective) */}
+                          <div className="space-y-2 group/pvizg">
+                            <div className="flex justify-between items-center bg-black/45 p-2 border border-terminal-border/15 font-mono text-[9px] uppercase">
+                              <span className="text-[#00f3ff] font-semibold">Option A: Galapagos</span>
+                              <span className="text-gray-500">[Single-Objective]</span>
+                            </div>
+                            
+                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-terminal-border/20 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
+                              <WorkloadGif 
+                                src="https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F" 
+                                alt="Galapagos Loop"
+                                isArch={false}
+                                forcePlay={true}
+                                isInModal={true}
+                                className="w-full h-full object-contain p-1 pointer-events-none select-none opacity-90 transition-all duration-700"
+                              />
+                              
+                              {/* Direct overlay blocking and status watermark */}
+                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-[#00f3ff] border border-terminal-border/25 select-none pointer-events-none">
+                                GALAPAGOS_WEIGHTED_RUN: ACTIVE
+                              </div>
+
+                              {/* Transparent Absolute Overlay Shield preventing direct interactions */}
+                              <div 
+                                className="absolute inset-0 z-20 bg-transparent select-none pointer-events-auto" 
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                              />
+                              
+                              {/* Click to expand hover */}
+                              <div 
+                                onClick={() => {
+                                  setExpandedMedia({
+                                    src: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
+                                    isVideo: false,
+                                    isGif: true,
+                                    googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F"),
+                                    alt: "Galapagos Single-Objective Evolutionary Study"
+                                  });
+                                }}
+                                className="absolute inset-0 bg-black/40 opacity-0 group-hover/pvizg:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
+                              >
+                                <div className="flex items-center gap-1.5 px-2 py-1 border border-[#00f3ff] bg-black/95 text-[#00f3ff] font-mono text-[8px] tracking-wider uppercase shadow-lg">
+                                  <Maximize2 className="w-3 h-3" />
+                                  Expand Galapagos
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-terminal-border/10 rounded">
+                              Calibrates a single weighted equation index. Galapagos achieves rapid local convergence but lacks the ability to explore independent Pareto-front trade-offs.
+                            </p>
                           </div>
-                        )}
-                        {selectedArsenalItem.scriptUrl && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setExpandedMedia({
-                                src: selectedArsenalItem.scriptUrl!,
-                                isVideo: false,
-                                googleDriveId: getDriveId(selectedArsenalItem.scriptUrl!),
-                                alt: `Grasshopper Script - ${selectedArsenalItem.title}`
-                              });
-                            }}
-                            className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-[30] pointer-events-auto shadow-md ${
-                              isArch 
-                                ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
-                                : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
-                            }`}
-                          >
-                            <Code2 className="w-3.5 h-3.5 animate-pulse" />
-                            Show Script
-                          </button>
-                        )}
-                        {/* Hover overlay to expand */}
-                        <div 
-                          onClick={() => {
-                            const isVid = selectedArsenalItem.gifUrl.includes("#video") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mp4") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mov") || selectedArsenalItem.gifUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
-                            const gdId = getDriveId(selectedArsenalItem.gifUrl);
-                            setExpandedMedia({
-                              src: selectedArsenalItem.gifUrl,
-                              isVideo: isVid,
-                              isGif: !isVid,
-                              googleDriveId: gdId,
-                              alt: "Process Visualization"
-                            });
-                          }}
-                          className="absolute inset-0 bg-black/40 opacity-0 group-hover/pviz:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-20 pointer-events-auto"
-                        >
-                          <div className={`flex items-center gap-2 px-3 py-1.5 border font-mono text-[10px] tracking-widest uppercase transition-all duration-500 transform scale-95 group-hover/pviz:scale-100 ${
-                            isArch 
-                              ? "border-black bg-white text-black font-bold shadow-lg" 
-                              : "border-neon-cyan bg-black/90 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
-                          }`}>
-                            <Maximize2 className="w-3.5 h-3.5" />
-                            Expand View
+
+                          {/* Option B: Wallacei (Multi-Objective) */}
+                          <div className="space-y-2 group/pvizw">
+                            <div className="flex justify-between items-center bg-black/45 p-2 border border-terminal-border/15 font-mono text-[9px] uppercase">
+                              <span className="text-[#00f3ff] font-semibold">Option B: Wallacei</span>
+                              <span className="text-neon-cyan/80">[Multi-Objective]</span>
+                            </div>
+                            
+                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-terminal-border/25 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
+                              <WorkloadGif 
+                                src="https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN" 
+                                alt="Wallacei Engine"
+                                isArch={false}
+                                forcePlay={true}
+                                isInModal={true}
+                                className="w-full h-full object-contain p-1 pointer-events-none select-none opacity-90 transition-all duration-700"
+                              />
+                              
+                              {/* Direct overlay blocking and status watermark */}
+                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-neon-cyan border border-terminal-border/20 select-none pointer-events-none">
+                                WALLACEI_PARETO_CLOUD: ACTIVE
+                              </div>
+
+                              {/* Transparent Absolute Overlay Shield preventing direct interactions */}
+                              <div 
+                                className="absolute inset-0 z-20 bg-transparent select-none pointer-events-auto" 
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                              />
+                              
+                              {/* Click to expand hover */}
+                              <div 
+                                onClick={() => {
+                                  setExpandedMedia({
+                                    src: "https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN",
+                                    isVideo: false,
+                                    isGif: true,
+                                    googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN"),
+                                    alt: "Wallacei Multi-Objective Evolutionary Study"
+                                  });
+                                }}
+                                className="absolute inset-0 bg-black/40 opacity-0 group-hover/pvizw:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
+                              >
+                                <div className="flex items-center gap-1.5 px-2 py-1 border border-neon-cyan bg-black/95 text-neon-cyan font-mono text-[8px] tracking-wider uppercase shadow-lg">
+                                  <Maximize2 className="w-3 h-3" />
+                                  Expand Wallacei
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-terminal-border/10 rounded">
+                              Independently loops shading performance, structural mass, and cost factors, dynamically graphing a multi-dimensional Pareto non-dominated solution set.
+                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
+                          01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
+                        </div>
+                        <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center group/pviz justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
+                          <WorkloadGif 
+                            src={selectedArsenalItem.gifUrl} 
+                            alt="Workflow GIF"
+                            isArch={isArch}
+                            forcePlay={true}
+                            isInModal={true}
+                            className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
+                          />
+                          {!isArch && (
+                            <div className="absolute top-3 left-3 px-2 py-1 bg-black/55 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/25">
+                              RAW_FEED_STREAMING...
+                            </div>
+                          )}
+                          {selectedArsenalItem.scriptUrl && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setExpandedMedia({
+                                  src: selectedArsenalItem.scriptUrl!,
+                                  isVideo: false,
+                                  googleDriveId: getDriveId(selectedArsenalItem.scriptUrl!),
+                                  alt: `Grasshopper Script - ${selectedArsenalItem.title}`
+                                });
+                              }}
+                              className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-[30] pointer-events-auto shadow-md ${
+                                isArch 
+                                  ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
+                                  : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
+                              }`}
+                            >
+                              <Code2 className="w-3.5 h-3.5 animate-pulse" />
+                              Show Script
+                            </button>
+                          )}
+                          {/* Hover overlay to expand */}
+                          <div 
+                            onClick={() => {
+                              const isVid = selectedArsenalItem.gifUrl.includes("#video") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mp4") || selectedArsenalItem.gifUrl.toLowerCase().endsWith(".mov") || selectedArsenalItem.gifUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
+                              const gdId = getDriveId(selectedArsenalItem.gifUrl);
+                              setExpandedMedia({
+                                src: selectedArsenalItem.gifUrl,
+                                isVideo: isVid,
+                                isGif: !isVid,
+                                googleDriveId: gdId,
+                                alt: "Process Visualization"
+                              });
+                            }}
+                            className="absolute inset-0 bg-black/40 opacity-0 group-hover/pviz:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-20 pointer-events-auto"
+                          >
+                            <div className={`flex items-center gap-2 px-3 py-1.5 border font-mono text-[10px] tracking-widest uppercase transition-all duration-500 transform scale-95 group-hover/pviz:scale-100 ${
+                              isArch 
+                                ? "border-black bg-white text-black font-bold shadow-lg" 
+                                : "border-neon-cyan bg-black/90 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                            }`}>
+                              <Maximize2 className="w-3.5 h-3.5" />
+                              Expand View
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {selectedArsenalItem.workflow && (
                       <div className="space-y-4 md:space-y-6">
@@ -3240,63 +3504,145 @@ export default function App() {
 
                         {selectedArsenalItem.details.images && selectedArsenalItem.details.images.length > 0 && (
                           <div className="space-y-4 pt-4">
-                            <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                              09_{isArch ? "Technical_Gallery" : "System_Drawings"}
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {selectedArsenalItem.details.images.map((img, idx) => {
-                                const isVideo = img.includes("#video") || img.toLowerCase().endsWith(".mp4") || img.toLowerCase().endsWith(".mov") || img.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk") || !!getYoutubeId(img);
-                                const googleDriveId = getDriveId(img);
-                                const thumbSrc = getStaticThumbnailUrl(img);
-                                return (
-                                  <div 
-                                    key={idx} 
-                                    onClick={() => {
-                                      setExpandedMedia({
-                                        src: img,
-                                        isVideo,
-                                        googleDriveId,
-                                        alt: `Gallery Item ${idx + 1}`
-                                      });
-                                    }}
-                                    className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
-                                      isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-2">
+                              <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
+                                09_{isArch ? "Technical_Gallery_&_Visuals" : "System_Drawings_&_Analytics"}
+                              </div>
+                              
+                              {/* Gallery Navigation Tabs (Renders vs. Drawings) */}
+                              <div className="flex flex-wrap gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => setGalleryFilter('all')}
+                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                                    galleryFilter === 'all'
+                                      ? isArch
+                                        ? "bg-black text-white border-black font-bold"
+                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                      : isArch
+                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  }`}
+                                >
+                                  All ({selectedArsenalItem.details.images.length})
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setGalleryFilter('render')}
+                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                                    galleryFilter === 'render'
+                                      ? isArch
+                                        ? "bg-black text-white border-black font-bold"
+                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                      : isArch
+                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  }`}
+                                >
+                                  Renders ({
+                                    selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render').length
+                                  })
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setGalleryFilter('drawing')}
+                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                                    galleryFilter === 'drawing'
+                                      ? isArch
+                                        ? "bg-black text-white border-black font-bold"
+                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                      : isArch
+                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  }`}
+                                >
+                                  Drawings ({
+                                    selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing').length
+                                  })
+                                </button>
+                                {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video') && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setGalleryFilter('video')}
+                                    className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                                      galleryFilter === 'video'
+                                        ? isArch
+                                          ? "bg-black text-white border-black font-bold"
+                                          : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                        : isArch
+                                          ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                          : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
                                     }`}
                                   >
-                                    {/* Thumbnail Image */}
-                                    <img 
-                                      src={thumbSrc} 
-                                      alt={`Gallery Item ${idx + 1}`}
-                                      onContextMenu={(e) => e.preventDefault()}
-                                      onDragStart={(e) => e.preventDefault()}
-                                      className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
-                                        isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                    Videos ({
+                                      selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video').length
+                                    })
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {selectedArsenalItem.details.images
+                                .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
+                                .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
+                                .map(({ img, idx, type }) => {
+                                  const isVideo = type === 'video';
+                                  const googleDriveId = getDriveId(img);
+                                  const thumbSrc = getStaticThumbnailUrl(img);
+                                  return (
+                                    <div 
+                                      key={idx} 
+                                      onClick={() => {
+                                        setExpandedMedia({
+                                          src: img,
+                                          isVideo,
+                                          googleDriveId,
+                                          alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
+                                        });
+                                      }}
+                                      className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
+                                        isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
                                       }`}
-                                      referrerPolicy="no-referrer"
-                                    />
+                                    >
+                                      {/* Thumbnail Image */}
+                                      <img 
+                                        src={thumbSrc} 
+                                        alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
+                                        onContextMenu={(e) => e.preventDefault()}
+                                        onDragStart={(e) => e.preventDefault()}
+                                        className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                          isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                        }`}
+                                        referrerPolicy="no-referrer"
+                                      />
 
-                                    {/* Subtle Overlay Badge */}
-                                    <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 ${
-                                      isArch 
-                                        ? "bg-white/80 backdrop-blur text-black border-gray-200" 
-                                        : "bg-black/80 backdrop-blur text-gray-400 border-gray-800"
-                                    }`}>
-                                      {isVideo ? "VIDEO_FEED" : "IMAGE_FILE"}
-                                    </div>
-
-                                    {/* Play / Expand Overlay */}
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
-                                      <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                      {/* Subtle Overlay Badge */}
+                                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
                                         isArch 
-                                          ? "bg-white border-black text-black shadow-lg" 
-                                          : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                          ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
+                                          : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
                                       }`}>
-                                        {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                        {type === 'video' 
+                                          ? "VIDEO_FEED" 
+                                          : type === 'drawing' 
+                                            ? "TECHNICAL_DRAWING" 
+                                            : "RENDER_VISUAL"}
+                                      </div>
+
+                                      {/* Play / Expand Overlay */}
+                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                        <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                          isArch 
+                                            ? "bg-white border-black text-black shadow-lg" 
+                                            : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                        }`}>
+                                          {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                );
-                              })}
+                                  );
+                                })}
                             </div>
                           </div>
                         )}
@@ -3379,32 +3725,39 @@ export default function App() {
                     <video 
                       src={cleanPlayable}
                       controls
+                      controlsList="nodownload"
                       autoPlay
                       loop
                       playsInline
-                      className="w-full h-full object-contain absolute inset-0"
+                      className="w-full h-full object-contain absolute inset-0 select-none"
+                      onContextMenu={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   );
                 })()
               ) : (
                 (() => {
                   const googleDriveId = getDriveId(expandedMedia.src);
-                  const isAnimatedGif = expandedMedia.isGif || 
-                                        expandedMedia.alt === "Process Visualization" || 
-                                        expandedMedia.src.toLowerCase().includes("gif") || 
-                                        expandedMedia.src.includes("1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH");
                   const fullSrc = googleDriveId 
-                    ? (isAnimatedGif 
-                        ? `https://drive.google.com/uc?export=download&id=${googleDriveId}` 
-                        : `https://lh3.googleusercontent.com/d/${googleDriveId}`) 
+                    ? `https://lh3.googleusercontent.com/d/${googleDriveId}` 
                     : expandedMedia.src.split('#')[0];
                   return (
-                    <img 
-                      src={fullSrc} 
-                      alt={expandedMedia.alt}
-                      className="w-full h-full object-contain select-none absolute inset-0"
-                      referrerPolicy="no-referrer"
-                    />
+                    <div className="w-full h-full relative select-none">
+                      <img 
+                        src={fullSrc} 
+                        alt={expandedMedia.alt}
+                        className="w-full h-full object-contain select-none pointer-events-none absolute inset-0"
+                        onContextMenu={(e) => e.preventDefault()}
+                        onDragStart={(e) => e.preventDefault()}
+                        referrerPolicy="no-referrer"
+                      />
+                      {/* Transparent Absolute Overlay Shield preventing direct interactions */}
+                      <div 
+                        className="absolute inset-0 z-20 bg-transparent select-none pointer-events-auto" 
+                        onContextMenu={(e) => e.preventDefault()}
+                        onDragStart={(e) => e.preventDefault()}
+                      />
+                    </div>
                   );
                 })()
               )}

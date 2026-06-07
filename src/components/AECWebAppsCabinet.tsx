@@ -87,7 +87,9 @@ export const AECWebAppsCabinet: React.FC = () => {
               src="https://drive.google.com/thumbnail?id=1uD54l3GD2t-ul_kan00c_rV124uxlOa8&sz=w1000"
               alt="AEC Automator Hub Preview"
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85]"
+              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85] pointer-events-none select-none"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
             
             {/* Dark gradient mapping overlays matches dashboard design cleanly */}
@@ -258,7 +260,9 @@ export const AECWebAppsCabinet: React.FC = () => {
               src="https://drive.google.com/thumbnail?id=13Rvm3c9bgRm3vDWsufo4b4pvnWvIoCDo&sz=w1000"
               alt="BIM Metric Portal Preview"
               referrerPolicy="no-referrer"
-              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85]"
+              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85] pointer-events-none select-none"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
             
             {/* Dark gradient mapping overlays matches dashboard design cleanly */}
