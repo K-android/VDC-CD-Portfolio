@@ -199,6 +199,369 @@ const getPlayableVideoUrl = (url: string) => {
   return clean;
 };
 
+const getSimLogsForProject = (id: string, stepIdx: number) => {
+  switch (id) {
+    case "BIM_01":
+      return [
+        ">> Authenticating handshake with Google Vertex AI / Gemini API...\n>> [SUCCESS] Token established. Payload: 4,096 tokens max.\n>> Streaming neural panelization geometry parameters...",
+        ">> Received JSON geometry schema (128KB payload).\n>> Validating 5,000 vertices constraints with structural integrity boundaries.\n>> JSON parsed successfully.",
+        ">> Initiating Grasshopper spatial solver...\n>> Mapping mathematical bezier surfaces to parametric NURBS curves.\n>> Sub-division tessellation factor: 0.85.",
+        ">> Projecting complex geometry onto flat plane (unrolling NURBS).\n>> Auto-nesting 2D CNC cut-sheets...\n>> Cut-sheets populated in /output/cut_sheets/."
+      ][stepIdx];
+    case "BIM_02":
+      return [
+        ">> Parsing excel datasheet matrices...\n>> Mapping 450 views to standard template viewports.\n>> Initiating coordinate alignment parameters.",
+        ">> Calculating layout viewport spacing parameters.\n>> Aligning floor-plans, sections, and elevation views cleanly inside sheet grids.",
+        ">> Fetching project metadata indexes...\n>> Overwriting 10 fields across all linked dynamic legends.\n>> DB state synchronized.",
+        ">> Commencing automated batch drawing export...\n>> Compiling 350 PDF sheets with structured custom tag names.\n>> Saved 32.5 working hours this run."
+      ][stepIdx];
+    case "BIM_03":
+      return [
+        ">> Scanning active Revit master project database elements...\n>> Indexing 24,500 instance elements across active worksets.",
+        ">> Executing regex filter and nomenclature compliance tests.\n>> Corrected 85 mismatched parameter fields dynamically.",
+        ">> Establishing direct JDBC connection with financial spreadsheet catalogs.\n>> Recalculating material cost vs volume tolerances.",
+        ">> Packaging verified material takeoffs with ERP payload.\n>> Exporting data streams to ERP database system (Oracle/SAP link).\n>> Completed with 0 exceptions."
+      ][stepIdx];
+    case "BIM_04":
+      return [
+        ">> Loading federated Structural and MEP models into memory...\n>> Initiating hard clash test iterations (tolerance: 5.0mm).",
+        ">> Detected 412 raw intersections. Distilling results...\n>> Grouped clashes by physical zone and priority tags (High priority: 12).",
+        ">> Applying automated neon override colors to clash points.\n>> Injecting target viewpoints into coordinates tracking dataset.",
+        ">> Compiling coordination review dataset report.\n>> Exporting HTML/BCF compatibility charts for review team."
+      ][stepIdx];
+    case "BIM_05":
+      return [
+        ">> Extracting dimensional clearances guidelines for structural grid systems.",
+        ">> Executing Vectorworks custom placement script model.\n>> Generated 2,400 parametric terminal pipe items.",
+        ">> Verifying structural MEP pipe joins consistency inline.",
+        ">> Exporting bill of materials schedules and verification audits."
+      ][stepIdx];
+    case "BIM_06":
+      return [
+        ">> Parsing complete Project schedule file data structures.",
+        ">> Integrating timelines elements with Navisworks API data matrices.",
+        ">> Setting material installation and phase profile overlays.",
+        ">> Running multi-scenario schedule conflict analyses."
+      ][stepIdx];
+    case "BIM_07":
+      return [
+        ">> Constructing parametric louvers and pergolas grid facade layout inside Rhino.\n>> Initializing variables: rotAngle, extDepth, pPitch.",
+        ">> Initializing evolutionary engine...\n>> Gen 1: Solar shading value 52% | Carbon index 1.25\n>> Gen 50: Optimized shading to 83% and reduced volume by 12%!",
+        ">> Computing embodied footprint using active database indicators.",
+        ">> Synchronizing Grasshopper UI elements with real-time performance curves."
+      ][stepIdx];
+    case "BIM_09":
+      return [
+        ">> Voronoi algorithm executing on point clouds.\n>> Generating Biomimetic Space Frame shell.\n>> Total count: 5,124 nodes processed.",
+        ">> Extracting pure geometric topological vertices and axes matrices.\n>> Distilled: 4,500 linear struts (Lines) and 1,200 joints (Points). Ready for stream.",
+        ">> Packaging node data into JSON format.\n>> Dispatching 12MB serialized asset metadata payload via Raven AI serialization bridge.",
+        ">> Revit custom listener active on socket.\n>> Stream received: instantiating 4,500 native Parametric Structural Struts instantly.\n>> Bypassed legacy imports. Pipeline complete."
+      ][stepIdx];
+    default:
+      return [
+        ">> Fetching workflow node parameters.",
+        ">> Executing topological math matrix computation.",
+        ">> Resolving external references & dependencies.",
+        ">> Stream flushed successfully."
+      ][stepIdx] || ">> Step execution finished.";
+  }
+};
+
+const getFlowchartData = (projectId: string, steps: string[]) => {
+  const defaultSteps = steps || [];
+  switch (projectId) {
+    case "BIM_01":
+      return {
+        start: { title: "DESIGN GENERATION", subtitle: "Design Specifications & Criteria", desc: "User requirements and dimensional criteria loaded" },
+        nodes: [
+          { title: "AI Parameters Solver", subtitle: "Uses Gemini API to interpret prompt constraints into structural dimensions", metric: "Gemini Engine" },
+          { title: "Boundary Check", subtitle: "Verifies dimensions comply with local building clearance guidelines", metric: "Safety Filter" },
+          { title: "Nesting Optimization", subtitle: "Arranges flat pieces tightly on timber sheets to minimize fabrication waste", metric: "Waste Reduced 18%" },
+          { title: "Laser Cut-Path Prep", subtitle: "Formats cutting lines and coordinates into digital fabrication commands", metric: "G-Code Ready" }
+        ],
+        decision: { title: "SPATIAL COHERENCE CHECK", gate: "Do components overlap or exceed tolerances?", yes: "PASS / READY", no: "RE-RUN AUTO-ALIGN", desc: "Verifies component alignments before manufacture" },
+        end: { title: "FABRICATION DISPATCH", subtitle: "Digital Worksheets Sent", desc: "Optimal panel designs queued for workshop cutting" }
+      };
+    case "BIM_02":
+      return {
+        start: { title: "VIEWPORT SETS MATRIX", subtitle: "Drawing Views Register", desc: "Imports current sheet index spreadsheet" },
+        nodes: [
+          { title: "Auto-Templater", subtitle: "Selects corresponding sheet sizes and scales for each drawing category", metric: "Scale-to-Fit" },
+          { title: "Coordinate Alignment", subtitle: "Centers model viewports within designated viewport borders", metric: "Grid Centered" },
+          { title: "Dynamic Text Updates", subtitle: "Syncs project names, dates, page numbers, and custom revision logs", metric: "Titleblocks Active" },
+          { title: "Batch PDF Compiler", subtitle: "Prepares drawings for unified high-resolution printing queue", metric: "Print Engine" }
+        ],
+        decision: { title: "ISO STANDARDS CHECK", gate: "Are drawing titles and scales properly configured?", yes: "COMPLIANT", no: "RE-CHECK NAMES", desc: "Validates name structures against standardized layouts" },
+        end: { title: "PORTFOLIO COMMITTED", subtitle: "Autodesk Construction Cloud", desc: "Drawing sets approved and synchronized for on-site execution" }
+      };
+    case "BIM_03":
+      return {
+        start: { title: "3D MODEL PARSER", subtitle: "Revit Model Database (.RVT)", desc: "Scans active physical element registers" },
+        nodes: [
+          { title: "Model Auditor", subtitle: "Identifies unique material identifiers and associated physical dimensions", metric: "Audit Valid" },
+          { title: "Format Normalization", subtitle: "Cleans irregular parameter naming to match unified database structure", metric: "Strings Synced" },
+          { title: "Quantity Survey Link", subtitle: "Calculates total volumetric quantities and binds them to inventory costs", metric: "Excel Synced" },
+          { title: "Office Ledger Sync", subtitle: "Formats completed material estimates for database contribution", metric: "API Dispatcher" }
+        ],
+        decision: { title: "ESTIMATE DEVIATION REVIEW", gate: "Does cost estimate fall within target budget limits?", yes: "APPROVED", no: "FLAG DEVIATION", desc: "Compares current calculation against project budget boundaries" },
+        end: { title: "ESTIMATE VERIFIED", subtitle: "Schedules Synchronized", desc: "Detailed costs recorded successfully in office database" }
+      };
+    case "BIM_04":
+      return {
+        start: { title: "FEDERATED MODEL", subtitle: "Combined Structural & Trade Systems", desc: "Imports structural and mechanical coordinate grids" },
+        nodes: [
+          { title: "Intersection Search", subtitle: "Detects physical collisions between various structural and utility paths", metric: "System Clashes" },
+          { title: "Priority Classification", subtitle: "Sorts clashes by location to separate major frame issues from small utility pipe overlaps", metric: "Clash Matrix" },
+          { title: "Visual Highlights", subtitle: "Applies clear high-contrast coloring to model components for revision review", metric: "Highlight Active" },
+          { title: "Coordination Log Compiler", subtitle: "Bundles clash screenshots and camera angles for repair sheets", metric: "Issue Packager" }
+        ],
+        decision: { title: "STRUCTURAL VIOLATIONS", gate: "Does clash directly compromise core frame walls or slabs?", yes: "RESOLVED", no: "RE-ROUTE LAYOUT", desc: "Prioritizes immediate load-bearing support clearances" },
+        end: { title: "COORDINATION COMPLETE", subtitle: "Log Released Successfully", desc: "Coordinated systems approved, saving thousands in visual field rework" }
+      };
+    case "BIM_05":
+      return {
+        start: { title: "SPACE LIMITS", subtitle: "Wall Dimensions & Ceiling Boundaries", desc: "Loads clearance paths in structural rooms" },
+        nodes: [
+          { title: "Pathway Scanner", subtitle: "Identifies designated wall sleeves and allowable plumbing corridors", metric: "Clearance Filter" },
+          { title: "Automatic Path Router", subtitle: "Lays layout pipes and joints programmatically based on structural standards", metric: "Solver Active" },
+          { title: "Revit Anchor Align", subtitle: "Binds generated fittings and pipes back to active model components", metric: "Model Synced" },
+          { title: "Schedule Compiler", subtitle: "Summarizes calculated total component counts and pipe segment lengths", metric: "Schedule Ready" }
+        ],
+        decision: { title: "PLUMBING CONTIGUITY AUDIT", gate: "Are pipeline routes continuous without disconnects?", yes: "CONTIGUOUS", no: "FIX SECTIONS", desc: "Verifies pipeline path safety across connections" },
+        end: { title: "FABRICATION FILES READY", subtitle: "Modular Shop Drawings", desc: "Layout details finalized and formatted for pre-fabricated plumbing assemblies" }
+      };
+    case "BIM_06":
+      return {
+        start: { title: "TIMELINE OUTLINE", subtitle: "Milestone Build Schedule (.MPP)", desc: "Imports phased timeline and milestones" },
+        nodes: [
+          { title: "Schedule Sequence Parser", subtitle: "Interprets Gantt tasks into ordered construction stages", metric: "Timeline Loaded" },
+          { title: "Revit Model Connector", subtitle: "Binds scheduling dates to corresponding structural 3D objects", metric: "ID Linkages" },
+          { title: "Build State Overlay", subtitle: "Colors components dynamically to show active, pre-built, or demolished phases", metric: "Render Active" },
+          { title: "4D Simulation Solver", subtitle: "Analyzes construction step timing to detect trade site overlap conflicts", metric: "Conflict Solver" }
+        ],
+        decision: { title: "LOGISTICS CLASH VERIFICATION", gate: "Are worker crew areas clear of timing collisions?", yes: "CLEAR", no: "STAGGER DATES", desc: "Verifies layout spacing during rapid building periods" },
+        end: { title: "TIMELINE APPROVED", subtitle: "Operational Schedule Synced", desc: "Sequence animated successfully, reducing potential site delay hours" }
+      };
+    case "BIM_07":
+      return {
+        start: { title: "LOCAL SUN DATA", subtitle: "Solar Angle & Weather Coordinates", desc: "Loads regional epw radiation conditions" },
+        nodes: [
+          { title: "Facade Option Modeler", subtitle: "Draws customizable facade options including louvers and horizontal sunshades", metric: "Rhino Solver" },
+          { title: "Shape Optimizer", subtitle: "Adjusts dimensions and angles automatedly to balance lighting and thermal efficiency", metric: "Adaptive Loops" },
+          { title: "Heat Absorption Calc", subtitle: "Measures sun radiation heat load hitting glazing surfaces", metric: "Sensors Dynamic" },
+          { title: "Performance Graph", subtitle: "Displays calculated heat shield results on active workspace panel", metric: "Metrics Synced" }
+        ],
+        decision: { title: "SHADING EFFICIENCY TARGET", gate: "Does facade exclude shade profiles >= 80% of direct heat?", yes: "TARGET COMPLETED", no: "ROTATION NEEDED", desc: "Ensures window thermal levels remain balanced" },
+        end: { title: "CLEAN FACADE FINALIZED", subtitle: "Sustainable Architecture", desc: "Facade details exported, achieving 83% cooling shade with 12% aluminum savings" }
+      };
+    case "BIM_09":
+      return {
+        start: { title: "PHYSICAL CONTAINER OUTLINE", subtitle: "Free-form Boundary Shapes", desc: "Imports custom geometry outlines" },
+        nodes: [
+          { title: "Mesh Pattern Builder", subtitle: "Compiles uniform structural struts and hubs along curving shapes", metric: "Grid Solver" },
+          { title: "Struts & Hubs Separator", subtitle: "Splits coordinates into distinct lists for linear poles and connection hubs", metric: "Clean Profiles" },
+          { title: "Spatial Data Packer", subtitle: "Packs geometric properties into compact, shareable coordinates format", metric: "Matrix Synced" },
+          { title: "Revit Endpoint Feeder", subtitle: "Streams coordinate tables into the active drawing viewer program", metric: "Revit API Connect" }
+        ],
+        decision: { title: "STRUCTURALLY SOUND TEST", gate: "Do strut widths conform to default stability regulations?", yes: "STABLE", no: "RE-RUN SOLVER", desc: "Checks material thicknesses before building model" },
+        end: { title: "RE-PREPARED MODEL OUTLET", subtitle: "Rebuilt Native Objects", desc: "Successfully rebuilt 5,700 items with physical data back in active drawer" }
+      };
+    default:
+      return {
+        start: { title: "INPUT DATASTREAM", subtitle: "Parameters Ingestion", desc: "Initialize pipeline triggers" },
+        nodes: [
+          { title: "Extract Parameters", subtitle: defaultSteps[0] || "Process node metrics", metric: "Active" },
+          { title: "Verify Integrity", subtitle: defaultSteps[1] || "Process node metrics", metric: "Checked" },
+          { title: "Model Alignment", subtitle: defaultSteps[2] || "Process node metrics", metric: "Linked" },
+          { title: "Layout Ready", subtitle: defaultSteps[3] || "Process node metrics", metric: "Done" }
+        ],
+        decision: { title: "VALIDATION DIAGNOSTIC", gate: "Do bounds pass integrity limit?", yes: "SUCCESS", no: "RE-EVALUATE", desc: "Dynamic diagnostic checks" },
+        end: { title: "OUTPUT SYSTEM STREAM", subtitle: "Pipeline Finished", desc: "Data serialized and sent instantly" }
+      };
+  }
+};
+
+const FlowArrow = ({ isArch }: { isArch: boolean; key?: any }) => {
+  return (
+    <div className="flex flex-col items-center justify-center py-1">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="overflow-visible opacity-50">
+        <line 
+          x1="12" y1="0" x2="12" y2="24" 
+          stroke={isArch ? "#000000" : "#01f2ff"} 
+          strokeWidth="1.5" 
+          strokeDasharray={isArch ? "2 2" : "3 3"} 
+        />
+        <path 
+          d="M8 16L12 20L16 16" 
+          stroke={isArch ? "#000000" : "#01f2ff"} 
+          strokeWidth="1.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+        />
+      </svg>
+    </div>
+  );
+};
+
+const WorkflowFlowchart = ({ 
+  projectId, 
+  steps, 
+  isArch,
+  color 
+}: { 
+  projectId: string; 
+  steps: string[]; 
+  activeSimStep?: number; 
+  isSimRunning?: boolean; 
+  isArch: boolean;
+  color: string;
+}) => {
+  const data = getFlowchartData(projectId, steps);
+
+  return (
+    <div className={`font-mono text-xs rounded-lg p-2 md:p-5 transition-all duration-700 ${
+      isArch 
+        ? "bg-gray-50/50 border border-gray-150 text-gray-800" 
+        : "bg-[#04070a] border border-terminal-border/20 text-gray-400"
+    }`}>
+      {/* Start Node */}
+      <div className="flex flex-col items-center">
+        <div 
+          className={`px-4 py-2 rounded-full border text-center shadow-sm max-w-full ${
+            isArch
+              ? "border-black text-black font-semibold bg-white"
+              : "border-emerald-500/85 text-emerald-400 bg-emerald-950/15"
+          }`}
+        >
+          <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">START</div>
+          <div className="text-[10px] md:text-xs font-bold">{data.start.title}</div>
+          <div className="text-[9px] opacity-80 font-normal">{data.start.subtitle}</div>
+        </div>
+        
+        <FlowArrow isArch={isArch} />
+      </div>
+
+      {/* Sequential Process Nodes */}
+      {data.nodes.map((node, i) => {
+        return (
+          <React.Fragment key={i}>
+            <div
+              className={`border rounded p-3.5 transition-all duration-500 relative overflow-hidden ${
+                isArch
+                  ? "border-black bg-white text-black"
+                  : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              }`}
+            >
+              <div className="flex justify-between items-start gap-2 mb-1.5">
+                <span className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
+                  isArch 
+                    ? "bg-black text-white" 
+                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                }`}>
+                  PHASE 0{i + 1}
+                </span>
+                
+                {node.metric && (
+                  <span className={`text-[9px] font-bold ${
+                    isArch ? "text-black" : "text-neon-orange"
+                  }`}>
+                    {node.metric}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex gap-2.5 items-start">
+                <div className={`mt-0.5 shrink-0 w-6 h-6 rounded-full border flex items-center justify-center ${
+                  isArch
+                    ? "border-black text-black bg-white"
+                    : "border-terminal-border/40 text-gray-400 bg-black/40"
+                }`}>
+                  <Cpu className="w-3.5 h-3.5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className={`text-[11px] font-bold tracking-tight ${
+                    isArch ? "text-black" : "text-gray-100"
+                  }`}>
+                    {node.title}
+                  </h4>
+                  <p className={`text-[10px] leading-relaxed mt-0.5 font-normal ${
+                    isArch ? "text-gray-600" : "text-gray-400"
+                  }`}>
+                    {node.subtitle}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Render arrow pointing to next step */}
+            {i === 2 ? (
+              <div className="flex flex-col items-center py-2" key={`dec-${i}`}>
+                <FlowArrow isArch={isArch} />
+                
+                {/* Decision Gate Diamond Node */}
+                <div className="flex justify-center items-center my-2 relative max-w-full">
+                  <div className={`relative px-4 py-4 rounded-xl border flex flex-col items-center justify-center max-w-xs ${
+                    isArch 
+                      ? "border-black bg-white text-black text-center shadow-md font-semibold"
+                      : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
+                  }`}>
+                    {/* Branch Labels */}
+                    <div className="absolute -left-12 top-1/2 transform -translate-y-1/2 flex items-center font-bold text-[8px] text-red-500/70 select-none">
+                      <span>[ALT]</span>
+                      <span className="shrink-0 h-[1px] w-3 bg-red-850 ml-1" />
+                    </div>
+                    <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex items-center font-bold text-[8px] text-emerald-400/80 select-none">
+                      <span className="shrink-0 h-[1px] w-3 bg-emerald-800 mr-1" />
+                      <span>[APPROVED]</span>
+                    </div>
+
+                    <div className="text-[7.5px] uppercase font-bold tracking-widest text-gray-500">ASSURANCE GATE</div>
+                    <div className="text-[10px] font-bold text-center mt-1 text-neon-orange">{data.decision.title}</div>
+                    <div className="text-[9px] font-medium text-center border border-dashed border-terminal-border/10 px-2 py-0.5 rounded mt-1.5 bg-black/40 text-gray-400">
+                      Rule: {data.decision.gate}
+                    </div>
+                    
+                    <div className={`text-[8px] font-bold uppercase tracking-wider mt-1.5 px-2 py-0.5 rounded ${
+                      isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
+                    }`}>
+                      STATUS: {data.decision.yes}
+                    </div>
+                  </div>
+                </div>
+
+                <FlowArrow isArch={isArch} />
+              </div>
+            ) : i < 3 ? (
+              <FlowArrow isArch={isArch} key={`arr-${i}`} />
+            ) : null}
+          </React.Fragment>
+        );
+      })}
+
+      {/* Connect Node 4 to END TERMINATE Node */}
+      <FlowArrow isArch={isArch} />
+
+      {/* End Node */}
+      <div className="flex flex-col items-center">
+        <div 
+          className={`px-4 py-2.5 rounded-xl border text-center max-w-full ${
+            isArch
+              ? "border-black bg-white text-black font-semibold shadow-md"
+              : "border-emerald-500/60 bg-emerald-950/30 text-emerald-300"
+          }`}
+        >
+          <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">DISPATCH TARGET</div>
+          <div className="text-[10px] md:text-xs font-bold text-emerald-400 flex items-center justify-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            {data.end.title}
+          </div>
+          <div className="text-[9px] font-normal opacity-90 mt-0.5">{data.end.desc}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const WorkloadGif = ({ 
   src, 
   alt, 
@@ -433,6 +796,42 @@ const ProjectCard = ({
               </span>
             ))}
           </div>
+
+          {/* Compact Workflow Steps Preview */}
+          {!isArch && item.workflow?.steps && (
+            <div className="mt-4 pt-3.5 border-t border-terminal-border/10 flex items-center justify-between font-mono text-[9px] text-gray-400">
+              <span className="flex items-center gap-1.5 text-neon-cyan/70 font-semibold uppercase tracking-wider">
+                <Activity className="w-3.5 h-3.5 animate-pulse text-neon-cyan" />
+                Pipeline Flow:
+              </span>
+              <div className="flex gap-1.5 items-center">
+                {/* Node 1 */}
+                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Start Data Stream">1</span>
+                
+                <span className="text-terminal-border/30 text-[7px]">→</span>
+                
+                {/* Node 2 */}
+                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Process Logic mapping">2</span>
+                
+                <span className="text-terminal-border/30 text-[7px]">→</span>
+                
+                {/* Node 3 */}
+                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Parameter Verification">3</span>
+                
+                <span className="text-terminal-border/30 text-[7px]">→</span>
+                
+                {/* Decision Diamond */}
+                <span className="w-4 h-4 rotate-45 border border-neon-orange/40 bg-neon-orange/10 flex items-center justify-center text-neon-orange scale-95" title="Decision Check Gate">
+                  <span className="-rotate-45 text-[7px] font-extrabold font-sans">◆</span>
+                </span>
+                
+                <span className="text-terminal-border/30 text-[7px]">→</span>
+                
+                {/* Node 4 */}
+                <span className="w-4 h-4 rounded-full border border-emerald-500/40 bg-emerald-950/10 flex items-center justify-center text-[7.5px] text-emerald-400 font-bold" title="End dispatch node">✔</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
@@ -672,6 +1071,59 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // VDC Core Workflow Logic Processor States
+  const [simulatingWorkflowId, setSimulatingWorkflowId] = useState<string | null>(null);
+  const [activeSimStep, setActiveSimStep] = useState<number>(-1);
+  const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
+  const [isSimRunning, setIsSimRunning] = useState<boolean>(false);
+
+  // Clear simulator on selection change
+  useEffect(() => {
+    setSimulatingWorkflowId(null);
+    setActiveSimStep(-1);
+    setSimulationLogs([]);
+    setIsSimRunning(false);
+  }, [selectedArsenalItem]);
+
+  const runWorkflowSimulation = (projectId: string, steps: string[]) => {
+    if (isSimRunning) return;
+    setIsSimRunning(true);
+    setSimulatingWorkflowId(projectId);
+    setActiveSimStep(0);
+    
+    const initLogs = [
+      `>> Handshaking secure listener endpoint for workflow assembly [${projectId}]...`,
+      `>> Loading computational schema variables in local sandbox...`,
+      `[STEP 01]: Running...`,
+      getSimLogsForProject(projectId, 0)
+    ];
+    setSimulationLogs(initLogs);
+
+    let currentStep = 0;
+    
+    const interval = setInterval(() => {
+      currentStep += 1;
+      if (currentStep < steps.length) {
+        setActiveSimStep(currentStep);
+        const nextLog = getSimLogsForProject(projectId, currentStep);
+        setSimulationLogs(prev => [
+          ...prev, 
+          `[STEP 0${currentStep + 1}]: Running...`, 
+          nextLog
+        ]);
+      } else {
+        clearInterval(interval);
+        setActiveSimStep(steps.length);
+        setSimulationLogs(prev => [
+          ...prev, 
+          `[SUCCESS]: PIPELINE FULLY SERIALIZED, COMPILED, AND INJECTED SUCESSFULLY. ENTIRE CALCULATION EXECUTED IN 42ms.`,
+          `>> Dynamic system updates synced to parent portfolio dashboard.`
+        ]);
+        setIsSimRunning(false);
+      }
+    }, 1500);
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -2574,16 +3026,38 @@ export default function App() {
                         <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-terminal-border"}`}>
                           02_{isArch ? "Methodology" : "Execution_Logic"}
                         </div>
-                        <div className="space-y-3 md:space-y-4">
-                          {selectedArsenalItem.workflow.steps.map((step, i) => (
-                            <div key={i} className="flex gap-3 md:gap-4 items-start">
-                              <div className={`font-mono text-[10px] md:text-xs pt-0.5 md:pt-1 ${isArch ? "text-black font-semibold" : "text-neon-cyan"}`}>0{i + 1}</div>
-                              <div className={`text-xs md:text-sm font-mono leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400"}`}>
-                                {step}
+                        
+                        {["ARCH_02", "ARCH_08"].includes(selectedArsenalItem.id) ? (
+                          <div className={`space-y-4 p-4 md:p-5 rounded-lg ${
+                            isArch 
+                              ? "bg-gray-50/50 border border-gray-150" 
+                              : "bg-[#04070a] border border-terminal-border/20"
+                          }`}>
+                            {selectedArsenalItem.workflow.steps.map((step, i) => (
+                              <div key={i} className="flex gap-4 items-start">
+                                <span className={`font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
+                                  isArch 
+                                    ? "bg-black text-white" 
+                                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                                }`}>
+                                  0{i + 1}
+                                </span>
+                                <p className={`text-xs md:text-sm leading-relaxed ${
+                                  isArch ? "text-gray-600" : "text-gray-300"
+                                }`}>
+                                  {step}
+                                </p>
                               </div>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <WorkflowFlowchart 
+                            projectId={selectedArsenalItem.id}
+                            steps={selectedArsenalItem.workflow.steps}
+                            isArch={isArch}
+                            color={selectedArsenalItem.color}
+                          />
+                        )}
                       </div>
                     )}
 
