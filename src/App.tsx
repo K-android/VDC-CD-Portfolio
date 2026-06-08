@@ -3305,6 +3305,53 @@ export default function App() {
                       </div>
                     )}
 
+                    {selectedArsenalItem.id === "ARCH_05" && (
+                      <div className="space-y-4 pt-2">
+                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 ${isArch ? "text-stone-900 border-gray-100" : "text-white border-terminal-border"}`}>
+                          03_Thesis_Presentation_Sheets
+                        </div>
+                        
+                        <div className={`p-4 border rounded flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-700 ${
+                          isArch 
+                            ? "bg-amber-50/50 border-amber-200/60" 
+                            : "bg-neon-cyan/5 border-neon-cyan/20"
+                        }`}>
+                          <div className="space-y-1">
+                            <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
+                              Academic Presentation Boards
+                            </h4>
+                            <p className={`text-[11px] leading-relaxed max-w-lg ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
+                              Natively browse the structural masterplans, section elevations, biophilic layout boards, and detailed execution design sheets.
+                            </p>
+                          </div>
+                          <a
+                            href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`shrink-0 px-3 py-1.5 border font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
+                              isArch 
+                                ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                                : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                            }`}
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Open Full drive
+                          </a>
+                        </div>
+                        
+                        <div className={`w-full h-[520px] border shadow-inner relative overflow-hidden rounded ${
+                          isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
+                        }`}>
+                          <iframe
+                            src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
+                            className="w-full h-full border-0"
+                            title="Karunya Hospice Thesis Sheets Viewer Layout"
+                            allow="autoplay"
+                          ></iframe>
+                        </div>
+                      </div>
+                    )}
+
 
                   </div>
 
@@ -3568,131 +3615,71 @@ export default function App() {
                                     })
                                   </button>
                                 )}
-                                {selectedArsenalItem.id === "ARCH_05" && (
-                                  <button
-                                    type="button"
-                                    onClick={() => setGalleryFilter('sheets')}
-                                    className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                                      galleryFilter === 'sheets'
-                                        ? isArch
-                                          ? "bg-black text-white border-black font-bold"
-                                          : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                                        : isArch
-                                          ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                          : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                                    }`}
-                                  >
-                                    Presentation Sheets (Drive)
-                                  </button>
-                                )}
                               </div>
                             </div>
                             
-                            {galleryFilter === 'sheets' ? (
-                              <div className="space-y-4 w-full">
-                                <div className={`p-4 border rounded flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-700 ${
-                                  isArch 
-                                    ? "bg-amber-50/50 border-amber-200/60" 
-                                    : "bg-neon-cyan/5 border-neon-cyan/20"
-                                }`}>
-                                  <div className="space-y-1">
-                                    <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
-                                      Thesis Presentation Sheets (BMSCA)
-                                    </h4>
-                                    <p className={`text-[11px] leading-relaxed max-w-2xl ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
-                                      All presentation boards, structural layouts, and detail sheets explaining the biophilic healthcare concept are loaded within the active Google Drive folder. Use the explorer below to browse natively or click the link to view the full folder on Google Drive.
-                                    </p>
-                                  </div>
-                                  <a
-                                    href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`shrink-0 px-3 py-1.5 border font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
-                                      isArch 
-                                        ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                        : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
-                                    }`}
-                                  >
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                    Open Full Drive Folder
-                                  </a>
-                                </div>
-                                
-                                <div className={`w-full h-[520px] border shadow-inner relative overflow-hidden rounded ${
-                                  isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
-                                }`}>
-                                  <iframe
-                                    src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
-                                    className="w-full h-full border-0"
-                                    title="Karunya Hospice Thesis Sheets Viewer"
-                                    allow="autoplay"
-                                  ></iframe>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {selectedArsenalItem.details.images
-                                  .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
-                                  .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
-                                  .map(({ img, idx, type }) => {
-                                    const isVideo = type === 'video';
-                                    const googleDriveId = getDriveId(img);
-                                    const thumbSrc = getStaticThumbnailUrl(img);
-                                    return (
-                                      <div 
-                                        key={idx} 
-                                        onClick={() => {
-                                          setExpandedMedia({
-                                            src: img,
-                                            isVideo,
-                                            googleDriveId,
-                                            alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
-                                          });
-                                        }}
-                                        className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
-                                          isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {selectedArsenalItem.details.images
+                                .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
+                                .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
+                                .map(({ img, idx, type }) => {
+                                  const isVideo = type === 'video';
+                                  const googleDriveId = getDriveId(img);
+                                  const thumbSrc = getStaticThumbnailUrl(img);
+                                  return (
+                                    <div 
+                                      key={idx} 
+                                      onClick={() => {
+                                        setExpandedMedia({
+                                          src: img,
+                                          isVideo,
+                                          googleDriveId,
+                                          alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
+                                        });
+                                      }}
+                                      className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
+                                        isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
+                                      }`}
+                                    >
+                                      {/* Thumbnail Image */}
+                                      <img 
+                                        src={thumbSrc} 
+                                        alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
+                                        onContextMenu={(e) => e.preventDefault()}
+                                        onDragStart={(e) => e.preventDefault()}
+                                        className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                          isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
                                         }`}
-                                      >
-                                        {/* Thumbnail Image */}
-                                        <img 
-                                          src={thumbSrc} 
-                                          alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
-                                          onContextMenu={(e) => e.preventDefault()}
-                                          onDragStart={(e) => e.preventDefault()}
-                                          className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
-                                            isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
-                                          }`}
-                                          referrerPolicy="no-referrer"
-                                        />
-  
-                                        {/* Subtle Overlay Badge */}
-                                        <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
+                                        referrerPolicy="no-referrer"
+                                      />
+
+                                      {/* Subtle Overlay Badge */}
+                                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
+                                        isArch 
+                                          ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
+                                          : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
+                                      }`}>
+                                        {type === 'video' 
+                                          ? "VIDEO_FEED" 
+                                          : type === 'drawing' 
+                                            ? "TECHNICAL_DRAWING" 
+                                            : "RENDER_VISUAL"}
+                                      </div>
+
+                                      {/* Play / Expand Overlay */}
+                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                        <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
                                           isArch 
-                                            ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
-                                            : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
+                                            ? "bg-white border-black text-black shadow-lg" 
+                                            : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
                                         }`}>
-                                          {type === 'video' 
-                                            ? "VIDEO_FEED" 
-                                            : type === 'drawing' 
-                                              ? "TECHNICAL_DRAWING" 
-                                              : "RENDER_VISUAL"}
-                                        </div>
-  
-                                        {/* Play / Expand Overlay */}
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
-                                          <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
-                                            isArch 
-                                              ? "bg-white border-black text-black shadow-lg" 
-                                              : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
-                                          }`}>
-                                            {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
-                                          </div>
+                                          {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
                                         </div>
                                       </div>
-                                    );
-                                  })}
-                              </div>
-                            )}
+                                    </div>
+                                  );
+                                })}
+                            </div>
                           </div>
                         )}
                       </>
