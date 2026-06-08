@@ -982,11 +982,15 @@ const ProjectCard = ({
 
   return (
     <motion.div 
-      variants={{
-        hidden: { opacity: 0, y: 15 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ 
+        y: -10, 
+        scale: 1.015,
+        transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
       }}
-      whileHover={{ y: -8 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
@@ -1199,6 +1203,11 @@ interface ArsenalItem {
   category?: string;
   isVerified?: boolean;
   scriptUrl?: string;
+  ledger?: {
+    inputs: string;
+    engine: string;
+    outputs: string;
+  };
   workflow?: {
     screenshotUrl: string;
     steps: string[];
@@ -1509,6 +1518,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH",
       tags: ["Performance Simulation", "DesignBuilder", "IESVE"],
       category: "Exterior",
+      ledger: {
+        inputs: "Climatic EPW Data, Schematic Spatial Footprint",
+        engine: "Ladybug (Grasshopper), EnergyPlus, Solar Decathlon Metrics",
+        outputs: "Optimized Double-Skin Facade, Daylighting & Acoustic Comfort Maps"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
         steps: [
@@ -1548,7 +1562,7 @@ export default function App() {
     {
       id: "ARCH_08",
       title: "Villa Project - IMK internship",
-      role: "Architectural Intern",
+      role: "Computational Designer & Automation Specialist",
       hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
       description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
@@ -1557,6 +1571,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
       tags: ["Vectorworks", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
       category: "Conceptual",
+      ledger: {
+        inputs: "Schematic Spatial CAD Program, Site Microclimatic Context",
+        engine: "Vectorworks BIM, Passive Cooling Algorithms, Twinmotion Render",
+        outputs: "Interactive Real-time Landscape Animations, High-LOD Construction Details"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
         steps: [
@@ -1590,6 +1609,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
       tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
       category: "Conceptual",
+      ledger: {
+        inputs: "Prefab Community Spatial Brief, Structural Module Grid",
+        engine: "Revit, Snaptrude Conceptualizer, Twinmotion Atmosphere Engine",
+        outputs: "High-LOD Modular Precast Families, Spiritual Landscape Visualization"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
         steps: [
@@ -1637,6 +1661,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1cEY_3KZExGtCPAO_BJLjaEXJW2yUMLlM",
       tags: ["Healthcare Design", "Biophilic Architecture", "Thesis", "Pratibimbh Journal"],
       category: "Exterior",
+      ledger: {
+        inputs: "End-of-life Palliative Care Spatial Brief, Natural Site Context",
+        engine: "Master Planning, Healing Spatial Algorithms, Spatial Ecology",
+        outputs: "Dignity-Centered Healing Gardens, Organic Architectural Layouts"
+      },
       details: {
         publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, celebrating exemplary student design research and execution.",
         sheetsUrl: "https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing",
@@ -1682,6 +1711,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1UueeMY09uP6M6tZWtjhFKjzENJhUIpEs",
       tags: ["Fabrication", "Materiality", "On-Site Assembly"],
       category: "Fabrication",
+      ledger: {
+        inputs: "Decommissioned Public Transit Bus, Local Salvage Material Log",
+        engine: "Adaptive Reuse Computation, Hands-on Metal & Wood Fabrication",
+        outputs: "National Citation Award, Finished Community Gathering Pavilion"
+      },
       details: {
         overview: "The Recycled Bus Pavilion was a live design-build project aimed at demonstrating the potential of 'upcycling' industrial waste into community infrastructure.",
         challenge: "Working with a rigid, pre-existing structural shell (the bus) and adapting it to a new, open-ended public function while ensuring structural safety.",
@@ -1719,6 +1753,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk",
       tags: ["Bamboo", "Parametric Design", "Hands-on"],
       category: "Fabrication",
+      ledger: {
+        inputs: "Organic Bamboo Pole Culms, Custom Parametric Node Templates",
+        engine: "Grasshopper Parametric Structural Simulation, Physical Joint Testing",
+        outputs: "Rapid On-site Modular Assembly, Self-Supporting Bamboo Joinery"
+      },
       details: {
         overview: "The Bamboo Pavilion was an experimental structure that merged traditional bamboo construction with computational design logic.",
         challenge: "Bamboo is a non-standard material with varying diameters and strengths, making precise joinery difficult for a complex grid shell.",
@@ -1756,6 +1795,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1-13UZk0cblRjpTkrX_fwUGymHhEtcTYW",
       tags: ["Grasshopper", "Ladybug Analysis", "Double-Skin Facade", "Commercial Architecture", "Academic"],
       category: "Exterior",
+      ledger: {
+        inputs: "Commercial High-Rise Architectural Program, Mangaluru Climate Log",
+        engine: "Grasshopper Facade Optimization, Ladybug Daylight Hours Solver",
+        outputs: "Self-Shading Architectural Facade, Pocket Green Roof Plazas"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1hG1dISPuq8c91Xk-BLArl32al89adqXa",
         steps: [
@@ -1810,6 +1854,11 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
       tags: ["Interior Design", "Materiality", "Lighting Design"],
       category: "Interior",
+      ledger: {
+        inputs: "Raw Concrete Spatial Container, Coffee Brewing Sensory Sequence",
+        engine: "Tactile Material Mapping, Strategic High-Contrast Point Radiance",
+        outputs: "Finished High-End Café Interior, Material Texture Specifications"
+      },
       details: {
         overview: "The Caffeine Lab is a boutique coffee house designed to be a sanctuary for urban dwellers. The project emphasizes the 'third space' concept—a place between home and work where community and creativity thrive.",
         challenge: "The primary challenge was to transform a narrow, deep commercial space with limited natural light into a vibrant and inviting environment without feeling claustrophobic.",
@@ -1842,6 +1891,11 @@ export default function App() {
       metric: "Generative API",
       gifUrl: "https://lh3.googleusercontent.com/d/11sFI5d1bszNSdrgzSsTwC6NF1POaMzv1",
       tags: ["Python API", "Grasshopper", "Digital Fabrication", "JSON"],
+      ledger: {
+        inputs: "NURBS Surface, Gemini LLM API Session",
+        engine: "Python (GHPython), Grasshopper, JSON Parser",
+        outputs: "Optimized Panelization Constraints, 2D Laser-Cut Sheets"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-llm/800/450?grayscale",
         steps: [
@@ -1879,6 +1933,11 @@ export default function App() {
       content: <CodeSnippet />,
       gifUrl: "https://lh3.googleusercontent.com/d/1m17edUmGzmk5KxO9aepinIVhFUjyCMjU",
       tags: ["Revit API", "Dynamo", "Python"],
+      ledger: {
+        inputs: "Revit RVT, Excel Schedule Matrix",
+        engine: "C#, Revit API, LINQ, Dynamo",
+        outputs: "Automated Sheet Sets, CSV Log Reports"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-1/800/450?grayscale",
         steps: [
@@ -1907,6 +1966,11 @@ export default function App() {
       content: <DataTable />,
       gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
       tags: ["Dynamo", "Excel"],
+      ledger: {
+        inputs: "Federated Revit RVT Models (Multidisciplinary)",
+        engine: "Dynamo, DesignScript, Excel Interop API",
+        outputs: "Clean Bill of Quantities (BOQ), Parameter Integrity Reports"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-2/800/450?grayscale",
         steps: [
@@ -1934,6 +1998,11 @@ export default function App() {
       metric: "Zero Errors",
       gifUrl: "https://lh3.googleusercontent.com/d/1G_5-CuXFQuIf9mft1d6CauX29EmntKOE",
       tags: ["Navisworks Manage", "Revit NWC Exporter"],
+      ledger: {
+        inputs: "Structural NWC, MEP Plumbing NWC, XML Rules Matrix",
+        engine: "Navisworks Manage, Clash Detective API, Python NWC Exporter",
+        outputs: "Active Hard-Clash Intersections, HTML Coordination Ledger"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-4/800/450?grayscale",
         steps: [
@@ -1962,6 +2031,11 @@ export default function App() {
       metric: "Automation",
       gifUrl: "https://lh3.googleusercontent.com/d/1dR5ajQdvGdR3YJOvScsAu_uteRfCiuVt",
       tags: ["Vectorworks", "Marionette", "BIM Model"],
+      ledger: {
+        inputs: "Architectural Spatial Shell, MEP Asset Database (.vwx)",
+        engine: "Vectorworks Marionette, Python, Parametric Nodes",
+        outputs: "Automated 3D Component Instantiation, Live Synchronized Parameters"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-5/800/450?grayscale",
         steps: [
@@ -1989,6 +2063,11 @@ export default function App() {
       metric: "4D Simulation",
       gifUrl: "https://lh3.googleusercontent.com/d/1qpMsNkw8HaPhf97qubs7GEV1BkZKsydz",
       tags: ["Navisworks Manage", "TimeLiner"],
+      ledger: {
+        inputs: "Revit RVT Model, MS Project XML Schedule",
+        engine: "Navisworks TimeLiner, CSV Field Mappings",
+        outputs: "4D Construction Sequence Simulation, Time-Liner Sequence Logs"
+      },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-6/800/450?grayscale",
         steps: [
@@ -2016,6 +2095,11 @@ export default function App() {
       metric: "Comparative",
       gifUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
       tags: ["Galapagos", "Wallacei", "Ladybug", "Grasshopper", "Multi-Objective", "Pareto Front"],
+      ledger: {
+        inputs: "Grasshopper Geometry, Epw Weather File, Fitness Boundary Parameters",
+        engine: "Galapagos Solver (SO), Wallacei Evolutionary Engine (MO), Ladybug EPA",
+        outputs: "Pareto Non-Dominated Solutions Cloud, High-Contrast Multi-Variable Graphs"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
         steps: [
@@ -2060,6 +2144,11 @@ export default function App() {
       metric: "45s Compile",
       gifUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
       tags: ["Grasshopper 3D", "Revit API", "Raven AI", "JSON", "Python"],
+      ledger: {
+        inputs: "Rhino 3DM NURBS, JSON Typology Maps",
+        engine: "Revit API, C# Node Compiler, GitHub Raven AI API",
+        outputs: "LOD 400 Revit Conceptual Massing, Parameter-Synced Direct Shapes"
+      },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
         steps: [
@@ -2131,7 +2220,7 @@ export default function App() {
     {
       year: "Dec 2025 - Present",
       company: "IMK Architects",
-      role: "Architectural Intern",
+      role: "Computational Designer and Automation Specialist",
       description: "Assisting with large-scale design coordination and modeling pipelines. Writing custom scripts to automate repetitive drawing and data entry tasks."
     },
     {
@@ -2143,7 +2232,7 @@ export default function App() {
     {
       year: "July 2025 - Sept 2025",
       company: "E.D.P Consultants",
-      role: "Architectural Intern",
+      role: "Computational Designer and Automation Specialist",
       description: "Created construction drawing sets, layouts, and high-quality 3D renders for residential client presentations."
     },
     {
@@ -2598,7 +2687,7 @@ export default function App() {
                 </div>
                 
                 <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-neon-cyan">
-                  KARTHIKRAJ V NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
+                  KARTHIKRAJ NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
                 </div>
                 
                 <h1 className="text-2xl md:text-5xl font-mono tracking-tighter leading-[1.1] mb-4 text-white uppercase font-bold">
@@ -2824,7 +2913,7 @@ export default function App() {
                 </div>
                 
                 <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-gray-400">
-                  Karthikraj V Nadar, Architect &amp; Spatial Visionary.
+                  Karthikraj Nadar, Architect &amp; Spatial Visionary.
                 </div>
                 
                 <h1 className="text-2xl md:text-5xl font-serif font-light tracking-tighter leading-[1.1] mb-4 text-black italic">
@@ -3050,7 +3139,7 @@ export default function App() {
                 </div>
                 <div className="text-gray-400 italic text-[10px] md:text-xs">
                   {isArch 
-                    ? "Karthikraj V Nadar. Architectural Intern. AEC Workflow Automation." 
+                    ? "Karthikraj Nadar. Computational Designer & Automation Specialist." 
                     : "BIM/VDC & ISO 19650. Computational Design. Dynamo • Python."}
                 </div>
                 
@@ -3556,6 +3645,53 @@ export default function App() {
 
                   {/* Right: Detailed Content */}
                   <div className="space-y-10">
+                    {selectedArsenalItem.ledger && (
+                      <div className="space-y-3">
+                        <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-500" : "text-neon-cyan"}`}>
+                          03_{isArch ? "PROJECT_LEDGER" : "TECHNICAL_LEDGER"}
+                        </div>
+                        <div className={`grid grid-cols-1 md:grid-cols-3 gap-3 p-4 border transition-all duration-700 rounded-xl ${
+                          isArch 
+                            ? "bg-stone-50/70 border-stone-200 text-stone-800" 
+                            : "bg-black/90 border-[#00f3ff]/20 text-gray-300 shadow-[0_0_15px_rgba(0,243,255,0.02)]"
+                        }`}>
+                          {/* Inputs */}
+                          <div className={`flex flex-col space-y-1 pr-2 ${
+                            isArch ? "border-stone-200" : "border-terminal-border/15"
+                          } border-r-0 md:border-r border-dashed last:border-0`}>
+                            <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-neon-cyan"}`}>
+                              INPUTS
+                            </span>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                              {selectedArsenalItem.ledger.inputs}
+                            </span>
+                          </div>
+
+                          {/* Engine / Process */}
+                          <div className={`flex flex-col space-y-1 pr-2 ${
+                            isArch ? "border-stone-200" : "border-terminal-border/15"
+                          } border-r-0 md:border-r border-dashed last:border-0`}>
+                            <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                              {isArch ? "PROCESS" : "ENGINE"}
+                            </span>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                              {selectedArsenalItem.ledger.engine}
+                            </span>
+                          </div>
+
+                          {/* Outputs */}
+                          <div className="flex flex-col space-y-1">
+                            <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-emerald-400"}`}>
+                              OUTPUTS
+                            </span>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                              {selectedArsenalItem.ledger.outputs}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="space-y-4">
                       <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                         04_Description
