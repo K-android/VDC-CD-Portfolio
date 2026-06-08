@@ -425,9 +425,30 @@ const getFlowchartData = (projectId: string, steps: string[]) => {
   }
 };
 
-const FlowArrow = ({ isArch }: { isArch: boolean; key?: any }) => {
+const FlowArrow = ({ isArch, horizontal = false }: { isArch: boolean; horizontal?: boolean; key?: any }) => {
+  if (horizontal) {
+    return (
+      <div className="flex items-center justify-center px-1 shrink-0">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="overflow-visible opacity-50">
+          <line 
+            x1="0" y1="12" x2="24" y2="12" 
+            stroke={isArch ? "#000000" : "#01f2ff"} 
+            strokeWidth="1.5" 
+            strokeDasharray={isArch ? "2 2" : "3 3"} 
+          />
+          <path 
+            d="M16 8L20 12L16 16" 
+            stroke={isArch ? "#000000" : "#01f2ff"} 
+            strokeWidth="1.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+          />
+        </svg>
+      </div>
+    );
+  }
   return (
-    <div className="flex flex-col items-center justify-center py-1">
+    <div className="flex flex-col items-center justify-center py-1 shrink-0">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="overflow-visible opacity-50">
         <line 
           x1="12" y1="0" x2="12" y2="24" 
@@ -461,150 +482,371 @@ const WorkflowFlowchart = ({
   color: string;
 }) => {
   const data = getFlowchartData(projectId, steps);
-
   return (
-    <div className={`font-mono text-xs rounded-lg p-2 md:p-5 transition-all duration-700 ${
+    <div className={`font-mono text-xs rounded-lg p-4 md:p-6 transition-all duration-700 ${
       isArch 
         ? "bg-gray-50/50 border border-gray-150 text-gray-800" 
         : "bg-[#04070a] border border-terminal-border/20 text-gray-400"
     }`}>
-      {/* Start Node */}
-      <div className="flex flex-col items-center">
-        <div 
-          className={`px-4 py-2 rounded-full border text-center shadow-sm max-w-full ${
-            isArch
-              ? "border-black text-black font-semibold bg-white"
-              : "border-emerald-500/85 text-emerald-400 bg-emerald-950/15"
-          }`}
-        >
-          <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">START</div>
-          <div className="text-[10px] md:text-xs font-bold">{data.start.title}</div>
-          <div className="text-[9px] opacity-80 font-normal">{data.start.subtitle}</div>
+      {/* Mobile/Vertical View */}
+      <div className="flex flex-col items-center gap-2 lg:hidden w-full">
+        {/* Start Node */}
+        <div className="flex flex-col items-center w-full max-w-sm">
+          <div 
+            className={`px-4 py-3 rounded-xl border text-center shadow-sm w-full ${
+              isArch
+                ? "border-black text-black font-semibold bg-white"
+                : "border-emerald-500/85 text-emerald-400 bg-emerald-950/15"
+            }`}
+          >
+            <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold">START</div>
+            <div className="text-[10px] md:text-[11px] font-bold">{data.start.title}</div>
+            <div className="text-[9px] opacity-80 font-normal leading-relaxed mt-0.5">{data.start.subtitle}</div>
+          </div>
+          <FlowArrow isArch={isArch} horizontal={false} />
         </div>
-        
-        <FlowArrow isArch={isArch} />
-      </div>
 
-      {/* Sequential Process Nodes */}
-      {data.nodes.map((node, i) => {
-        return (
-          <React.Fragment key={i}>
-            <div
-              className={`border rounded p-3.5 transition-all duration-500 relative overflow-hidden ${
-                isArch
-                  ? "border-black bg-white text-black"
-                  : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
-              }`}
-            >
-              <div className="flex justify-between items-start gap-2 mb-1.5">
-                <span className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
-                  isArch 
-                    ? "bg-black text-white" 
-                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
-                }`}>
-                  PHASE 0{i + 1}
-                </span>
-                
-                {node.metric && (
-                  <span className={`text-[9px] font-bold ${
-                    isArch ? "text-black" : "text-neon-orange"
-                  }`}>
-                    {node.metric}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex gap-2.5 items-start">
-                <div className={`mt-0.5 shrink-0 w-6 h-6 rounded-full border flex items-center justify-center ${
+        {/* Nodes */}
+        {data.nodes.map((node, i) => {
+          return (
+            <React.Fragment key={i}>
+              <div
+                className={`border rounded-xl p-3.5 transition-all duration-500 relative overflow-hidden w-full max-w-sm ${
                   isArch
-                    ? "border-black text-black bg-white"
-                    : "border-terminal-border/40 text-gray-400 bg-black/40"
-                }`}>
-                  <Cpu className="w-3.5 h-3.5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className={`text-[11px] font-bold tracking-tight ${
-                    isArch ? "text-black" : "text-gray-100"
-                  }`}>
-                    {node.title}
-                  </h4>
-                  <p className={`text-[10px] leading-relaxed mt-0.5 font-normal ${
-                    isArch ? "text-gray-600" : "text-gray-400"
-                  }`}>
-                    {node.subtitle}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Render arrow pointing to next step */}
-            {i === 2 ? (
-              <div className="flex flex-col items-center py-2" key={`dec-${i}`}>
-                <FlowArrow isArch={isArch} />
-                
-                {/* Decision Gate Diamond Node */}
-                <div className="flex justify-center items-center my-2 relative max-w-full">
-                  <div className={`relative px-4 py-4 rounded-xl border flex flex-col items-center justify-center max-w-xs ${
+                    ? "border-black bg-white text-black"
+                    : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+                }`}
+              >
+                <div className="flex justify-between items-start gap-1 mb-1.5">
+                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
                     isArch 
-                      ? "border-black bg-white text-black text-center shadow-md font-semibold"
-                      : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
+                      ? "bg-black text-white" 
+                      : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
                   }`}>
-                    {/* Branch Labels */}
-                    <div className="absolute -left-12 top-1/2 transform -translate-y-1/2 flex items-center font-bold text-[8px] text-red-500/70 select-none">
-                      <span>[ALT]</span>
-                      <span className="shrink-0 h-[1px] w-3 bg-red-850 ml-1" />
-                    </div>
-                    <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex items-center font-bold text-[8px] text-emerald-400/80 select-none">
-                      <span className="shrink-0 h-[1px] w-3 bg-emerald-800 mr-1" />
-                      <span>[APPROVED]</span>
-                    </div>
-
-                    <div className="text-[7.5px] uppercase font-bold tracking-widest text-gray-500">ASSURANCE GATE</div>
-                    <div className="text-[10px] font-bold text-center mt-1 text-neon-orange">{data.decision.title}</div>
-                    <div className="text-[9px] font-medium text-center border border-dashed border-terminal-border/10 px-2 py-0.5 rounded mt-1.5 bg-black/40 text-gray-400">
-                      Rule: {data.decision.gate}
-                    </div>
-                    
-                    <div className={`text-[8px] font-bold uppercase tracking-wider mt-1.5 px-2 py-0.5 rounded ${
-                      isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
+                    PHASE 0{i + 1}
+                  </span>
+                  
+                  {node.metric && (
+                    <span className={`text-[8.5px] font-bold ${
+                      isArch ? "text-stone-500" : "text-neon-orange"
                     }`}>
-                      STATUS: {data.decision.yes}
-                    </div>
+                      {node.metric}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex gap-2 items-start">
+                  <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-full border flex items-center justify-center ${
+                    isArch
+                      ? "border-black text-black bg-white"
+                      : "border-terminal-border/40 text-gray-400 bg-black/40"
+                  }`}>
+                    <Cpu className="w-3 h-3" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className={`text-[10.5px] font-bold tracking-tight ${
+                      isArch ? "text-black" : "text-gray-100"
+                    }`}>
+                      {node.title}
+                    </h4>
+                    <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${
+                      isArch ? "text-gray-600" : "text-gray-400"
+                    }`}>
+                      {node.subtitle}
+                    </p>
                   </div>
                 </div>
-
-                <FlowArrow isArch={isArch} />
               </div>
-            ) : i < 3 ? (
-              <FlowArrow isArch={isArch} key={`arr-${i}`} />
-            ) : null}
-          </React.Fragment>
-        );
-      })}
 
-      {/* Connect Node 4 to END TERMINATE Node */}
-      <FlowArrow isArch={isArch} />
+              {/* Render arrow & decision gate */}
+              {i === 2 ? (
+                <div className="flex flex-col items-center w-full max-w-sm" key={`v-dec-${i}`}>
+                  <FlowArrow isArch={isArch} horizontal={false} />
+                  
+                  {/* Decision Gate Diamond Node */}
+                  <div className="flex justify-center items-center relative w-full">
+                    <div className={`relative px-4 py-3.5 rounded-xl border flex flex-col items-center justify-center w-full ${
+                      isArch 
+                        ? "border-amber-400 bg-amber-50 text-black text-center shadow font-semibold"
+                        : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
+                    }`}>
+                      <div className="text-[7.5px] uppercase font-bold tracking-widest text-gray-500">GATE</div>
+                      <div className="text-[10px] font-bold text-center mt-0.5 text-neon-orange">{data.decision.title}</div>
+                      <div className="text-[9px] font-medium text-center border border-dashed border-terminal-border/10 px-2 py-1 rounded mt-1.5 bg-black/40 text-gray-400 w-full whitespace-normal">
+                        Rule: {data.decision.gate}
+                      </div>
+                      
+                      <div className={`text-[7.5px] font-bold uppercase tracking-wider mt-2 px-1.5 py-0.5 rounded ${
+                        isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
+                      }`}>
+                        {data.decision.yes}
+                      </div>
+                    </div>
+                  </div>
 
-      {/* End Node */}
-      <div className="flex flex-col items-center">
+                  <FlowArrow isArch={isArch} horizontal={false} />
+                </div>
+              ) : i < 3 ? (
+                <FlowArrow isArch={isArch} horizontal={false} key={`v-arr-${i}`} />
+              ) : null}
+            </React.Fragment>
+          );
+        })}
+
+        <FlowArrow isArch={isArch} horizontal={false} />
+
+        {/* End Node */}
         <div 
-          className={`px-4 py-2.5 rounded-xl border text-center max-w-full ${
+          className={`px-4 py-3 rounded-xl border text-center w-full max-w-sm ${
             isArch
-              ? "border-black bg-white text-black font-semibold shadow-md"
+              ? "border-black bg-white text-black font-semibold shadow"
               : "border-emerald-500/60 bg-emerald-950/30 text-emerald-300"
           }`}
         >
-          <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">DISPATCH TARGET</div>
-          <div className="text-[10px] md:text-xs font-bold text-emerald-400 flex items-center justify-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            {data.end.title}
+          <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold">DISPATCH</div>
+          <div className="text-[10px] font-bold text-emerald-400 flex items-center justify-center gap-1.5 mt-0.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>{data.end.title}</span>
           </div>
-          <div className="text-[9px] font-normal opacity-90 mt-0.5">{data.end.desc}</div>
+          <div className="text-[9px] opacity-80 font-normal leading-relaxed mt-1">{data.end.desc || data.end.subtitle}</div>
+        </div>
+      </div>
+
+      {/* Desktop View - Generous 2-row layout with zero horizontal scroll and 100% text legibility */}
+      <div className="hidden lg:flex flex-col gap-6 w-full">
+        {/* Row 1: Start -> Phase 1 -> Phase 2 -> Phase 3 */}
+        <div className="grid grid-cols-4 gap-4 w-full">
+          {/* Start Node */}
+          <div className="relative">
+            <div 
+              className={`h-full min-h-[110px] flex flex-col justify-center p-4 rounded-xl border text-center shadow transition-all duration-700 ${
+                isArch
+                  ? "border-black text-black font-semibold bg-white"
+                  : "border-emerald-500/60 bg-emerald-950/10 text-emerald-300"
+              }`}
+            >
+              <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold mb-1">START</div>
+              <div className="text-[10.5px] font-bold text-emerald-400 font-mono tracking-tight">{data.start.title}</div>
+              <div className="text-[9.5px] opacity-90 font-normal mt-1 leading-relaxed">{data.start.subtitle}</div>
+            </div>
+            
+            {/* Connector Arrow pointing right */}
+            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
+              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+              }`} />
+            </div>
+          </div>
+
+          {/* Phase 01 */}
+          <div className="relative">
+            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
+              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+            }`}>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                  }`}>PHASE 01</span>
+                  {data.nodes[0]?.metric && (
+                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                      {data.nodes[0].metric}
+                    </span>
+                  )}
+                </div>
+                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                  {data.nodes[0]?.title}
+                </h4>
+                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  {data.nodes[0]?.subtitle}
+                </p>
+              </div>
+            </div>
+            
+            {/* Connector Arrow pointing right */}
+            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
+              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+              }`} />
+            </div>
+          </div>
+
+          {/* Phase 02 */}
+          <div className="relative">
+            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
+              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+            }`}>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                  }`}>PHASE 02</span>
+                  {data.nodes[1]?.metric && (
+                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                      {data.nodes[1].metric}
+                    </span>
+                  )}
+                </div>
+                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                  {data.nodes[1]?.title}
+                </h4>
+                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  {data.nodes[1]?.subtitle}
+                </p>
+              </div>
+            </div>
+            
+            {/* Connector Arrow pointing right */}
+            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
+              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+              }`} />
+            </div>
+          </div>
+
+          {/* Phase 03 */}
+          <div>
+            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
+              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+            }`}>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                  }`}>PHASE 03</span>
+                  {data.nodes[2]?.metric && (
+                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                      {data.nodes[2].metric}
+                    </span>
+                  )}
+                </div>
+                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                  {data.nodes[2]?.title}
+                </h4>
+                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  {data.nodes[2]?.subtitle}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Transition Downward Connection Line */}
+        <div className="flex justify-between items-center px-6 -my-2.5">
+          <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 mr-4 opacity-50"></div>
+          <div className="flex items-center gap-2 font-mono text-[9px] opacity-50 px-3 py-1 rounded bg-black/40 border border-terminal-border/10 text-neon-cyan uppercase">
+            <span>PROCEED TO INTEGRITY AUDIT</span>
+            <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
+          </div>
+          <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 ml-4 opacity-50"></div>
+        </div>
+
+        {/* Row 2: Gate -> Phase 4 -> Dispatch / End */}
+        <div className="grid grid-cols-3 gap-4 w-full">
+          {/* Decision Gate */}
+          <div className="relative">
+            <div className={`h-full min-h-[110px] relative px-4 py-4 rounded-xl border flex flex-col justify-between ${
+              isArch 
+                ? "border-amber-400 bg-amber-50 text-black shadow"
+                : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
+            }`}>
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <span className={`text-[7px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-amber-100 text-amber-800" : "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20"
+                  }`}>ASSURANCE GATE</span>
+                  <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-amber-800" : "text-neon-orange"}`}>
+                    PASS CRITERIA
+                  </span>
+                </div>
+                <h4 className="text-[10.5px] font-bold font-sans mt-1.5 text-neon-orange leading-tight uppercase">
+                  {data.decision.title}
+                </h4>
+                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  Rule: {data.decision.gate}
+                </p>
+              </div>
+              <div className="mt-2.5 flex justify-between items-center border-t border-dashed border-terminal-border/10 pt-2">
+                <span className="text-[8px] opacity-50 uppercase tracking-widest font-bold">STATUS</span>
+                <span className={`text-[8px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                  isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
+                }`}>
+                  {data.decision.yes}
+                </span>
+              </div>
+            </div>
+            
+            {/* Connector Arrow pointing right */}
+            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
+              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+              }`} />
+            </div>
+          </div>
+
+          {/* Phase 04 */}
+          <div className="relative">
+            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
+              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+            }`}>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                  }`}>PHASE 04</span>
+                  {data.nodes[3]?.metric && (
+                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                      {data.nodes[3].metric}
+                    </span>
+                  )}
+                </div>
+                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                  {data.nodes[3]?.title}
+                </h4>
+                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  {data.nodes[3]?.subtitle}
+                </p>
+              </div>
+            </div>
+            
+            {/* Connector Arrow pointing right */}
+            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
+              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+              }`} />
+            </div>
+          </div>
+
+          {/* Dispatch End Node */}
+          <div>
+            <div 
+              className={`h-full min-h-[110px] flex flex-col justify-between p-4 rounded-xl border transition-all duration-500 ${
+                isArch
+                  ? "border-black bg-white text-black font-semibold shadow"
+                  : "border-emerald-500/60 bg-emerald-950/20 text-emerald-300"
+              }`}
+            >
+              <div>
+                <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold mb-1.5">FINAL DISPATCH</div>
+                <div className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-tight">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>{data.end.title}</span>
+                </div>
+                <p className={`text-[9.5px] leading-relaxed mt-1.5 font-normal opacity-90 ${isArch ? "text-stone-600" : "text-stone-400"}`}>
+                  {data.end.desc || data.end.subtitle}
+                </p>
+              </div>
+              <div className="text-[8px] font-mono px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 border border-emerald-900 border-dashed w-max mt-2">
+                TRANSIT: LOGIC VERIFIED
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   );
-};
+};;
 
 const WorkloadGif = ({ 
   src, 
@@ -3263,22 +3505,26 @@ export default function App() {
                         </div>
                         
                         {["ARCH_02", "ARCH_08"].includes(selectedArsenalItem.id) ? (
-                          <div className={`space-y-4 p-4 md:p-5 rounded-lg ${
+                          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-5 rounded-lg ${
                             isArch 
                               ? "bg-gray-50/50 border border-gray-150" 
                               : "bg-[#04070a] border border-terminal-border/20"
                           }`}>
                             {selectedArsenalItem.workflow.steps.map((step, i) => (
-                              <div key={i} className="flex gap-4 items-start">
-                                <span className={`font-mono text-xs font-bold px-2 py-0.5 rounded shrink-0 ${
+                              <div key={i} className={`flex gap-3 items-start p-3 border border-dashed rounded transition-colors duration-700 ${
+                                isArch 
+                                  ? "border-gray-200 bg-white" 
+                                  : "border-terminal-border/15 bg-black/25 hover:border-terminal-border/30"
+                              }`}>
+                                <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded shrink-0 ${
                                   isArch 
                                     ? "bg-black text-white" 
                                     : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
                                 }`}>
                                   0{i + 1}
                                 </span>
-                                <p className={`text-xs md:text-sm leading-relaxed ${
-                                  isArch ? "text-gray-600" : "text-gray-300"
+                                <p className={`text-[11px] leading-relaxed ${
+                                  isArch ? "text-stone-700 font-sans" : "text-gray-300 font-mono"
                                 }`}>
                                   {step}
                                 </p>
@@ -3302,53 +3548,6 @@ export default function App() {
                           03_System_Output
                         </div>
                         {selectedArsenalItem.content}
-                      </div>
-                    )}
-
-                    {selectedArsenalItem.id === "ARCH_05" && (
-                      <div className="space-y-4 pt-2">
-                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 ${isArch ? "text-stone-900 border-gray-100" : "text-white border-terminal-border"}`}>
-                          03_Thesis_Presentation_Sheets
-                        </div>
-                        
-                        <div className={`p-4 border rounded flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors duration-700 ${
-                          isArch 
-                            ? "bg-amber-50/50 border-amber-200/60" 
-                            : "bg-neon-cyan/5 border-neon-cyan/20"
-                        }`}>
-                          <div className="space-y-1">
-                            <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
-                              Academic Presentation Boards
-                            </h4>
-                            <p className={`text-[11px] leading-relaxed max-w-lg ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
-                              Natively browse the structural masterplans, section elevations, biophilic layout boards, and detailed execution design sheets.
-                            </p>
-                          </div>
-                          <a
-                            href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`shrink-0 px-3 py-1.5 border font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
-                              isArch 
-                                ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
-                            }`}
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            Open Full drive
-                          </a>
-                        </div>
-                        
-                        <div className={`w-full h-[520px] border shadow-inner relative overflow-hidden rounded ${
-                          isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
-                        }`}>
-                          <iframe
-                            src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
-                            className="w-full h-full border-0"
-                            title="Karunya Hospice Thesis Sheets Viewer Layout"
-                            allow="autoplay"
-                          ></iframe>
-                        </div>
                       </div>
                     )}
 
@@ -3538,156 +3737,208 @@ export default function App() {
                           </div>
                         )}
 
-                        {selectedArsenalItem.details.images && selectedArsenalItem.details.images.length > 0 && (
-                          <div className="space-y-4 pt-4">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-2">
-                              <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                                09_{isArch ? "Technical_Gallery_&_Visuals" : "System_Drawings_&_Analytics"}
-                              </div>
-                              
-                              {/* Gallery Navigation Tabs (Renders vs. Drawings) */}
-                              <div className="flex flex-wrap gap-1">
-                                <button
-                                  type="button"
-                                  onClick={() => setGalleryFilter('all')}
-                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                                    galleryFilter === 'all'
-                                      ? isArch
-                                        ? "bg-black text-white border-black font-bold"
-                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                                      : isArch
-                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                                  }`}
-                                >
-                                  All ({selectedArsenalItem.details.images.length})
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setGalleryFilter('render')}
-                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                                    galleryFilter === 'render'
-                                      ? isArch
-                                        ? "bg-black text-white border-black font-bold"
-                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                                      : isArch
-                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                                  }`}
-                                >
-                                  Renders ({
-                                    selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render').length
-                                  })
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setGalleryFilter('drawing')}
-                                  className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                                    galleryFilter === 'drawing'
-                                      ? isArch
-                                        ? "bg-black text-white border-black font-bold"
-                                        : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                                      : isArch
-                                        ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                        : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                                  }`}
-                                >
-                                  Drawings ({
-                                    selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing').length
-                                  })
-                                </button>
-                                {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video') && (
-                                  <button
-                                    type="button"
-                                    onClick={() => setGalleryFilter('video')}
-                                    className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                                      galleryFilter === 'video'
-                                        ? isArch
-                                          ? "bg-black text-white border-black font-bold"
-                                          : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                                        : isArch
-                                          ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                          : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                                    }`}
-                                  >
-                                    Videos ({
-                                      selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video').length
-                                    })
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {selectedArsenalItem.details.images
-                                .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
-                                .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
-                                .map(({ img, idx, type }) => {
-                                  const isVideo = type === 'video';
-                                  const googleDriveId = getDriveId(img);
-                                  const thumbSrc = getStaticThumbnailUrl(img);
-                                  return (
-                                    <div 
-                                      key={idx} 
-                                      onClick={() => {
-                                        setExpandedMedia({
-                                          src: img,
-                                          isVideo,
-                                          googleDriveId,
-                                          alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
-                                        });
-                                      }}
-                                      className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
-                                        isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
-                                      }`}
-                                    >
-                                      {/* Thumbnail Image */}
-                                      <img 
-                                        src={thumbSrc} 
-                                        alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
-                                        onContextMenu={(e) => e.preventDefault()}
-                                        onDragStart={(e) => e.preventDefault()}
-                                        className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
-                                          isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
-                                        }`}
-                                        referrerPolicy="no-referrer"
-                                      />
 
-                                      {/* Subtle Overlay Badge */}
-                                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
-                                        isArch 
-                                          ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
-                                          : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
-                                      }`}>
-                                        {type === 'video' 
-                                          ? "VIDEO_FEED" 
-                                          : type === 'drawing' 
-                                            ? "TECHNICAL_DRAWING" 
-                                            : "RENDER_VISUAL"}
-                                      </div>
-
-                                      {/* Play / Expand Overlay */}
-                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
-                                        <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
-                                          isArch 
-                                            ? "bg-white border-black text-black shadow-lg" 
-                                            : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
-                                        }`}>
-                                          {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          </div>
-                        )}
                       </>
                     )}
 
                     {/* Removed Performance/Impact Metric box */}
                   </div>
                 </div>
+
+                {/* Full-width Thesis Presentation Sheets */}
+                {selectedArsenalItem.id === "ARCH_05" && (
+                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+                      <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
+                        03_Thesis_Presentation_Sheets
+                      </div>
+                      
+                      <a
+                        href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`shrink-0 px-3 py-1 font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
+                          isArch 
+                            ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                            : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                        }`}
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Open Full drive
+                      </a>
+                    </div>
+
+                    <div className={`p-4 border rounded transition-colors duration-700 ${
+                      isArch 
+                        ? "bg-amber-50/50 border-amber-200/60" 
+                        : "bg-[#04070a] border-terminal-border/20 text-gray-400"
+                    }`}>
+                      <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
+                        Academic Presentation Boards
+                      </h4>
+                      <p className={`text-[11px] leading-relaxed max-w-4xl mt-1 ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
+                        Natively browse the structural masterplans, section elevations, biophilic layout boards, and detailed execution design sheets.
+                      </p>
+                    </div>
+                    
+                    <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
+                      isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
+                    }`}>
+                      <iframe
+                        src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
+                        className="w-full h-full border-0"
+                        title="Karunya Hospice Thesis Sheets Viewer Layout"
+                        allow="autoplay"
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+
+                {/* Full-width Technical Gallery */}
+                {selectedArsenalItem.details?.images && selectedArsenalItem.details.images.length > 0 && (
+                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+                      <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
+                        09_{isArch ? "Technical_Gallery_&_Visuals" : "System_Drawings_&_Analytics"}
+                      </div>
+                      
+                      {/* Gallery Navigation Tabs (Renders vs. Drawings) */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setGalleryFilter('all')}
+                          className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                            galleryFilter === 'all'
+                              ? isArch
+                                ? "bg-black text-white border-black font-bold"
+                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                              : isArch
+                                ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                          }`}
+                        >
+                          All ({selectedArsenalItem.details.images.length})
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setGalleryFilter('render')}
+                          className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                            galleryFilter === 'render'
+                              ? isArch
+                                ? "bg-black text-white border-black font-bold"
+                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                              : isArch
+                                ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                          }`}
+                        >
+                          Renders ({
+                            selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render').length
+                          })
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setGalleryFilter('drawing')}
+                          className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                            galleryFilter === 'drawing'
+                              ? isArch
+                                ? "bg-black text-white border-black font-bold"
+                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                              : isArch
+                                ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                          }`}
+                        >
+                          Drawings ({
+                            selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing').length
+                          })
+                        </button>
+                        {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video') && (
+                          <button
+                            type="button"
+                            onClick={() => setGalleryFilter('video')}
+                            className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                              galleryFilter === 'video'
+                                ? isArch
+                                  ? "bg-black text-white border-black font-bold"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                : isArch
+                                  ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                            }`}
+                          >
+                            Videos ({
+                              selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video').length
+                            })
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {selectedArsenalItem.details.images
+                        .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
+                        .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
+                        .map(({ img, idx, type }) => {
+                          const isVideo = type === 'video';
+                          const googleDriveId = getDriveId(img);
+                          const thumbSrc = getStaticThumbnailUrl(img);
+                          return (
+                            <div 
+                              key={idx} 
+                              onClick={() => {
+                                setExpandedMedia({
+                                  src: img,
+                                  isVideo,
+                                  googleDriveId,
+                                  alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
+                                });
+                              }}
+                              className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in rounded ${
+                                isArch ? "border-gray-150 bg-gray-50 hover:border-black shadow-sm" : "brutalist-border bg-black hover:border-neon-cyan shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                              }`}
+                            >
+                              {/* Thumbnail Image */}
+                              <img 
+                                src={thumbSrc} 
+                                alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
+                                onContextMenu={(e) => e.preventDefault()}
+                                onDragStart={(e) => e.preventDefault()}
+                                className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                  isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                }`}
+                                referrerPolicy="no-referrer"
+                              />
+
+                              {/* Subtle Overlay Badge */}
+                              <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
+                                isArch 
+                                  ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
+                                  : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
+                              }`}>
+                                {type === 'video' 
+                                  ? "VIDEO_FEED" 
+                                  : type === 'drawing' 
+                                    ? "TECHNICAL_DRAWING" 
+                                    : "RENDER_VISUAL"}
+                              </div>
+
+                              {/* Play / Expand Overlay */}
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                  isArch 
+                                    ? "bg-white border-black text-black shadow-lg" 
+                                    : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                }`}>
+                                  {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Modal Footer */}
