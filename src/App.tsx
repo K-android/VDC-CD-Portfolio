@@ -848,6 +848,72 @@ const WorkflowFlowchart = ({
   );
 };;
 
+const FrozenImage = ({ 
+  src, 
+  alt, 
+  className 
+}: { 
+  src: string; 
+  alt: string; 
+  className?: string; 
+}) => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  React.useEffect(() => {
+    let isActive = true;
+    const img = new Image();
+    img.onload = () => {
+      if (!isActive) return;
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          canvas.width = img.naturalWidth || img.width || 800;
+          canvas.height = img.naturalHeight || img.height || 450;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          setLoaded(true);
+        }
+      }
+    };
+    img.onerror = () => {
+      if (!isActive) return;
+      setError(true);
+    };
+    img.src = src;
+    
+    return () => {
+      isActive = false;
+    };
+  }, [src]);
+
+  if (error) {
+    return (
+      <img 
+        src={src} 
+        alt={alt} 
+        className={className} 
+        referrerPolicy="no-referrer" 
+      />
+    );
+  }
+
+  return (
+    <div className="relative w-full h-full min-h-[120px] flex items-center justify-center">
+      <canvas 
+        ref={canvasRef} 
+        className={`${className || ""} ${loaded ? "opacity-100" : "opacity-0"} transition-opacity duration-300 w-full h-full object-cover`} 
+      />
+      {!loaded && (
+        <div className="absolute inset-0 bg-stone-100/10 backdrop-blur-xs animate-pulse flex items-center justify-center">
+          <div className="w-4 h-4 rounded-full border-t border-terminal-border/40 animate-spin" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const WorkloadGif = ({ 
   src, 
   alt, 
@@ -959,14 +1025,31 @@ const WorkloadGif = ({
       onMouseEnter={() => setIsInternalHovered(true)}
       onMouseLeave={() => setIsInternalHovered(false)}
     >
-      <img 
-        src={isVideo ? staticUrl : (active ? src : staticUrl)} 
-        alt={alt}
-        referrerPolicy="no-referrer"
-        onContextMenu={(e) => e.preventDefault()}
-        onDragStart={(e) => e.preventDefault()}
-        className={className}
-      />
+      {isVideo ? (
+        <img 
+          src={staticUrl} 
+          alt={alt}
+          referrerPolicy="no-referrer"
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          className={className}
+        />
+      ) : active ? (
+        <img 
+          src={src} 
+          alt={alt}
+          referrerPolicy="no-referrer"
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          className={className}
+        />
+      ) : (
+        <FrozenImage 
+          src={staticUrl} 
+          alt={alt} 
+          className={className} 
+        />
+      )}
     </div>
   );
 };
