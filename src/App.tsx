@@ -28,7 +28,9 @@ import {
   Play,
   Zap,
   Maximize2,
-  Globe
+  Globe,
+  Award,
+  ExternalLink
 } from "lucide-react";
 
 import { AECWebAppsCabinet } from "./components/AECWebAppsCabinet.tsx";
@@ -839,41 +841,7 @@ const ProjectCard = ({
             ))}
           </div>
 
-          {/* Compact Workflow Steps Preview */}
-          {!isArch && item.workflow?.steps && (
-            <div className="mt-4 pt-3.5 border-t border-terminal-border/10 flex items-center justify-between font-mono text-[9px] text-gray-400">
-              <span className="flex items-center gap-1.5 text-neon-cyan/70 font-semibold uppercase tracking-wider">
-                <Activity className="w-3.5 h-3.5 animate-pulse text-neon-cyan" />
-                Pipeline Flow:
-              </span>
-              <div className="flex gap-1.5 items-center">
-                {/* Node 1 */}
-                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Start Data Stream">1</span>
-                
-                <span className="text-terminal-border/30 text-[7px]">→</span>
-                
-                {/* Node 2 */}
-                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Process Logic mapping">2</span>
-                
-                <span className="text-terminal-border/30 text-[7px]">→</span>
-                
-                {/* Node 3 */}
-                <span className="w-4 h-4 rounded-full border border-terminal-border/30 bg-black/60 flex items-center justify-center text-[7.5px] text-neon-cyan font-bold" title="Parameter Verification">3</span>
-                
-                <span className="text-terminal-border/30 text-[7px]">→</span>
-                
-                {/* Decision Diamond */}
-                <span className="w-4 h-4 rotate-45 border border-neon-orange/40 bg-neon-orange/10 flex items-center justify-center text-neon-orange scale-95" title="Decision Check Gate">
-                  <span className="-rotate-45 text-[7px] font-extrabold font-sans">◆</span>
-                </span>
-                
-                <span className="text-terminal-border/30 text-[7px]">→</span>
-                
-                {/* Node 4 */}
-                <span className="w-4 h-4 rounded-full border border-emerald-500/40 bg-emerald-950/10 flex items-center justify-center text-[7.5px] text-emerald-400 font-bold" title="End dispatch node">✔</span>
-              </div>
-            </div>
-          )}
+
         </div>
       </div>
     </motion.div>
@@ -1001,6 +969,7 @@ interface ArsenalItem {
     reportUrl?: string;
     videoUrl?: string;
     sheetsUrl?: string;
+    publication?: string;
     comparisonTable?: {
       headers: string[];
       rows: string[][];
@@ -1119,7 +1088,7 @@ export default function App() {
   const [activeSimStep, setActiveSimStep] = useState<number>(-1);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
   const [isSimRunning, setIsSimRunning] = useState<boolean>(false);
-  const [galleryFilter, setGalleryFilter] = useState<'all' | 'render' | 'drawing' | 'video'>('all');
+  const [galleryFilter, setGalleryFilter] = useState<'all' | 'render' | 'drawing' | 'video' | 'sheets'>('all');
 
   // Clear simulator on selection change
   useEffect(() => {
@@ -1424,9 +1393,11 @@ export default function App() {
       color: "gray-400",
       metric: "Biophilic",
       gifUrl: "https://lh3.googleusercontent.com/d/1cEY_3KZExGtCPAO_BJLjaEXJW2yUMLlM",
-      tags: ["Healthcare Design", "Biophilic Architecture", "Thesis"],
+      tags: ["Healthcare Design", "Biophilic Architecture", "Thesis", "Pratibimbh Journal"],
       category: "Exterior",
       details: {
+        publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, celebrating exemplary student design research and execution.",
+        sheetsUrl: "https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing",
         overview: "Karunya Hospice is a 50-bed palliative care facility that redefines the environment of end-of-life care. It moves away from the clinical 'hospital' feel towards a domestic, nature-centric sanctuary.",
         challenge: "Balancing the high medical requirements of palliative care with a non-institutional, peaceful atmosphere that supports both patients and their grieving families.",
         solution: "The design uses a decentralized pavilion layout connected by sensory gardens. Each patient room has a private view of nature and direct access to outdoor terraces, ensuring that no patient is ever isolated from the natural world.",
@@ -3350,6 +3321,24 @@ export default function App() {
 
                     {selectedArsenalItem.details && (
                       <>
+                        {selectedArsenalItem.details.publication && (
+                          <div className={`p-4 border rounded-md flex items-start gap-3 transition-colors duration-700 ${
+                            isArch 
+                              ? "bg-amber-50/50 border-amber-200/60 text-amber-900" 
+                              : "bg-[#00f3ff]/5 border-[#00f3ff]/20 text-[#00f3ff]"
+                          }`}>
+                            <Award className="w-5 h-5 shrink-0 mt-0.5 animate-pulse" />
+                            <div className="space-y-1">
+                              <div className="text-[10px] font-mono uppercase tracking-wider opacity-75">
+                                Publication Record
+                              </div>
+                              <p className={`text-xs md:text-sm leading-relaxed ${isArch ? "font-sans font-medium text-stone-700" : "font-mono"}`}>
+                                {selectedArsenalItem.details.publication}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
                         <div className="space-y-4">
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                             05_Project_Overview
@@ -3579,71 +3568,131 @@ export default function App() {
                                     })
                                   </button>
                                 )}
+                                {selectedArsenalItem.id === "ARCH_05" && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setGalleryFilter('sheets')}
+                                    className={`px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                                      galleryFilter === 'sheets'
+                                        ? isArch
+                                          ? "bg-black text-white border-black font-bold"
+                                          : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                        : isArch
+                                          ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                          : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                    }`}
+                                  >
+                                    Presentation Sheets (Drive)
+                                  </button>
+                                )}
                               </div>
                             </div>
                             
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {selectedArsenalItem.details.images
-                                .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
-                                .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
-                                .map(({ img, idx, type }) => {
-                                  const isVideo = type === 'video';
-                                  const googleDriveId = getDriveId(img);
-                                  const thumbSrc = getStaticThumbnailUrl(img);
-                                  return (
-                                    <div 
-                                      key={idx} 
-                                      onClick={() => {
-                                        setExpandedMedia({
-                                          src: img,
-                                          isVideo,
-                                          googleDriveId,
-                                          alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
-                                        });
-                                      }}
-                                      className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
-                                        isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
-                                      }`}
-                                    >
-                                      {/* Thumbnail Image */}
-                                      <img 
-                                        src={thumbSrc} 
-                                        alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
-                                        onContextMenu={(e) => e.preventDefault()}
-                                        onDragStart={(e) => e.preventDefault()}
-                                        className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
-                                          isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                            {galleryFilter === 'sheets' ? (
+                              <div className="space-y-4 w-full">
+                                <div className={`p-4 border rounded flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-700 ${
+                                  isArch 
+                                    ? "bg-amber-50/50 border-amber-200/60" 
+                                    : "bg-neon-cyan/5 border-neon-cyan/20"
+                                }`}>
+                                  <div className="space-y-1">
+                                    <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
+                                      Thesis Presentation Sheets (BMSCA)
+                                    </h4>
+                                    <p className={`text-[11px] leading-relaxed max-w-2xl ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
+                                      All presentation boards, structural layouts, and detail sheets explaining the biophilic healthcare concept are loaded within the active Google Drive folder. Use the explorer below to browse natively or click the link to view the full folder on Google Drive.
+                                    </p>
+                                  </div>
+                                  <a
+                                    href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`shrink-0 px-3 py-1.5 border font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
+                                      isArch 
+                                        ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                                        : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                    }`}
+                                  >
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                    Open Full Drive Folder
+                                  </a>
+                                </div>
+                                
+                                <div className={`w-full h-[520px] border shadow-inner relative overflow-hidden rounded ${
+                                  isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
+                                }`}>
+                                  <iframe
+                                    src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
+                                    className="w-full h-full border-0"
+                                    title="Karunya Hospice Thesis Sheets Viewer"
+                                    allow="autoplay"
+                                  ></iframe>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {selectedArsenalItem.details.images
+                                  .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
+                                  .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
+                                  .map(({ img, idx, type }) => {
+                                    const isVideo = type === 'video';
+                                    const googleDriveId = getDriveId(img);
+                                    const thumbSrc = getStaticThumbnailUrl(img);
+                                    return (
+                                      <div 
+                                        key={idx} 
+                                        onClick={() => {
+                                          setExpandedMedia({
+                                            src: img,
+                                            isVideo,
+                                            googleDriveId,
+                                            alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
+                                          });
+                                        }}
+                                        className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in ${
+                                          isArch ? "border-gray-100 bg-gray-50 hover:border-black" : "brutalist-border bg-black hover:border-neon-cyan"
                                         }`}
-                                        referrerPolicy="no-referrer"
-                                      />
-
-                                      {/* Subtle Overlay Badge */}
-                                      <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
-                                        isArch 
-                                          ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
-                                          : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
-                                      }`}>
-                                        {type === 'video' 
-                                          ? "VIDEO_FEED" 
-                                          : type === 'drawing' 
-                                            ? "TECHNICAL_DRAWING" 
-                                            : "RENDER_VISUAL"}
-                                      </div>
-
-                                      {/* Play / Expand Overlay */}
-                                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
-                                        <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                      >
+                                        {/* Thumbnail Image */}
+                                        <img 
+                                          src={thumbSrc} 
+                                          alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
+                                          onContextMenu={(e) => e.preventDefault()}
+                                          onDragStart={(e) => e.preventDefault()}
+                                          className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                            isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                          }`}
+                                          referrerPolicy="no-referrer"
+                                        />
+  
+                                        {/* Subtle Overlay Badge */}
+                                        <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
                                           isArch 
-                                            ? "bg-white border-black text-black shadow-lg" 
-                                            : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                            ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
+                                            : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
                                         }`}>
-                                          {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                          {type === 'video' 
+                                            ? "VIDEO_FEED" 
+                                            : type === 'drawing' 
+                                              ? "TECHNICAL_DRAWING" 
+                                              : "RENDER_VISUAL"}
+                                        </div>
+  
+                                        {/* Play / Expand Overlay */}
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                          <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                            isArch 
+                                              ? "bg-white border-black text-black shadow-lg" 
+                                              : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                          }`}>
+                                            {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  );
-                                })}
-                            </div>
+                                    );
+                                  })}
+                              </div>
+                            )}
                           </div>
                         )}
                       </>
