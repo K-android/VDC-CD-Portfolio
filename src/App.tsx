@@ -848,6 +848,40 @@ const WorkflowFlowchart = ({
   );
 };;
 
+const getTinyThumbnailUrl = (src: string) => {
+  if (!src) return "";
+  const clean = src.split('#')[0];
+  
+  if (clean.includes('drive.google.com/file/d/')) {
+    const parts = clean.split('/file/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w250`;
+    }
+  }
+
+  if (clean.includes('lh3.googleusercontent.com/d/')) {
+    const parts = clean.split('lh3.googleusercontent.com/d/');
+    if (parts.length > 1) {
+      const id = parts[1].split('/')[0].split('?')[0];
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w250`;
+    }
+  }
+
+  if (clean.includes('drive.google.com/thumbnail')) {
+    const match = clean.match(/[?&]id=([^&]+)/);
+    if (match) {
+      return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w250`;
+    }
+  }
+
+  if (clean.includes('giphy.com/media/')) {
+    return clean.replace('/giphy.gif', '/giphy_s.gif');
+  }
+
+  return clean;
+};
+
 const FrozenImage = ({ 
   src, 
   alt, 
@@ -858,31 +892,62 @@ const FrozenImage = ({
   className?: string; 
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [stage, setStage] = useState<"empty" | "tiny" | "full">("empty");
   const [error, setError] = useState(false);
 
   React.useEffect(() => {
     let isActive = true;
-    const img = new Image();
-    img.onload = () => {
+    const tinyUrl = getTinyThumbnailUrl(src);
+    const largeUrl = src;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let tinyImgLoaded = false;
+    let largeImgLoaded = false;
+
+    // Create image objects
+    const tinyImg = new Image();
+    const largeImg = new Image();
+
+    tinyImg.onload = () => {
       if (!isActive) return;
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          canvas.width = img.naturalWidth || img.width || 800;
-          canvas.height = img.naturalHeight || img.height || 450;
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          setLoaded(true);
-        }
+      tinyImgLoaded = true;
+      // Only draw tiny if large has not loaded yet
+      if (!largeImgLoaded) {
+        canvas.width = tinyImg.naturalWidth || tinyImg.width || 250;
+        canvas.height = tinyImg.naturalHeight || tinyImg.height || 140;
+        ctx.drawImage(tinyImg, 0, 0, canvas.width, canvas.height);
+        setStage("tiny");
       }
     };
-    img.onerror = () => {
+
+    largeImg.onload = () => {
       if (!isActive) return;
-      setError(true);
+      largeImgLoaded = true;
+      canvas.width = largeImg.naturalWidth || largeImg.width || 800;
+      canvas.height = largeImg.naturalHeight || largeImg.height || 450;
+      ctx.drawImage(largeImg, 0, 0, canvas.width, canvas.height);
+      setStage("full");
     };
-    img.src = src;
+
+    largeImg.onerror = () => {
+      if (!isActive) return;
+      // If large fails but tiny is showing, we can keep tiny, else error
+      if (!tinyImgLoaded) {
+        setError(true);
+      }
+    };
+
+    // Trigger loads
+    tinyImg.referrerPolicy = "no-referrer";
+    largeImg.referrerPolicy = "no-referrer";
     
+    tinyImg.src = tinyUrl;
+    largeImg.src = largeUrl;
+
     return () => {
       isActive = false;
     };
@@ -899,15 +964,31 @@ const FrozenImage = ({
     );
   }
 
+  const isLoaded = stage !== "empty";
+  const isTiny = stage === "tiny";
+
   return (
-    <div className="relative w-full h-full min-h-[120px] flex items-center justify-center">
+    <div className="relative w-full h-full min-h-[120px] flex items-center justify-center overflow-hidden bg-stone-900/10">
       <canvas 
         ref={canvasRef} 
-        className={`${className || ""} ${loaded ? "opacity-100" : "opacity-0"} transition-opacity duration-300 w-full h-full object-cover`} 
+        style={{
+          filter: isTiny ? "blur(8px)" : "none",
+          transform: isTiny ? "scale(1.04)" : "scale(1)",
+          transition: "filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease",
+        }}
+        className={`${className || ""} ${isLoaded ? "opacity-100" : "opacity-0"} w-full h-full object-cover`} 
       />
-      {!loaded && (
-        <div className="absolute inset-0 bg-stone-100/10 backdrop-blur-xs animate-pulse flex items-center justify-center">
-          <div className="w-4 h-4 rounded-full border-t border-terminal-border/40 animate-spin" />
+      
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-stone-100/5 backdrop-blur-xs animate-pulse flex items-center justify-center">
+          <div className="w-5 h-5 rounded-full border-2 border-t-transparent border-stone-500 animate-spin" />
+        </div>
+      )}
+      
+      {isTiny && (
+        <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded text-[8px] font-mono text-gray-400 pointer-events-none select-none">
+          <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-ping" />
+          <span>LOD_PROG...</span>
         </div>
       )}
     </div>
@@ -2274,6 +2355,67 @@ export default function App() {
   ];
 
   const arsenal = isArch ? archArsenal : bimArsenal;
+
+  // Background sequential preloader to warm cache with heavy dynamic portfolio GIFs
+  useEffect(() => {
+    if (isLoading) return;
+
+    const urlsToPreload: string[] = [];
+    bimArsenal.forEach(item => {
+      if (item.gifUrl && !item.gifUrl.includes('#image') && !item.gifUrl.includes('#video')) {
+        urlsToPreload.push(item.gifUrl);
+      }
+    });
+    archArsenal.forEach(item => {
+      if (item.gifUrl && !item.gifUrl.includes('#image') && !item.gifUrl.includes('#video')) {
+        urlsToPreload.push(item.gifUrl);
+      }
+    });
+
+    const uniqueUrls = Array.from(new Set(urlsToPreload));
+    let isCancelled = false;
+
+    const runPreload = async () => {
+      // Cooldown for 3.5 seconds to let initial animations and high-resolution layout thumbnails load cleanly first
+      await new Promise(resolve => setTimeout(resolve, 3500));
+      if (isCancelled) return;
+
+      for (const url of uniqueUrls) {
+        if (isCancelled) break;
+
+        const preloadSingle = (src: string): Promise<void> => {
+          return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+            img.referrerPolicy = "no-referrer";
+            img.src = src;
+          });
+        };
+
+        if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+          await new Promise<void>((resolve) => {
+            (window as any).requestIdleCallback(async () => {
+              if (!isCancelled) {
+                await preloadSingle(url);
+              }
+              resolve();
+            }, { timeout: 5000 });
+          });
+        } else {
+          await preloadSingle(url);
+          // Small cooldown between requests to keep the main event loop smooth and responsiveness crisp
+          await new Promise(resolve => setTimeout(resolve, 1800));
+        }
+      }
+    };
+
+    runPreload();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isLoading]);
 
   const GlitchText = ({ text }: { text: string }) => {
     if (isArch) return <>{text}</>;
