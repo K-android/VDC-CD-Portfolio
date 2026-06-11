@@ -133,21 +133,21 @@ const getYoutubeId = (url: string) => {
 };
 
 const getGalleryItemType = (imgUrl: string, idx: number, projectId: string): "render" | "drawing" | "video" => {
-  if (imgUrl.includes("#video") || imgUrl.toLowerCase().endsWith(".mp4") || imgUrl.toLowerCase().endsWith(".mov") || imgUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk") || !!getYoutubeId(imgUrl)) {
-    return "video";
-  }
-  
   const urlLower = imgUrl.toLowerCase();
   
-  if (projectId === "ARCH_08") {
-    if (urlLower.includes("plan") || idx === 3) return "drawing";
+  // 1. Explicit Anchors check (absolute precedence)
+  const anchor = imgUrl.includes("#") ? imgUrl.split("#")[1].toLowerCase() : "";
+  if (anchor === "video" || urlLower.endsWith(".mp4") || urlLower.endsWith(".mov") || imgUrl.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk") || !!getYoutubeId(imgUrl)) {
+    return "video";
+  }
+  if (anchor === "drawing" || anchor === "sheet" || anchor === "tech" || anchor === "blueprint" || anchor === "cad" || anchor === "detail" || anchor === "draft") {
+    return "drawing";
+  }
+  if (anchor === "render" || anchor === "image" || anchor === "visual" || anchor === "scene") {
     return "render";
   }
-  if (projectId === "ARCH_02") {
-    if (urlLower.includes("detail") || urlLower.includes("design") || urlLower.includes("blueprint") || urlLower.includes("plan")) return "drawing";
-    return "render";
-  }
-  
+
+  // 2. Keyword check on URL
   if (
     urlLower.includes("plan") || 
     urlLower.includes("detail") || 
@@ -162,13 +162,60 @@ const getGalleryItemType = (imgUrl: string, idx: number, projectId: string): "re
     urlLower.includes("layout") ||
     urlLower.includes("draft") ||
     urlLower.includes("dwg") ||
-    (projectId === "ARCH_01" && [2, 3, 4, 5].includes(idx)) ||
-    (projectId === "ARCH_05" && [4, 5, 6, 7, 8, 9, 10, 11, 12].includes(idx)) ||
-    (projectId === "ARCH_06" && (urlLower.includes("daiw") || urlLower.includes("hppo") || urlLower.includes("cnzu") || urlLower.includes("7vge") || urlLower.includes("thas") || urlLower.includes("gebl") || urlLower.includes("oqom") || urlLower.includes("emmd"))) ||
-    (projectId === "ARCH_07" && (urlLower.includes("bmbn") || urlLower.includes("dnk3") || urlLower.includes("1142"))) ||
-    (projectId === "ARCH_09" && [3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16].includes(idx))
+    urlLower.includes("pdf") ||
+    urlLower.includes("unrolled") ||
+    urlLower.includes("workflow") ||
+    urlLower.includes("code") ||
+    urlLower.includes("script") ||
+    urlLower.includes("chart")
   ) {
     return "drawing";
+  }
+  
+  // 3. Project-Specific Overrides for implicit URLs
+  if (projectId === "ARCH_01") {
+    if ([2, 3, 4, 5].includes(idx)) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_02") {
+    if (idx >= 5) return "drawing"; 
+    return "render";
+  }
+  
+  if (projectId === "ARCH_04") {
+    if (idx >= 4) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_05") {
+    if (idx >= 4) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_06") {
+    if (idx >= 6) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_07") {
+    if ([3, 4, 5].includes(idx)) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_08") {
+    if (idx === 3) return "drawing";
+    return "render";
+  }
+  
+  if (projectId === "ARCH_09") {
+    if (idx >= 3 && idx !== 10) return "drawing";
+    return "render";
+  }
+
+  // 4. Default by category prefix
+  if (projectId.startsWith("BIM_")) {
+    return "drawing"; // BIM tools, charts, workflows, calculations, and Dynamo code screenshots
   }
   
   return "render";
@@ -1675,7 +1722,7 @@ export default function App() {
       title: "Net-Zero Worker Housing",
       role: "Simulation Lead",
       hook: "National Grand Winner (Solar Decathlon India).",
-      description: "Simulation Lead for Health and Well-being. Optimized design outcomes for large-scale Construction Worker Housing through data storytelling.",
+      description: "Simulation Lead for Health and Well-being. Conducted core solar, thermal, and wind simulations using DesignBuilder to drive and optimize passive architectural performance.",
       icon: <ShieldCheck className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Net-Zero",
@@ -1684,29 +1731,30 @@ export default function App() {
       category: "Exterior",
       ledger: {
         inputs: "Climatic EPW Data, Schematic Spatial Footprint",
-        engine: "Ladybug (Grasshopper), EnergyPlus, Solar Decathlon Metrics",
+        engine: "DesignBuilder (Solar/Thermal/Wind), Ladybug (Grasshopper), EnergyPlus",
         outputs: "Optimized Double-Skin Facade, Daylighting & Acoustic Comfort Maps"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
         steps: [
-          "Model complex building geometry for thermal analysis.",
-          "Extract and scrub simulation data for optimization.",
-          "Validate passive cooling strategies (EAX, Radiant).",
-          "Present technical data narrative to jury panels."
+          "Execute full-scale solar radiation, thermal envelope, and CFD wind simulations in DesignBuilder.",
+          "Extract dynamic performance metrics to iteratively refine passive sunshading and cross-ventilation.",
+          "Validate low-energy radiant cooling and earth-air heat exchanger (EAX) thermal thresholds.",
+          "Compile and present the technical simulation narrative to the grand jury panels."
         ]
       },
       details: {
         overview: "This project addressed the critical need for dignified, sustainable housing for construction workers in India. Our team won the National Grand Prize for our holistic approach to net-zero energy and water.",
         challenge: "Achieving thermal comfort in a hot-humid climate without active cooling, while keeping construction costs extremely low for scalability.",
-        solution: "We implemented passive cooling strategies including earth-air heat exchangers and radiant cooling. My role involved extensive performance simulation to validate these strategies, resulting in a 40% reduction in predicted energy use compared to the baseline.",
+        solution: "We implemented passive cooling strategies including earth-air heat exchangers and radiant cooling. Leveraging DesignBuilder, I conducted high-fidelity solar insolation, thermal loading, and microclimatic wind ventilation simulations to validate our design. This rigorous performance feedback loop guided envelope shading layouts and resulted in a 40% reduction in predicted energy use compared to the baseline.",
         images: [
-          "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
-          "https://lh3.googleusercontent.com/d/1PSV1JocI5rfTI7YN3pJTuZfHfC7VrErr",
-          "https://lh3.googleusercontent.com/d/1Cva8sA6rByHMMdrSopwZ9nExSzl7tua2",
-          "https://lh3.googleusercontent.com/d/1F7hEXo7cFfefXcQZkAtw8VD1ORVlbUF5",
-          "https://lh3.googleusercontent.com/d/1VsF-1b3fSI0iGVvb5gw7YUcfE1bwk8v6",
-          "https://lh3.googleusercontent.com/d/1T6NhY_HzNaA5KmDZ8gGQwsL7Q4VgAwDt",
+          "https://lh3.googleusercontent.com/d/1Wx7tBpY9ZGnVQmq5gRMamwawbmuLsenm#drawing",
+          "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j#render",
+          "https://lh3.googleusercontent.com/d/1PSV1JocI5rfTI7YN3pJTuZfHfC7VrErr#render",
+          "https://lh3.googleusercontent.com/d/1Cva8sA6rByHMMdrSopwZ9nExSzl7tua2#drawing",
+          "https://lh3.googleusercontent.com/d/1F7hEXo7cFfefXcQZkAtw8VD1ORVlbUF5#drawing",
+          "https://lh3.googleusercontent.com/d/1VsF-1b3fSI0iGVvb5gw7YUcfE1bwk8v6#drawing",
+          "https://lh3.googleusercontent.com/d/1T6NhY_HzNaA5KmDZ8gGQwsL7Q4VgAwDt#drawing",
           "https://lh3.googleusercontent.com/d/1_uB4eu_Sdt_0MJNhG5vjkc9qqWocySVb#video",
           "https://lh3.googleusercontent.com/d/1lP5dsWK4keZJ-mVAUGqbfzbCTjTECsyB#video",
           "https://lh3.googleusercontent.com/d/1HGwlS9XXgMU6SRxc6KdCuYKbJffCh3-r#video",
@@ -1726,18 +1774,18 @@ export default function App() {
     {
       id: "ARCH_08",
       title: "Villa Project - IMK internship",
-      role: "Computational Designer & Automation Specialist",
+      role: "Architectural Intern",
       hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
-      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders via Twinmotion.",
+      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Bespoke Villa",
       gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Vectorworks", "Schematic Design", "Twinmotion", "IMK Internship", "Detailing"],
+      tags: ["Vectorworks", "Schematic Design", "3D Visualization", "IMK Internship", "Detailing"],
       category: "Conceptual",
       ledger: {
         inputs: "Schematic Spatial CAD Program, Site Microclimatic Context",
-        engine: "Vectorworks BIM, Passive Cooling Algorithms, Twinmotion Render",
+        engine: "Vectorworks BIM, Passive Cooling Algorithms, Real-time Visualizer",
         outputs: "Interactive Real-time Landscape Animations, High-LOD Construction Details"
       },
       workflow: {
@@ -1746,7 +1794,7 @@ export default function App() {
           "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
           "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
           "Model custom modular millwork in high-fidelity LOD 350 within Vectorworks.",
-          "Iterate multi-scenario lighting passes and natural materials inside Twinmotion."
+          "Iterate multi-scenario lighting passes and natural materials inside the real-time visualization engine."
         ]
       },
       details: {
@@ -1788,6 +1836,7 @@ export default function App() {
         ]
       },
       details: {
+        sheetsUrl: "https://drive.google.com/file/d/1ByKEytkeQRIW7cLqqtOtRko69qBClDDt/view?usp=sharing",
         overview: "The Sadhu Residence Complex is a visionary, non-institutional modular residential compound designed to support the minimalistic lifestyles and intense meditative routines of spiritual practitioners (sadhus).",
         challenge: "Balancing strict architectural modular grids required for low-cost prefabrication with warm, tranquil, and atmospheric spatial qualities appropriate for deep contemplation.",
         solution: "Engineered high-LOD Revit families for a repeating 3m x 3m precast wall/slab structural shell. Optimized layout groupings to maximize private courtyard thresholds, rendering the spiritual landscape in Twinmotion to assure acoustic safety and visual peace.",
@@ -1832,7 +1881,8 @@ export default function App() {
       },
       details: {
         publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, celebrating exemplary student design research and execution.",
-        sheetsUrl: "https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing",
+        sheetsUrl: "https://drive.google.com/file/d/1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp/view?usp=sharing",
+        reportUrl: "https://drive.google.com/file/d/1PvSO63GmlC2z-dUPCPA57tCswDiUP9dB/view?usp=drive_link",
         overview: "Karunya Hospice is a 50-bed palliative care facility that redefines the environment of end-of-life care. It moves away from the clinical 'hospital' feel towards a domestic, nature-centric sanctuary.",
         challenge: "Balancing the high medical requirements of palliative care with a non-institutional, peaceful atmosphere that supports both patients and their grieving families.",
         solution: "The design uses a decentralized pavilion layout connected by sensory gardens. Each patient room has a private view of nature and direct access to outdoor terraces, ensuring that no patient is ever isolated from the natural world.",
@@ -4107,53 +4157,62 @@ export default function App() {
                 </div>
 
                 {/* Full-width Thesis Presentation Sheets */}
-                {selectedArsenalItem.id === "ARCH_05" && (
-                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
-                      <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
-                        03_Thesis_Presentation_Sheets
+                {selectedArsenalItem.id === "ARCH_05" && (() => {
+                  const sheetsUrl = selectedArsenalItem.details?.sheetsUrl || "https://drive.google.com/file/d/1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp/view?usp=sharing";
+                  const isFolder = sheetsUrl.includes('/folders/') || sheetsUrl.includes('embeddedfolderview');
+                  const sheetDriveId = getDriveId(sheetsUrl);
+                  const embedSrc = isFolder 
+                    ? `https://drive.google.com/embeddedfolderview?id=${sheetDriveId || "1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M"}#grid`
+                    : `https://drive.google.com/file/d/${sheetDriveId || "1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp"}/preview`;
+
+                  return (
+                    <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+                        <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
+                          03_Thesis_Presentation_Sheets
+                        </div>
+                        
+                        <a
+                          href={sheetsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`shrink-0 px-3 py-1 font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
+                            isArch 
+                              ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                              : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                          }`}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Open Full View
+                        </a>
+                      </div>
+
+                      <div className={`p-4 border rounded transition-colors duration-700 ${
+                        isArch 
+                          ? "bg-amber-50/50 border-amber-200/60" 
+                          : "bg-[#04070a] border-terminal-border/20 text-gray-400"
+                      }`}>
+                        <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
+                          Academic Presentation Boards
+                        </h4>
+                        <p className={`text-[11px] leading-relaxed max-w-4xl mt-1 ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
+                          Natively browse the structural masterplans, section elevations, biophilic layout boards, and detailed execution design sheets.
+                        </p>
                       </div>
                       
-                      <a
-                        href="https://drive.google.com/drive/folders/1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M?usp=sharing"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`shrink-0 px-3 py-1 font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
-                          isArch 
-                            ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                            : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
-                        }`}
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        Open Full drive
-                      </a>
+                      <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
+                        isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
+                      }`}>
+                        <iframe
+                          src={embedSrc}
+                          className="w-full h-full border-0"
+                          title="Karunya Hospice Thesis Sheets Viewer Layout"
+                          allow="autoplay"
+                        ></iframe>
+                      </div>
                     </div>
-
-                    <div className={`p-4 border rounded transition-colors duration-700 ${
-                      isArch 
-                        ? "bg-amber-50/50 border-amber-200/60" 
-                        : "bg-[#04070a] border-terminal-border/20 text-gray-400"
-                    }`}>
-                      <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
-                        Academic Presentation Boards
-                      </h4>
-                      <p className={`text-[11px] leading-relaxed max-w-4xl mt-1 ${isArch ? "text-stone-600 font-sans" : "text-gray-400 font-mono"}`}>
-                        Natively browse the structural masterplans, section elevations, biophilic layout boards, and detailed execution design sheets.
-                      </p>
-                    </div>
-                    
-                    <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
-                      isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
-                    }`}>
-                      <iframe
-                        src="https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid"
-                        className="w-full h-full border-0"
-                        title="Karunya Hospice Thesis Sheets Viewer Layout"
-                        allow="autoplay"
-                      ></iframe>
-                    </div>
-                  </div>
-                )}
+                  );
+                })()}
 
                 {/* Full-width Technical Gallery */}
                 {selectedArsenalItem.details?.images && selectedArsenalItem.details.images.length > 0 && (
