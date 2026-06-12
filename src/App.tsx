@@ -1519,6 +1519,8 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [isAppsActive, setIsAppsActive] = useState(false);
+  const [isWorkflowsActive, setIsWorkflowsActive] = useState(false);
+  const [isArchWorksActive, setIsArchWorksActive] = useState(false);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
   const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
 
@@ -1709,6 +1711,16 @@ export default function App() {
   const visibleSections = ["landing", "vdc-section", "arch-section", "terminal"];
 
   const menuItems = [
+    { id: "landing", label: "Gateway", isSection: true, index: 0, elementId: "landing" },
+    { id: "vdc-section", label: "VDC Core", isSection: true, index: 1, elementId: "vdc-section" },
+    { id: "vdc-workflows", label: "BIM Workflows", isSection: false, elementId: "vdc-workflows" },
+    { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
+    { id: "arch-section", label: "Arch Studio", isSection: true, index: 2, elementId: "arch-section" },
+    { id: "arch-works", label: "Design Portfolio", isSection: false, elementId: "arch-works" },
+    { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
+  ];
+
+  const desktopMenuItems = [
     { id: "landing", label: "Gateway", isSection: true, index: 0, elementId: "landing" },
     { id: "vdc-section", label: "VDC Core", isSection: true, index: 1, elementId: "vdc-section" },
     { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
@@ -2551,21 +2563,48 @@ export default function App() {
         }
       });
 
-      // Track if vdc-apps is active (within viewport)
-      const appsEl = document.getElementById("vdc-apps");
+      // Track sub-sections
       const vdcSecEl = document.getElementById("vdc-section");
-      if (appsEl && vdcSecEl) {
-        const appsAbsoluteTop = vdcSecEl.offsetTop + appsEl.offsetTop;
-        const archSecEl = document.getElementById("arch-section");
-        const appsAbsoluteBottom = archSecEl ? archSecEl.offsetTop : appsAbsoluteTop + appsEl.offsetHeight;
-        
-        if (scrollPosition >= appsAbsoluteTop && scrollPosition < appsAbsoluteBottom) {
+      const workflowsEl = document.getElementById("vdc-workflows");
+      const appsEl = document.getElementById("vdc-apps");
+      const archSecEl = document.getElementById("arch-section");
+      const worksEl = document.getElementById("arch-works");
+      const terminalEl = document.getElementById("terminal");
+
+      if (vdcSecEl) {
+        const workflowsTop = workflowsEl ? (vdcSecEl.offsetTop + workflowsEl.offsetTop) : vdcSecEl.offsetTop;
+        const appsTop = appsEl ? (vdcSecEl.offsetTop + appsEl.offsetTop) : vdcSecEl.offsetTop;
+        const archTop = archSecEl ? archSecEl.offsetTop : vdcSecEl.offsetTop + vdcSecEl.offsetHeight;
+
+        // vdc-workflows is active between workflowsTop and appsTop
+        if (scrollPosition >= workflowsTop && scrollPosition < appsTop) {
+          setIsWorkflowsActive(true);
+        } else {
+          setIsWorkflowsActive(false);
+        }
+
+        // vdc-apps is active between appsTop and archTop
+        if (scrollPosition >= appsTop && scrollPosition < archTop) {
           setIsAppsActive(true);
         } else {
           setIsAppsActive(false);
         }
       } else {
+        setIsWorkflowsActive(false);
         setIsAppsActive(false);
+      }
+
+      if (archSecEl) {
+        const worksTop = worksEl ? (archSecEl.offsetTop + worksEl.offsetTop) : archSecEl.offsetTop;
+        const terminalTop = terminalEl ? terminalEl.offsetTop : archSecEl.offsetTop + archSecEl.offsetHeight;
+
+        if (scrollPosition >= worksTop && scrollPosition < terminalTop) {
+          setIsArchWorksActive(true);
+        } else {
+          setIsArchWorksActive(false);
+        }
+      } else {
+        setIsArchWorksActive(false);
       }
     };
 
@@ -2681,12 +2720,14 @@ export default function App() {
 
         {/* Desktop Nav */}
         <div className={`hidden md:flex gap-6 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-700 ${isHeaderArch ? "text-gray-600" : "text-gray-500"}`}>
-          {menuItems.map((item) => {
-            const isActive = item.id === "vdc-apps"
-              ? isAppsActive
-              : item.id === "vdc-section"
-              ? (activeSection === 1 && !isAppsActive)
-              : (activeSection === item.index);
+          {desktopMenuItems.map((item) => {
+            const isActive = 
+              item.id === "landing" ? activeSection === 0 :
+              item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
+              item.id === "vdc-apps" ? isAppsActive :
+              item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
+              item.id === "terminal" ? activeSection === 3 :
+              false;
             return (
               <button 
                 key={item.id}
@@ -2709,7 +2750,7 @@ export default function App() {
         {/* Mobile Menu Toggle */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`p-2 transition-colors ${isHeaderArch ? "text-black hover:bg-gray-100" : "text-neon-cyan hover:bg-white/5"}`}
+          className={`md:hidden p-2 transition-colors ${isHeaderArch ? "text-black hover:bg-gray-100" : "text-neon-cyan hover:bg-white/5"}`}
         >
           {isMenuOpen ? <Box className="w-5 h-5 rotate-45" /> : <Layers className="w-5 h-5" />}
         </button>
@@ -2721,56 +2762,66 @@ export default function App() {
               initial={{ opacity: 0, x: "100%" }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "100%" }}
-              className={`fixed inset-0 z-[70] flex flex-col items-center justify-center gap-8 font-mono text-lg uppercase tracking-[0.3em] transition-colors duration-700 ${
+              className={`fixed inset-0 z-[70] block p-6 transition-colors duration-700 overflow-y-auto ${
                 isHeaderArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
               }`}
             >
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute top-6 right-6 p-2"
-              >
-                <Box className="w-8 h-8 rotate-45" />
-              </button>
-              {menuItems.map((item) => {
-                const isActive = item.id === "vdc-apps"
-                  ? isAppsActive
-                  : item.id === "vdc-section"
-                  ? (activeSection === 1 && !isAppsActive)
-                  : (activeSection === item.index);
-                return (
+              <div className="min-h-full flex flex-col justify-between items-center w-full max-w-sm mx-auto">
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="self-end p-2 mt-2 mr-2"
+                >
+                  <Box className="w-8 h-8 rotate-45" />
+                </button>
+
+                <div className="flex flex-col items-center gap-4 py-8 font-mono text-sm uppercase tracking-[0.2em] w-full max-w-xs text-center my-auto">
+                  {menuItems.map((item) => {
+                    const isActive = 
+                      item.id === "landing" ? activeSection === 0 :
+                      item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
+                      item.id === "vdc-workflows" ? isWorkflowsActive :
+                      item.id === "vdc-apps" ? isAppsActive :
+                      item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
+                      item.id === "arch-works" ? isArchWorksActive :
+                      item.id === "terminal" ? activeSection === 3 :
+                      false;
+                    return (
+                      <button 
+                        key={item.id}
+                        onClick={() => {
+                          if (item.isSection) {
+                            handleSectionChange(item.index!);
+                          } else {
+                            const el = document.getElementById(item.elementId);
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }
+                          setIsMenuOpen(false);
+                        }}
+                        className={`hover:scale-105 py-2 transition-transform w-full ${isActive ? "font-bold underline underline-offset-8" : "opacity-80"}`}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="pb-8 flex flex-col items-center gap-3 w-full">
+                  <div className="text-[10px] opacity-40 uppercase tracking-widest font-mono">Jump Portal</div>
                   <button 
-                    key={item.id}
                     onClick={() => {
-                      if (item.isSection) {
-                        handleSectionChange(item.index!);
-                      } else {
-                        const el = document.getElementById(item.elementId);
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }
+                      const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
                       setIsMenuOpen(false);
                     }}
-                    className={`hover:scale-110 transition-transform ${isActive ? "font-bold underline underline-offset-8" : ""}`}
+                    className={`w-full max-w-[240px] px-6 py-2.5 border font-mono text-[10px] uppercase tracking-widest transition-all duration-500 rounded-sm shadow text-center ${
+                      isHeaderArch 
+                      ? "bg-black text-white border-black" 
+                      : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
+                    }`}
                   >
-                    {item.label}
+                    {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
                   </button>
-                );
-              })}
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <div className="text-[10px] opacity-40">Jump Location</div>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    setIsMenuOpen(false);
-                  }}
-                  className={`px-6 py-3 border font-mono text-xs uppercase tracking-widest transition-all duration-500 ${
-                    isHeaderArch 
-                    ? "bg-black text-white border-black" 
-                    : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
-                  }`}
-                >
-                  {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
-                </button>
+                </div>
               </div>
             </motion.div>
           )}
