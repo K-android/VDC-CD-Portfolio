@@ -1734,7 +1734,7 @@ export default function App() {
       title: "Net-Zero Worker Housing",
       role: "Simulation Lead",
       hook: "National Grand Winner (Solar Decathlon India).",
-      description: "Simulation Lead for Health and Well-being. Conducted core solar, thermal, and wind simulations using DesignBuilder to drive and optimize passive architectural performance.",
+      description: "Simulated solar, thermal, and wind performance to optimize resource-saving architecture.",
       icon: <ShieldCheck className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Net-Zero",
@@ -1742,23 +1742,23 @@ export default function App() {
       tags: ["Performance Simulation", "DesignBuilder", "IESVE"],
       category: "Exterior",
       ledger: {
-        inputs: "Climatic EPW Data, Schematic Spatial Footprint",
-        engine: "DesignBuilder (Solar/Thermal/Wind), Ladybug (Grasshopper), EnergyPlus",
-        outputs: "Optimized Double-Skin Facade, Daylighting & Acoustic Comfort Maps"
+        inputs: "Local Climate Records, Basic Building Shape",
+        engine: "Energy & Wind Simulation software (DesignBuilder, EnergyPlus)",
+        outputs: "Smart Building Facade, Natural Light & Sound Maps"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j",
         steps: [
-          "Execute full-scale solar radiation, thermal envelope, and CFD wind simulations in DesignBuilder.",
-          "Extract dynamic performance metrics to iteratively refine passive sunshading and cross-ventilation.",
-          "Validate low-energy radiant cooling and earth-air heat exchanger (EAX) thermal thresholds.",
-          "Compile and present the technical simulation narrative to the grand jury panels."
+          "Run full-scale sun, heat, and air ventilation simulations.",
+          "Optimize window panels, shading, and natural airflow paths.",
+          "Verify passive geo-cooling cooling loops.",
+          "Present technical data to the grand prize jury."
         ]
       },
       details: {
-        overview: "This project addressed the critical need for dignified, sustainable housing for construction workers in India. Our team won the National Grand Prize for our holistic approach to net-zero energy and water.",
-        challenge: "Achieving thermal comfort in a hot-humid climate without active cooling, while keeping construction costs extremely low for scalability.",
-        solution: "We implemented passive cooling strategies including earth-air heat exchangers and radiant cooling. Leveraging DesignBuilder, I conducted high-fidelity solar insolation, thermal loading, and microclimatic wind ventilation simulations to validate our design. This rigorous performance feedback loop guided envelope shading layouts and resulted in a 40% reduction in predicted energy use compared to the baseline.",
+        overview: "An award-winning design to provide ultra-affordable, energy-efficient housing for construction workers in India.",
+        challenge: "Keeping the building naturally cool in hot, humid weather without expensive air conditioning.",
+        solution: "Designed natural cooling tunnels and strategic facade shading. Virtual simulations proved this lowered energy costs by 40%.",
         images: [
           "https://lh3.googleusercontent.com/d/1Wx7tBpY9ZGnVQmq5gRMamwawbmuLsenm#drawing",
           "https://lh3.googleusercontent.com/d/1P0FpPB-A9-Cs0bz1cywCumsfNBZyCA6j#render",
@@ -1788,31 +1788,31 @@ export default function App() {
       title: "Villa Project - IMK internship",
       role: "Architectural Intern",
       hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
-      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks. Produced high-fidelity real-time interactive landscape and climate renders.",
+      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
-      metric: "Bespoke Villa",
+      metric: "Bespoke Millwork",
       gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
       tags: ["Vectorworks", "Schematic Design", "3D Visualization", "IMK Internship", "Detailing"],
       category: "Conceptual",
       ledger: {
         inputs: "Schematic Spatial CAD Program, Site Microclimatic Context",
         engine: "Vectorworks BIM, Passive Cooling Algorithms, Real-time Visualizer",
-        outputs: "Interactive Real-time Landscape Animations, High-LOD Construction Details"
+        outputs: "Walkthrough video renderings, detailed parametric woodworking details"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
         steps: [
-          "Establish bespoke spatial zoning guidelines tailored to private residential briefs.",
-          "Synthesize localized wind-flow and sunpath charts to anchor physical canopy overhangs.",
-          "Model custom modular millwork in high-fidelity LOD 350 within Vectorworks.",
-          "Iterate multi-scenario lighting passes and natural materials inside the real-time visualization engine."
+          "Establish bespoke spatial zoning tailored to the private residential brief.",
+          "Map localized wind-flow and sun paths to design overhead canopy shading.",
+          "Model custom modular millwork with high precision inside Vectorworks BIM.",
+          "Test virtual lighting passes and natural materials inside the real-time visualization engine."
         ]
       },
       details: {
-        overview: "Developed as part of a rigorous design team during the IMK Internship, this private luxury residential villa project represents an seamless synthesis of luxury-class scale with regional climatic adaptability.",
-        challenge: "Maintaining a sense of spatial transparency and expansive views across the double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
-        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sunpath vectors by 70% while distributing soft, uniform daylight throughout core living volumes.",
+        overview: "A private luxury villa designed during my IMK internship to blend high-end scale with regional passive climatic screening.",
+        challenge: "Maintaining a sense of spatial transparency across double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
+        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sun paths by 70% while distributing soft, uniform daylight through custom millwork integration.",
         images: [
           "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
           "https://picsum.photos/seed/villainterior/800/450?grayscale",
@@ -1826,7 +1826,7 @@ export default function App() {
       title: "Sadhu Nivas Residence",
       role: "Architectural Designer & BIM Modeler",
       hook: "Modular prefabrication meeting minimalistic, tranquil spiritual living.",
-      description: "Designed a modular, prefabricated residential community tailored for sadhus. Crafted precise Revit 3D modeling and detailed documentation for prefab wall/slab modules, and produced atmospheric, high-fidelity renders using Twinmotion & Snaptrude.",
+      description: "Designed a modular, preassembled residential community for spiritual practitioners. Built precise parametric Revit families and rendered tranquil, quiet gardens.",
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Prefab Modules",
@@ -1834,24 +1834,24 @@ export default function App() {
       tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
       category: "Conceptual",
       ledger: {
-        inputs: "Prefab Community Spatial Brief, Structural Module Grid",
-        engine: "Revit, Snaptrude Conceptualizer, Twinmotion Atmosphere Engine",
-        outputs: "High-LOD Modular Precast Families, Spiritual Landscape Visualization"
+        inputs: "Module dimensions, tranquil zoning needs",
+        engine: "3D CAD modeling & natural rendering software",
+        outputs: "Detailed Modular Precast Families, Spiritual Landscape Visualization"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
         steps: [
-          "Establish minimalistic spatial needs and rigid modular grids.",
-          "Author precise Revit parametric families for prefabricated wall and slab modules.",
-          "Integrate models dynamically between Snaptrude for rapid spatial alignment and Revit.",
-          "Render tranquil landscapes and atmospheric materials in Twinmotion."
+          "Determine minimal room sizes and modular grid alignments.",
+          "Build parametric Revit families for prefabricated concrete wall/slab units.",
+          "Test layout designs for structural alignment.",
+          "Create immersive quiet garden views and natural lighting setups in Twinmotion."
         ]
       },
       details: {
         sheetsUrl: "https://drive.google.com/file/d/1ByKEytkeQRIW7cLqqtOtRko69qBClDDt/view?usp=sharing",
-        overview: "The Sadhu Residence Complex is a visionary, non-institutional modular residential compound designed to support the minimalistic lifestyles and intense meditative routines of spiritual practitioners (sadhus).",
-        challenge: "Balancing strict architectural modular grids required for low-cost prefabrication with warm, tranquil, and atmospheric spatial qualities appropriate for deep contemplation.",
-        solution: "Engineered high-LOD Revit families for a repeating 3m x 3m precast wall/slab structural shell. Optimized layout groupings to maximize private courtyard thresholds, rendering the spiritual landscape in Twinmotion to assure acoustic safety and visual peace.",
+        overview: "A prefabricated modular housing neighborhood designed to support the minimalistic lifestyles and meditative quiet of spiritual practitioners.",
+        challenge: "Creating cozy, warm, and highly peaceful spaces using concrete panels while maintaining strict modular grids for low-cost prefabrication.",
+        solution: "Engineered structural precast Revit families spanning a repeating 3m x 3m module shell. Designed smart layout groupings arranged around hidden courtyard thresholds to block outer noises and ensure visual peace.",
         images: [
           "https://lh3.googleusercontent.com/d/1wTF4ThR7toYkbOtAQS_bQ226Ou_NIAM2",
           "https://lh3.googleusercontent.com/d/1Ds1UzgVlSWSDZu2sLBM8VJ7RR3k4ks5c",
@@ -1879,7 +1879,7 @@ export default function App() {
       title: "Karunya Hospice",
       role: "Lead Architect (Thesis)",
       hook: "Designing for dignity, nature, and the final transition.",
-      description: "Comprehensive hospice and palliative care facility designed to facilitate end-of-life care with dignity. Integrates nature into every space.",
+      description: "A 50-bed palliative care campus designed to celebrate nature, providing a warm, comforting space for patients and families.",
       icon: <Activity className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Biophilic",
@@ -1887,17 +1887,17 @@ export default function App() {
       tags: ["Healthcare Design", "Biophilic Architecture", "Thesis", "Pratibimbh Journal"],
       category: "Exterior",
       ledger: {
-        inputs: "End-of-life Palliative Care Spatial Brief, Natural Site Context",
-        engine: "Master Planning, Healing Spatial Algorithms, Spatial Ecology",
-        outputs: "Dignity-Centered Healing Gardens, Organic Architectural Layouts"
+        inputs: "Patient care needs, local forest topography",
+        engine: "Biophilic design and health-support layouts",
+        outputs: "Healing garden floorplans, organic village walkways"
       },
       details: {
         publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, celebrating exemplary student design research and execution.",
         sheetsUrl: "https://drive.google.com/file/d/1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp/view?usp=sharing",
         reportUrl: "https://drive.google.com/file/d/1PvSO63GmlC2z-dUPCPA57tCswDiUP9dB/view?usp=drive_link",
-        overview: "Karunya Hospice is a 50-bed palliative care facility that redefines the environment of end-of-life care. It moves away from the clinical 'hospital' feel towards a domestic, nature-centric sanctuary.",
-        challenge: "Balancing the high medical requirements of palliative care with a non-institutional, peaceful atmosphere that supports both patients and their grieving families.",
-        solution: "The design uses a decentralized pavilion layout connected by sensory gardens. Each patient room has a private view of nature and direct access to outdoor terraces, ensuring that no patient is ever isolated from the natural world.",
+        overview: "A peaceful 50-bed hospice camp that trades sterile, cold hospital corridors for natural, cozy wooden homes.",
+        challenge: "Ensuring medical utilities are highly accessible while keeping the layout looking like a quiet forest retreat.",
+        solution: "Separated the facility into smaller house pavilions connected by plants and dynamic sensory gardens. Every room overlooks trees, keeping families beautifully connected to nature.",
         images: [
           "https://lh3.googleusercontent.com/d/1_Gcehq-yN--25n8qKIkSLTGIleQGQqve",
           "https://lh3.googleusercontent.com/d/1wPuVIXSD99yWsCg5AcQxJCC07R3VT3Bi",
@@ -1930,7 +1930,7 @@ export default function App() {
       title: "Recycled Bus Pavilion",
       role: "Design & Build Lead",
       hook: "National Citation for functional adaptive reuse.",
-      description: "Competition-winning pavilion repurposed from a discarded bus using 100% recycled materials. Hands-on fabrication experience.",
+      description: "Award-winning community pavilion built by transforming a decommissioned scrap bus with reclaimed materials.",
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Upcycled",
@@ -1938,14 +1938,14 @@ export default function App() {
       tags: ["Fabrication", "Materiality", "On-Site Assembly"],
       category: "Fabrication",
       ledger: {
-        inputs: "Decommissioned Public Transit Bus, Local Salvage Material Log",
-        engine: "Adaptive Reuse Computation, Hands-on Metal & Wood Fabrication",
-        outputs: "National Citation Award, Finished Community Gathering Pavilion"
+        inputs: "Scrapped public transit bus, local wood and metal waste logs",
+        engine: "Adaptive reuse modeling and hands-on metal welding",
+        outputs: "National Design Citation, completed community gathering hub"
       },
       details: {
-        overview: "The Recycled Bus Pavilion was a live design-build project aimed at demonstrating the potential of 'upcycling' industrial waste into community infrastructure.",
-        challenge: "Working with a rigid, pre-existing structural shell (the bus) and adapting it to a new, open-ended public function while ensuring structural safety.",
-        solution: "We stripped the bus to its chassis and reinforced it with reclaimed steel sections. The design featured a modular seating system and a translucent roof made from recycled polycarbonate sheets, creating a lightweight, airy community hub.",
+        overview: "A real hands-on community design project to prove how scrap vehicles can be recycled into beautiful public spaces.",
+        challenge: "Upcycling a metal bus frame into an open, secure, and lightweight shelter.",
+        solution: "Stripped the bus down to its structural chassis, welded supporting steel columns, and installed recycled roof panels to create a bright, airy open-air pavilion.",
         images: [
           "https://lh3.googleusercontent.com/d/1UueeMY09uP6M6tZWtjhFKjzENJhUIpEs",
           "https://lh3.googleusercontent.com/d/1BEgKY95IEr5g9vbVArBGeUGZe8lnuU53#video",
@@ -1972,7 +1972,7 @@ export default function App() {
       title: "Bamboo Pavilion",
       role: "Fabrication Lead",
       hook: "Exploring parametric joinery in organic materials.",
-      description: "A lightweight, modular pavilion constructed entirely from bamboo. Focuses on sustainable joinery and rapid on-site assembly.",
+      description: "A lightweight, modular pavilion built with sustainable bamboo nodes and assembled in under 48 hours.",
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Sustainable",
@@ -1980,14 +1980,14 @@ export default function App() {
       tags: ["Bamboo", "Parametric Design", "Hands-on"],
       category: "Fabrication",
       ledger: {
-        inputs: "Organic Bamboo Pole Culms, Custom Parametric Node Templates",
-        engine: "Grasshopper Parametric Structural Simulation, Physical Joint Testing",
-        outputs: "Rapid On-site Modular Assembly, Self-Supporting Bamboo Joinery"
+        inputs: "Natural bamboo poles, 3D printed steel connector templates",
+        engine: "3D simulation and physical structural joint tests",
+        outputs: "Fast on-site assembly system, self-supporting natural grid structure"
       },
       details: {
-        overview: "The Bamboo Pavilion was an experimental structure that merged traditional bamboo construction with computational design logic.",
-        challenge: "Bamboo is a non-standard material with varying diameters and strengths, making precise joinery difficult for a complex grid shell.",
-        solution: "We developed a parametric joint system that could accommodate variations in bamboo culm size. The entire structure was prefabricated in modules and assembled on-site in less than 48 hours.",
+        overview: "An experimental screen pavilion designed to merge traditional bamboo building with fast, modern 3D design plans.",
+        challenge: "Natural bamboo poles have uneven sizes and strengths, making perfectly standardized connectors difficult to design.",
+        solution: "Developed a flexible, self-adjusting metal connector system. We prefabricated the units in a workshop and assembled the canopy on-site in 48 hours.",
         images: [
           "https://lh3.googleusercontent.com/d/1Bmav4R81p33aN0dg1aKeX6VBJ9aGkeVY#image",
           "https://lh3.googleusercontent.com/d/1EodFSHDesqz-0X1meS0jtxiG0LEnCoSL#image",
@@ -2014,7 +2014,7 @@ export default function App() {
       title: "Aura One office - Academic",
       role: "Lead Student Architect",
       hook: "High-performance ecological commercial tower with a self-shading double skin.",
-      description: "An academic exploration of highly responsive commercial centers in Mangaluru. Integrated advanced Ladybug environmental analysis within Grasshopper to configure a self-shading double-skin facade that filters glare and daylight factors automatically.",
+      description: "An academic project in Mangaluru designing an office tower with a self-shading double-glass facade to reduce glare and solar heat.",
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Academic Core",
@@ -2022,23 +2022,23 @@ export default function App() {
       tags: ["Grasshopper", "Ladybug Analysis", "Double-Skin Facade", "Commercial Architecture", "Academic"],
       category: "Exterior",
       ledger: {
-        inputs: "Commercial High-Rise Architectural Program, Mangaluru Climate Log",
-        engine: "Grasshopper Facade Optimization, Ladybug Daylight Hours Solver",
-        outputs: "Self-Shading Architectural Facade, Pocket Green Roof Plazas"
+        inputs: "Office spatial requirements, Mangaluru yearly climate records",
+        engine: "3D shading simulation and daylight quality calculation tools",
+        outputs: "Optimized self-shading double glass panels, sky-gardens"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1hG1dISPuq8c91Xk-BLArl32al89adqXa",
         steps: [
-          "Formulate structural grids and flexible zoning parameters for grade-A office layouts.",
-          "Write Grasshopper scripts to link solar path nodes directly with glass deflection metrics.",
-          "Simulate annual Daylight Glare Probability (DGP) using Ladybug/Honeybee plugins.",
-          "Draft highly-detailed structural connections for double-skin cavity framing."
+          "Establish column spacing grids and workspaces for modern offices.",
+          "Write simple scripts to align glass shade angles with yearly sun paths.",
+          "Run simulations to check natural interior daylight and glare levels.",
+          "Draft structural details showing how the double glass panel system mounts."
         ]
       },
       details: {
-        overview: "Aura One is a premium commercial concept designed around occupant wellness and self-sustaining micro-climates. The project challenges typical standard office designs by carving out internal multi-story green pocket gardens.",
-        challenge: "Designing a high-glass facade that preserves uniform interior daylight while preventing localized glare discomfort and heavy cooling peak loads.",
-        solution: "Developed an intelligent, responsive double skin facade. By dynamically optimizing individual glass louvers using Grasshopper routines, we successfully kept annual interior daylight factors above 3.5% across 90% of the desk area, while reducing overall cooling peak loads by 24%.",
+        overview: "A premium office tower concept focused on worker wellness. The design replaces standard glass towers with stacked green open-air pocket terraces.",
+        challenge: "Using simple glass facade layouts that bring in clean, uniform sunlight without making the spaces hot and blinding.",
+        solution: "Configured adjustable glass louvers. These protected desks from harsh sun glare while dropping overall cooling costs by 24%.",
         images: [
           "https://lh3.googleusercontent.com/d/1J8LFl6eA-Y2cUSSrwCO1Gqom_ABPS9yL",
           "https://lh3.googleusercontent.com/d/1_PI1qIU5K80hSqPvxvmVok-Je7HtJ0BK",
@@ -2073,7 +2073,7 @@ export default function App() {
       title: "The Caffeine Lab",
       role: "Interior Designer",
       hook: "A sensory experience defined by materiality and light.",
-      description: "Contemporary cafe interior focusing on the tactile experience of materials. Uses raw concrete, warm wood, and strategic lighting.",
+      description: "Modern brick-and-wood coffee house interior focusing on tactile warmth and natural skylight paths.",
       icon: <Cpu className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Atmospheric",
@@ -2081,14 +2081,14 @@ export default function App() {
       tags: ["Interior Design", "Materiality", "Lighting Design"],
       category: "Interior",
       ledger: {
-        inputs: "Raw Concrete Spatial Container, Coffee Brewing Sensory Sequence",
-        engine: "Tactile Material Mapping, Strategic High-Contrast Point Radiance",
-        outputs: "Finished High-End Café Interior, Material Texture Specifications"
+        inputs: "Raw concrete shop bounds, barista brewing layout needs",
+        engine: "Strategic point lighting and raw wood textures",
+        outputs: "Completed coffee house environment, precise material spec sheets"
       },
       details: {
-        overview: "The Caffeine Lab is a boutique coffee house designed to be a sanctuary for urban dwellers. The project emphasizes the 'third space' concept—a place between home and work where community and creativity thrive.",
-        challenge: "The primary challenge was to transform a narrow, deep commercial space with limited natural light into a vibrant and inviting environment without feeling claustrophobic.",
-        solution: "We utilized a 'light-well' strategy, using reflective surfaces and a central skylight to pull light deep into the plan. A palette of raw, honest materials—exposed brick, reclaimed timber, and brushed brass—was used to create a layered, tactile experience.",
+        overview: "A boutique coffee house designed as an open urban hub between home and work.",
+        challenge: "Welcoming customers into a narrow commercial slot with limited front windows.",
+        solution: "Installed deep skylights and mirror angles to pool natural sunlight. Used exposed bricks, restored wood, and brass accents to make the environment cozy.",
         images: [
           "https://lh3.googleusercontent.com/d/18Rc73l485-6jt6jQ-mz3lmv8lhe_uX3G",
           "https://lh3.googleusercontent.com/d/1wJxO8h7b4A6IzYVI8EEb5jJXyeIZgucl",
@@ -2111,30 +2111,30 @@ export default function App() {
       title: "The LLM Fabrication Engine",
       role: "Computational Design Technologist",
       hook: "Generative AI API integration with physical CNC digital fabrication.",
-      description: "Engineered a live API bridge between LLM logic (Gemini) and physical CNC manufacturing. The script dynamically generates optimal façade panelization constraints via JSON parsing, applies them to complex NURBS surfaces, and automatically unrolls the geometry into 2D cut-sheets for direct laser-cutter fabrication.",
+      description: "A Python API bridge that connects Gemini live language models directly with CNC/laser machines, automatically generating flat cut sheets from simple prompts.",
       icon: <Cpu className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
       metric: "Generative API",
       gifUrl: "https://lh3.googleusercontent.com/d/11sFI5d1bszNSdrgzSsTwC6NF1POaMzv1",
       tags: ["Python API", "Grasshopper", "Digital Fabrication", "JSON"],
       ledger: {
-        inputs: "NURBS Surface, Gemini LLM API Session",
-        engine: "Python (GHPython), Grasshopper, JSON Parser",
-        outputs: "Optimized Panelization Constraints, 2D Laser-Cut Sheets"
+        inputs: "3D CAD curves, Gemini chatbot session",
+        engine: "Python scripts and 3D modeling curves",
+        outputs: "Optimized building panel shapes, 2D laser-cut patterns"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-llm/800/450?grayscale",
         steps: [
-          "Connect Grasshopper environment to Gemini API.",
-          "Parse spatial panelization constraints from JSON return structure.",
-          "Map geometric constraints to complex NURBS surfaces dynamically.",
-          "Automate flat unrolling into production-ready 2D cut-sheets."
+          "Connect the 3D design workspace to the Gemini API.",
+          "Receive panel sizes and spacing directly from AI chat logic.",
+          "Apply the dimensions to complex curved surfaces.",
+          "Flatten the 3D surfaces into ready-to-run 2D layouts."
         ]
       },
       details: {
-        overview: "The LLM Fabrication Engine establishes a direct link between modern large language model (LLM) APIs and precise physical fabrication pipelines. It translates descriptive, multi-modal prompts into standard geometric configurations without requiring manual CAD parameter manipulation.",
-        challenge: "Generating deterministic, CNC-ready flat sheet templates from conversational, non-deterministic language models.",
-        solution: "Implemented an integrated Grasshopper & Python routine that structures Gemini's responses into verified JSON schemas, drives spatial panelling calculations, and outputs high-fidelity structural outputs.",
+        overview: "A direct workflow connecting AI chat with laser and CNC machinery, translating text requests into physical building shapes automatically.",
+        challenge: "Getting clean, precise, and buildable machine parts from unpredictable AI chat answers.",
+        solution: "Wrote custom Python parser scripts that force the AI model to output verified numbers. The script then builds, rotates, and flattens the pieces perfectly.",
         images: [
           "https://lh3.googleusercontent.com/d/12OMyHxHu87uIA87fmB3QJI-tMzHIi-yP",
           "https://lh3.googleusercontent.com/d/1OcgT2rCg6SVvVPYAgdgDyYfOwD2FybaL",
@@ -2152,7 +2152,7 @@ export default function App() {
       title: "The Generative Documentation Engine",
       role: "BIM Automation Lead",
       hook: "Bypassing Revit UI limitations to automate large-scale sheet generation.",
-      description: "A script that reads an Excel matrix and auto-generates hundreds of named, numbered sheets in Revit instantly. I proved I can eliminate manual drafting hours for an entire firm.",
+      description: "An automated script that reads spreadsheet data to create hundreds of fully formatted building blueprints and sheets in Revit instantly.",
       icon: <Code2 className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
       metric: "Firm-Wide Scale",
@@ -2160,23 +2160,23 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1m17edUmGzmk5KxO9aepinIVhFUjyCMjU",
       tags: ["Revit API", "Dynamo", "Python"],
       ledger: {
-        inputs: "Revit RVT, Excel Schedule Matrix",
-        engine: "C#, Revit API, LINQ, Dynamo",
-        outputs: "Automated Sheet Sets, CSV Log Reports"
+        inputs: "3D Revit building models, Excel sheet list schedule",
+        engine: "C# and Python document scripts",
+        outputs: "Completed, labeled blueprint rolls, PDF/DWG files"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-1/800/450?grayscale",
         steps: [
-          "Batch select viewports and sheet templates.",
-          "Execute auto-alignment and scaling logic.",
-          "Synchronize metadata across all documentation sets.",
-          "Generate PDF/DWG exports with automated naming."
+          "Select the building sections and title pages to bundle.",
+          "Run the layout spacing and image scaling script.",
+          "Sync file names, project titles, and issue dates automatically.",
+          "Export organized blueprints to standard formats."
         ]
       },
       details: {
-        overview: "Automated large-scale sheet generation by reading Excel matrices directly into Revit, completely bypassing standard API limit bottlenecks.",
-        challenge: "Generating hundreds of sheets manually can take days and is highly prone to numbering and naming errors.",
-        solution: "Engineered a robust Dynamo and Python-based scripting suite that automates view alignment, template creation, and batch scaling from Excel data.",
+        overview: "A business automation tool that builds complete client-ready printable sheets instantly from reference spreadsheets.",
+        challenge: "Creating thousands of drawing views and sheet lists manually consumes entire work weeks and breeds typos.",
+        solution: "Coded a Dynamo scripting tool which reads spreadsheet lists and maps them straight into Revit, handling scaling and label alignment in seconds.",
         videoUrl: "https://drive.google.com/file/d/1qFTWKJWqE4zKuuKalI5X7WSVZlWd4bUl/view?usp=sharing"
       }
     },
@@ -2185,7 +2185,7 @@ export default function App() {
       title: "The 5D Data Harvester",
       role: "VDC Data Engineer",
       hook: "Scrubbing massive Revit models to extract exact facility parameters.",
-      description: "A workflow that scrubs massive Revit models to extract exact facility parameters (furniture, doors, MEP) and writes clean, formatted Bill of Quantities (BOQ) data to Excel. I proved I handle construction data, not just pretty pictures.",
+      description: "A smart script that combs massive virtual models to extract exact quantities, doors, and furniture items into formatted Excel budget logs.",
       icon: <Database className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
       metric: "100% Accuracy",
@@ -2193,23 +2193,23 @@ export default function App() {
       gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
       tags: ["Dynamo", "Excel"],
       ledger: {
-        inputs: "Federated Revit RVT Models (Multidisciplinary)",
-        engine: "Dynamo, DesignScript, Excel Interop API",
-        outputs: "Clean Bill of Quantities (BOQ), Parameter Integrity Reports"
+        inputs: "Combined architectural and plumbing BIM models",
+        engine: "Dynamo data harvesting scripts",
+        outputs: "Formatted build spreadsheets, parameter checklist tables"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-2/800/450?grayscale",
         steps: [
-          "Scan Revit database for non-compliant parameters.",
-          "Apply regex-based scrubbing logic.",
-          "Cross-reference with project financial spreadsheets.",
-          "Export verified 5D data to Enterprise ERP."
+          "Scan the entire building database for empty attributes.",
+          "Clean up wrong label formats using text search patterns.",
+          "Compare elements against standard price lists.",
+          "Export verified cost spreadsheets to the system."
         ]
       },
       details: {
-        overview: "A specialized data extraction and scrubbing workflow built to harvest exact facility parameters from complex Revit models.",
-        challenge: "Extracting precise quantities, material volumes, and facility parameters from large models usually yields fragmented and inconsistent data.",
-        solution: "Engineered customized Dynamo and Python databases to cross-reference scheduling templates and output formatted, reliable Bill of Quantities data directly to financial spreadsheets.",
+        overview: "An automated data picker and builder that extracts exact material volumes and catalog items directly from building shapes.",
+        challenge: "Manually counting thousands of doors, pipes, and beams from 3D models typically leaves crucial items behind.",
+        solution: "Created Python data miners that scan the model's background catalog and write clean, structured checklists into excel for accurate cost estimates.",
         videoUrl: "https://drive.google.com/file/d/1AiHanx4MA9nFEWaQotQpyHroxkHZcOuo/view?usp=sharing"
       }
     },
@@ -2218,30 +2218,30 @@ export default function App() {
       title: "The Clash Matrix Pipeline",
       role: "BIM Coordinator",
       hook: "Streamlining multidisciplinary model coordination.",
-      description: "A federated model hard-clash test. I rigged a structural model against an MEP plumbing model and captured the exact Red/Green intersections. I proved I can lead digital coordination and mitigate multi-million-dollar on-site errors.",
+      description: "An automated 3D collision checker that audits steel structures against pipes, flagging and color-coding coordination issues before they become on-site problems.",
       icon: <Activity className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
       metric: "Zero Errors",
       gifUrl: "https://lh3.googleusercontent.com/d/1G_5-CuXFQuIf9mft1d6CauX29EmntKOE",
       tags: ["Navisworks Manage", "Revit NWC Exporter"],
       ledger: {
-        inputs: "Structural NWC, MEP Plumbing NWC, XML Rules Matrix",
-        engine: "Navisworks Manage, Clash Detective API, Python NWC Exporter",
-        outputs: "Active Hard-Clash Intersections, HTML Coordination Ledger"
+        inputs: "Structural frame files, plumbing pipes files, rule matching checklists",
+        engine: "Clash check solvers and automated view filters",
+        outputs: "High-priority coordination lists, interactive error logs"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-4/800/450?grayscale",
         steps: [
-          "Run hard clash tests between Structural and MEP federated models.",
-          "Automate clash grouping by system and priority.",
-          "Apply visual overrides for rapid identification.",
-          "Generate coordination reports for site teams."
+          "Load the structural frames and duct files together.",
+          "Filter out minor issues and focus on big structure blocks.",
+          "Color-code overlap spots so engineers can spot them fast.",
+          "Create interactive reports for the construction superintendent."
         ]
       },
       details: {
-        overview: "Streamlining multidisciplinary model coordination through automated clash detection and resolution.",
-        challenge: "Managing thousands of clashes across complex structural and MEP systems without manual oversight.",
-        solution: "Implemented a federated model coordination pipeline in Navisworks that automated clash grouping and prioritized critical intersections for site teams.",
+        overview: "A coordination system that prevents design clashes between building fields before crews begin pouring concrete.",
+        challenge: "Sifting through thousands of accidental overlap alerts between small wires and concrete panels.",
+        solution: "Established clear rule layers that group alerts by major systems (like main columns vs. water ducts), letting designers solve major layout conflicts first.",
         reportUrl: "https://drive.google.com/file/d/1LetvlyhbGmUM-43bKoJR2OVGJQCNutWJ/view?usp=sharing",
         videoUrl: "https://drive.google.com/file/d/18k015r2LpCsmPb_POW3cQBtCoSXsIQ27/view?usp=sharing"
       }
@@ -2251,30 +2251,30 @@ export default function App() {
       title: "The MEP Component Automator",
       role: "VDC Engineer",
       hook: "Automated placement and configuration of MEP systems.",
-      description: "An algorithmic workflow developed to automate the generation, placement, and parameter synchronization of MEP components within a BIM model.",
+      description: "A digital routing helper that automatically positions pipes and vents in structural 3D models using simple size and distance rules.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
       metric: "Automation",
       gifUrl: "https://lh3.googleusercontent.com/d/1dR5ajQdvGdR3YJOvScsAu_uteRfCiuVt",
       tags: ["Vectorworks", "Marionette", "BIM Model"],
       ledger: {
-        inputs: "Architectural Spatial Shell, MEP Asset Database (.vwx)",
-        engine: "Vectorworks Marionette, Python, Parametric Nodes",
-        outputs: "Automated 3D Component Instantiation, Live Synchronized Parameters"
+        inputs: "Building walls and shapes, equipment Catalog database",
+        engine: "Automatic alignment algorithms",
+        outputs: "Positioned equipment models, synchronized size labels"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-5/800/450?grayscale",
         steps: [
-          "Define mechanical system parameters and clearance requirements.",
-          "Execute Marionette algorithms for component placement.",
-          "Synchronize parameters across the BIM model for real-time coordination.",
-          "Generate automated reports and system verification schedules."
+          "Enter plumbing sizes and required safety clearances.",
+          "Run the automated routing algorithms.",
+          "Check and synchronize size labels across the entire file.",
+          "Export completed layout lists and verify with engineers."
         ]
       },
       details: {
-        overview: "An algorithmic workflow to automate the placement, routing, and parameter synchronization of mechanical, electrical, and plumbing elements in complex projects.",
-        challenge: "Manually sizing, routing, and parameterizing components across extensive networks leads to coordinate errors and massive delays.",
-        solution: "Engineered customized Vectorworks Marionette algorithms to automatically layout and dynamically assign parameters, ensuring complete coordination and accurate specification schedules.",
+        overview: "An automated design script that paths water pipes, duct systems, and electrical channels directly into empty building cavities.",
+        challenge: "Manually sizing and routing thousands of small items takes days and inevitably creates physical overlaps.",
+        solution: "Wrote automatic alignment routines which place and size every connection instantly while running immediate clearance reports.",
         videoUrl: "https://drive.google.com/file/d/10JAIqWYDsFVJFuBhUsFo730E31IfPLFe/view?usp=sharing"
       }
     },
@@ -2283,30 +2283,30 @@ export default function App() {
       title: "The 4D Matrix (TimeLiner)",
       role: "Simulation Lead",
       hook: "Visualizing construction sequences over time.",
-      description: "I integrated project schedules with 3D models to simulate construction sequences, identifying logistical bottlenecks before they happen on site.",
+      description: "A scheduling tool that links calendar dates with 3D models, creating a virtual preview of the building process to avoid site blockages.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "4D Simulation",
       gifUrl: "https://lh3.googleusercontent.com/d/1qpMsNkw8HaPhf97qubs7GEV1BkZKsydz",
       tags: ["Navisworks Manage", "TimeLiner"],
       ledger: {
-        inputs: "Revit RVT Model, MS Project XML Schedule",
-        engine: "Navisworks TimeLiner, CSV Field Mappings",
-        outputs: "4D Construction Sequence Simulation, Time-Liner Sequence Logs"
+        inputs: "3D Revit building model, MS Project build schedule",
+        engine: "Timeline player and date linking rules",
+        outputs: "Day-by-day construction video, sequence log files"
       },
       workflow: {
         screenshotUrl: "https://picsum.photos/seed/workflow-6/800/450?grayscale",
         steps: [
-          "Import construction schedule into Navisworks.",
-          "Link 3D model elements to schedule tasks.",
-          "Configure appearance profiles for installation states.",
-          "Execute 4D simulation to identify sequence conflicts."
+          "Import the building schedule spreadsheet.",
+          "Link specific dates to individual columns and walls.",
+          "Color-code items by their stage (built, mock, active).",
+          "Play the animation to catch schedule conflicts early."
         ]
       },
       details: {
-        overview: "A comprehensive 4D sequence simulation integrating detailed project schedules directly with federated 3D models.",
-        challenge: "Visualizing complex timelines and finding sequence conflicts in multi-phase projects is incredibly difficult using flat charts.",
-        solution: "Established dynamic linkage between schedule tasks and BIM parameters in Navisworks Manage, simulating the complete construction sequence over time and mitigating sequence conflicts.",
+        overview: "An interactive video timeline that lets contractors watch the daily building progress virtually to coordinate crane and crew arrivals.",
+        challenge: "Catching schedule mistakes (such as pouring a floor before the supporting steel columns arrive) in flat spreadsheet cells is extremely difficult.",
+        solution: "Paired schedule spreadsheets directly with 3D building pieces to animate the full timeline, solving multi-million-dollar sequence mistakes in the office.",
         videoUrl: "https://drive.google.com/file/d/1lEe6jypAKbT_Fe0CXXVDaV3yXgarNeeF/view?usp=sharing"
       }
     },
@@ -2314,40 +2314,40 @@ export default function App() {
       id: "BIM_07",
       title: "The Multi-Objective Eco-Parametric Solver",
       role: "Simulation Lead & Computational Designer",
-      hook: "Single vs. Multi-Objective Generative Evolutionary Solvers: Galapagos vs. Wallacei",
-      description: "A generative optimization study benchmarking Galapagos (Single-Objective Genetic Algorithm) against Wallacei (Multi-Objective Evolutionary Engine) linked with Ladybug environmental analytics. This workflow evaluates structural material mass and carbon-shading profiles simultaneously, allowing stakeholders to contrast simple single-fitness curves with multi-dimensional Pareto-front exploration.",
+      hook: "Single vs. Multi-Objective Generative Evolutionary Solvers",
+      description: "A smart research study contrasting simple automated design searchers (Galapagos) with complex multi-direction solvers (Wallacei) to find the best window shades for solar protection and material savings.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "Comparative",
       gifUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
       tags: ["Galapagos", "Wallacei", "Ladybug", "Grasshopper", "Multi-Objective", "Pareto Front"],
       ledger: {
-        inputs: "Grasshopper Geometry, Epw Weather File, Fitness Boundary Parameters",
-        engine: "Galapagos Solver (SO), Wallacei Evolutionary Engine (MO), Ladybug EPA",
-        outputs: "Pareto Non-Dominated Solutions Cloud, High-Contrast Multi-Variable Graphs"
+        inputs: "3D window curves, regional weather data files",
+        engine: "Single-goal fitness solver, multi-target evolutionary calculator",
+        outputs: "Interactive balance graph, optimal shade designs"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
         steps: [
-          "Formulate parametric facade & louver dimensions inside Grasshopper combined with Ladybug climate engines.",
-          "Configure a Galapagos evolutionary loop using a unified weighted fitness function for single-objective optimization.",
-          "Deploy a Wallacei multi-objective solver to evaluate Pareto-front trade-offs between shading, expense, and total mass.",
-          "Compile comparative data visualizations directly on-canvas to benchmark performance curves and outputs."
+          "Model basic shade shapes and configure weather data paths.",
+          "Run single-goal search loop to find the single lightest shade.",
+          "Run multi-goal balance loop evaluating weight, cost, and sun blocking.",
+          "Compare options on a dynamic chart to choose the best overall balance."
         ]
       },
       details: {
-        overview: "A deep comparative benchmark study contrasting single-objective (Galapagos) vs. multi-objective (Wallacei) genetic engines. By aligning both algorithms with Ladybug's solar heat gain calculations, we evaluated their geometric output, convergence velocity, and practical constructability across key building elevations.",
-        challenge: "Single-objective algorithms like Galapagos require merging disparate criteria (such as material volume and heat deflection) into a single, artificial 'weighted score' function. This tends to hide critical spatial trade-offs and risks local minima trap-states. In contrast, multi-objective engines require advanced selection frameworks but natively present non-dominated solution sets.",
-        solution: "Established a parallel comparative solver layout within Grasshopper. While Galapagos achieved rapid convergence toward a singular high-mass grid layout, Wallacei generated a multi-dimensional Pareto-front cloud. This provided stakeholders with 30+ optimized facade options which achieved a further 18% structural weight reduction while maintaining exceptional year-round shading.",
+        overview: "A research project testing simple single-point optimization against multi-goal genetic search paths to design high-performance solar window grids.",
+        challenge: "Simple search tools often force you to combine random targets (like price and weight) into a single, confusing score, which hides smart options.",
+        solution: "Set up a parallel multi-goal solver that tested and output a menu of 30+ balanced shade models. This reduced structural weight by 18% while keeping interiors beautifully shaded.",
         videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing",
         comparisonTable: {
-          headers: ["Optimized Parameters", "Galapagos (Single-Objective)", "Wallacei (Multi-Objective)"],
+          headers: ["Feature", "Galapagos (Single Goal)", "Wallacei (Multi Goal)"],
           rows: [
-            ["Optimization Target", "Single weighted index (Shading x 0.7 - Mass x 0.3)", "Multi-Criteria Pareto Front (Shading, Mass, Cost independently)"],
-            ["Average Search Gen Time", "7-12 Generations (Fast convergence but prone to local minima)", "40-60 Generations (Explaining multi-dimensional trade space)"],
-            ["Structural Volume Impact", "Sub-optimal mass; compromized envelope structures to meet single scores", "Optimized mass (18% reduction) aligned with actual structural loads"],
-            ["Decision Flexibility", "Static selection: single 'winner' geometry output", "Interactive Pareto-optimal cloud (30+ elegant design options)"],
-            ["Stakeholder Insight", "Limited design variation; difficult to explain specific trade-offs", "Rich interactive parallel coordinate plots and cluster analysis charts"]
+            ["Search Goal", "Solves for one simple combined number (e.g., Shading x 0.7 - Weight x 0.3)", "Tracks multiple goals independently (Shading, cost, and weight)"],
+            ["Search Speed", "7-12 passes (Fast but misses creative options)", "40-60 passes (Uncovers a wider variety of balanced fits)"],
+            ["Steel Weight", "Heavy; makes sacrifices on support shapes to meet the single score", "Balanced; matches individual loads for light, safe configurations"],
+            ["Final Choice", "Outputs a single rigid style as the 'winner'", "Presents a cloud of 30+ balanced designs for you to pick from"],
+            ["Stakeholder Value", "Provides limited variety; hard to contrast trade-offs", "Provides clear balance charts to explain choice parameters simply"]
           ]
         },
         images: [
@@ -2364,30 +2364,30 @@ export default function App() {
       title: "Rhino-to-Revit API Interoperability Pipeline",
       role: "Workflow Automation & Computational Research",
       hook: "AI-driven topology serialization & real-time BIM compilation.",
-      description: "Addressing the critical loss of data integrity when translating segmented geometries from Rhino/Grasshopper to Autodesk Revit via an AI-driven serialization bridge parsing pure topological data.",
+      description: "An automated serialization data bridge that streams high-fidelity topological coordinate matrices from Rhino design tools directly into Revit BIM environments, preserving full geometric intelligence at LOD 400.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
-      metric: "45s Compile",
+      metric: "LOD 400 Mass",
       gifUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
       tags: ["Grasshopper 3D", "Revit API", "Raven AI", "JSON", "Python"],
       ledger: {
-        inputs: "Rhino 3DM NURBS, JSON Typology Maps",
-        engine: "Revit API, C# Node Compiler, GitHub Raven AI API",
+        inputs: "Rhino 3DM NURBS, JSON Topology maps",
+        engine: "Revit API, C# Node Compiler, Raven AI API Serialization",
         outputs: "LOD 400 Revit Conceptual Massing, Parameter-Synced Direct Shapes"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
         steps: [
-          "The Geometry Engine (Grasshopper): Generated a complex, 5,000-piece Biomimetic Space Frame using a Voronoi algorithm.",
-          "Topological Extraction: Extracted pure mathematical and topological data from the algorithm, cleanly separating the system into 4,500 struts (Lines) and 1,200 joints (Points).",
-          "The Serialization Bridge (Raven AI): Packaged this clean topological data into a lightweight JSON payload, bypassing traditional, heavy file exports.",
-          "The Revit API Listener: Fired the JSON package directly into the Revit API via a custom listener script, instantly reading the node matrix and mapping the data to native elements."
+          "Generate a complex spaceframe structure using a Voronoi algorithm in Rhino 3D.",
+          "Extract mathematical and topological coordinates, bypassing heavy geometric file exports.",
+          "Package the coordinate matrices into a lightweight serialized JSON payload.",
+          "Listen to the API payload within Revit, redrawing native LOD 400 elements instantly."
         ]
       },
       details: {
-        overview: "The project addresses a critical bottleneck in the AEC industry: the loss of data integrity and parametric intelligence when translating complex, highly segmented geometry from Rhino/Grasshopper into native BIM environments like Autodesk Revit.",
-        challenge: "Rather than exporting 'dead' meshes or manually remodeling complex elements, this project uses an AI-driven serialization bridge to parse pure topological data.",
-        solution: "Translating abstract geometric structures into fully parametric, native Revit components in under a minute.",
+        overview: "The project addresses a critical industry bottleneck: the loss of data integrity and parametric intelligence when translating complex geometries from Rhino into native BIM environments like Autodesk Revit.",
+        challenge: "Converting complex shapes typically results in heavy, broken 'dead' meshes or un-editable 3D blocks that cannot be annotated or scheduled.",
+        solution: "Instead of converting full meshes, this script sends raw topological data. A custom Revit API listener reads these coordinate points and compiles 5,000 fully editable, native LOD 400 direct-shape elements in 45 seconds.",
         images: [
           "https://lh3.googleusercontent.com/d/1ySj-S4Cu5uqlWjv6UhVHQXj67Q9Cp7zI",
           "https://lh3.googleusercontent.com/d/1sPPimcIWeztPLW6ClSUCM3XRLvQ_ZEY_",
@@ -2754,79 +2754,99 @@ export default function App() {
         >
           {isMenuOpen ? <Box className="w-5 h-5 rotate-45" /> : <Layers className="w-5 h-5" />}
         </button>
+      </header>
 
-        {/* Mobile Nav Overlay */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
-              className={`fixed inset-0 z-[70] block p-6 transition-colors duration-700 overflow-y-auto ${
-                isHeaderArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
-              }`}
-            >
-              <div className="min-h-full flex flex-col justify-between items-center w-full max-w-sm mx-auto">
-                <button 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="self-end p-2 mt-2 mr-2"
-                >
-                  <Box className="w-8 h-8 rotate-45" />
-                </button>
+      {/* Mobile Nav Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            className={`fixed inset-0 z-[70] block p-6 transition-colors duration-700 overflow-y-auto ${
+              isHeaderArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
+            }`}
+          >
+            <div className="min-h-full flex flex-col justify-between items-center w-full max-w-sm mx-auto">
+              <button 
+                onClick={() => setIsMenuOpen(false)}
+                className="self-end p-2 mt-2 mr-2 hover:scale-110 transition-transform text-current"
+              >
+                <Box className="w-8 h-8 rotate-45" />
+              </button>
 
-                <div className="flex flex-col items-center gap-4 py-8 font-mono text-sm uppercase tracking-[0.2em] w-full max-w-xs text-center my-auto">
-                  {menuItems.map((item) => {
-                    const isActive = 
-                      item.id === "landing" ? activeSection === 0 :
-                      item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
-                      item.id === "vdc-workflows" ? isWorkflowsActive :
-                      item.id === "vdc-apps" ? isAppsActive :
-                      item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
-                      item.id === "arch-works" ? isArchWorksActive :
-                      item.id === "terminal" ? activeSection === 3 :
-                      false;
+              <div className="flex flex-col items-stretch gap-1 py-4 font-mono text-xs uppercase tracking-[0.15em] w-full max-w-[260px] my-auto">
+                {menuItems.map((item) => {
+                  const isActive = 
+                    item.id === "landing" ? activeSection === 0 :
+                    item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
+                    item.id === "vdc-workflows" ? isWorkflowsActive :
+                    item.id === "vdc-apps" ? isAppsActive :
+                    item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
+                    item.id === "arch-works" ? isArchWorksActive :
+                    item.id === "terminal" ? activeSection === 3 :
+                    false;
+
+                  if (item.isSection) {
                     return (
                       <button 
                         key={item.id}
                         onClick={() => {
-                          if (item.isSection) {
-                            handleSectionChange(item.index!);
-                          } else {
-                            const el = document.getElementById(item.elementId);
-                            if (el) el.scrollIntoView({ behavior: 'smooth' });
-                          }
+                          handleSectionChange(item.index!);
                           setIsMenuOpen(false);
                         }}
-                        className={`hover:scale-105 py-2 transition-transform w-full ${isActive ? "font-bold underline underline-offset-8" : "opacity-80"}`}
+                        className={`hover:translate-x-1 py-2 text-left w-full border-b flex justify-between items-center transition-all duration-300 ${
+                          isHeaderArch ? "border-gray-100" : "border-white/5"
+                        } ${isActive ? "font-bold text-sm" : "opacity-80 text-[11px]"}`}
                       >
-                        {item.label}
+                        <span>{item.label}</span>
+                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-current" />}
                       </button>
                     );
-                  })}
-                </div>
-
-                <div className="pb-8 flex flex-col items-center gap-3 w-full">
-                  <div className="text-[10px] opacity-40 uppercase tracking-widest font-mono">Jump Portal</div>
-                  <button 
-                    onClick={() => {
-                      const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      setIsMenuOpen(false);
-                    }}
-                    className={`w-full max-w-[240px] px-6 py-2.5 border font-mono text-[10px] uppercase tracking-widest transition-all duration-500 rounded-sm shadow text-center ${
-                      isHeaderArch 
-                      ? "bg-black text-white border-black" 
-                      : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
-                    }`}
-                  >
-                    {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
-                  </button>
-                </div>
+                  } else {
+                    return (
+                      <button 
+                        key={item.id}
+                        onClick={() => {
+                          const el = document.getElementById(item.elementId);
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          setIsMenuOpen(false);
+                        }}
+                        className={`hover:translate-x-1 transition-all text-left py-1.5 pl-5 text-[10px] flex items-center gap-1.5 ${
+                          isActive 
+                            ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan font-semibold") 
+                            : "opacity-50 hover:opacity-90"
+                        }`}
+                      >
+                        <span className="opacity-30 font-sans">└─</span>
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  }
+                })}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+
+              <div className="pb-6 flex flex-col items-center gap-3.5 w-full">
+                <div className="text-[10px] opacity-40 uppercase tracking-widest font-mono">Jump Portal</div>
+                <button 
+                  onClick={() => {
+                    const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    setIsMenuOpen(false);
+                  }}
+                  className={`w-full max-w-[220px] px-5 py-2 border font-mono text-[9px] uppercase tracking-widest transition-all duration-500 rounded-sm shadow text-center ${
+                    isHeaderArch 
+                    ? "bg-black text-white border-black" 
+                    : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
+                  }`}
+                >
+                  {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Progress Indicator */}
       <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col gap-4 items-center">
