@@ -2157,7 +2157,7 @@ export default function App() {
       color: "neon-cyan",
       metric: "Firm-Wide Scale",
       content: <CodeSnippet />,
-      gifUrl: "https://lh3.googleusercontent.com/d/1m17edUmGzmk5KxO9aepinIVhFUjyCMjU",
+      gifUrl: "https://lh3.googleusercontent.com/d/1SHXNrFYWzgw8f6hMYNzF4I9BQfdF5Xor",
       tags: ["Revit API", "Dynamo", "Python"],
       ledger: {
         inputs: "3D Revit building models, Excel sheet list schedule",
