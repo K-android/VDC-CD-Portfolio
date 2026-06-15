@@ -3094,7 +3094,7 @@ export default function App() {
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
                   <div className="relative w-full h-full group">
                     <img 
-                      src="https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN" 
+                      src="https://lh3.googleusercontent.com/d/1KWO0JcGakYmARq4aDTMo6BG7CoK1Kt33" 
                       alt="BIM Hero GIF"
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
