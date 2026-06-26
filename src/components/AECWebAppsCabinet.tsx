@@ -22,6 +22,7 @@ export const AECWebAppsCabinet: React.FC = () => {
   const [selectedSandbox, setSelectedSandbox] = useState<boolean>(false);
   const [currentTab1, setCurrentTab1] = useState<"desc" | "features" | "process">("desc");
   const [currentTab2, setCurrentTab2] = useState<"desc" | "features" | "process">("desc");
+  const [currentTab3, setCurrentTab3] = useState<"desc" | "features" | "process">("desc");
   
   // Real-time animation states for the BIM Metric Portal visualizer
   const [telemetryLogs, setTelemetryLogs] = useState<string[]>([
@@ -396,6 +397,165 @@ export const AECWebAppsCabinet: React.FC = () => {
               >
                 <Globe className="w-4 h-4" />
                 <span>Launch Live Website</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* APP 3: RHINO SYNC WEB CONSOLE */}
+        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-[#b4ff39]/45 hover:shadow-[0_0_30px_rgba(180,255,57,0.03)] transition-all duration-500 h-full">
+          {/* Header */}
+          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#b4ff39] font-bold">// DESK_APP_03</span>
+              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
+                Rhino Sync Web Console
+              </h4>
+            </div>
+          </div>
+
+          {/* Hero Image Column */}
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+            <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
+            <img 
+              src="https://lh3.googleusercontent.com/d/1eQ88zcWYH9cjK0eHaem8THzK3w1_o83Y"
+              alt="Rhino Sync Web Console Preview"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 filter saturate-[0.85] pointer-events-none select-none"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+              <span className="w-1.5 h-1.5 bg-[#b4ff39] rounded-full animate-pulse" />
+              Live Server Connection
+            </div>
+          </div>
+
+          {/* Description & Actionable Tabs */}
+          <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
+            <div>
+              {/* App Navigation Tab Buttons */}
+              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs">
+                <button
+                  onClick={() => setCurrentTab3("desc")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab3 === "desc" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Desc
+                </button>
+                <button
+                  onClick={() => setCurrentTab3("features")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab3 === "features" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Key Highlights
+                </button>
+                <button
+                  onClick={() => setCurrentTab3("process")}
+                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                    currentTab3 === "process" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Process
+                </button>
+              </div>
+
+              {/* Tab Contents */}
+              <div className="min-h-[140px] font-mono">
+                <AnimatePresence mode="wait">
+                  {currentTab3 === "desc" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3"
+                    >
+                      <p className="text-gray-300 text-sm leading-relaxed font-sans font-medium">
+                        A self-hosted parametric web console connecting Grasshopper scripts to a browser interface via Rhino.Compute and a persistent ngrok tunnel, enabling real-time geometry manipulation and solar analysis without Rhino/GH installation on the client.
+                      </p>
+                      <div className="text-[#b4ff39] text-[10.5px] border-l-2 border-[#b4ff39] pl-3 py-1 bg-[#b4ff39]/[0.01]">
+                        // Bridging desktop parametric models to the web using headless Rhino servers.
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab3 === "features" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-2.5 text-xs text-gray-300"
+                    >
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-[#b4ff39] shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Rhino.Compute Headless Backend</strong>: Exposes Grasshopper logic through a REST API to let users solve parametric algorithms without opening the desktop software.
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-[#b4ff39] shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Ngrok Tunneling</strong>: Facilitates secure and persistent external access to the local simulation server, overcoming network firewall limitations.
+                        </div>
+                      </div>
+                      <div className="flex gap-2 items-start">
+                        <CheckCircle2 className="w-4 h-4 text-[#b4ff39] shrink-0 mt-0.5" />
+                        <div>
+                          <strong>Real-Time Solar Analysis</strong>: Drives geometry manipulation and Ladybug environmental analytics directly from simple web sliders.
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {currentTab3 === "process" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                    >
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span>Boot local Rhino.Compute headless server linked to target Grasshopper files.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span>Establish secure public endpoint via persistent ngrok tunneling.</span>
+                      </div>
+                      <div className="flex gap-3 items-center">
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span>Parse web UI slider changes as JSON payload and return updated geometry meshes.</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Stack tags */}
+              <div className="flex flex-wrap gap-2 mt-6">
+                {["Rhino.Compute", "Grasshopper", "REST API", "ngrok", "React Web UI", "Parametric Models"].map((tag) => (
+                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Glowing Website Launcher Button */}
+            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <span className="text-[10px] text-gray-500 font-mono tracking-wider">// VERCEL HOSTED</span>
+              <a
+                href="https://rhino-gh-sync-web-console.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-[#b4ff39]/15 hover:bg-[#b4ff39] border border-[#b4ff39]/30 text-[#b4ff39] hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(180,255,57,0.1)] active:scale-95"
+              >
+                <Globe className="w-4 h-4" />
+                <span>Launch Web Console</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>

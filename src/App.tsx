@@ -1429,6 +1429,7 @@ interface ArsenalItem {
     solution: string;
     images?: string[];
     reportUrl?: string;
+    reportLabel?: string;
     videoUrl?: string;
     sheetsUrl?: string;
     publication?: string;
@@ -2340,6 +2341,8 @@ export default function App() {
         challenge: "Simple search tools often force you to combine random targets (like price and weight) into a single, confusing score, which hides smart options.",
         solution: "Set up a parallel multi-goal solver that tested and output a menu of 30+ balanced shade models. This reduced structural weight by 18% while keeping interiors beautifully shaded.",
         videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing",
+        reportUrl: "https://drive.google.com/file/d/1A--_4MoByx_xFHQw_vwLqknOPNOUbI_i/view?usp=sharing",
+        reportLabel: "Using Wallacei over Galapagos",
         comparisonTable: {
           headers: ["Feature", "Galapagos (Single Goal)", "Wallacei (Multi Goal)"],
           rows: [
@@ -3064,7 +3067,7 @@ export default function App() {
                   </button>
 
                   <a 
-                    href="https://drive.google.com/file/d/1vU9ymieO9uISVZSdGznHRbVlwQ3fUpOU/view?usp=sharing" 
+                    href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border border-neon-cyan hover:shadow-[0_0_20px_rgba(0,242,255,0.2)]"
@@ -3290,7 +3293,7 @@ export default function App() {
                   </button>
 
                   <a 
-                    href="https://drive.google.com/file/d/1vU9ymieO9uISVZSdGznHRbVlwQ3fUpOU/view?usp=sharing" 
+                    href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-white text-black hover:bg-black hover:text-white border border-black hover:shadow-lg"
@@ -4100,21 +4103,21 @@ export default function App() {
                               08_Documentation
                             </div>
                             <div className="flex flex-wrap gap-4">
-                              {selectedArsenalItem.details?.reportUrl && (
-                                <a 
-                                  href={selectedArsenalItem.details.reportUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
-                                    isArch 
-                                    ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
-                                  }`}
-                                >
-                                  <FileText className="w-3 h-3" />
-                                  View Full Report
-                                </a>
-                              )}
+                                {selectedArsenalItem.details?.reportUrl && (
+                                  <a 
+                                    href={selectedArsenalItem.details.reportUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
+                                      isArch 
+                                      ? "border-black bg-black text-white hover:bg-white hover:text-black" 
+                                      : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                    }`}
+                                  >
+                                    <FileText className="w-3 h-3" />
+                                    {selectedArsenalItem.details.reportLabel || "View Full Report"}
+                                  </a>
+                                )}
 
                               {selectedArsenalItem.details?.sheetsUrl && (
                                 <a 
