@@ -2340,7 +2340,17 @@ export default function App() {
         overview: "A research project testing simple single-point optimization against multi-goal genetic search paths to design high-performance solar window grids.",
         challenge: "Simple search tools often force you to combine random targets (like price and weight) into a single, confusing score, which hides smart options.",
         solution: "Set up a parallel multi-goal solver that tested and output a menu of 30+ balanced shade models. This reduced structural weight by 18% while keeping interiors beautifully shaded.",
-        videoUrl: "https://drive.google.com/file/d/11LHU93AbOVeVjjDI3RJB2zJmSvMmB77B/view?usp=sharing",
+        images: [
+          "https://lh3.googleusercontent.com/d/1mgPjVlBewtASBfKFyV7X_FBv8g7OX1-2#render",
+          "https://lh3.googleusercontent.com/d/1c4AkPuVu4ExF-Cl4TjvjmTZN7PTVFWi6#render",
+          "https://lh3.googleusercontent.com/d/1imbn5IFvIz1OCsZxDdYXjRMDEw0UFmSk#render",
+          "https://lh3.googleusercontent.com/d/1bre_RmRkdlnRIW9WkSAPH3fEY_IvrcbG#render",
+          "https://lh3.googleusercontent.com/d/1LDX9tMnC_NsYZP_SEYYWxYKxkvV-FGe1#drawing",
+          "https://lh3.googleusercontent.com/d/1GBEP9vbRtkZzt6P8-mImQiy5AVGs36R_#drawing",
+          "https://lh3.googleusercontent.com/d/1l7G5k7xURcKj4y7yRy9hL0TBSc0C8uNW#drawing",
+          "https://lh3.googleusercontent.com/d/1eZOhpIrBn_S7CJ2Gad8nb33Z3nXngbip#drawing"
+        ],
+        videoUrl: "https://drive.google.com/file/d/1UCf5m6QoSRNmMOqwPUVvYqjNRzg7rIJG/view?usp=sharing",
         reportUrl: "https://drive.google.com/file/d/1A--_4MoByx_xFHQw_vwLqknOPNOUbI_i/view?usp=sharing",
         reportLabel: "Using Wallacei over Galapagos",
         comparisonTable: {
@@ -2352,14 +2362,7 @@ export default function App() {
             ["Final Choice", "Outputs a single rigid style as the 'winner'", "Presents a cloud of 30+ balanced designs for you to pick from"],
             ["Stakeholder Value", "Provides limited variety; hard to contrast trade-offs", "Provides clear balance charts to explain choice parameters simply"]
           ]
-        },
-        images: [
-          "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F#render",
-          "https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN#render",
-          "https://lh3.googleusercontent.com/d/1ySj-S4Cu5uqlWjv6UhVHQXj67Q9Cp7zI#drawing",
-          "https://lh3.googleusercontent.com/d/1sPPimcIWeztPLW6ClSUCM3XRLvQ_ZEY_#drawing",
-          "https://lh3.googleusercontent.com/d/1UuKn3FCJ0VMBINEO5lnmmAnt66mHlG5H#drawing"
-        ]
+        }
       }
     },
     {
@@ -3186,7 +3189,7 @@ export default function App() {
               <div className="space-y-8 md:space-y-12 font-mono">
                 {experience.map((exp, idx) => (
                   <div 
-                    key={idx} 
+                    key={`exp-terminal-${idx}`} 
                     className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                   >
                     <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-black border-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.5)] z-10" />
@@ -3430,7 +3433,7 @@ export default function App() {
                 <div className="space-y-8 md:space-y-12">
                   {experience.map((exp, idx) => (
                     <div 
-                      key={idx} 
+                      key={`exp-arch-${idx}`} 
                       className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
                     >
                       <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-white border-black z-10" />
@@ -3823,7 +3826,7 @@ export default function App() {
                             
                             <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-terminal-border/25 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
                               <WorkloadGif 
-                                src="https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN" 
+                                src="https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN" 
                                 alt="Wallacei Engine"
                                 isArch={false}
                                 forcePlay={true}
@@ -3847,10 +3850,10 @@ export default function App() {
                               <div 
                                 onClick={() => {
                                   setExpandedMedia({
-                                    src: "https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN",
+                                    src: "https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN",
                                     isVideo: false,
                                     isGif: true,
-                                    googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/1Unv_W8F89oCT5V_PIsoMMmy3ltvCoyoN"),
+                                    googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN"),
                                     alt: "Wallacei Multi-Objective Evolutionary Study"
                                   });
                                 }}
@@ -4190,7 +4193,7 @@ export default function App() {
                                 <thead>
                                   <tr className={isArch ? "bg-gray-100/80 border-b border-gray-200" : "bg-black/60 border-b border-terminal-border/20"}>
                                     {selectedArsenalItem.details.comparisonTable.headers.map((hdr, idx) => (
-                                      <th key={idx} className={`p-3 font-bold uppercase tracking-wider text-[10px] ${isArch ? "text-gray-700 font-sans" : "text-neon-cyan"}`}>
+                                      <th key={`hdr-${idx}`} className={`p-3 font-bold uppercase tracking-wider text-[10px] ${isArch ? "text-gray-700 font-sans" : "text-neon-cyan"}`}>
                                         {hdr}
                                       </th>
                                     ))}
@@ -4379,7 +4382,7 @@ export default function App() {
                           const thumbSrc = getStaticThumbnailUrl(img);
                           return (
                             <div 
-                              key={idx} 
+                              key={`gallery-${idx}-${googleDriveId || idx}`} 
                               onClick={() => {
                                 setExpandedMedia({
                                   src: img,
