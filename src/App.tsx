@@ -1893,7 +1893,7 @@ export default function App() {
         outputs: "Healing garden floorplans, organic village walkways"
       },
       details: {
-        publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, celebrating exemplary student design research and execution.",
+        publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, Design and Planning, celebrating exemplary student design research and execution.",
         sheetsUrl: "https://drive.google.com/file/d/1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp/view?usp=sharing",
         reportUrl: "https://drive.google.com/file/d/1PvSO63GmlC2z-dUPCPA57tCswDiUP9dB/view?usp=drive_link",
         overview: "A peaceful 50-bed hospice camp that trades sterile, cold hospital corridors for natural, cozy wooden homes.",
@@ -2511,9 +2511,9 @@ export default function App() {
 
   const experience: ExperienceData[] = [
     {
-      year: "Dec 2025 - Present",
+      year: "Dec 2025 - June 2026",
       company: "IMK Architects",
-      role: "Computational Designer and Automation Specialist",
+      role: "Architectural Intern",
       description: "Assisting with large-scale design coordination and modeling pipelines. Writing custom scripts to automate repetitive drawing and data entry tasks."
     },
     {
@@ -2525,7 +2525,7 @@ export default function App() {
     {
       year: "July 2025 - Sept 2025",
       company: "E.D.P Consultants",
-      role: "Computational Designer and Automation Specialist",
+      role: "Architectural Intern",
       description: "Created construction drawing sets, layouts, and high-quality 3D renders for residential client presentations."
     },
     {
@@ -2535,8 +2535,8 @@ export default function App() {
       description: "Managed energy-efficiency simulations and environmental studies for housing designs."
     },
     {
-      year: "Dec 2021 - March 2026",
-      company: "BMS College of Architecture",
+      year: "Dec 2021 - July 2026",
+      company: "BMS College of Architecture, Design and Planning",
       role: "Bachelor of Architecture (B.Arch)",
       description: "Studying modern architectural systems and automated modeling workflows."
     }
@@ -3572,7 +3572,7 @@ export default function App() {
 
                 <div className="flex gap-2 mt-6 md:mt-8 min-w-max">
                   <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>echo "Based in Mumbai. Available for corporate VDC roles starting May 2026."</span>
+                  <span className={isArch ? "text-gray-400" : "text-white"}>echo "Based in Mumbai. Available for corporate VDC, Computational Design, BIM roles starting as soon as possible."</span>
                 </div>
 
                 <div className="flex gap-2 mt-4 min-w-max">
