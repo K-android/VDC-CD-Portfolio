@@ -30,10 +30,13 @@ import {
   Maximize2,
   Globe,
   Award,
-  ExternalLink
+  ExternalLink,
+  ArrowUp
 } from "lucide-react";
 
 import { AECWebAppsCabinet } from "./components/AECWebAppsCabinet.tsx";
+
+import { playVDCHoverSound, playVDCClickSound } from './utils/audio';
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
@@ -1428,6 +1431,7 @@ interface ArsenalItem {
     challenge: string;
     solution: string;
     images?: string[];
+    captions?: string[];
     reportUrl?: string;
     reportLabel?: string;
     videoUrl?: string;
@@ -1543,6 +1547,7 @@ export default function App() {
   const [mode, setMode] = useState<'bim' | 'arch'>('bim');
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
@@ -1624,6 +1629,40 @@ export default function App() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  // VDC Terminal Hover & Click Sounds
+  useEffect(() => {
+    if (mode === 'arch') return;
+
+    let hoverTimeout: any;
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('button, a, [role="button"], .cursor-pointer')) {
+        // Debounce hover to prevent too much noise
+        clearTimeout(hoverTimeout);
+        hoverTimeout = setTimeout(() => {
+          playVDCHoverSound();
+        }, 50);
+      }
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('button, a, [role="button"], .cursor-pointer')) {
+        playVDCClickSound();
+      }
+    };
+
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      clearTimeout(hoverTimeout);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('click', handleClick);
+    };
+  }, [mode]);
 
   const runWorkflowSimulation = (projectId: string, steps: string[]) => {
     if (isSimRunning) return;
@@ -1786,39 +1825,52 @@ export default function App() {
     },
     {
       id: "ARCH_08",
-      title: "Villa Project - IMK internship",
-      role: "Architectural Intern",
-      hook: "Bespoke high-end residential villa utilizing passive microclimatic screening.",
-      description: "Contributed directly to schematic spatial programming, detailed structural detailing, and interior custom-woodwork in Vectorworks.",
+      title: "Luxury Villa Development (Zirad & Saral)",
+      role: "Architectural Intern (IMK Architects)",
+      hook: "GFC documentation, MEP coordination, and data-driven delivery for high-end residential villas.",
+      description: "Contributed to digital delivery across 5 residential units. Handled interior detailing, service coordination, and developed Vectorworks Marionette scripts to automate repetitive drafting.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
-      metric: "Bespoke Millwork",
+      metric: "5 Residential Units",
       gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Vectorworks", "Schematic Design", "3D Visualization", "IMK Internship", "Detailing"],
-      category: "Conceptual",
+      tags: ["Vectorworks", "Marionette Scripts", "MEP Coordination", "GFC Documentation", "BOQ Extraction"],
+      category: "Fabrication",
       ledger: {
-        inputs: "Schematic Spatial CAD Program, Site Microclimatic Context",
-        engine: "Vectorworks BIM, Passive Cooling Algorithms, Real-time Visualizer",
-        outputs: "Walkthrough video renderings, detailed parametric woodworking details"
+        inputs: "Schematic CAD Programs, Structural Layouts, MEP Plans",
+        engine: "Vectorworks BIM, Marionette Parametric Automation",
+        outputs: "GFC Documentation, FF&E Schedules, BOQ Data, Coordinated 2D Overlays"
       },
       workflow: {
         screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
         steps: [
-          "Establish bespoke spatial zoning tailored to the private residential brief.",
-          "Map localized wind-flow and sun paths to design overhead canopy shading.",
-          "Model custom modular millwork with high precision inside Vectorworks BIM.",
-          "Test virtual lighting passes and natural materials inside the real-time visualization engine."
+          "Generated dynamic design variants and parametric massing models to optimize spatial layouts.",
+          "Conducted comprehensive 2D spatial overlays between architectural, structural, and MEP layouts to resolve conflicts.",
+          "Produced GFC detailing for toilets, kitchens, interior wall elevations, and joinery.",
+          "Programmatically extracted BOQs and FF&E schedules directly from 3D assets.",
+          "Developed Vectorworks Marionette scripts to automate repetitive drafting tasks and maintain standards."
         ]
       },
       details: {
-        overview: "A private luxury villa designed during my IMK internship to blend high-end scale with regional passive climatic screening.",
-        challenge: "Maintaining a sense of spatial transparency across double-height courtyards while preventing excessive glare and thermal gain in hot-dry seasons.",
-        solution: "Engineered a parametric secondary structural lattice spanning key glazing zones. By setting dynamic spacing and depth parameters, we filtered peak summer sun paths by 70% while distributing soft, uniform daylight through custom millwork integration.",
+        overview: "Contributed to GFC documentation and digital delivery for a luxury villa development across two sites - Zirad and Saral, Alibaug. Responsibilities spanned across 5 residential units.",
+        challenge: "Managing extensive detailing while ensuring strict cross-disciplinary coordination and accurate procurement extraction.",
+        solution: "Utilized Vectorworks BIM to conduct spatial overlays, resolving MEP conflicts before GFC issuance. Leveraged Marionette scripts for drafting automation and directly extracted precise BOQs to streamline procurement workflows.",
         images: [
-          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-          "https://picsum.photos/seed/villainterior/800/450?grayscale",
-          "https://picsum.photos/seed/villaexterior/800/450?grayscale",
-          "https://picsum.photos/seed/villaplan/800/450?grayscale"
+          "https://placehold.co/800x450/f9fafb/000000?text=GFC+Sheet+-+Kitchen+Detail#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=MEP+Coordination+-+WiFi+CCTV#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=Procurement+and+BOQ+Output#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=Marionette+Automation+Script#drawing",
+          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA#render",
+          "https://picsum.photos/seed/villainterior/800/450?grayscale#render",
+          "https://picsum.photos/seed/villaexterior/800/450?grayscale#render"
+        ],
+        captions: [
+          "GFC Sheet: Kitchen Details & Sections",
+          "MEP Coordination: WiFi & CCTV Overlays",
+          "Procurement & BOQ Schedules",
+          "Marionette Automation Script (2x Drafting Speed)",
+          "Exterior Photoreal Visualization",
+          "Interior Detail Photo",
+          "Exterior Site Context Photo"
         ]
       }
     },
@@ -2555,6 +2607,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 3;
+      setShowBackToTop(window.scrollY > 400);
       
       visibleSections.forEach((id, i) => {
         const el = document.getElementById(id);
@@ -2903,24 +2956,26 @@ export default function App() {
 
       <main className="relative z-10">
         {/* STAGE 1: Vertical Split landing Gateway */}
-        <section id="landing" className="min-h-screen md:h-screen w-full relative flex flex-col md:flex-row bg-[#080b0e] overflow-y-auto md:overflow-hidden">
-          {/* VDC Side (Left) */}
+        <section id="landing" className="min-h-screen h-[100dvh] md:h-screen w-full relative flex flex-col md:flex-row bg-[#080b0e] overflow-hidden">
+          {/* Central Gateway Divider (Mobile Only) */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex md:hidden flex-col items-center justify-center pointer-events-none">
+            <div className="w-10 h-10 rounded-full border border-terminal-border/30 flex items-center justify-center shadow-2xl overflow-hidden relative">
+              <div className="absolute inset-0 w-full h-full flex flex-col">
+                <div className="flex-1 bg-[#0c0f12]"></div>
+                <div className="flex-1 bg-gray-50"></div>
+              </div>
+              <span className="relative z-10 text-[9px] tracking-[0.2em] font-mono text-gray-400 mix-blend-difference">OR</span>
+            </div>
+          </div>
+
+          {/* VDC Side (Left/Top) */}
           <div 
             onMouseEnter={() => setHoveredSide('left')}
             onMouseLeave={() => setHoveredSide(null)}
-            className={`flex-1 md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
+            className={`h-[50dvh] md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
               hoveredSide === 'left' ? 'md:w-[54%] bg-[#06080a]' : hoveredSide === 'right' ? 'md:w-[46%] opacity-40 bg-black' : 'md:w-[50%] bg-[#0c0f12]'
             }`}
           >
-            {/* Fine Tech Grid Background */}
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
-              <div className="w-full h-full grid grid-cols-12 grid-[auto-rows_minmax(0,1fr)]">
-                {Array.from({ length: 144 }).map((_, i) => (
-                  <div key={i} className="border-[0.5px] border-neon-cyan" />
-                ))}
-              </div>
-            </div>
-            
             {/* Left Header Overlay */}
             <div className="absolute top-4 left-4 font-mono text-[8px] text-neon-cyan/30 tracking-[0.2em] hidden md:block">
               SECURE_LINK::ACTIVE_PORT_3000
@@ -2930,7 +2985,7 @@ export default function App() {
             <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md">
               <motion.div 
                 animate={{ scale: hoveredSide === 'left' ? 1.05 : 1 }}
-                className="w-10 h-10 md:w-12 md:h-12 rounded border border-neon-cyan/40 bg-black/50 flex items-center justify-center mb-4 md:mb-6 shadow-[0_0_15px_rgba(0,255,255,0.15)]"
+                className="w-10 h-10 md:w-12 md:h-12 rounded border border-neon-cyan/40 bg-black/50 flex items-center justify-center mb-4 md:mb-6"
               >
                 <Terminal className="w-5 h-5 md:w-6 md:h-6 text-neon-cyan" />
               </motion.div>
@@ -2954,7 +3009,7 @@ export default function App() {
                   const el = document.getElementById("vdc-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-5 py-2.5 md:px-6 md:py-3 font-mono text-[10px] md:text-xs uppercase tracking-widest border border-neon-cyan bg-black text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_30px_rgba(0,255,255,0.5)]"
+                className="px-5 py-2.5 md:px-6 md:py-3 font-mono text-[10px] md:text-xs uppercase tracking-widest border border-neon-cyan bg-black text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all duration-300"
               >
                 Access VDC_Core
               </button>
@@ -2965,23 +3020,14 @@ export default function App() {
             </div>
           </div>
 
-          {/* Architecture Side (Right) */}
+          {/* Architecture Side (Right/Bottom) */}
           <div 
             onMouseEnter={() => setHoveredSide('right')}
             onMouseLeave={() => setHoveredSide(null)}
-            className={`flex-1 md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
+            className={`h-[50dvh] md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
               hoveredSide === 'right' ? 'md:w-[54%] bg-white' : hoveredSide === 'left' ? 'md:w-[46%] opacity-40 bg-gray-50' : 'md:w-[50%] bg-gray-50'
             }`}
           >
-            {/* Fine Museum Grid Background */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-              <div className="w-full h-full grid grid-cols-[repeat(24,1fr)] grid-[auto-rows_minmax(0,1fr)]">
-                {Array.from({ length: 576 }).map((_, i) => (
-                  <div key={i} className="border-[0.5px] border-black" />
-                ))}
-              </div>
-            </div>
-
             {/* Right Header Overlay */}
             <div className="absolute top-4 right-4 font-serif italic text-[10px] text-gray-400 tracking-[0.1em] hidden md:block">
               Studio Arch // Vol I
@@ -2991,7 +3037,7 @@ export default function App() {
             <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md font-serif">
               <motion.div 
                 animate={{ scale: hoveredSide === 'right' ? 1.05 : 1 }}
-                className="w-10 h-10 md:w-12 md:h-12 rounded border border-black/10 bg-white flex items-center justify-center mb-4 md:mb-6 shadow-sm"
+                className="w-10 h-10 md:w-12 md:h-12 rounded border border-black/10 bg-white flex items-center justify-center mb-4 md:mb-6"
               >
                 <Box className="w-5 h-5 md:w-6 md:h-6 text-black" />
               </motion.div>
@@ -3083,13 +3129,6 @@ export default function App() {
 
               {/* Hero Image Component for VDC */}
               <div className="relative aspect-video lg:aspect-square border border-terminal-border/40 bg-black overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
-                <div className="absolute inset-0 opacity-20 pointer-events-none">
-                  <div className="w-full h-full grid grid-cols-12 grid-rows-12">
-                    {Array.from({ length: 144 }).map((_, i) => (
-                      <div key={i} className="border-[0.5px] border-neon-cyan/20" />
-                    ))}
-                  </div>
-                </div>
                 <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-neon-cyan/20 text-right leading-tight z-0">
                   BIM_DATA_STREAM_8829<br/>
                   COORD_SYS: WGS84<br/>
@@ -3151,7 +3190,6 @@ export default function App() {
                 />
               ))}
             </div>
-          </div>
 
           {/* VDC WEB APPS / TOOLS */}
           <div id="vdc-apps" className="pt-16 border-t border-terminal-border/15 scroll-mt-24">
@@ -3213,18 +3251,11 @@ export default function App() {
               </div>
             </div>
           </div>
+          </div>
         </section>
 
         {/* STAGE 3: Massive Transition Gate Banner */}
         <div id="transition-banner" className="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-[#0c0f12] via-[#0d1013] to-white border-b border-gray-100 py-16 px-6">
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-            <div className="w-full h-full grid grid-cols-12 grid-rows-12">
-              {Array.from({ length: 144 }).map((_, i) => (
-                <div key={i} className="border-[0.5px] border-black" />
-              ))}
-            </div>
-          </div>
-          
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -3309,13 +3340,6 @@ export default function App() {
 
               {/* Hero Image Component for Arch */}
               <div className="relative aspect-video lg:aspect-square border border-gray-100 bg-gray-50 overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-                  <div className="w-full h-full grid grid-cols-12 grid-rows-12">
-                    {Array.from({ length: 144 }).map((_, i) => (
-                      <div key={i} className="border-[0.5px] border-black" />
-                    ))}
-                  </div>
-                </div>
                 <div className="absolute inset-x-0 top-1/2 h-[1px] bg-black/10 z-20 pointer-events-none" />
                 
                 <div className="absolute inset-0 flex items-center justify-center overflow-hidden group/hero">
@@ -3484,103 +3508,93 @@ export default function App() {
                 <span className="ml-2 text-gray-500 text-[8px] md:text-[10px]">{isArch ? "about_me_session" : "vdc_terminal_session"}</span>
               </div>
               
-              <div className="space-y-4 overflow-x-auto">
-                <div className="flex gap-2 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>whoami</span>
-                </div>
-                <div className="text-gray-400 italic text-[10px] md:text-xs">
-                  {isArch 
-                    ? "Karthikraj Nadar. Computational Designer & Automation Specialist." 
-                    : "BIM/VDC & ISO 19650. Computational Design. Dynamo • Python."}
+              <div className="space-y-8">
+                <div className="space-y-2">
+                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>About</div>
+                  <div className={`text-xs ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                    {isArch 
+                      ? "Karthikraj Nadar. Computational Designer & Automation Specialist." 
+                      : "BIM/VDC & ISO 19650. Computational Design. Dynamo • Python."}
+                  </div>
                 </div>
                 
-                <div className="flex gap-2 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>cat ./certifications/iso19650.txt</span>
-                </div>
-                <div className={`p-3 md:p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-100 bg-gray-50/50" : "border-neon-cyan/30 bg-neon-cyan/5"}`}>
-                  <div className="flex items-start gap-3 md:gap-4">
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-neon-cyan/50 bg-black"}`}>
-                      <img 
-                        src="https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt" 
-                        alt="Badge" 
-                        onContextMenu={(e) => e.preventDefault()}
-                        onDragStart={(e) => e.preventDefault()}
-                        className="w-6 h-6 md:w-8 md:h-8 object-contain pointer-events-none select-none"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                    <div>
-                      <div className={`text-[10px] md:text-xs ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>ISO 19650 EXPERT - LEVEL 3</div>
-                      <div className="text-[8px] md:text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Information Manager Certification</div>
-                      <div className="text-[8px] md:text-[10px] text-gray-400 mt-2 leading-relaxed">
-                        Verified expertise in global digital delivery standards, Common Data Environments (CDE), and information management protocols for large-scale infrastructure.
+                <div className="space-y-2">
+                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Certification</div>
+                  <div className={`p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/30 bg-neon-cyan/5"}`}>
+                    <div className="flex items-start gap-4">
+                      <div className={`w-12 h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-neon-cyan/50 bg-black"}`}>
+                        <img 
+                          src="https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt" 
+                          alt="Badge" 
+                          onContextMenu={(e) => e.preventDefault()}
+                          onDragStart={(e) => e.preventDefault()}
+                          className="w-8 h-8 object-contain pointer-events-none select-none"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div>
+                        <div className={`text-xs ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>ISO 19650 EXPERT - LEVEL 3</div>
+                        <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Information Manager Certification</div>
+                        <div className="text-[10px] text-gray-400 mt-2 leading-relaxed">
+                          Verified expertise in global digital delivery standards, Common Data Environments (CDE), and information management protocols for large-scale infrastructure.
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-2 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>ls ./contact</span>
-                </div>
-                <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-6">
-                  <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-[10px] md:text-xs ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                    <Mail className="w-3 h-3" /> karthikraj.v.nadar@gmail.com
-                  </a>
-                  <div className={`flex items-center gap-2 transition-colors duration-700 text-[10px] md:text-xs ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                    <Phone className="w-3 h-3" /> 8779228622
+                <div className="space-y-2">
+                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Contact</div>
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 md:gap-6">
+                    <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                      <Mail className="w-4 h-4" /> karthikraj.v.nadar@gmail.com
+                    </a>
+                    <div className={`flex items-center gap-2 transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300"}`}>
+                      <Phone className="w-4 h-4" /> 8779228622
+                    </div>
+                    <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                      <Linkedin className="w-4 h-4" /> linkedin.com/in/karthikraj-nadar-07083526a
+                    </a>
                   </div>
-                  <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-[10px] md:text-xs ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                    <Linkedin className="w-3 h-3" /> linkedin.com/in/karthikraj-nadar-07083526a
-                  </a>
                 </div>
 
-                <div className="flex gap-2 mt-4 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>cat ./skills</span>
-                </div>
-                <div className="text-gray-400 text-[9px] md:text-[10px] space-y-1">
-                  <div>• BIM: Revit, Navisworks, Dynamo, Python</div>
-                  <div>• Design: Rhino, Grasshopper, D5 Render, AI Imagery</div>
-                  <div>• VDC: Clash Detection, ISO 19650, 5D Data Harvesting</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills</div>
+                    <div className={`text-[10px] space-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                      <div>• BIM: Revit, Navisworks, Dynamo, Python</div>
+                      <div>• Design: Rhino, Grasshopper, D5 Render, AI Imagery</div>
+                      <div>• VDC: Clash Detection, ISO 19650, 5D Data Harvesting</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Languages</div>
+                    <div className={`text-[10px] flex flex-wrap gap-x-4 gap-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                      <span>English [Full]</span>
+                      <span>Hindi [Native]</span>
+                      <span>Tamil [Native]</span>
+                      <span>Marathi [Limited]</span>
+                      <span>Kannada [Limited]</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex gap-2 mt-4 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>ls ./languages</span>
-                </div>
-                <div className="text-gray-400 text-[9px] md:text-[10px] flex flex-wrap gap-x-4 gap-y-1">
-                  <span>English [Full]</span>
-                  <span>Hindi [Native]</span>
-                  <span>Tamil [Native]</span>
-                  <span>Marathi [Limited]</span>
-                  <span>Kannada [Limited]</span>
+                <div className="space-y-2">
+                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Achievements</div>
+                  <div className={`text-[10px] space-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                    <div>• Grand Winner | Solar Decathlon India (2024–2025)</div>
+                    <div>• Citation | 66th Annual NASA Design Competition</div>
+                    <div>• ISO 19650 Information Management Expert</div>
+                    <div>• Net Zero Energy and Water Buildings Certified</div>
+                  </div>
                 </div>
 
-                <div className="flex gap-2 mt-4 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>cat ./achievements</span>
-                </div>
-                <div className="text-gray-400 text-[9px] md:text-[10px] space-y-1">
-                  <div>• Grand Winner | Solar Decathlon India (2024–2025)</div>
-                  <div>• Citation | 66th Annual NASA Design Competition</div>
-                  <div>• ISO 19650 Information Management Expert</div>
-                  <div>• Net Zero Energy and Water Buildings Certified</div>
+                <div className={`text-xs pt-4 ${isArch ? "text-black" : "text-white"}`}>
+                  Based in Mumbai. Available for corporate VDC, Computational Design, BIM roles starting as soon as possible.
                 </div>
 
-                <div className="flex gap-2 mt-6 md:mt-8 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>echo "Based in Mumbai. Available for corporate VDC, Computational Design, BIM roles starting as soon as possible."</span>
-                </div>
-
-                <div className="flex gap-2 mt-4 min-w-max">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={isArch ? "text-gray-400" : "text-white"}>./send_message.sh</span>
-                </div>
-
-                <div className={`mt-4 p-4 md:p-6 border transition-all duration-700 ${isArch ? "border-gray-100 bg-gray-50/30" : "border-neon-cyan/20 bg-black/40"}`}>
+                <div className={`mt-8 p-6 border transition-all duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/20 bg-black/40"}`}>
                   {isSent ? (
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
@@ -3589,59 +3603,56 @@ export default function App() {
                     >
                       <div className={`text-2xl ${isArch ? "text-black" : "text-neon-cyan"}`}>✓</div>
                       <div className={`font-mono text-xs uppercase tracking-widest ${isArch ? "text-black" : "text-white"}`}>
-                        MESSAGE_TRANSMITTED_SUCCESSFULLY
+                        Message Sent
                       </div>
-                      <p className={`text-[10px] font-mono ${isArch ? "text-gray-400" : "text-gray-500"}`}>
-                        ACKNOWLEDGMENT_ID: {Math.random().toString(16).substring(2, 10).toUpperCase()}
-                      </p>
                     </motion.div>
                   ) : (
-                    <form className="space-y-4" onSubmit={handleFormSubmit}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <label className={`text-[8px] md:text-[10px] uppercase tracking-widest ${isArch ? "text-gray-400" : "text-neon-cyan/50"}`}>Name</label>
+                    <form className="space-y-6" onSubmit={handleFormSubmit}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Name</label>
                           <input 
                             type="text" 
                             required
                             value={formState.name}
                             onChange={(e) => setFormState(prev => ({ ...prev, name: e.target.value }))}
-                            placeholder="ENTER_NAME"
-                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-[10px] md:text-xs ${
-                              isArch ? "border-gray-200 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                            placeholder="Your Name"
+                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs ${
+                              isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                             }`}
                           />
                         </div>
-                        <div className="space-y-1">
-                          <label className={`text-[8px] md:text-[10px] uppercase tracking-widest ${isArch ? "text-gray-400" : "text-neon-cyan/50"}`}>Email</label>
+                        <div className="space-y-2">
+                          <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Email</label>
                           <input 
                             type="email" 
                             required
                             value={formState.email}
                             onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                            placeholder="ENTER_EMAIL"
-                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-[10px] md:text-xs ${
-                              isArch ? "border-gray-200 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                            placeholder="Your Email"
+                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs ${
+                              isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                             }`}
                           />
                         </div>
                       </div>
-                      <div className="space-y-1">
-                        <label className={`text-[8px] md:text-[10px] uppercase tracking-widest ${isArch ? "text-gray-400" : "text-neon-cyan/50"}`}>Message</label>
+                      <div className="space-y-2">
+                        <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Message</label>
                         <textarea 
                           rows={3}
                           required
                           value={formState.message}
                           onChange={(e) => setFormState(prev => ({ ...prev, message: e.target.value }))}
-                          placeholder="ENTER_MESSAGE_CONTENT"
-                          className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-[10px] md:text-xs resize-none ${
-                            isArch ? "border-gray-200 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                          placeholder="Your Message"
+                          className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs resize-none ${
+                            isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                           }`}
                         />
                       </div>
                       <button 
                         type="submit"
                         disabled={isSending}
-                        className={`w-full py-3 border font-mono text-[10px] md:text-xs uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 ${
+                        className={`w-full py-3 border font-mono text-[10px] uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 ${
                           isSending ? "opacity-50 cursor-not-allowed" : ""
                         } ${
                           isArch 
@@ -3656,9 +3667,9 @@ export default function App() {
                               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                               className="w-3 h-3 border-2 border-current border-t-transparent rounded-full"
                             />
-                            TRANSMITTING...
+                            Sending...
                           </>
-                        ) : "Transmit_Message"}
+                        ) : "Send Message"}
                       </button>
                       {formError && (
                         <motion.div 
@@ -3671,11 +3682,6 @@ export default function App() {
                       )}
                     </form>
                   )}
-                </div>
-
-                <div className="flex gap-2 mt-6">
-                  <span className={isArch ? "text-black font-bold" : "text-neon-cyan"}>{isArch ? "arch@studio:~$ " : "guest@vdc_core:~$"}</span>
-                  <span className={`${isArch ? "text-black" : "text-white"} animate-pulse`}>_</span>
                 </div>
               </div>
             </div>
@@ -4381,55 +4387,63 @@ export default function App() {
                           const googleDriveId = getDriveId(img);
                           const thumbSrc = getStaticThumbnailUrl(img);
                           return (
-                            <div 
-                              key={`gallery-${idx}-${googleDriveId || idx}`} 
-                              onClick={() => {
-                                setExpandedMedia({
-                                  src: img,
-                                  isVideo,
-                                  googleDriveId,
-                                  alt: type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`
-                                });
-                              }}
-                              className={`aspect-video border relative overflow-hidden group/gal transition-all duration-700 cursor-zoom-in rounded ${
-                                isArch ? "border-gray-150 bg-gray-50 hover:border-black shadow-sm" : "brutalist-border bg-black hover:border-neon-cyan shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
-                              }`}
-                            >
-                              {/* Thumbnail Image */}
-                              <img 
-                                src={thumbSrc} 
-                                alt={type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`}
-                                onContextMenu={(e) => e.preventDefault()}
-                                onDragStart={(e) => e.preventDefault()}
-                                className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
-                                  isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                            <div key={`gallery-${idx}-${googleDriveId || idx}`} className="flex flex-col gap-3 group/gal">
+                              <div 
+                                onClick={() => {
+                                  setExpandedMedia({
+                                    src: img,
+                                    isVideo,
+                                    googleDriveId,
+                                    alt: selectedArsenalItem.details?.captions?.[idx] || (type === 'drawing' ? `Technical Drawing Details ${idx + 1}` : `High Quality Render ${idx + 1}`)
+                                  });
+                                }}
+                                className={`aspect-video border relative overflow-hidden transition-all duration-700 cursor-zoom-in rounded ${
+                                  isArch ? "border-gray-150 bg-gray-50 hover:border-black shadow-sm" : "brutalist-border bg-black hover:border-neon-cyan shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                                 }`}
-                                referrerPolicy="no-referrer"
-                              />
+                              >
+                                {/* Thumbnail Image */}
+                                <img 
+                                  src={thumbSrc} 
+                                  alt={selectedArsenalItem.details?.captions?.[idx] || (type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`)}
+                                  onContextMenu={(e) => e.preventDefault()}
+                                  onDragStart={(e) => e.preventDefault()}
+                                  className={`w-full h-full object-cover transition-all duration-700 select-none pointer-events-none ${
+                                    isArch ? "opacity-100 group-hover/gal:scale-105" : "opacity-70 group-hover/gal:opacity-100 group-hover/gal:scale-105"
+                                  }`}
+                                  referrerPolicy="no-referrer"
+                                />
 
-                              {/* Subtle Overlay Badge */}
-                              <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
-                                isArch 
-                                  ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
-                                  : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
-                              }`}>
-                                {type === 'video' 
-                                  ? "VIDEO_FEED" 
-                                  : type === 'drawing' 
-                                    ? "TECHNICAL_DRAWING" 
-                                    : "RENDER_VISUAL"}
-                              </div>
-
-                              {/* Play / Expand Overlay */}
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
-                                <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                {/* Subtle Overlay Badge */}
+                                <div className={`absolute top-2 left-2 px-1.5 py-0.5 font-mono text-[7px] border transition-colors duration-700 tracking-wider ${
                                   isArch 
-                                    ? "bg-white border-black text-black shadow-lg" 
-                                    : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                    ? "bg-white/90 backdrop-blur text-black border-gray-200 font-bold" 
+                                    : "bg-black/90 backdrop-blur text-gray-400 border-gray-850"
                                 }`}>
-                                  {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                  {type === 'video' 
+                                    ? "VIDEO_FEED" 
+                                    : type === 'drawing' 
+                                      ? "TECHNICAL_DRAWING" 
+                                      : "RENDER_VISUAL"}
+                                </div>
+
+                                {/* Play / Expand Overlay */}
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                  <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
+                                    isArch 
+                                      ? "bg-white border-black text-black shadow-lg" 
+                                      : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                  }`}>
+                                    {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
+                                  </div>
                                 </div>
                               </div>
+                              
+                              {/* Optional Caption */}
+                              {selectedArsenalItem.details?.captions && selectedArsenalItem.details.captions[idx] && (
+                                <div className={`text-[10px] md:text-xs font-serif ${isArch ? "text-gray-600" : "text-gray-400 font-mono"} text-center px-2 pb-2 leading-tight`}>
+                                  {selectedArsenalItem.details.captions[idx]}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -4559,6 +4573,25 @@ export default function App() {
               </button>
             </motion.div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Back to Top Button */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 p-3 md:p-4 rounded-full shadow-lg border transition-all duration-300 ${
+              isArch 
+                ? "bg-white text-black border-gray-200 hover:shadow-2xl hover:-translate-y-1" 
+                : "bg-black/60 text-neon-cyan border-neon-cyan/30 hover:border-neon-cyan hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:-translate-y-1 backdrop-blur-sm"
+            }`}
+          >
+            <ArrowUp className="w-5 h-5 md:w-6 md:h-6" />
+          </motion.button>
         )}
       </AnimatePresence>
     </div>

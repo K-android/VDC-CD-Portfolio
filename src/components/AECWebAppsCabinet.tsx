@@ -64,16 +64,33 @@ export const AECWebAppsCabinet: React.FC = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 text-left">
         
         {/* APP 1: AEC AUTOMATOR HUB */}
-        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-neon-orange/45 hover:shadow-[0_0_30px_rgba(249,115,22,0.03)] transition-all duration-500 h-full">
-          {/* Header */}
-          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neon-orange font-bold">// DESK_APP_01</span>
-              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
-                AEC Automator Hub
-              </h4>
+        <motion.div 
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ 
+            y: -10, 
+            scale: 1.015,
+            transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
+          }}
+          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-neon-orange hover:shadow-[0_0_30px_rgba(249,115,22,0.05)] transition-all duration-700 overflow-hidden relative group"
+        >
+          <div className="h-1.5 w-full transition-all duration-700 bg-neon-orange opacity-20 group-hover:opacity-100" />
+          
+          <div className="p-5 flex flex-col relative z-10">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-neon-orange bg-neon-orange/10 border border-neon-orange/20">
+                APP
+              </span>
+              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+                DESK_APP_01
+              </span>
             </div>
-
+            
+            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-neon-orange transition-colors duration-700">
+              AEC Automator Hub
+            </h3>
           </div>
 
           {/* Interactive Screen Layout Mockup / Hero Image Column */}
@@ -234,19 +251,36 @@ export const AECWebAppsCabinet: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* APP 2: BIM METRIC PORTAL & WEBHOOK API GATEWAY */}
-        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-neon-cyan/45 hover:shadow-[0_0_30px_rgba(0,242,255,0.03)] transition-all duration-500 h-full">
-          {/* Header */}
-          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neon-cyan font-bold">// DESK_APP_02</span>
-              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
-                BIM Metric Portal & API Gateway
-              </h4>
+        <motion.div 
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ 
+            y: -10, 
+            scale: 1.015,
+            transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
+          }}
+          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-neon-cyan hover:shadow-[0_0_30px_rgba(0,255,255,0.05)] transition-all duration-700 overflow-hidden relative group"
+        >
+          <div className="h-1.5 w-full transition-all duration-700 bg-neon-cyan opacity-20 group-hover:opacity-100" />
+          
+          <div className="p-5 flex flex-col relative z-10">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/20">
+                APP
+              </span>
+              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+                DESK_APP_02
+              </span>
             </div>
-
+            
+            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-neon-cyan transition-colors duration-700">
+              BIM Metric Portal & API Gateway
+            </h3>
           </div>
 
           {/* Real-time Telemetry Screen Mockup / Hero Image Column */}
@@ -401,18 +435,36 @@ export const AECWebAppsCabinet: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* APP 3: RHINO SYNC WEB CONSOLE */}
-        <div className="flex flex-col bg-black/45 border border-terminal-border/25 rounded-lg overflow-hidden hover:border-[#b4ff39]/45 hover:shadow-[0_0_30px_rgba(180,255,57,0.03)] transition-all duration-500 h-full">
-          {/* Header */}
-          <div className="border-b border-terminal-border/15 p-5 bg-terminal-header flex justify-between items-center bg-gradient-to-r from-black/50 to-transparent">
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#b4ff39] font-bold">// DESK_APP_03</span>
-              <h4 className="text-lg font-bold font-mono tracking-wide text-white uppercase mt-0.5">
-                Rhino Sync Web Console
-              </h4>
+        <motion.div 
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ 
+            y: -10, 
+            scale: 1.015,
+            transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
+          }}
+          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-[#b4ff39] hover:shadow-[0_0_30px_rgba(180,255,57,0.05)] transition-all duration-700 overflow-hidden relative group"
+        >
+          <div className="h-1.5 w-full transition-all duration-700 bg-[#b4ff39] opacity-20 group-hover:opacity-100" />
+          
+          <div className="p-5 flex flex-col relative z-10">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-[#b4ff39] bg-[#b4ff39]/10 border border-[#b4ff39]/20">
+                APP
+              </span>
+              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+                DESK_APP_03
+              </span>
             </div>
+            
+            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-[#b4ff39] transition-colors duration-700">
+              Rhino Sync Web Console
+            </h3>
           </div>
 
           {/* Hero Image Column */}
@@ -560,7 +612,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 
