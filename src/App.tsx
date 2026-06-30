@@ -28,6 +28,7 @@ import {
   Play,
   Zap,
   Maximize2,
+  MonitorPlay,
   Globe,
   Award,
   ExternalLink,
@@ -559,7 +560,7 @@ const WorkflowFlowchart = ({
         {/* Nodes */}
         {data.nodes.map((node, i) => {
           return (
-            <React.Fragment key={i}>
+            <React.Fragment key={`node-${i}`}>
               <div
                 className={`border rounded-xl p-3.5 transition-all duration-500 relative overflow-hidden w-full max-w-sm ${
                   isArch
@@ -1295,12 +1296,12 @@ const ProjectCard = ({
         <div className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-6">
             {item.tags.map((tag, idx) => {
-              const isInternship = tag === "Internship Experience" || tag === "IMK Internship";
+              const isProfessional = tag === "Professional Experience" || tag === "IMK Internship";
               return (
                 <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${
                   isArch 
-                    ? isInternship ? "bg-black text-white border-black font-bold" : "border-gray-100 text-gray-400" 
-                    : isInternship ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
+                    ? isProfessional ? "bg-black text-white border-black font-bold" : "border-gray-100 text-gray-400" 
+                    : isProfessional ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
                 }`}>
                   {tag}
                 </span>
@@ -1396,7 +1397,7 @@ const DataTable = () => (
           ["VDC_003", "210.7", "$21,070"],
           ["VDC_004", "15.4", "$1,540"],
         ].map(([id, vol, cost], i) => (
-          <tr key={i} className="border-bottom border-terminal-border/50">
+          <tr key={`cost-${i}`} className="border-bottom border-terminal-border/50">
             <td className="p-2 text-gray-400">{id}</td>
             <td className="p-2 text-neon-cyan">{vol}</td>
             <td className="p-2 text-white">{cost}</td>
@@ -1439,6 +1440,8 @@ interface ArsenalItem {
     solution: string;
     images?: string[];
     captions?: string[];
+    slideDecks?: { title: string; images: string[] }[];
+    presentationGrids?: { title: string; buttonLabel: string; images: string[] }[];
     reportUrl?: string;
     reportLabel?: string;
     videoUrl?: string;
@@ -1485,7 +1488,7 @@ const AmbientBackground = ({ isArch }: { isArch: boolean }) => {
       <div className={`absolute inset-0 opacity-[0.03] transition-colors duration-700 ${isArch ? "text-black" : "text-white"}`}>
         <div className="w-full h-full grid grid-cols-[repeat(40,1fr)] grid-rows-[repeat(40,1fr)]">
           {Array.from({ length: 1600 }).map((_, i) => (
-            <div key={i} className="border-[0.5px] border-current" />
+            <div key={`grid-bg-${i}`} className="border-[0.5px] border-current" />
           ))}
         </div>
       </div>
@@ -1535,6 +1538,7 @@ export default function App() {
   const [isArchWorksActive, setIsArchWorksActive] = useState(false);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
   const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
+  const [expandedGrid, setExpandedGrid] = useState<{ title: string; images: string[] } | null>(null);
 
   const vdcTimelineRef = useRef<HTMLDivElement>(null);
   const archTimelineRef = useRef<HTMLDivElement>(null);
@@ -1778,15 +1782,15 @@ export default function App() {
   const archArsenal: ArsenalItem[] = [
     {
       id: "ARCH_08",
-      title: "Luxury Villa Development (Zirad & Saral)",
+      title: "Luxury Villas Development in Alibaug",
       role: "Architectural Intern (IMK Architects)",
       hook: "GFC documentation, MEP coordination, and data-driven delivery for high-end residential villas.",
       description: "Contributed to digital delivery across 5 residential units. Handled interior detailing, service coordination, and developed Vectorworks Marionette scripts to automate repetitive drafting.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "5 Residential Units",
-      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Internship Experience", "Vectorworks", "Marionette Scripts", "MEP Coordination", "GFC Documentation", "BOQ Extraction"],
+      gifUrl: "https://lh3.googleusercontent.com/d/1lgLSUtlU9cliUbR-J28iGFmNpBAgwDHL",
+      tags: ["Professional Experience", "Vectorworks", "Marionette Scripts", "MEP Coordination", "GFC Documentation", "BOQ Extraction"],
       category: "Professional",
       ledger: {
         inputs: "Schematic CAD Programs, Structural Layouts, MEP Plans",
@@ -1808,22 +1812,96 @@ export default function App() {
         challenge: "Managing extensive detailing while ensuring strict cross-disciplinary coordination and accurate procurement extraction.",
         solution: "Utilized Vectorworks BIM to conduct spatial overlays, resolving MEP conflicts before GFC issuance. Leveraged Marionette scripts for drafting automation and directly extracted precise BOQs to streamline procurement workflows.",
         images: [
-          "https://placehold.co/800x450/f9fafb/000000?text=GFC+Sheet+-+Kitchen+Detail#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=MEP+Coordination+-+WiFi+CCTV#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=Procurement+and+BOQ+Output#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=Marionette+Automation+Script#drawing",
-          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA#render",
-          "https://picsum.photos/seed/villainterior/800/450?grayscale#render",
-          "https://picsum.photos/seed/villaexterior/800/450?grayscale#render"
+          "https://lh3.googleusercontent.com/d/1TtzJzZzzXzgpikF3K0nivFd_KmCcFNx3#drawing",
+          "https://lh3.googleusercontent.com/d/1mA39MVAtn305IGJ3IYh2RDaxLNRMQvqL#drawing",
+          "https://lh3.googleusercontent.com/d/1Kgg8kanN3n7YtRVUlXhoANt9aVpjzUnS#drawing"
         ],
         captions: [
-          "GFC Sheet: Kitchen Details & Sections",
-          "MEP Coordination: WiFi & CCTV Overlays",
-          "Procurement & BOQ Schedules",
-          "Marionette Automation Script (2x Drafting Speed)",
-          "Exterior Photoreal Visualization",
-          "Interior Detail Photo",
-          "Exterior Site Context Photo"
+          "1. GFC Sheet: Kitchen Section Detailing",
+          "2. Villa 04 - Wifi/CCTV Integrated Layout",
+          "3. GFC Sheet - Flooring Layout"
+        ],
+        presentationGrids: [
+          {
+            title: "Staff Block GFC Drawings",
+            buttonLabel: "View Staff Block GFC Drawings",
+            images: [
+              "https://lh3.googleusercontent.com/d/1awAYvNP0s9IWy5zaVlQiFUyPDoCfQS-j#drawing",
+              "https://lh3.googleusercontent.com/d/1zqIbP5B3wKPo75rBJTDjtYxofHO0RrgF#drawing",
+              "https://lh3.googleusercontent.com/d/16G1t6BuJj7I0u0Uk3jIzRrxmrdlpRTqn#drawing",
+              "https://lh3.googleusercontent.com/d/1DFZMeNzu9J9y0POOhowo98LExxZmWuyV#drawing",
+              "https://lh3.googleusercontent.com/d/1ySNtn8Gp_ipZP6xYXzl8VttpTpiXUIPf#drawing",
+              "https://lh3.googleusercontent.com/d/1-LAA8vHeCzX2j415FL2F4Y2h0kZ3JaEq#drawing",
+              "https://lh3.googleusercontent.com/d/1tfAttcwIr1UcaJBkvh38bqyR6smV1kR0#drawing",
+              "https://lh3.googleusercontent.com/d/1J3Tt8DdhMZPUzslFIW59cgJNymXF-lJd#drawing",
+              "https://lh3.googleusercontent.com/d/1J0HrgFjxIFEsnBT0Suewm4hWJqbi5itH#drawing",
+              "https://lh3.googleusercontent.com/d/1uhANYvjGx0AHXxEyrvylrDdDewNwhNDb#drawing"
+            ]
+          }
+        ],
+        slideDecks: [
+          { 
+            title: "Villa 04 - Site Exterior Photos", 
+            images: [
+              "https://lh3.googleusercontent.com/d/1-KEprrp28b0MIuvrkDDcXiukpSBY8HEj",
+              "https://lh3.googleusercontent.com/d/1KLcXDgJhTYvG5mNCHyPJzHJNzqGCh5an",
+              "https://lh3.googleusercontent.com/d/1ANtibq_t464j8HC87R-NArZn3SagF84p",
+              "https://lh3.googleusercontent.com/d/1c_3JisppeczT3DNbX_t5Qo4D_aZmOLn0",
+              "https://lh3.googleusercontent.com/d/1_ZNoFaRKGWDYBj9WUtpabtVE8XHCzoxg",
+              "https://lh3.googleusercontent.com/d/1ZSatViEd0jwhj5Z9R2zwCBzF-oq7vdCH",
+              "https://lh3.googleusercontent.com/d/1vdnCJ3cyOOZy7C8QWqOXXx2y9vwrmk9q",
+              "https://lh3.googleusercontent.com/d/1iCX2o2-NOfJoztCXhu_TUx3kAXnlhZdI",
+              "https://lh3.googleusercontent.com/d/1mK_xPH4iCZgv7uHjuG92vRbIjKtqXZyZ",
+              "https://lh3.googleusercontent.com/d/1bkm2ZyAHtRAwCDISOPBe7546YLzclyWg",
+              "https://lh3.googleusercontent.com/d/10g4_T98Qsn7Q80XGgfhi_BKVVYa13xwi",
+              "https://lh3.googleusercontent.com/d/1bfeu8-cJ44rJuFN-xmNZZNsshC-jNBdT"
+            ]
+          },
+          { 
+            title: "Villa 04 - Staff Quarters Photos", 
+            images: [
+              "https://lh3.googleusercontent.com/d/1GS-4cN_QIa7nHp3KHf3DUHfCtDFK3oZ7",
+              "https://lh3.googleusercontent.com/d/1qH-YGfDIhRyP4Fcl-lJDTwc9nSXmTN0A",
+              "https://lh3.googleusercontent.com/d/19pWG3kOqXGLazD5bI_OFrkX-6cXh2QJL",
+              "https://lh3.googleusercontent.com/d/1cPEX-5oacR_2GPRc5t2RDY_LjBdwwI8H",
+              "https://lh3.googleusercontent.com/d/1F6AOq9R0te6svzJRCeqaMVi4heYotsyX",
+              "https://lh3.googleusercontent.com/d/1m3viU08VSXFDd7Jii0VtGTwB6PCExTck"
+            ]
+          },
+          { 
+            title: "Villa 03 Site Visit", 
+            images: [
+              "https://lh3.googleusercontent.com/d/1bdzxZywBnUXBrE2q-KNWFnUuRfaXJ0nB",
+              "https://lh3.googleusercontent.com/d/1HNkDwVrPwzPGn51yCQhosXp85GIvEe3p",
+              "https://lh3.googleusercontent.com/d/1OMT-R1zJrDRFfij8Z_gvTIXGyeYp9jX-",
+              "https://lh3.googleusercontent.com/d/1HCIGP7pOTbEmDFkeeuVeR-V7qyn5z3q6",
+              "https://lh3.googleusercontent.com/d/1VmFoq_Zd9E_meTqL5kmrvTw2GLWWkm1Z",
+              "https://lh3.googleusercontent.com/d/19OwuMyoxNAsITOXK-VPwSXWmNCRDKUQB",
+              "https://lh3.googleusercontent.com/d/1dnqKfUMYcKWliBCBOAay9zP626L9Yygl",
+              "https://lh3.googleusercontent.com/d/1kFx2ajSW1mGa5lTWL3XOxRzBXIzCHGeO",
+              "https://lh3.googleusercontent.com/d/10YRCOnTa-nns1EnKVtlgfayUeYvt5uFj",
+              "https://lh3.googleusercontent.com/d/120lag0hMgBB9RiqxBMvSMa_6HCu32xXf",
+              "https://lh3.googleusercontent.com/d/1o8STJ3dEH2u5jGxTxFcuXsO8QEmnVc1W"
+            ]
+          },
+          { 
+            title: "Villa 02 Site Visit", 
+            images: [
+              "https://lh3.googleusercontent.com/d/1ae0gmnfgtyMAtrDBGiDGukLBmTnCkybX",
+              "https://lh3.googleusercontent.com/d/1RpAoTWbYMlDxTJhVQmpDri7lp5qFd3s6",
+              "https://lh3.googleusercontent.com/d/189Ig7nmGaZK8qTCWYGZsZuVoBgvOVFi_",
+              "https://lh3.googleusercontent.com/d/1rUx5dj4i-NPJPTSfyqeCDZtPzKatoSzZ",
+              "https://lh3.googleusercontent.com/d/17kwhweaNDQ5TCOzAGU4iFrdbY9Sk2S5H",
+              "https://lh3.googleusercontent.com/d/12yW_5zeHiBhtS7YBjCW_ZHBLQ7c4MJzT",
+              "https://lh3.googleusercontent.com/d/1lgLSUtlU9cliUbR-J28iGFmNpBAgwDHL",
+              "https://lh3.googleusercontent.com/d/1WtpqypRND4d3dhZZ8nVFYyxLXEQJ_XVy",
+              "https://lh3.googleusercontent.com/d/1_iHeigLcbKo6Es3ycWzCb6K8kS0BNbOl",
+              "https://lh3.googleusercontent.com/d/1yvvo4R-GZggtqvJ_bmVbEhjy-cObIUoD",
+              "https://lh3.googleusercontent.com/d/1xNdPkxcrMk0kbTQtgCOryAtvLwlzqa_E",
+              "https://lh3.googleusercontent.com/d/1UteJxXj2ePIOKIou39LMhHiAOZ98MLAM",
+              "https://lh3.googleusercontent.com/d/1FPzYfLwKOVt7osbLqqMJMjO3p_JW5Hp6"
+            ]
+          }
         ]
       }
     },
@@ -1891,7 +1969,7 @@ export default function App() {
       color: "gray-400",
       metric: "Prefab Modules",
       gifUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
-      tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
+      tags: ["Professional Experience", "Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
       category: "Contract",
       ledger: {
         inputs: "Module dimensions, tranquil zoning needs",
@@ -2796,7 +2874,7 @@ export default function App() {
               false;
             return (
               <button 
-                key={item.id}
+                key={`desktop-menu-${item.id}`}
                 onClick={() => {
                   if (item.isSection) {
                     handleSectionChange(item.index!);
@@ -2856,7 +2934,7 @@ export default function App() {
                   if (item.isSection) {
                     return (
                       <button 
-                        key={item.id}
+                        key={`mobile-menu-${item.id}`}
                         onClick={() => {
                           handleSectionChange(item.index!);
                           setIsMenuOpen(false);
@@ -2872,7 +2950,7 @@ export default function App() {
                   } else {
                     return (
                       <button 
-                        key={item.id}
+                        key={`mobile-menu-${item.id}`}
                         onClick={() => {
                           const el = document.getElementById(item.elementId);
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -2936,9 +3014,7 @@ export default function App() {
           <ChevronUp className="w-4 h-4" />
         </button>
         <div className="flex flex-col gap-2 relative">
-          {visibleSections.map((_, i) => (
-            <button 
-              key={i}
+          {visibleSections.map((_, i) => (<button key={`vis-sec-${i}`}
               onClick={() => handleSectionChange(i)}
               className={`w-1 h-8 rounded-full transition-all duration-500 z-10 ${
                 activeSection === i 
@@ -3172,9 +3248,7 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-              {bimArsenal.map((item) => (
-                <ProjectCard 
-                  key={item.id} 
+              {bimArsenal.map((item) => (<ProjectCard key={`bim-${item.id}`} 
                   item={item} 
                   isArch={false} 
                   onClick={() => setSelectedArsenalItem(item)} 
@@ -3392,9 +3466,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-                {archArsenal.filter(item => item.category !== 'Fabrication').map((item) => (
-                  <ProjectCard 
-                    key={item.id} 
+                {archArsenal.filter(item => item.category !== 'Fabrication').map((item) => (<ProjectCard key={`arch-nf-${item.id}`} 
                     item={item} 
                     isArch={true} 
                     onClick={() => setSelectedArsenalItem(item)} 
@@ -3423,9 +3495,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 font-sans">
-                {archArsenal.filter(item => item.category === 'Fabrication').map((item) => (
-                  <ProjectCard 
-                    key={item.id} 
+                {archArsenal.filter(item => item.category === 'Fabrication').map((item) => (<ProjectCard key={`arch-fab-${item.id}`} 
                     item={item} 
                     isArch={true} 
                     onClick={() => setSelectedArsenalItem(item)} 
@@ -3964,8 +4034,7 @@ export default function App() {
                               ? "bg-gray-50/50 border border-gray-150" 
                               : "bg-[#04070a] border border-terminal-border/20"
                           }`}>
-                            {selectedArsenalItem.workflow.steps.map((step, i) => (
-                              <div key={i} className={`flex gap-3 items-start p-3 border border-dashed rounded transition-colors duration-700 ${
+                            {selectedArsenalItem.workflow.steps.map((step, i) => (<div key={`step-${i}`} className={`flex gap-3 items-start p-3 border border-dashed rounded transition-colors duration-700 ${
                                 isArch 
                                   ? "border-gray-200 bg-white" 
                                   : "border-terminal-border/15 bg-black/25 hover:border-terminal-border/30"
@@ -4214,12 +4283,11 @@ export default function App() {
                                 </thead>
                                 <tbody className={`divide-y ${isArch ? "divide-gray-100" : "divide-terminal-border/10"}`}>
                                   {selectedArsenalItem.details.comparisonTable.rows.map((row, rIdx) => (
-                                    <tr key={rIdx} className={`transition-colors duration-500 ${isArch ? "hover:bg-gray-50/50" : "hover:bg-white/[0.01]"}`}>
+                                    <tr key={`row-${rIdx}`} className={`transition-colors duration-500 ${isArch ? "hover:bg-gray-50/50" : "hover:bg-white/[0.01]"}`}>
                                       {row.map((cell, cIdx) => {
                                         const isAutomatedCol = cIdx === 2;
                                         return (
-                                          <td 
-                                            key={cIdx} 
+                                          <td key={`cell-${cIdx}`} 
                                             className={`p-3 align-middle text-[11px] ${
                                               isAutomatedCol
                                                 ? (isArch ? "text-emerald-600 font-bold bg-emerald-50/15" : "text-neon-orange font-bold bg-neon-orange/[0.02]")
@@ -4329,40 +4397,45 @@ export default function App() {
                         >
                           All ({selectedArsenalItem.details.images.length})
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => setGalleryFilter('render')}
-                          className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                            galleryFilter === 'render'
-                              ? isArch
-                                ? "bg-black text-white border-black font-bold"
-                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                              : isArch
-                                ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                          }`}
-                        >
-                          Renders ({
-                            selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render').length
-                          })
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setGalleryFilter('drawing')}
-                          className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
-                            galleryFilter === 'drawing'
-                              ? isArch
-                                ? "bg-black text-white border-black font-bold"
-                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
-                              : isArch
-                                ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
-                          }`}
-                        >
-                          Drawings ({
-                            selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing').length
-                          })
-                        </button>
+                        {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render') && (
+                          <button
+                            type="button"
+                            onClick={() => setGalleryFilter('render')}
+                            className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                              galleryFilter === 'render'
+                                ? isArch
+                                  ? "bg-black text-white border-black font-bold"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                : isArch
+                                  ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                            }`}
+                          >
+                            Renders ({
+                              selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'render').length
+                            })
+                          </button>
+                        )}
+                        
+                        {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing') && (
+                          <button
+                            type="button"
+                            onClick={() => setGalleryFilter('drawing')}
+                            className={`px-2.5 py-1 text-[8px] font-mono uppercase tracking-wider border rounded transition-all cursor-pointer ${
+                              galleryFilter === 'drawing'
+                                ? isArch
+                                  ? "bg-black text-white border-black font-bold"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                : isArch
+                                  ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
+                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                            }`}
+                          >
+                            Drawings ({
+                              selectedArsenalItem.details.images.filter((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'drawing').length
+                            })
+                          </button>
+                        )}
                         {selectedArsenalItem.details.images.some((img, idx) => getGalleryItemType(img, idx, selectedArsenalItem.id) === 'video') && (
                           <button
                             type="button"
@@ -4457,6 +4530,54 @@ export default function App() {
                     </div>
                   </div>
                 )}
+
+                {/* Presentation Grids Section */}
+                {selectedArsenalItem.details?.presentationGrids && selectedArsenalItem.details.presentationGrids.length > 0 && (
+                  <div className={"space-y-4 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-terminal-border/15")}>
+                    <div className={"text-[10px] font-mono uppercase tracking-widest border-b pb-3 transition-colors duration-700 " + (isArch ? "text-stone-900 font-bold" : "text-neon-cyan")}>
+                      10_{isArch ? "Detailed_Drawings_&_Presentations" : "Executive_Briefings"}
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      {selectedArsenalItem.details.presentationGrids.map((grid, idx) => (
+                        <button
+                          key={"grid-" + idx}
+                          onClick={() => setExpandedGrid(grid)}
+                          className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-neon-cyan text-neon-cyan hover:bg-neon-cyan/10")}
+                        >
+                          {grid.buttonLabel}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Slide Decks Section */}
+                {selectedArsenalItem.details?.slideDecks && selectedArsenalItem.details.slideDecks.length > 0 && (
+                  <div className={"space-y-8 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-terminal-border/15")}>
+                    <div className={"text-[10px] font-mono uppercase tracking-widest border-b pb-3 transition-colors duration-700 " + (isArch ? "text-stone-900 font-bold" : "text-neon-cyan")}>
+                      11_{isArch ? "Site_Visits_&_Progress" : "Executive_Briefings"}
+                    </div>
+                    <div className="space-y-8">
+                      {selectedArsenalItem.details.slideDecks.map((deck, idx) => (
+                        <div key={"deck-" + idx} className="space-y-3">
+                          <h4 className={"text-xs font-bold " + (isArch ? "text-stone-800" : "text-gray-200")}>
+                            {deck.title}
+                          </h4>
+                          <div className={"flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 " + (isArch ? "scrollbar-thin scrollbar-thumb-gray-300" : "scrollbar-thin scrollbar-thumb-terminal-border/50")}>
+                            {deck.images.map((img, imgIdx) => (<div key={`deck-img-${imgIdx}`} className="min-w-[85%] sm:min-w-[60%] md:min-w-[45%] lg:min-w-[35%] snap-center shrink-0">
+                                <img
+                                  src={img}
+                                  alt={deck.title + " - " + (imgIdx + 1)}
+                                  className={"w-full h-48 md:h-56 object-cover rounded shadow-sm border " + (isArch ? "border-gray-200" : "border-terminal-border/20")}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Modal Footer */}
@@ -4466,6 +4587,58 @@ export default function App() {
                   <span className={isArch ? "text-black" : "text-neon-cyan"}>{isArch ? "DOCUMENTATION_COMPLETE" : "DATA_INTEGRITY_VERIFIED"}</span>
                   <span>STATUS: READY</span>
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {expandedGrid && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedGrid(null)}
+            className="fixed inset-0 z-[110] flex flex-col items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-2xl cursor-zoom-out"
+          >
+            {/* Elegant Header Info bar */}
+            <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center text-white/70 font-mono text-xs z-10 pointer-events-none">
+              <div className="flex items-center gap-4">
+                <span className="text-neon-cyan">GFC_DRAWINGS</span>
+                <span>{expandedGrid.title}</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span>{expandedGrid.images.length} IMAGES</span>
+                <span className="px-2 py-1 border border-white/20 rounded">ESC TO CLOSE</span>
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative w-full max-w-7xl max-h-[80vh] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-white/20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                {expandedGrid.images.map((img, idx) => (<div key={`exp-grid-img-${idx}`} className="relative aspect-video group cursor-zoom-in" onClick={() => {
+                    setExpandedMedia({
+                      src: img,
+                      isVideo: false,
+                      googleDriveId: getDriveId(img),
+                      alt: expandedGrid.title + " - Image " + (idx + 1)
+                    });
+                  }}>
+                    <img
+                      src={img}
+                      alt={expandedGrid.title + " - Image " + (idx + 1)}
+                      className="w-full h-full object-cover border border-white/10 rounded"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Maximize2 className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           </motion.div>
