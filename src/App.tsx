@@ -1294,11 +1294,18 @@ const ProjectCard = ({
 
         <div className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-6">
-            {item.tags.map((tag, idx) => (
-              <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${isArch ? "border-gray-100 text-gray-400" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"}`}>
-                {tag}
-              </span>
-            ))}
+            {item.tags.map((tag, idx) => {
+              const isInternship = tag === "Internship Experience" || tag === "IMK Internship";
+              return (
+                <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${
+                  isArch 
+                    ? isInternship ? "bg-black text-white border-black font-bold" : "border-gray-100 text-gray-400" 
+                    : isInternship ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
+                }`}>
+                  {tag}
+                </span>
+              );
+            })}
           </div>
 
 
@@ -1770,6 +1777,57 @@ export default function App() {
 
   const archArsenal: ArsenalItem[] = [
     {
+      id: "ARCH_08",
+      title: "Luxury Villa Development (Zirad & Saral)",
+      role: "Architectural Intern (IMK Architects)",
+      hook: "GFC documentation, MEP coordination, and data-driven delivery for high-end residential villas.",
+      description: "Contributed to digital delivery across 5 residential units. Handled interior detailing, service coordination, and developed Vectorworks Marionette scripts to automate repetitive drafting.",
+      icon: <Box className="w-6 h-6 text-gray-400" />,
+      color: "gray-400",
+      metric: "5 Residential Units",
+      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+      tags: ["Internship Experience", "Vectorworks", "Marionette Scripts", "MEP Coordination", "GFC Documentation", "BOQ Extraction"],
+      category: "Professional",
+      ledger: {
+        inputs: "Schematic CAD Programs, Structural Layouts, MEP Plans",
+        engine: "Vectorworks BIM, Marionette Parametric Automation",
+        outputs: "GFC Documentation, FF&E Schedules, BOQ Data, Coordinated 2D Overlays"
+      },
+      workflow: {
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
+        steps: [
+          "Generated dynamic design variants and parametric massing models to optimize spatial layouts.",
+          "Conducted comprehensive 2D spatial overlays between architectural, structural, and MEP layouts to resolve conflicts.",
+          "Produced GFC detailing for toilets, kitchens, interior wall elevations, and joinery.",
+          "Programmatically extracted BOQs and FF&E schedules directly from 3D assets.",
+          "Developed Vectorworks Marionette scripts to automate repetitive drafting tasks and maintain standards."
+        ]
+      },
+      details: {
+        overview: "Contributed to GFC documentation and digital delivery for a luxury villa development across two sites - Zirad and Saral, Alibaug. Responsibilities spanned across 5 residential units.",
+        challenge: "Managing extensive detailing while ensuring strict cross-disciplinary coordination and accurate procurement extraction.",
+        solution: "Utilized Vectorworks BIM to conduct spatial overlays, resolving MEP conflicts before GFC issuance. Leveraged Marionette scripts for drafting automation and directly extracted precise BOQs to streamline procurement workflows.",
+        images: [
+          "https://placehold.co/800x450/f9fafb/000000?text=GFC+Sheet+-+Kitchen+Detail#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=MEP+Coordination+-+WiFi+CCTV#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=Procurement+and+BOQ+Output#drawing",
+          "https://placehold.co/800x450/f9fafb/000000?text=Marionette+Automation+Script#drawing",
+          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA#render",
+          "https://picsum.photos/seed/villainterior/800/450?grayscale#render",
+          "https://picsum.photos/seed/villaexterior/800/450?grayscale#render"
+        ],
+        captions: [
+          "GFC Sheet: Kitchen Details & Sections",
+          "MEP Coordination: WiFi & CCTV Overlays",
+          "Procurement & BOQ Schedules",
+          "Marionette Automation Script (2x Drafting Speed)",
+          "Exterior Photoreal Visualization",
+          "Interior Detail Photo",
+          "Exterior Site Context Photo"
+        ]
+      }
+    },
+    {
       id: "ARCH_01",
       title: "Net-Zero Worker Housing",
       role: "Simulation Lead",
@@ -1824,57 +1882,6 @@ export default function App() {
       }
     },
     {
-      id: "ARCH_08",
-      title: "Luxury Villa Development (Zirad & Saral)",
-      role: "Architectural Intern (IMK Architects)",
-      hook: "GFC documentation, MEP coordination, and data-driven delivery for high-end residential villas.",
-      description: "Contributed to digital delivery across 5 residential units. Handled interior detailing, service coordination, and developed Vectorworks Marionette scripts to automate repetitive drafting.",
-      icon: <Box className="w-6 h-6 text-gray-400" />,
-      color: "gray-400",
-      metric: "5 Residential Units",
-      gifUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-      tags: ["Vectorworks", "Marionette Scripts", "MEP Coordination", "GFC Documentation", "BOQ Extraction"],
-      category: "Fabrication",
-      ledger: {
-        inputs: "Schematic CAD Programs, Structural Layouts, MEP Plans",
-        engine: "Vectorworks BIM, Marionette Parametric Automation",
-        outputs: "GFC Documentation, FF&E Schedules, BOQ Data, Coordinated 2D Overlays"
-      },
-      workflow: {
-        screenshotUrl: "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA",
-        steps: [
-          "Generated dynamic design variants and parametric massing models to optimize spatial layouts.",
-          "Conducted comprehensive 2D spatial overlays between architectural, structural, and MEP layouts to resolve conflicts.",
-          "Produced GFC detailing for toilets, kitchens, interior wall elevations, and joinery.",
-          "Programmatically extracted BOQs and FF&E schedules directly from 3D assets.",
-          "Developed Vectorworks Marionette scripts to automate repetitive drafting tasks and maintain standards."
-        ]
-      },
-      details: {
-        overview: "Contributed to GFC documentation and digital delivery for a luxury villa development across two sites - Zirad and Saral, Alibaug. Responsibilities spanned across 5 residential units.",
-        challenge: "Managing extensive detailing while ensuring strict cross-disciplinary coordination and accurate procurement extraction.",
-        solution: "Utilized Vectorworks BIM to conduct spatial overlays, resolving MEP conflicts before GFC issuance. Leveraged Marionette scripts for drafting automation and directly extracted precise BOQs to streamline procurement workflows.",
-        images: [
-          "https://placehold.co/800x450/f9fafb/000000?text=GFC+Sheet+-+Kitchen+Detail#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=MEP+Coordination+-+WiFi+CCTV#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=Procurement+and+BOQ+Output#drawing",
-          "https://placehold.co/800x450/f9fafb/000000?text=Marionette+Automation+Script#drawing",
-          "https://lh3.googleusercontent.com/d/1szg4o6fK4gooWlBDS4d9qGr9EmG7QoRA#render",
-          "https://picsum.photos/seed/villainterior/800/450?grayscale#render",
-          "https://picsum.photos/seed/villaexterior/800/450?grayscale#render"
-        ],
-        captions: [
-          "GFC Sheet: Kitchen Details & Sections",
-          "MEP Coordination: WiFi & CCTV Overlays",
-          "Procurement & BOQ Schedules",
-          "Marionette Automation Script (2x Drafting Speed)",
-          "Exterior Photoreal Visualization",
-          "Interior Detail Photo",
-          "Exterior Site Context Photo"
-        ]
-      }
-    },
-    {
       id: "ARCH_02",
       title: "Sadhu Nivas Residence",
       role: "Architectural Designer & BIM Modeler",
@@ -1885,7 +1892,7 @@ export default function App() {
       metric: "Prefab Modules",
       gifUrl: "https://lh3.googleusercontent.com/d/10bE7vtwgn9WTlx-7E85wnqciWxuwP_M9",
       tags: ["Revit", "Twinmotion", "Snaptrude", "Prefabricated Modules", "Modular Design"],
-      category: "Conceptual",
+      category: "Contract",
       ledger: {
         inputs: "Module dimensions, tranquil zoning needs",
         engine: "3D CAD modeling & natural rendering software",
