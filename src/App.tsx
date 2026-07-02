@@ -1296,12 +1296,17 @@ const ProjectCard = ({
         <div className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-6">
             {item.tags.map((tag, idx) => {
-              const isProfessional = tag === "Professional Experience" || tag === "IMK Internship";
+              const isProfessional = tag === "Professional Experience" || tag === "IMK Internship" || tag === "Freelance";
+              const isCompetition = tag === "Competition";
               return (
                 <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${
                   isArch 
-                    ? isProfessional ? "bg-black text-white border-black font-bold" : "border-gray-100 text-gray-400" 
-                    : isProfessional ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
+                    ? isProfessional ? "bg-black text-white border-black font-bold" 
+                      : isCompetition ? "bg-amber-100 text-amber-800 border-amber-400 font-bold"
+                      : "border-gray-100 text-gray-400" 
+                    : isProfessional ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" 
+                      : isCompetition ? "bg-amber-500/20 text-amber-400 border-amber-500/50 font-bold"
+                      : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
                 }`}>
                   {tag}
                 </span>
@@ -1814,12 +1819,16 @@ export default function App() {
         images: [
           "https://lh3.googleusercontent.com/d/1TtzJzZzzXzgpikF3K0nivFd_KmCcFNx3#drawing",
           "https://lh3.googleusercontent.com/d/1mA39MVAtn305IGJ3IYh2RDaxLNRMQvqL#drawing",
-          "https://lh3.googleusercontent.com/d/1Kgg8kanN3n7YtRVUlXhoANt9aVpjzUnS#drawing"
+          "https://lh3.googleusercontent.com/d/1Kgg8kanN3n7YtRVUlXhoANt9aVpjzUnS#drawing",
+          "https://lh3.googleusercontent.com/d/1UMVhYpqsmqFOMX3eElK8ph6bIKfB039l#drawing",
+          "https://lh3.googleusercontent.com/d/1U2bYPIXgXbMn3n7wlAanLSb1zg8iPJhV#drawing"
         ],
         captions: [
           "1. GFC Sheet: Kitchen Section Detailing",
           "2. Villa 04 - Wifi/CCTV Integrated Layout",
-          "3. GFC Sheet - Flooring Layout"
+          "3. GFC Sheet - Flooring Layout",
+          "4. Auto Tile Placer Plugin - Saving Manual Drafting Time and Generating Iterations quickly",
+          "5. Procurement/ BOQs List & Estimate"
         ],
         presentationGrids: [
           {
@@ -1915,7 +1924,7 @@ export default function App() {
       color: "gray-400",
       metric: "Net-Zero",
       gifUrl: "https://lh3.googleusercontent.com/d/1-BhZKRQJEpkQhE8Kuq6BURh0UYO7qYrH",
-      tags: ["Performance Simulation", "DesignBuilder", "IESVE"],
+      tags: ["Performance Simulation", "DesignBuilder", "IESVE", "Competition"],
       category: "Exterior",
       ledger: {
         inputs: "Local Climate Records, Basic Building Shape",
@@ -2216,7 +2225,7 @@ export default function App() {
       color: "gray-400",
       metric: "Atmospheric",
       gifUrl: "https://lh3.googleusercontent.com/d/1Ub86NTdcIwZLE58Cy0Ev5Zy1hYTF--ne",
-      tags: ["Interior Design", "Materiality", "Lighting Design"],
+      tags: ["Interior Design", "Materiality", "Lighting Design", "Professional Experience", "Freelance"],
       category: "Interior",
       ledger: {
         inputs: "Raw concrete shop bounds, barista brewing layout needs",
