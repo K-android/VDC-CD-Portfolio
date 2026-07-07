@@ -1063,6 +1063,9 @@ const WorkloadGif = ({
   play?: boolean;
   isInModal?: boolean;
 }) => {
+  if (!src) {
+    return <div className={`flex items-center justify-center ${className || 'w-full h-full'}`} />;
+  }
   const [isInternalHovered, setIsInternalHovered] = useState(false);
   const active = play !== undefined ? play : (forcePlay || isInternalHovered);
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -2064,7 +2067,7 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/1uZE-A0Cy92pzz7gWfdFr5vdeaa7TBMEc",
           "https://lh3.googleusercontent.com/d/1uKUbCflYtDqzWmYiSwtsjbL95Uxfw0q6",
           "https://lh3.googleusercontent.com/d/1La6OD3SJ0vYjtlG8GseC5b6iHqDwtgIW",
-          "https://lh3.googleusercontent.com/d/1waqzjq0LVsh2vZuRcIX3rFrNMho5KTD",
+          
           "https://lh3.googleusercontent.com/d/1EwxzT95gIriGk_KPSlspFuGd0dxOJQqw",
           "https://lh3.googleusercontent.com/d/1Btke20IAGtI8itws0GujFR2-nvKGDpgs",
           "https://lh3.googleusercontent.com/d/1vtmSPO5cY0bEyPfHB6q-8TK_N-EWR0Bw",
@@ -2151,7 +2154,7 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/12OIBjZ9IUXwNKrr47oZms-cRkXu8bH0G#video",
           "https://lh3.googleusercontent.com/d/17bRW4JZ7LvQ6JgA0VvGYBhm4oUe-k256#video",
           "https://lh3.googleusercontent.com/d/1a08B1mG9J6AyX_5kN00pree_QeFeMHo6#video",
-          "https://lh3.googleusercontent.com/d/1A01VUrxvpTiarTeOCzGPfs_ew0TXZNX#video",
+          
           "https://lh3.googleusercontent.com/d/1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk#video"
         ]
       }
@@ -2492,7 +2495,7 @@ export default function App() {
           "https://lh3.googleusercontent.com/d/1imbn5IFvIz1OCsZxDdYXjRMDEw0UFmSk#render",
           "https://lh3.googleusercontent.com/d/1bre_RmRkdlnRIW9WkSAPH3fEY_IvrcbG#render",
           "https://lh3.googleusercontent.com/d/1LDX9tMnC_NsYZP_SEYYWxYKxkvV-FGe1#drawing",
-          "https://lh3.googleusercontent.com/d/1GBEP9vbRtkZzt6P8-mImQiy5AVGs36R_#drawing",
+          
           "https://lh3.googleusercontent.com/d/1l7G5k7xURcKj4y7yRy9hL0TBSc0C8uNW#drawing",
           "https://lh3.googleusercontent.com/d/1eZOhpIrBn_S7CJ2Gad8nb33Z3nXngbip#drawing"
         ],
@@ -2509,6 +2512,53 @@ export default function App() {
             ["Stakeholder Value", "Provides limited variety; hard to contrast trade-offs", "Provides clear balance charts to explain choice parameters simply"]
           ]
         }
+      }
+    },
+    {
+      id: "BIM_08",
+      title: "Agent-Based Space Planning & Structural Solver",
+      role: "Computational Design Technologist",
+      hook: "Reframing architectural programming as a dynamic physics simulation.",
+      description: "An experimental generative tool that treats programmatic spaces as intelligent, physical agents. Automatically resolves complex adjacency rules, structural grids, and multi-storey stacking within non-convex sites.",
+      icon: <Cpu className="w-6 h-6 text-neon-blue" />,
+      color: "neon-blue",
+      metric: "Agentic AI",
+      gifUrl: "https://lh3.googleusercontent.com/d/1b3a1AWoEjz9P2K3TuKbwL8vXT3rAlGjW",
+      tags: ["Python", "Agent-Based Modeling", "Rhino 8", "Physics Simulation", "Generative Design"],
+      ledger: {
+        inputs: "Irregular site boundaries, room lists, adjacency matrices, terrain mesh",
+        engine: "Rhino CPython 3 physics solver with multi-objective agent steerage",
+        outputs: "Grid-snapped rooms, spanning corridors, structural beam lattice, JSON BIM export"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-agent-2/800/450?grayscale",
+        steps: [
+          "Initialize spaces as physical agents governed by adjacency attraction and repulsion forces.",
+          "Apply environmental steering, damping reentrant corner trapping on concave boundaries.",
+          "Calculate circumscribed collision physics and snap centroids to structural sub-grids.",
+          "Stack levels dynamically, insert structural cores, and generate Minimum Spanning Tree corridors.",
+          "Export a structured JSON schema of rooms, beams, and columns directly into Revit via Dynamo."
+        ]
+      },
+      details: {
+        videoUrl: "https://drive.google.com/file/d/1Va-mCgkDqe9AiYcGr8YBxvUyJhi_dwi2/view?usp=sharing",
+        overview: "An experimental generative design tool that reframes early-stage architectural programming and space planning as a dynamic physics simulation rather than a manual, trial-and-error drafting task. Given a site and a programmatic brief, it uses multi-objective vectors to automatically arrange spaces.",
+        challenge: "Geometric assumptions break on real-world lots: concavity traps agents, equivalent-area circular proxies fail for rectangular rooms, and unguided view-seeking forces pull rooms into narrow site pinch-points.",
+        solution: "Engineered local geometry probing to cull reflex vertices, implemented circumscribed half-diagonal collisions with grid-snapping, and mapped structural/corridor networks using Prim's algorithm for robust multi-storey generation.",
+        images: [
+          "https://lh3.googleusercontent.com/d/15PC8VWAy4JFodE0-KTaP30Ia9E1eTuYq",
+          "https://lh3.googleusercontent.com/d/1B7h-ILSYXZPvks0bRpi5gNrx4P4bDqAF",
+          "https://lh3.googleusercontent.com/d/1DtpG-KYGPcAip9_ur36zRRCqGrizYzIz",
+          "https://lh3.googleusercontent.com/d/1GiDevLRVc7XvQ4fM069fYI0Qnhn1fxTQ",
+          
+          
+          
+          
+          
+          "https://lh3.googleusercontent.com/d/1tD9Mn4t6fnxL_HhmlBBH8IUka-og-RJE",
+          "https://lh3.googleusercontent.com/d/1Tr8vZlSXrsEa7LiN4-Y3DNvBFq_n-hxY",
+          "https://lh3.googleusercontent.com/d/1vSOTIYB045RMebKu-dYVgODfRVHDBD4s"
+        ]
       }
     },
     {
@@ -3256,7 +3306,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
               {bimArsenal.map((item) => (<ProjectCard key={`bim-${item.id}`} 
                   item={item} 
                   isArch={false} 
@@ -4476,7 +4526,7 @@ export default function App() {
                           const googleDriveId = getDriveId(img);
                           const thumbSrc = getStaticThumbnailUrl(img);
                           return (
-                            <div key={`gallery-${idx}-${googleDriveId || idx}`} className="flex flex-col gap-3 group/gal">
+                            <div key={`gallery-${selectedArsenalItem.id}-${idx}`} className="flex flex-col gap-3 group/gal">
                               <div 
                                 onClick={() => {
                                   setExpandedMedia({
