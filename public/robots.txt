@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://karthikraj.vercel.app/sitemap.xml
+Sitemap: https://des-portfolio-sepia.vercel.app/sitemap.xml
