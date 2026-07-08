@@ -539,6 +539,7 @@ const WorkflowFlowchart = ({
   color: string;
 }) => {
   const data = getFlowchartData(projectId, steps);
+
   return (
     <div className={`font-mono text-xs rounded-lg p-4 md:p-6 transition-all duration-700 ${
       isArch 
@@ -556,101 +557,65 @@ const WorkflowFlowchart = ({
                 : "border-emerald-500/85 text-emerald-400 bg-emerald-950/15"
             }`}
           >
-            <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold">START</div>
-            <div className="text-[10px] md:text-[11px] font-bold">{data.start.title}</div>
-            <div className="text-[9px] opacity-80 font-normal leading-relaxed mt-0.5">{data.start.subtitle}</div>
+            <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">START</div>
+            <div className="text-[11px] font-bold mt-1">{data.start.title}</div>
+            <div className="text-[9.5px] opacity-80 font-normal leading-relaxed mt-0.5">{data.start.subtitle}</div>
           </div>
           <FlowArrow isArch={isArch} horizontal={false} />
         </div>
 
         {/* Nodes */}
-        {data.nodes.map((node, i) => {
-          return (
-            <React.Fragment key={`node-${i}`}>
-              <div
-                className={`border rounded-xl p-3.5 transition-all duration-500 relative overflow-hidden w-full max-w-sm ${
-                  isArch
-                    ? "border-black bg-white text-black"
-                    : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
-                }`}
-              >
-                <div className="flex justify-between items-start gap-1 mb-1.5">
-                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
-                    isArch 
-                      ? "bg-black text-white" 
-                      : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+        {data.nodes.map((node, i) => (
+          <React.Fragment key={`node-${i}`}>
+            <div
+              className={`border rounded-xl p-3.5 transition-all duration-500 relative overflow-hidden w-full max-w-sm ${
+                isArch
+                  ? "border-black bg-white text-black"
+                  : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              }`}
+            >
+              <div className="flex justify-between items-start gap-1 mb-1.5">
+                <span className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
+                  isArch 
+                    ? "bg-black text-white" 
+                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                }`}>
+                  PHASE 0{i + 1}
+                </span>
+                
+                {node.metric && (
+                  <span className={`text-[8px] font-bold ${
+                    isArch ? "text-stone-500" : "text-neon-orange"
                   }`}>
-                    PHASE 0{i + 1}
+                    {node.metric}
                   </span>
-                  
-                  {node.metric && (
-                    <span className={`text-[8.5px] font-bold ${
-                      isArch ? "text-stone-500" : "text-neon-orange"
-                    }`}>
-                      {node.metric}
-                    </span>
-                  )}
+                )}
+              </div>
+              <div className="flex gap-2 items-start">
+                <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-full border flex items-center justify-center ${
+                  isArch
+                    ? "border-black text-black bg-white"
+                    : "border-terminal-border/40 text-gray-400 bg-black/40"
+                }`}>
+                  <Cpu className="w-3 h-3" />
                 </div>
-
-                <div className="flex gap-2 items-start">
-                  <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-full border flex items-center justify-center ${
-                    isArch
-                      ? "border-black text-black bg-white"
-                      : "border-terminal-border/40 text-gray-400 bg-black/40"
+                <div className="min-w-0 flex-1">
+                  <h4 className={`text-[11px] font-bold tracking-tight ${
+                    isArch ? "text-black" : "text-gray-100"
                   }`}>
-                    <Cpu className="w-3 h-3" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 className={`text-[10.5px] font-bold tracking-tight ${
-                      isArch ? "text-black" : "text-gray-100"
-                    }`}>
-                      {node.title}
-                    </h4>
-                    <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${
-                      isArch ? "text-gray-600" : "text-gray-400"
-                    }`}>
-                      {node.subtitle}
-                    </p>
-                  </div>
+                    {node.title}
+                  </h4>
+                  <p className={`text-[10px] leading-relaxed mt-1 font-normal ${
+                    isArch ? "text-gray-600" : "text-gray-400"
+                  }`}>
+                    {node.subtitle}
+                  </p>
                 </div>
               </div>
-
-              {/* Render arrow & decision gate */}
-              {i === 2 ? (
-                <div className="flex flex-col items-center w-full max-w-sm" key={`v-dec-${i}`}>
-                  <FlowArrow isArch={isArch} horizontal={false} />
-                  
-                  {/* Decision Gate Diamond Node */}
-                  <div className="flex justify-center items-center relative w-full">
-                    <div className={`relative px-4 py-3.5 rounded-xl border flex flex-col items-center justify-center w-full ${
-                      isArch 
-                        ? "border-amber-400 bg-amber-50 text-black text-center shadow font-semibold"
-                        : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
-                    }`}>
-                      <div className="text-[7.5px] uppercase font-bold tracking-widest text-gray-500">GATE</div>
-                      <div className="text-[10px] font-bold text-center mt-0.5 text-neon-orange">{data.decision.title}</div>
-                      <div className="text-[9px] font-medium text-center border border-dashed border-terminal-border/10 px-2 py-1 rounded mt-1.5 bg-black/40 text-gray-400 w-full whitespace-normal">
-                        Rule: {data.decision.gate}
-                      </div>
-                      
-                      <div className={`text-[7.5px] font-bold uppercase tracking-wider mt-2 px-1.5 py-0.5 rounded ${
-                        isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
-                      }`}>
-                        {data.decision.yes}
-                      </div>
-                    </div>
-                  </div>
-
-                  <FlowArrow isArch={isArch} horizontal={false} />
-                </div>
-              ) : i < 3 ? (
-                <FlowArrow isArch={isArch} horizontal={false} key={`v-arr-${i}`} />
-              ) : null}
-            </React.Fragment>
-          );
-        })}
-
-        <FlowArrow isArch={isArch} horizontal={false} />
+            </div>
+            <FlowArrow isArch={isArch} horizontal={false} />
+          </React.Fragment>
+        ))}
 
         {/* End Node */}
         <div 
@@ -660,19 +625,19 @@ const WorkflowFlowchart = ({
               : "border-emerald-500/60 bg-emerald-950/30 text-emerald-300"
           }`}
         >
-          <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold">DISPATCH</div>
-          <div className="text-[10px] font-bold text-emerald-400 flex items-center justify-center gap-1.5 mt-0.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold">DISPATCH</div>
+          <div className="text-[11px] font-bold text-emerald-400 flex items-center justify-center gap-1.5 mt-1">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>{data.end.title}</span>
           </div>
-          <div className="text-[9px] opacity-80 font-normal leading-relaxed mt-1">{data.end.desc || data.end.subtitle}</div>
+          <div className="text-[9.5px] opacity-80 font-normal leading-relaxed mt-1">{data.end.desc || data.end.subtitle}</div>
         </div>
       </div>
 
-      {/* Desktop View - Generous 2-row layout with zero horizontal scroll and 100% text legibility */}
+      {/* Desktop View - 2 Rows of 3 elements */}
       <div className="hidden lg:flex flex-col gap-6 w-full">
-        {/* Row 1: Start -> Phase 1 -> Phase 2 -> Phase 3 */}
-        <div className="grid grid-cols-4 gap-4 w-full">
+        {/* Row 1: Start -> Phase 1 -> Phase 2 */}
+        <div className="grid grid-cols-3 gap-4 w-full">
           {/* Start Node */}
           <div className="relative">
             <div 
@@ -682,9 +647,9 @@ const WorkflowFlowchart = ({
                   : "border-emerald-500/60 bg-emerald-950/10 text-emerald-300"
               }`}
             >
-              <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold mb-1">START</div>
-              <div className="text-[10.5px] font-bold text-emerald-400 font-mono tracking-tight">{data.start.title}</div>
-              <div className="text-[9.5px] opacity-90 font-normal mt-1 leading-relaxed">{data.start.subtitle}</div>
+              <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold mb-1">START</div>
+              <div className="text-[11px] font-bold text-emerald-400 tracking-tight">{data.start.title}</div>
+              <div className="text-[10px] opacity-90 font-normal mt-1 leading-relaxed">{data.start.subtitle}</div>
             </div>
             
             {/* Connector Arrow pointing right */}
@@ -702,7 +667,7 @@ const WorkflowFlowchart = ({
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                  <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
                     isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
                   }`}>PHASE 01</span>
                   {data.nodes[0]?.metric && (
@@ -711,10 +676,10 @@ const WorkflowFlowchart = ({
                     </span>
                   )}
                 </div>
-                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                <h4 className={`text-[11px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
                   {data.nodes[0]?.title}
                 </h4>
-                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                <p className={`text-[10px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
                   {data.nodes[0]?.subtitle}
                 </p>
               </div>
@@ -729,13 +694,13 @@ const WorkflowFlowchart = ({
           </div>
 
           {/* Phase 02 */}
-          <div className="relative">
+          <div>
             <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
               isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                  <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
                     isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
                   }`}>PHASE 02</span>
                   {data.nodes[1]?.metric && (
@@ -744,44 +709,11 @@ const WorkflowFlowchart = ({
                     </span>
                   )}
                 </div>
-                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                <h4 className={`text-[11px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
                   {data.nodes[1]?.title}
                 </h4>
-                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                <p className={`text-[10px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
                   {data.nodes[1]?.subtitle}
-                </p>
-              </div>
-            </div>
-            
-            {/* Connector Arrow pointing right */}
-            <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
-              <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
-                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
-              }`} />
-            </div>
-          </div>
-
-          {/* Phase 03 */}
-          <div>
-            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
-              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
-            }`}>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
-                  }`}>PHASE 03</span>
-                  {data.nodes[2]?.metric && (
-                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
-                      {data.nodes[2].metric}
-                    </span>
-                  )}
-                </div>
-                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
-                  {data.nodes[2]?.title}
-                </h4>
-                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
-                  {data.nodes[2]?.subtitle}
                 </p>
               </div>
             </div>
@@ -792,44 +724,37 @@ const WorkflowFlowchart = ({
         <div className="flex justify-between items-center px-6 -my-2.5">
           <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 mr-4 opacity-50"></div>
           <div className="flex items-center gap-2 font-mono text-[9px] opacity-50 px-3 py-1 rounded bg-black/40 border border-terminal-border/10 text-neon-cyan uppercase">
-            <span>PROCEED TO INTEGRITY AUDIT</span>
+            <span>CONTINUE PROCESSING</span>
             <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
           </div>
           <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 ml-4 opacity-50"></div>
         </div>
 
-        {/* Row 2: Gate -> Phase 4 -> Dispatch / End */}
+        {/* Row 2: Phase 3 -> Phase 4 -> Dispatch / End */}
         <div className="grid grid-cols-3 gap-4 w-full">
-          {/* Decision Gate */}
+          
+          {/* Phase 03 */}
           <div className="relative">
-            <div className={`h-full min-h-[110px] relative px-4 py-4 rounded-xl border flex flex-col justify-between ${
-              isArch 
-                ? "border-amber-400 bg-amber-50 text-black shadow"
-                : "border-neon-cyan/40 bg-black/60 text-white shadow-[0_0_15px_rgba(1,242,255,0.05)]"
+            <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
+              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
             }`}>
               <div>
-                <div className="flex justify-between items-center mb-1">
-                  <span className={`text-[7px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-amber-100 text-amber-800" : "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20"
-                  }`}>ASSURANCE GATE</span>
-                  <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-amber-800" : "text-neon-orange"}`}>
-                    PASS CRITERIA
-                  </span>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                  }`}>PHASE 03</span>
+                  {data.nodes[2]?.metric && (
+                    <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
+                      {data.nodes[2].metric}
+                    </span>
+                  )}
                 </div>
-                <h4 className="text-[10.5px] font-bold font-sans mt-1.5 text-neon-orange leading-tight uppercase">
-                  {data.decision.title}
+                <h4 className={`text-[11px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                  {data.nodes[2]?.title}
                 </h4>
-                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
-                  Rule: {data.decision.gate}
+                <p className={`text-[10px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                  {data.nodes[2]?.subtitle}
                 </p>
-              </div>
-              <div className="mt-2.5 flex justify-between items-center border-t border-dashed border-terminal-border/10 pt-2">
-                <span className="text-[8px] opacity-50 uppercase tracking-widest font-bold">STATUS</span>
-                <span className={`text-[8px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                  isArch ? "bg-black text-white" : "bg-emerald-950/40 text-emerald-400 border border-emerald-900"
-                }`}>
-                  {data.decision.yes}
-                </span>
               </div>
             </div>
             
@@ -848,7 +773,7 @@ const WorkflowFlowchart = ({
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className={`text-[7.5px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
+                  <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
                     isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
                   }`}>PHASE 04</span>
                   {data.nodes[3]?.metric && (
@@ -857,10 +782,10 @@ const WorkflowFlowchart = ({
                     </span>
                   )}
                 </div>
-                <h4 className={`text-[10.5px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
+                <h4 className={`text-[11px] font-bold tracking-tight ${isArch ? "text-black font-sans" : "text-white font-mono"}`}>
                   {data.nodes[3]?.title}
                 </h4>
-                <p className={`text-[9.5px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
+                <p className={`text-[10px] leading-relaxed mt-1 font-normal ${isArch ? "text-stone-600" : "text-gray-400"}`}>
                   {data.nodes[3]?.subtitle}
                 </p>
               </div>
@@ -884,170 +809,23 @@ const WorkflowFlowchart = ({
               }`}
             >
               <div>
-                <div className="text-[7.5px] opacity-75 uppercase tracking-widest font-bold mb-1.5">FINAL DISPATCH</div>
-                <div className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-tight">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <div className="text-[8px] opacity-75 uppercase tracking-widest font-bold mb-1.5">FINAL DISPATCH</div>
+                <div className="text-[12px] font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-tight">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span>{data.end.title}</span>
                 </div>
-                <p className={`text-[9.5px] leading-relaxed mt-1.5 font-normal opacity-90 ${isArch ? "text-stone-600" : "text-stone-400"}`}>
+                <p className={`text-[10px] leading-relaxed mt-1.5 font-normal opacity-90 ${isArch ? "text-stone-600" : "text-stone-400"}`}>
                   {data.end.desc || data.end.subtitle}
                 </p>
               </div>
-              <div className="text-[8px] font-mono px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 border border-emerald-900 border-dashed w-max mt-2">
+              <div className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 border border-emerald-900 border-dashed w-max mt-2">
                 TRANSIT: LOGIC VERIFIED
               </div>
             </div>
           </div>
-
         </div>
+
       </div>
-    </div>
-  );
-};;
-
-const getTinyThumbnailUrl = (src: string) => {
-  if (!src) return "";
-  const clean = src.split('#')[0];
-  
-  if (clean.includes('drive.google.com/file/d/')) {
-    const parts = clean.split('/file/d/');
-    if (parts.length > 1) {
-      const id = parts[1].split('/')[0].split('?')[0];
-      return `https://drive.google.com/thumbnail?id=${id}&sz=w250`;
-    }
-  }
-
-  if (clean.includes('lh3.googleusercontent.com/d/')) {
-    const parts = clean.split('lh3.googleusercontent.com/d/');
-    if (parts.length > 1) {
-      const id = parts[1].split('/')[0].split('?')[0];
-      return `https://drive.google.com/thumbnail?id=${id}&sz=w250`;
-    }
-  }
-
-  if (clean.includes('drive.google.com/thumbnail')) {
-    const match = clean.match(/[?&]id=([^&]+)/);
-    if (match) {
-      return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w250`;
-    }
-  }
-
-  if (clean.includes('giphy.com/media/')) {
-    return clean.replace('/giphy.gif', '/giphy_s.gif');
-  }
-
-  return clean;
-};
-
-const FrozenImage = ({ 
-  src, 
-  alt, 
-  className 
-}: { 
-  src: string; 
-  alt: string; 
-  className?: string; 
-}) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const [stage, setStage] = useState<"empty" | "tiny" | "full">("empty");
-  const [error, setError] = useState(false);
-
-  React.useEffect(() => {
-    let isActive = true;
-    const tinyUrl = getTinyThumbnailUrl(src);
-    const largeUrl = src;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let tinyImgLoaded = false;
-    let largeImgLoaded = false;
-
-    // Create image objects
-    const tinyImg = new Image();
-    const largeImg = new Image();
-
-    tinyImg.onload = () => {
-      if (!isActive) return;
-      tinyImgLoaded = true;
-      // Only draw tiny if large has not loaded yet
-      if (!largeImgLoaded) {
-        canvas.width = tinyImg.naturalWidth || tinyImg.width || 250;
-        canvas.height = tinyImg.naturalHeight || tinyImg.height || 140;
-        ctx.drawImage(tinyImg, 0, 0, canvas.width, canvas.height);
-        setStage("tiny");
-      }
-    };
-
-    largeImg.onload = () => {
-      if (!isActive) return;
-      largeImgLoaded = true;
-      canvas.width = largeImg.naturalWidth || largeImg.width || 800;
-      canvas.height = largeImg.naturalHeight || largeImg.height || 450;
-      ctx.drawImage(largeImg, 0, 0, canvas.width, canvas.height);
-      setStage("full");
-    };
-
-    largeImg.onerror = () => {
-      if (!isActive) return;
-      // If large fails but tiny is showing, we can keep tiny, else error
-      if (!tinyImgLoaded) {
-        setError(true);
-      }
-    };
-
-    // Trigger loads
-    tinyImg.referrerPolicy = "no-referrer";
-    largeImg.referrerPolicy = "no-referrer";
-    
-    tinyImg.src = tinyUrl;
-    largeImg.src = largeUrl;
-
-    return () => {
-      isActive = false;
-    };
-  }, [src]);
-
-  if (error) {
-    return (
-      <img 
-        src={src} 
-        alt={alt} 
-        className={className} 
-        referrerPolicy="no-referrer" 
-      />
-    );
-  }
-
-  const isLoaded = stage !== "empty";
-  const isTiny = stage === "tiny";
-
-  return (
-    <div className="relative w-full h-full min-h-[120px] flex items-center justify-center overflow-hidden bg-stone-900/10">
-      <canvas 
-        ref={canvasRef} 
-        style={{
-          filter: isTiny ? "blur(8px)" : "none",
-          transform: isTiny ? "scale(1.04)" : "scale(1)",
-          transition: "filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease",
-        }}
-        className={`${className || ""} ${isLoaded ? "opacity-100" : "opacity-0"} w-full h-full object-cover`} 
-      />
-      
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-stone-100/5 backdrop-blur-xs animate-pulse flex items-center justify-center">
-          <div className="w-5 h-5 rounded-full border-2 border-t-transparent border-stone-500 animate-spin" />
-        </div>
-      )}
-      
-      {isTiny && (
-        <div className="absolute bottom-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded text-[8px] font-mono text-gray-400 pointer-events-none select-none">
-          <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-ping" />
-          <span>LOD_PROG...</span>
-        </div>
-      )}
     </div>
   );
 };
@@ -1185,7 +963,7 @@ const WorkloadGif = ({
           className={className}
         />
       ) : (
-        <FrozenImage 
+        <img 
           src={staticUrl} 
           alt={alt} 
           className={className} 
@@ -1799,7 +1577,7 @@ export default function App() {
       title: "Luxury Villas Development in Alibaug",
       role: "Architectural Intern (IMK Architects)",
       hook: "GFC documentation, MEP coordination, and data-driven delivery for high-end residential villas.",
-      description: "Contributed to digital delivery across 5 residential units. Handled interior detailing, service coordination, and developed Vectorworks Marionette scripts to automate repetitive drafting.",
+      description: "Digital delivery and interior detailing for 5 units, with custom Vectorworks automation scripts.",
       icon: <Box className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "5 Residential Units",
@@ -1822,7 +1600,7 @@ export default function App() {
         ]
       },
       details: {
-        overview: "Contributed to GFC documentation and digital delivery for a luxury villa development across two sites - Zirad and Saral, Alibaug. Responsibilities spanned across 5 residential units.",
+        overview: "This professional project involved comprehensive GFC documentation and digital delivery for a high-end luxury villa development spread across two exclusive sites in Zirad and Saral, Alibaug. The scope included precise interior detailing, FF&E schedules, and MEP coordination for 5 bespoke residential units, significantly streamlining the construction process using custom Vectorworks Marionette automation scripts.",
         challenge: "Managing extensive detailing while ensuring strict cross-disciplinary coordination and accurate procurement extraction.",
         solution: "Utilized Vectorworks BIM to conduct spatial overlays, resolving MEP conflicts before GFC issuance. Leveraged Marionette scripts for drafting automation and directly extracted precise BOQs to streamline procurement workflows.",
         images: [
@@ -1928,7 +1706,7 @@ export default function App() {
       title: "Net-Zero Worker Housing",
       role: "Simulation Lead",
       hook: "National Grand Winner (Solar Decathlon India).",
-      description: "Simulated solar, thermal, and wind performance to optimize resource-saving architecture.",
+      description: "Solar, thermal, and wind simulations for optimizing resource-efficient architecture.",
       icon: <ShieldCheck className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Net-Zero",
@@ -1950,7 +1728,7 @@ export default function App() {
         ]
       },
       details: {
-        overview: "An award-winning design to provide ultra-affordable, energy-efficient housing for construction workers in India.",
+        overview: "An award-winning, net-zero housing framework aimed at providing ultra-affordable and energy-efficient living conditions for construction workers in India. By utilizing advanced environmental simulations for solar, thermal, and wind performance, the project successfully minimizes reliance on artificial cooling while ensuring a dignified and sustainable habitat.",
         challenge: "Keeping the building naturally cool in hot, humid weather without expensive air conditioning.",
         solution: "Designed natural cooling tunnels and strategic facade shading. Virtual simulations proved this lowered energy costs by 40%.",
         images: [
@@ -1982,7 +1760,7 @@ export default function App() {
       title: "Sadhu Nivas Residence",
       role: "Architectural Designer & BIM Modeler",
       hook: "Modular prefabrication meeting minimalistic, tranquil spiritual living.",
-      description: "Designed a modular, preassembled residential community for spiritual practitioners. Built precise parametric Revit families and rendered tranquil, quiet gardens.",
+      description: "A modular residential community featuring precise parametric Revit families and tranquil garden renders.",
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Prefab Modules",
@@ -2005,7 +1783,7 @@ export default function App() {
       },
       details: {
         sheetsUrl: "https://drive.google.com/file/d/1ByKEytkeQRIW7cLqqtOtRko69qBClDDt/view?usp=sharing",
-        overview: "A prefabricated modular housing neighborhood designed to support the minimalistic lifestyles and meditative quiet of spiritual practitioners.",
+        overview: "A prefabricated modular housing neighborhood thoughtfully conceptualized to support the minimalistic lifestyles and meditative tranquility of spiritual practitioners. Through the rigorous use of precise parametric Revit families, the project merges rapid, efficient off-site assembly with the creation of deeply serene, naturally integrated living spaces.",
         challenge: "Creating cozy, warm, and highly peaceful spaces using concrete panels while maintaining strict modular grids for low-cost prefabrication.",
         solution: "Engineered structural precast Revit families spanning a repeating 3m x 3m module shell. Designed smart layout groupings arranged around hidden courtyard thresholds to block outer noises and ensure visual peace.",
         images: [
@@ -2032,10 +1810,10 @@ export default function App() {
     },
     {
       id: "ARCH_05",
-      title: "Karunya Hospice",
+      title: "Karunya Hospice and Palliative Care Center",
       role: "Lead Architect (Thesis)",
       hook: "Designing for dignity, nature, and the final transition.",
-      description: "A 50-bed palliative care campus designed to celebrate nature, providing a warm, comforting space for patients and families.",
+      description: "A 50-bed palliative care campus providing a warm, nature-integrated space for patients.",
       icon: <Activity className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Biophilic",
@@ -2051,7 +1829,7 @@ export default function App() {
         publication: "Published in 'Pratibimbh', the official annual architecture publication of BMS College of Architecture, Design and Planning, celebrating exemplary student design research and execution.",
         sheetsUrl: "https://drive.google.com/file/d/1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp/view?usp=sharing",
         reportUrl: "https://drive.google.com/file/d/1PvSO63GmlC2z-dUPCPA57tCswDiUP9dB/view?usp=drive_link",
-        overview: "A peaceful 50-bed hospice camp that trades sterile, cold hospital corridors for natural, cozy wooden homes.",
+        overview: "A compassionate 50-bed palliative care and hospice campus that reimagines end-of-life care by trading sterile, clinical hospital corridors for natural, cozy wooden pavilions. The design focuses heavily on biophilic principles, ensuring that patients and their families are constantly connected to healing gardens and soothing natural light.",
         challenge: "Ensuring medical utilities are highly accessible while keeping the layout looking like a quiet forest retreat.",
         solution: "Separated the facility into smaller house pavilions connected by plants and dynamic sensory gardens. Every room overlooks trees, keeping families beautifully connected to nature.",
         images: [
@@ -2086,7 +1864,7 @@ export default function App() {
       title: "Recycled Bus Pavilion",
       role: "Design & Build Lead",
       hook: "National Citation for functional adaptive reuse.",
-      description: "Award-winning community pavilion built by transforming a decommissioned scrap bus with reclaimed materials.",
+      description: "Award-winning community pavilion crafted from a decommissioned scrap bus and reclaimed materials.",
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Upcycled",
@@ -2099,7 +1877,7 @@ export default function App() {
         outputs: "National Design Citation, completed community gathering hub"
       },
       details: {
-        overview: "A real hands-on community design project to prove how scrap vehicles can be recycled into beautiful public spaces.",
+        overview: "A hands-on, award-winning community design-build initiative focused on functional adaptive reuse. By transforming a decommissioned scrap bus and utilizing locally sourced reclaimed materials, the project proves how discarded urban artifacts can be successfully recycled into vibrant, highly functional public gathering spaces.",
         challenge: "Upcycling a metal bus frame into an open, secure, and lightweight shelter.",
         solution: "Stripped the bus down to its structural chassis, welded supporting steel columns, and installed recycled roof panels to create a bright, airy open-air pavilion.",
         images: [
@@ -2128,7 +1906,7 @@ export default function App() {
       title: "Bamboo Pavilion",
       role: "Fabrication Lead",
       hook: "Exploring parametric joinery in organic materials.",
-      description: "A lightweight, modular pavilion built with sustainable bamboo nodes and assembled in under 48 hours.",
+      description: "A lightweight bamboo pavilion featuring sustainable nodes, assembled in under 48 hours.",
       icon: <Hammer className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Sustainable",
@@ -2141,7 +1919,7 @@ export default function App() {
         outputs: "Fast on-site assembly system, self-supporting natural grid structure"
       },
       details: {
-        overview: "An experimental screen pavilion designed to merge traditional bamboo building with fast, modern 3D design plans.",
+        overview: "An experimental, lightweight screen pavilion designed to bridge the gap between traditional bamboo craftsmanship and modern parametric 3D design workflows. The structure features sustainable, custom-designed structural nodes that allowed the entire architectural installation to be efficiently assembled on-site in under 48 hours.",
         challenge: "Natural bamboo poles have uneven sizes and strengths, making perfectly standardized connectors difficult to design.",
         solution: "Developed a flexible, self-adjusting metal connector system. We prefabricated the units in a workshop and assembled the canopy on-site in 48 hours.",
         images: [
@@ -2170,7 +1948,7 @@ export default function App() {
       title: "Aura One office - Academic",
       role: "Lead Student Architect",
       hook: "High-performance ecological commercial tower with a self-shading double skin.",
-      description: "An academic project in Mangaluru designing an office tower with a self-shading double-glass facade to reduce glare and solar heat.",
+      description: "Office tower design featuring a self-shading double-glass facade to mitigate solar heat.",
       icon: <Layers className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Academic Core",
@@ -2192,7 +1970,7 @@ export default function App() {
         ]
       },
       details: {
-        overview: "A premium office tower concept focused on worker wellness. The design replaces standard glass towers with stacked green open-air pocket terraces.",
+        overview: "An academic thesis proposing a high-performance, premium office tower with a core focus on ecological worker wellness. Rejecting the conventional monolithic glass tower, this design introduces a self-shading double-glass facade and integrates stacked, open-air green pocket terraces to naturally mitigate solar heat gain and reduce glare.",
         challenge: "Using simple glass facade layouts that bring in clean, uniform sunlight without making the spaces hot and blinding.",
         solution: "Configured adjustable glass louvers. These protected desks from harsh sun glare while dropping overall cooling costs by 24%.",
         images: [
@@ -2229,7 +2007,7 @@ export default function App() {
       title: "The Caffeine Lab",
       role: "Interior Designer",
       hook: "A sensory experience defined by materiality and light.",
-      description: "Modern brick-and-wood coffee house interior focusing on tactile warmth and natural skylight paths.",
+      description: "Modern brick-and-wood coffee house interior focused on tactile warmth and natural skylighting.",
       icon: <Cpu className="w-6 h-6 text-gray-400" />,
       color: "gray-400",
       metric: "Atmospheric",
@@ -2242,7 +2020,7 @@ export default function App() {
         outputs: "Completed coffee house environment, precise material spec sheets"
       },
       details: {
-        overview: "A boutique coffee house designed as an open urban hub between home and work.",
+        overview: "A boutique interior architecture project for a modern coffee house, designed to serve as an inviting urban hub bridging the gap between home and the workplace. The design emphasizes tactile warmth through a sophisticated palette of exposed brick and natural wood, dramatically enhanced by strategic skylighting and shadow play.",
         challenge: "Welcoming customers into a narrow commercial slot with limited front windows.",
         solution: "Installed deep skylights and mirror angles to pool natural sunlight. Used exposed bricks, restored wood, and brass accents to make the environment cozy.",
         images: [
@@ -2263,207 +2041,50 @@ export default function App() {
 
   const bimArsenal: ArsenalItem[] = [
     {
-      id: "BIM_01",
-      title: "The LLM Fabrication Engine",
+      id: "BIM_08",
+      title: "Agent-Based Space Planning & Structural Solver",
       role: "Computational Design Technologist",
-      hook: "Generative AI API integration with physical CNC digital fabrication.",
-      description: "A Python API bridge that connects Gemini live language models directly with CNC/laser machines, automatically generating flat cut sheets from simple prompts.",
-      icon: <Cpu className="w-6 h-6 text-neon-cyan" />,
-      color: "neon-cyan",
-      metric: "Generative API",
-      gifUrl: "https://lh3.googleusercontent.com/d/11sFI5d1bszNSdrgzSsTwC6NF1POaMzv1",
-      tags: ["Python API", "Grasshopper", "Digital Fabrication", "JSON"],
-      ledger: {
-        inputs: "3D CAD curves, Gemini chatbot session",
-        engine: "Python scripts and 3D modeling curves",
-        outputs: "Optimized building panel shapes, 2D laser-cut patterns"
-      },
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-llm/800/450?grayscale",
-        steps: [
-          "Connect the 3D design workspace to the Gemini API.",
-          "Receive panel sizes and spacing directly from AI chat logic.",
-          "Apply the dimensions to complex curved surfaces.",
-          "Flatten the 3D surfaces into ready-to-run 2D layouts."
-        ]
-      },
-      details: {
-        overview: "A direct workflow connecting AI chat with laser and CNC machinery, translating text requests into physical building shapes automatically.",
-        challenge: "Getting clean, precise, and buildable machine parts from unpredictable AI chat answers.",
-        solution: "Wrote custom Python parser scripts that force the AI model to output verified numbers. The script then builds, rotates, and flattens the pieces perfectly.",
-        images: [
-          "https://lh3.googleusercontent.com/d/12OMyHxHu87uIA87fmB3QJI-tMzHIi-yP",
-          "https://lh3.googleusercontent.com/d/1OcgT2rCg6SVvVPYAgdgDyYfOwD2FybaL",
-          "https://lh3.googleusercontent.com/d/1IUveGylPhmxyzS9J_zx8uIraB55FaoF2",
-          "https://lh3.googleusercontent.com/d/1dyxHja4d3dCKcpRFqSjX2eCH8K4ETuqW",
-          "https://lh3.googleusercontent.com/d/13DjBQVbIlicd12rixmddFV8VlEfY8nHy",
-          "https://lh3.googleusercontent.com/d/16ElVn3XPrb32whEeHODV-F-qKOKaHDKG",
-          "https://lh3.googleusercontent.com/d/1qVkvKXWhYvBXgHevFDyVhxJJ4YUvt28t"
-        ],
-        videoUrl: "https://drive.google.com/file/d/1fDtI938u2nmjRT0IjXtdQlvTGsM5LdAS/view?usp=sharing"
-      }
-    },
-    {
-      id: "BIM_02",
-      title: "The Generative Documentation Engine",
-      role: "BIM Automation Lead",
-      hook: "Bypassing Revit UI limitations to automate large-scale sheet generation.",
-      description: "An automated script that reads spreadsheet data to create hundreds of fully formatted building blueprints and sheets in Revit instantly.",
-      icon: <Code2 className="w-6 h-6 text-neon-cyan" />,
-      color: "neon-cyan",
-      metric: "Firm-Wide Scale",
-      content: <CodeSnippet />,
-      gifUrl: "https://lh3.googleusercontent.com/d/1SHXNrFYWzgw8f6hMYNzF4I9BQfdF5Xor",
-      tags: ["Revit API", "Dynamo", "Python"],
-      ledger: {
-        inputs: "3D Revit building models, Excel sheet list schedule",
-        engine: "C# and Python document scripts",
-        outputs: "Completed, labeled blueprint rolls, PDF/DWG files"
-      },
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-1/800/450?grayscale",
-        steps: [
-          "Select the building sections and title pages to bundle.",
-          "Run the layout spacing and image scaling script.",
-          "Sync file names, project titles, and issue dates automatically.",
-          "Export organized blueprints to standard formats."
-        ]
-      },
-      details: {
-        overview: "A business automation tool that builds complete client-ready printable sheets instantly from reference spreadsheets.",
-        challenge: "Creating thousands of drawing views and sheet lists manually consumes entire work weeks and breeds typos.",
-        solution: "Coded a Dynamo scripting tool which reads spreadsheet lists and maps them straight into Revit, handling scaling and label alignment in seconds.",
-        videoUrl: "https://drive.google.com/file/d/1qFTWKJWqE4zKuuKalI5X7WSVZlWd4bUl/view?usp=sharing"
-      }
-    },
-    {
-      id: "BIM_03",
-      title: "The 5D Data Harvester",
-      role: "VDC Data Engineer",
-      hook: "Scrubbing massive Revit models to extract exact facility parameters.",
-      description: "A smart script that combs massive virtual models to extract exact quantities, doors, and furniture items into formatted Excel budget logs.",
-      icon: <Database className="w-6 h-6 text-neon-orange" />,
-      color: "neon-orange",
-      metric: "100% Accuracy",
-      content: <DataTable />,
-      gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
-      tags: ["Dynamo", "Excel"],
-      ledger: {
-        inputs: "Combined architectural and plumbing BIM models",
-        engine: "Dynamo data harvesting scripts",
-        outputs: "Formatted build spreadsheets, parameter checklist tables"
-      },
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-2/800/450?grayscale",
-        steps: [
-          "Scan the entire building database for empty attributes.",
-          "Clean up wrong label formats using text search patterns.",
-          "Compare elements against standard price lists.",
-          "Export verified cost spreadsheets to the system."
-        ]
-      },
-      details: {
-        overview: "An automated data picker and builder that extracts exact material volumes and catalog items directly from building shapes.",
-        challenge: "Manually counting thousands of doors, pipes, and beams from 3D models typically leaves crucial items behind.",
-        solution: "Created Python data miners that scan the model's background catalog and write clean, structured checklists into excel for accurate cost estimates.",
-        videoUrl: "https://drive.google.com/file/d/1AiHanx4MA9nFEWaQotQpyHroxkHZcOuo/view?usp=sharing"
-      }
-    },
-    {
-      id: "BIM_04",
-      title: "The Clash Matrix Pipeline",
-      role: "BIM Coordinator",
-      hook: "Streamlining multidisciplinary model coordination.",
-      description: "An automated 3D collision checker that audits steel structures against pipes, flagging and color-coding coordination issues before they become on-site problems.",
-      icon: <Activity className="w-6 h-6 text-neon-cyan" />,
-      color: "neon-cyan",
-      metric: "Zero Errors",
-      gifUrl: "https://lh3.googleusercontent.com/d/1G_5-CuXFQuIf9mft1d6CauX29EmntKOE",
-      tags: ["Navisworks Manage", "Revit NWC Exporter"],
-      ledger: {
-        inputs: "Structural frame files, plumbing pipes files, rule matching checklists",
-        engine: "Clash check solvers and automated view filters",
-        outputs: "High-priority coordination lists, interactive error logs"
-      },
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-4/800/450?grayscale",
-        steps: [
-          "Load the structural frames and duct files together.",
-          "Filter out minor issues and focus on big structure blocks.",
-          "Color-code overlap spots so engineers can spot them fast.",
-          "Create interactive reports for the construction superintendent."
-        ]
-      },
-      details: {
-        overview: "A coordination system that prevents design clashes between building fields before crews begin pouring concrete.",
-        challenge: "Sifting through thousands of accidental overlap alerts between small wires and concrete panels.",
-        solution: "Established clear rule layers that group alerts by major systems (like main columns vs. water ducts), letting designers solve major layout conflicts first.",
-        reportUrl: "https://drive.google.com/file/d/1LetvlyhbGmUM-43bKoJR2OVGJQCNutWJ/view?usp=sharing",
-        videoUrl: "https://drive.google.com/file/d/18k015r2LpCsmPb_POW3cQBtCoSXsIQ27/view?usp=sharing"
-      }
-    },
-    {
-      id: "BIM_05",
-      title: "The MEP Component Automator",
-      role: "VDC Engineer",
-      hook: "Automated placement and configuration of MEP systems.",
-      description: "A digital routing helper that automatically positions pipes and vents in structural 3D models using simple size and distance rules.",
-      icon: <Cpu className="w-6 h-6 text-neon-orange" />,
-      color: "neon-orange",
-      metric: "Automation",
-      gifUrl: "https://lh3.googleusercontent.com/d/1dR5ajQdvGdR3YJOvScsAu_uteRfCiuVt",
-      tags: ["Vectorworks", "Marionette", "BIM Model"],
-      ledger: {
-        inputs: "Building walls and shapes, equipment Catalog database",
-        engine: "Automatic alignment algorithms",
-        outputs: "Positioned equipment models, synchronized size labels"
-      },
-      workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-5/800/450?grayscale",
-        steps: [
-          "Enter plumbing sizes and required safety clearances.",
-          "Run the automated routing algorithms.",
-          "Check and synchronize size labels across the entire file.",
-          "Export completed layout lists and verify with engineers."
-        ]
-      },
-      details: {
-        overview: "An automated design script that paths water pipes, duct systems, and electrical channels directly into empty building cavities.",
-        challenge: "Manually sizing and routing thousands of small items takes days and inevitably creates physical overlaps.",
-        solution: "Wrote automatic alignment routines which place and size every connection instantly while running immediate clearance reports.",
-        videoUrl: "https://drive.google.com/file/d/10JAIqWYDsFVJFuBhUsFo730E31IfPLFe/view?usp=sharing"
-      }
-    },
-    {
-      id: "BIM_06",
-      title: "The 4D Matrix (TimeLiner)",
-      role: "Simulation Lead",
-      hook: "Visualizing construction sequences over time.",
-      description: "A scheduling tool that links calendar dates with 3D models, creating a virtual preview of the building process to avoid site blockages.",
-      icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
+      hook: "Reframing architectural programming as a dynamic physics simulation.",
+      description: "Generative tool treating spaces as physical agents to auto-resolve adjacencies and structural grids.",
+      icon: <Cpu className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
-      metric: "4D Simulation",
-      gifUrl: "https://lh3.googleusercontent.com/d/1qpMsNkw8HaPhf97qubs7GEV1BkZKsydz",
-      tags: ["Navisworks Manage", "TimeLiner"],
+      metric: "Agentic AI",
+      gifUrl: "https://lh3.googleusercontent.com/d/1b3a1AWoEjz9P2K3TuKbwL8vXT3rAlGjW",
+      tags: ["Python", "Agent-Based Modeling", "Rhino 8", "Physics Simulation", "Generative Design"],
       ledger: {
-        inputs: "3D Revit building model, MS Project build schedule",
-        engine: "Timeline player and date linking rules",
-        outputs: "Day-by-day construction video, sequence log files"
+        inputs: "Irregular site boundaries, room lists, adjacency matrices, terrain mesh",
+        engine: "Rhino CPython 3 physics solver with multi-objective agent steerage",
+        outputs: "Grid-snapped rooms, spanning corridors, structural beam lattice, JSON BIM export"
       },
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-6/800/450?grayscale",
+        screenshotUrl: "https://picsum.photos/seed/workflow-agent-2/800/450?grayscale",
         steps: [
-          "Import the building schedule spreadsheet.",
-          "Link specific dates to individual columns and walls.",
-          "Color-code items by their stage (built, mock, active).",
-          "Play the animation to catch schedule conflicts early."
+          "Initialize spaces as physical agents governed by adjacency attraction and repulsion forces.",
+          "Apply environmental steering, damping reentrant corner trapping on concave boundaries.",
+          "Calculate circumscribed collision physics and snap centroids to structural sub-grids.",
+          "Stack levels dynamically, insert structural cores, and generate Minimum Spanning Tree corridors.",
+          "Export a structured JSON schema of rooms, beams, and columns directly into Revit via Dynamo."
         ]
       },
       details: {
-        overview: "An interactive video timeline that lets contractors watch the daily building progress virtually to coordinate crane and crew arrivals.",
-        challenge: "Catching schedule mistakes (such as pouring a floor before the supporting steel columns arrive) in flat spreadsheet cells is extremely difficult.",
-        solution: "Paired schedule spreadsheets directly with 3D building pieces to animate the full timeline, solving multi-million-dollar sequence mistakes in the office.",
-        videoUrl: "https://drive.google.com/file/d/1lEe6jypAKbT_Fe0CXXVDaV3yXgarNeeF/view?usp=sharing"
+        videoUrl: "https://drive.google.com/file/d/1Va-mCgkDqe9AiYcGr8YBxvUyJhi_dwi2/view?usp=sharing",
+        overview: "An experimental generative design engine that revolutionizes early-stage architectural programming by treating programmatic spaces as intelligent, physical agents. Operating as a dynamic physics simulation rather than a manual drafting task, it leverages multi-objective vectors to automatically resolve complex adjacency requirements, structural grids, and multi-storey stacking within highly constrained, non-convex site boundaries.",
+        challenge: "Geometric assumptions break on real-world lots: concavity traps agents, equivalent-area circular proxies fail for rectangular rooms, and unguided view-seeking forces pull rooms into narrow site pinch-points.",
+        solution: "Engineered local geometry probing to cull reflex vertices, implemented circumscribed half-diagonal collisions with grid-snapping, and mapped structural/corridor networks using Prim's algorithm for robust multi-storey generation.",
+        images: [
+          "https://lh3.googleusercontent.com/d/15PC8VWAy4JFodE0-KTaP30Ia9E1eTuYq",
+          "https://lh3.googleusercontent.com/d/1B7h-ILSYXZPvks0bRpi5gNrx4P4bDqAF",
+          "https://lh3.googleusercontent.com/d/1DtpG-KYGPcAip9_ur36zRRCqGrizYzIz",
+          "https://lh3.googleusercontent.com/d/1GiDevLRVc7XvQ4fM069fYI0Qnhn1fxTQ",
+          
+          
+          
+          
+          
+          "https://lh3.googleusercontent.com/d/1tD9Mn4t6fnxL_HhmlBBH8IUka-og-RJE",
+          "https://lh3.googleusercontent.com/d/1Tr8vZlSXrsEa7LiN4-Y3DNvBFq_n-hxY",
+          "https://lh3.googleusercontent.com/d/1vSOTIYB045RMebKu-dYVgODfRVHDBD4s"
+        ]
       }
     },
     {
@@ -2471,11 +2092,11 @@ export default function App() {
       title: "The Multi-Objective Eco-Parametric Solver",
       role: "Simulation Lead & Computational Designer",
       hook: "Single vs. Multi-Objective Generative Evolutionary Solvers",
-      description: "A smart research study contrasting simple automated design searchers (Galapagos) with complex multi-direction solvers (Wallacei) to find the best window shades for solar protection and material savings.",
+      description: "Research comparing genetic solvers (Galapagos vs. Wallacei) for optimizing solar window shades.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "Comparative",
-      gifUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
+      gifUrl: "https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN",
       tags: ["Galapagos", "Wallacei", "Ladybug", "Grasshopper", "Multi-Objective", "Pareto Front"],
       ledger: {
         inputs: "3D window curves, regional weather data files",
@@ -2483,7 +2104,7 @@ export default function App() {
         outputs: "Interactive balance graph, optimal shade designs"
       },
       workflow: {
-        screenshotUrl: "https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F",
+        screenshotUrl: "https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN",
         steps: [
           "Model basic shade shapes and configure weather data paths.",
           "Run single-goal search loop to find the single lightest shade.",
@@ -2492,7 +2113,7 @@ export default function App() {
         ]
       },
       details: {
-        overview: "A research project testing simple single-point optimization against multi-goal genetic search paths to design high-performance solar window grids.",
+        overview: "A rigorous computational research study contrasting simple automated design algorithms (Galapagos) against complex, multi-objective genetic solvers (Wallacei). The study focused on optimizing high-performance solar window shades, ultimately establishing a parallel solving methodology that successfully reduced structural weight while maximizing interior sun protection.",
         challenge: "Simple search tools often force you to combine random targets (like price and weight) into a single, confusing score, which hides smart options.",
         solution: "Set up a parallel multi-goal solver that tested and output a menu of 30+ balanced shade models. This reduced structural weight by 18% while keeping interiors beautifully shaded.",
         images: [
@@ -2521,50 +2142,44 @@ export default function App() {
       }
     },
     {
-      id: "BIM_08",
-      title: "Agent-Based Space Planning & Structural Solver",
+      id: "BIM_01",
+      title: "The LLM Fabrication Engine",
       role: "Computational Design Technologist",
-      hook: "Reframing architectural programming as a dynamic physics simulation.",
-      description: "An experimental generative tool that treats programmatic spaces as intelligent, physical agents. Automatically resolves complex adjacency rules, structural grids, and multi-storey stacking within non-convex sites.",
-      icon: <Cpu className="w-6 h-6 text-neon-blue" />,
-      color: "neon-blue",
-      metric: "Agentic AI",
-      gifUrl: "https://lh3.googleusercontent.com/d/1b3a1AWoEjz9P2K3TuKbwL8vXT3rAlGjW",
-      tags: ["Python", "Agent-Based Modeling", "Rhino 8", "Physics Simulation", "Generative Design"],
+      hook: "Generative AI API integration with physical CNC digital fabrication.",
+      description: "Python API bridge connecting Gemini models with CNC machines to generate cut sheets from prompts.",
+      icon: <Cpu className="w-6 h-6 text-neon-cyan" />,
+      color: "neon-cyan",
+      metric: "Generative API",
+      gifUrl: "https://lh3.googleusercontent.com/d/11sFI5d1bszNSdrgzSsTwC6NF1POaMzv1",
+      tags: ["Python API", "Grasshopper", "Digital Fabrication", "JSON"],
       ledger: {
-        inputs: "Irregular site boundaries, room lists, adjacency matrices, terrain mesh",
-        engine: "Rhino CPython 3 physics solver with multi-objective agent steerage",
-        outputs: "Grid-snapped rooms, spanning corridors, structural beam lattice, JSON BIM export"
+        inputs: "3D CAD curves, Gemini chatbot session",
+        engine: "Python scripts and 3D modeling curves",
+        outputs: "Optimized building panel shapes, 2D laser-cut patterns"
       },
       workflow: {
-        screenshotUrl: "https://picsum.photos/seed/workflow-agent-2/800/450?grayscale",
+        screenshotUrl: "https://picsum.photos/seed/workflow-llm/800/450?grayscale",
         steps: [
-          "Initialize spaces as physical agents governed by adjacency attraction and repulsion forces.",
-          "Apply environmental steering, damping reentrant corner trapping on concave boundaries.",
-          "Calculate circumscribed collision physics and snap centroids to structural sub-grids.",
-          "Stack levels dynamically, insert structural cores, and generate Minimum Spanning Tree corridors.",
-          "Export a structured JSON schema of rooms, beams, and columns directly into Revit via Dynamo."
+          "Connect the 3D design workspace to the Gemini API.",
+          "Receive panel sizes and spacing directly from AI chat logic.",
+          "Apply the dimensions to complex curved surfaces.",
+          "Flatten the 3D surfaces into ready-to-run 2D layouts."
         ]
       },
       details: {
-        videoUrl: "https://drive.google.com/file/d/1Va-mCgkDqe9AiYcGr8YBxvUyJhi_dwi2/view?usp=sharing",
-        overview: "An experimental generative design tool that reframes early-stage architectural programming and space planning as a dynamic physics simulation rather than a manual, trial-and-error drafting task. Given a site and a programmatic brief, it uses multi-objective vectors to automatically arrange spaces.",
-        challenge: "Geometric assumptions break on real-world lots: concavity traps agents, equivalent-area circular proxies fail for rectangular rooms, and unguided view-seeking forces pull rooms into narrow site pinch-points.",
-        solution: "Engineered local geometry probing to cull reflex vertices, implemented circumscribed half-diagonal collisions with grid-snapping, and mapped structural/corridor networks using Prim's algorithm for robust multi-storey generation.",
+        overview: "A cutting-edge digital fabrication workflow that establishes a direct API bridge connecting Gemini live language models with CNC and laser machinery. This pipeline translates natural language text requests directly into precise, physical architectural components, automatically unfolding and nesting the generated 3D surfaces into ready-to-cut 2D flat sheets.",
+        challenge: "Getting clean, precise, and buildable machine parts from unpredictable AI chat answers.",
+        solution: "Wrote custom Python parser scripts that force the AI model to output verified numbers. The script then builds, rotates, and flattens the pieces perfectly.",
         images: [
-          "https://lh3.googleusercontent.com/d/15PC8VWAy4JFodE0-KTaP30Ia9E1eTuYq",
-          "https://lh3.googleusercontent.com/d/1B7h-ILSYXZPvks0bRpi5gNrx4P4bDqAF",
-          "https://lh3.googleusercontent.com/d/1DtpG-KYGPcAip9_ur36zRRCqGrizYzIz",
-          "https://lh3.googleusercontent.com/d/1GiDevLRVc7XvQ4fM069fYI0Qnhn1fxTQ",
-          
-          
-          
-          
-          
-          "https://lh3.googleusercontent.com/d/1tD9Mn4t6fnxL_HhmlBBH8IUka-og-RJE",
-          "https://lh3.googleusercontent.com/d/1Tr8vZlSXrsEa7LiN4-Y3DNvBFq_n-hxY",
-          "https://lh3.googleusercontent.com/d/1vSOTIYB045RMebKu-dYVgODfRVHDBD4s"
-        ]
+          "https://lh3.googleusercontent.com/d/12OMyHxHu87uIA87fmB3QJI-tMzHIi-yP",
+          "https://lh3.googleusercontent.com/d/1OcgT2rCg6SVvVPYAgdgDyYfOwD2FybaL",
+          "https://lh3.googleusercontent.com/d/1IUveGylPhmxyzS9J_zx8uIraB55FaoF2",
+          "https://lh3.googleusercontent.com/d/1dyxHja4d3dCKcpRFqSjX2eCH8K4ETuqW",
+          "https://lh3.googleusercontent.com/d/13DjBQVbIlicd12rixmddFV8VlEfY8nHy",
+          "https://lh3.googleusercontent.com/d/16ElVn3XPrb32whEeHODV-F-qKOKaHDKG",
+          "https://lh3.googleusercontent.com/d/1qVkvKXWhYvBXgHevFDyVhxJJ4YUvt28t"
+        ],
+        videoUrl: "https://drive.google.com/file/d/1fDtI938u2nmjRT0IjXtdQlvTGsM5LdAS/view?usp=sharing"
       }
     },
     {
@@ -2572,7 +2187,7 @@ export default function App() {
       title: "Rhino-to-Revit API Interoperability Pipeline",
       role: "Workflow Automation & Computational Research",
       hook: "AI-driven topology serialization & real-time BIM compilation.",
-      description: "An automated serialization data bridge that streams high-fidelity topological coordinate matrices from Rhino design tools directly into Revit BIM environments, preserving full geometric intelligence at LOD 400.",
+      description: "Data bridge streaming high-fidelity topological coordinates from Rhino to Revit at LOD 400.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
       metric: "LOD 400 Mass",
@@ -2593,7 +2208,7 @@ export default function App() {
         ]
       },
       details: {
-        overview: "The project addresses a critical industry bottleneck: the loss of data integrity and parametric intelligence when translating complex geometries from Rhino into native BIM environments like Autodesk Revit.",
+        overview: "A highly specialized data-bridge solution addressing a critical AEC industry bottleneck: the persistent loss of parametric data integrity when migrating complex geometries from Rhino into Revit. By streaming lightweight, serialized topological coordinate matrices, this automated tool instantly redraws thousands of fully editable, native LOD 400 direct-shape elements without relying on heavy, broken meshes.",
         challenge: "Converting complex shapes typically results in heavy, broken 'dead' meshes or un-editable 3D blocks that cannot be annotated or scheduled.",
         solution: "Instead of converting full meshes, this script sends raw topological data. A custom Revit API listener reads these coordinate points and compiles 5,000 fully editable, native LOD 400 direct-shape elements in 45 seconds.",
         images: [
@@ -2620,6 +2235,169 @@ export default function App() {
             ["Downstream Utility", "Poor; requires manual scheduling and reconstruction", "Automated CNC Cut-List & Ready"]
           ]
         }
+      }
+    },
+    {
+      id: "BIM_02",
+      title: "The Generative Documentation Engine",
+      role: "BIM Automation Lead",
+      hook: "Bypassing Revit UI limitations to automate large-scale sheet generation.",
+      description: "Dynamo script that reads spreadsheets to instantly generate formatted blueprints and sheets in Revit.",
+      icon: <Code2 className="w-6 h-6 text-neon-cyan" />,
+      color: "neon-cyan",
+      metric: "Firm-Wide Scale",
+      content: <CodeSnippet />,
+      gifUrl: "https://lh3.googleusercontent.com/d/1SHXNrFYWzgw8f6hMYNzF4I9BQfdF5Xor",
+      tags: ["Revit API", "Dynamo", "Python"],
+      ledger: {
+        inputs: "3D Revit building models, Excel sheet list schedule",
+        engine: "C# and Python document scripts",
+        outputs: "Completed, labeled blueprint rolls, PDF/DWG files"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-1/800/450?grayscale",
+        steps: [
+          "Select the building sections and title pages to bundle.",
+          "Run the layout spacing and image scaling script.",
+          "Sync file names, project titles, and issue dates automatically.",
+          "Export organized blueprints to standard formats."
+        ]
+      },
+      details: {
+        overview: "A robust business automation utility that drastically accelerates architectural documentation. By reading structured spreadsheet data, this Dynamo-powered script instantly generates hundreds of fully formatted, client-ready blueprints and drawing sheets in Revit, effectively eliminating weeks of manual drafting and mitigating human error.",
+        challenge: "Creating thousands of drawing views and sheet lists manually consumes entire work weeks and breeds typos.",
+        solution: "Coded a Dynamo scripting tool which reads spreadsheet lists and maps them straight into Revit, handling scaling and label alignment in seconds.",
+        videoUrl: "https://drive.google.com/file/d/1qFTWKJWqE4zKuuKalI5X7WSVZlWd4bUl/view?usp=sharing"
+      }
+    },
+    {
+      id: "BIM_03",
+      title: "The 5D Data Harvester",
+      role: "VDC Data Engineer",
+      hook: "Scrubbing massive Revit models to extract exact facility parameters.",
+      description: "Data extraction script that pulls precise material quantities from 3D models into Excel logs.",
+      icon: <Database className="w-6 h-6 text-neon-orange" />,
+      color: "neon-orange",
+      metric: "100% Accuracy",
+      content: <DataTable />,
+      gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
+      tags: ["Dynamo", "Excel"],
+      ledger: {
+        inputs: "Combined architectural and plumbing BIM models",
+        engine: "Dynamo data harvesting scripts",
+        outputs: "Formatted build spreadsheets, parameter checklist tables"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-2/800/450?grayscale",
+        steps: [
+          "Scan the entire building database for empty attributes.",
+          "Clean up wrong label formats using text search patterns.",
+          "Compare elements against standard price lists.",
+          "Export verified cost spreadsheets to the system."
+        ]
+      },
+      details: {
+        overview: "An automated 5D BIM data-mining solution designed to extract exact material volumes, component counts, and catalog items directly from complex 3D building geometries. This Python-driven script actively scans the model's background database to compile structured, error-free Excel budget logs for highly accurate cost estimations.",
+        challenge: "Manually counting thousands of doors, pipes, and beams from 3D models typically leaves crucial items behind.",
+        solution: "Created Python data miners that scan the model's background catalog and write clean, structured checklists into excel for accurate cost estimates.",
+        videoUrl: "https://drive.google.com/file/d/1AiHanx4MA9nFEWaQotQpyHroxkHZcOuo/view?usp=sharing"
+      }
+    },
+    {
+      id: "BIM_05",
+      title: "The MEP Component Automator",
+      role: "VDC Engineer",
+      hook: "Automated placement and configuration of MEP systems.",
+      description: "Automated routing script that positions MEP pipes and vents using size and clearance rules.",
+      icon: <Cpu className="w-6 h-6 text-neon-orange" />,
+      color: "neon-orange",
+      metric: "Automation",
+      gifUrl: "https://lh3.googleusercontent.com/d/1dR5ajQdvGdR3YJOvScsAu_uteRfCiuVt",
+      tags: ["Vectorworks", "Marionette", "BIM Model"],
+      ledger: {
+        inputs: "Building walls and shapes, equipment Catalog database",
+        engine: "Automatic alignment algorithms",
+        outputs: "Positioned equipment models, synchronized size labels"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-5/800/450?grayscale",
+        steps: [
+          "Enter plumbing sizes and required safety clearances.",
+          "Run the automated routing algorithms.",
+          "Check and synchronize size labels across the entire file.",
+          "Export completed layout lists and verify with engineers."
+        ]
+      },
+      details: {
+        overview: "An automated MEP routing script that computationally paths water pipes, HVAC duct systems, and electrical channels directly into designated building cavities. Utilizing predefined size clearances and distancing rules, the script programmatically aligns and connects components, ensuring an optimized, collision-free internal utility network.",
+        challenge: "Manually sizing and routing thousands of small items takes days and inevitably creates physical overlaps.",
+        solution: "Wrote automatic alignment routines which place and size every connection instantly while running immediate clearance reports.",
+        videoUrl: "https://drive.google.com/file/d/10JAIqWYDsFVJFuBhUsFo730E31IfPLFe/view?usp=sharing"
+      }
+    },
+    {
+      id: "BIM_04",
+      title: "The Clash Matrix Pipeline",
+      role: "BIM Coordinator",
+      hook: "Streamlining multidisciplinary model coordination.",
+      description: "3D collision checker auditing steel structures against MEP elements to flag coordination issues.",
+      icon: <Activity className="w-6 h-6 text-neon-cyan" />,
+      color: "neon-cyan",
+      metric: "Zero Errors",
+      gifUrl: "https://lh3.googleusercontent.com/d/1G_5-CuXFQuIf9mft1d6CauX29EmntKOE",
+      tags: ["Navisworks Manage", "Revit NWC Exporter"],
+      ledger: {
+        inputs: "Structural frame files, plumbing pipes files, rule matching checklists",
+        engine: "Clash check solvers and automated view filters",
+        outputs: "High-priority coordination lists, interactive error logs"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-4/800/450?grayscale",
+        steps: [
+          "Load the structural frames and duct files together.",
+          "Filter out minor issues and focus on big structure blocks.",
+          "Color-code overlap spots so engineers can spot them fast.",
+          "Create interactive reports for the construction superintendent."
+        ]
+      },
+      details: {
+        overview: "A critical BIM coordination system engineered to prevent costly on-site design clashes between structural frames and MEP systems before concrete is poured. The automated 3D collision checker audits steel structures against pipes and ducts, intelligently grouping and color-coding spatial conflicts to prioritize major structural layout resolutions.",
+        challenge: "Sifting through thousands of accidental overlap alerts between small wires and concrete panels.",
+        solution: "Established clear rule layers that group alerts by major systems (like main columns vs. water ducts), letting designers solve major layout conflicts first.",
+        reportUrl: "https://drive.google.com/file/d/1LetvlyhbGmUM-43bKoJR2OVGJQCNutWJ/view?usp=sharing",
+        videoUrl: "https://drive.google.com/file/d/18k015r2LpCsmPb_POW3cQBtCoSXsIQ27/view?usp=sharing"
+      }
+    },
+    {
+      id: "BIM_06",
+      title: "The 4D Matrix (TimeLiner)",
+      role: "Simulation Lead",
+      hook: "Visualizing construction sequences over time.",
+      description: "4D scheduling tool linking timelines with 3D models to simulate and preview building phases.",
+      icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
+      color: "neon-blue",
+      metric: "4D Simulation",
+      gifUrl: "https://lh3.googleusercontent.com/d/1qpMsNkw8HaPhf97qubs7GEV1BkZKsydz",
+      tags: ["Navisworks Manage", "TimeLiner"],
+      ledger: {
+        inputs: "3D Revit building model, MS Project build schedule",
+        engine: "Timeline player and date linking rules",
+        outputs: "Day-by-day construction video, sequence log files"
+      },
+      workflow: {
+        screenshotUrl: "https://picsum.photos/seed/workflow-6/800/450?grayscale",
+        steps: [
+          "Import the building schedule spreadsheet.",
+          "Link specific dates to individual columns and walls.",
+          "Color-code items by their stage (built, mock, active).",
+          "Play the animation to catch schedule conflicts early."
+        ]
+      },
+      details: {
+        overview: "An advanced 4D scheduling tool that links traditional calendar milestones with 3D structural models to generate an interactive, virtual timeline. This dynamic simulation allows contractors and project managers to watch daily building progress virtually, effectively coordinating logistics, crane positioning, and crew arrivals to avoid site blockages.",
+        challenge: "Catching schedule mistakes (such as pouring a floor before the supporting steel columns arrive) in flat spreadsheet cells is extremely difficult.",
+        solution: "Paired schedule spreadsheets directly with 3D building pieces to animate the full timeline, solving multi-million-dollar sequence mistakes in the office.",
+        videoUrl: "https://drive.google.com/file/d/1lEe6jypAKbT_Fe0CXXVDaV3yXgarNeeF/view?usp=sharing"
       }
     }
   ];
@@ -4218,14 +3996,7 @@ export default function App() {
                       </div>
                     )}
 
-                    <div className="space-y-4">
-                      <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                        04_Description
-                      </div>
-                      <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
-                        {selectedArsenalItem.description}
-                      </p>
-                    </div>
+
 
                     {selectedArsenalItem.details && (
                       <>
@@ -4249,7 +4020,7 @@ export default function App() {
 
                         <div className="space-y-4">
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                            05_Project_Overview
+                            04_Project_Overview
                           </div>
                           <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
                             {selectedArsenalItem.details.overview}
@@ -4258,7 +4029,7 @@ export default function App() {
 
                         <div className="space-y-4">
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-orange"}`}>
-                            06_The_Challenge
+                            05_The_Challenge
                           </div>
                           <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
                             {selectedArsenalItem.details.challenge}
@@ -4267,7 +4038,7 @@ export default function App() {
 
                         <div className="space-y-4">
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                            07_The_Solution
+                            06_The_Solution
                           </div>
                           <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
                             {selectedArsenalItem.details.solution}
@@ -4277,7 +4048,7 @@ export default function App() {
                         {((selectedArsenalItem.details && (selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl || selectedArsenalItem.details.videoUrl)) || selectedArsenalItem.scriptUrl) && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                              08_Documentation
+                              07_Documentation
                             </div>
                             <div className="flex flex-wrap gap-4">
                                 {selectedArsenalItem.details?.reportUrl && (
@@ -4360,7 +4131,7 @@ export default function App() {
                         {selectedArsenalItem.details.comparisonTable && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                              08_Key_Metrics_&_Performance_Impact
+                              07_Key_Metrics_&_Performance_Impact
                             </div>
                             <div className="overflow-x-auto border brutalist-border bg-black/40">
                               <table className={`w-full text-left font-mono text-xs border-collapse ${isArch ? "border-gray-200" : "border-terminal-border/20"}`}>
@@ -4419,7 +4190,7 @@ export default function App() {
                     <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
                         <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
-                          03_Thesis_Presentation_Sheets
+                          08_Thesis_Presentation_Sheets
                         </div>
                         
                         <a
@@ -4456,7 +4227,7 @@ export default function App() {
                         <iframe
                           src={embedSrc}
                           className="w-full h-full border-0"
-                          title="Karunya Hospice Thesis Sheets Viewer Layout"
+                          title="Karunya Hospice and Palliative Care Center Thesis Sheets Viewer Layout"
                           allow="autoplay"
                         ></iframe>
                       </div>
