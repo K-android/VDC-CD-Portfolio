@@ -59,7 +59,7 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
     { name: "Autodesk Revit", category: "Modeling" },
     { name: "Navisworks Manage", category: "Coordination" },
     { name: "Dynamo / Python", category: "Automation" },
-    { name: "PowerBI / SQL", category: "Data" },
+    { name: "Excel / SQL", category: "Data" },
     { name: "Rhino / Grasshopper", category: "Computational" },
     { name: "ISO 19650 Standards", category: "Management" },
   ];
@@ -1138,7 +1138,7 @@ const HeroTerminal = () => {
     "SYNCING_COBIE_METADATA",
     "GENERATING_AUTOMATION_NODES",
     "VALIDATING_LOD_400_GEOMETRY",
-    "PUSHING_DATA_TO_POWERBI",
+    "PUSHING_DATA_TO_EXCEL",
     "CALCULATING_VOLUME_M3",
     "DETECTION_LATENCY: 12ms",
     "SYSTEM_STATUS: NOMINAL"
@@ -3599,12 +3599,12 @@ export default function App() {
                       <button 
                         type="submit"
                         disabled={isSending}
-                        className={`w-full py-3 border font-mono text-[10px] uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 ${
+                        className={`w-full py-3 border font-mono text-[10px] uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 ${
                           isSending ? "opacity-50 cursor-not-allowed" : ""
                         } ${
                           isArch 
-                          ? "bg-black text-white hover:bg-gray-800" 
-                          : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan hover:text-black"
+                           ? "bg-black text-white hover:bg-gray-800 hover:shadow-lg hover:shadow-black/20" 
+                           : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,243,255,0.4)]"
                         }`}
                       >
                         {isSending ? (

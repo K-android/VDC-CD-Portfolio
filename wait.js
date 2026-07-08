@@ -1,1 +1,1 @@
-console.log("wait");
+setTimeout(() => console.log("Done"), 500);
