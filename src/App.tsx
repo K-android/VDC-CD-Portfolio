@@ -32,7 +32,13 @@ import {
   Globe,
   Award,
   ExternalLink,
-  ArrowUp
+  ArrowUp,
+  Component,
+  Camera,
+  Crosshair,
+  Network,
+  Hexagon,
+  Code
 } from "lucide-react";
 
 import { AECWebAppsCabinet } from "./components/AECWebAppsCabinet.tsx";
@@ -3695,12 +3701,39 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills</div>
-                    <div className={`text-[10px] space-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
-                      <div>• BIM: Revit, Navisworks, Dynamo, Python</div>
-                      <div>• Design: Rhino, Grasshopper, D5 Render, AI Imagery</div>
-                      <div>• VDC: Clash Detection, ISO 19650, 5D Data Harvesting</div>
+                  <div className="space-y-4 col-span-1 md:col-span-2">
+                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills Matrix</div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Layers className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>BIM Modeling</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Revit, Navisworks, Vectorworks</span>
+                      </div>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Terminal className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Automation</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Python, Dynamo, Revit API</span>
+                      </div>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Hexagon className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Computational</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Rhino, Grasshopper, Wallacei</span>
+                      </div>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Database className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>VDC & Data</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>ISO 19650, 5D Harvesting</span>
+                      </div>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Camera className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Visualization</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>D5 Render, Enscape, AI Imagery</span>
+                      </div>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                         <Code className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Web Dev</span>
+                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>React, TypeScript, Tailwind</span>
+                      </div>
                     </div>
                   </div>
 
