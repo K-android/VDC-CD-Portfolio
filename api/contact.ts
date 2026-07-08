@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 import { Request, Response } from "express";
 
 export default async function handler(req: Request, res: Response) {
-  // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
@@ -13,26 +12,26 @@ export default async function handler(req: Request, res: Response) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  // SMTP Configuration from Environment Variables
-  let smtpHost = process.env.SMTP_HOST;
+  let smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
   if (smtpHost && (smtpHost === "://gmail.com" || smtpHost.includes("gmail.com"))) {
     smtpHost = "smtp.gmail.com";
   }
-  const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+  const smtpPort = 465; // Force 465
   const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-  const receiverEmail = process.env.RECEIVER_EMAIL || smtpUser;
+  const smtpPass = process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : undefined;
+  
+  const receiverEmail = process.env.RECEIVER_EMAIL || "karthikraj.v.nadar@gmail.com";
 
   if (!smtpHost || !smtpUser || !smtpPass) {
-    console.warn("SMTP configuration is missing in environment variables. Mocking email send success for demonstration.");
-    return res.json({ success: true, message: "Mock message sent successfully (SMTP not configured)" });
+    console.error("SMTP configuration is missing in environment variables");
+    return res.status(500).json({ error: "Server configuration error. Please check SMTP settings." });
   }
 
   try {
     const transporter = nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
-      secure: smtpPort === 465,
+      secure: true,
       auth: {
         user: smtpUser,
         pass: smtpPass,
@@ -58,8 +57,6 @@ export default async function handler(req: Request, res: Response) {
     return res.json({ success: true, message: "Message sent successfully" });
   } catch (error: any) {
     console.error("Error sending email:", error);
-    // Return success to the client even if email sending failed
-    // This is useful for demo/preview environments where SMTP is unconfigured or blocked
-    return res.json({ success: true, message: "Message sent successfully (mocked due to SMTP failure)" });
+    return res.status(500).json({ error: "Failed to send message: " + error.message });
   }
 }
