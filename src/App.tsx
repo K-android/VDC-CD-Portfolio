@@ -2890,7 +2890,7 @@ export default function App() {
                 <div className="flex-1 bg-[#0c0f12]"></div>
                 <div className="flex-1 bg-gray-50"></div>
               </div>
-              <span className="relative z-10 text-[9px] tracking-[0.2em] font-mono text-gray-400 mix-blend-difference">OR</span>
+              <span className="relative z-10 text-[9px] tracking-[0.2em] ml-[0.2em] font-mono text-gray-400 mix-blend-difference">OR</span>
             </div>
           </div>
 
@@ -2898,7 +2898,7 @@ export default function App() {
           <div 
             onMouseEnter={() => setHoveredSide('left')}
             onMouseLeave={() => setHoveredSide(null)}
-            className={`h-[50dvh] md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
+            className={`flex-1 md:flex-none md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
               hoveredSide === 'left' ? 'md:w-[54%] bg-[#06080a]' : hoveredSide === 'right' ? 'md:w-[46%] opacity-40 bg-black' : 'md:w-[50%] bg-[#0c0f12]'
             }`}
           >
@@ -2950,7 +2950,7 @@ export default function App() {
           <div 
             onMouseEnter={() => setHoveredSide('right')}
             onMouseLeave={() => setHoveredSide(null)}
-            className={`h-[50dvh] md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
+            className={`flex-1 md:flex-none md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
               hoveredSide === 'right' ? 'md:w-[54%] bg-white' : hoveredSide === 'left' ? 'md:w-[46%] opacity-40 bg-gray-50' : 'md:w-[50%] bg-gray-50'
             }`}
           >
