@@ -2906,7 +2906,7 @@ export default function App() {
       <header className={`fixed top-0 w-full z-[60] backdrop-blur-md border-b px-4 md:px-6 py-3 md:py-3.5 flex justify-between items-center transition-all duration-700 ${isHeaderArch ? "bg-white/80 border-gray-100/80" : "bg-terminal-bg/80 border-terminal-border"}`}>
         <div className="flex items-center gap-3 md:gap-4">
           <div className="flex items-center gap-2">
-            <Terminal className={`w-4 h-4 md:w-5 md:h-5 ${isHeaderArch ? "text-gray-400" : "text-neon-cyan"}`} />
+            <Terminal className={`w-5 h-5 md:w-5 md:h-5 ${isHeaderArch ? "text-gray-400" : "text-neon-cyan"}`} />
             <span className={`font-mono font-semibold tracking-tighter text-xs md:text-sm transition-colors duration-700 ${isHeaderArch ? "text-black" : "text-white"}`}>KARTHIKRAJ_NADAR</span>
           </div>
           
@@ -3652,8 +3652,8 @@ export default function App() {
               
               <div className="space-y-8">
                 <div className="space-y-2">
-                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>About</div>
-                  <div className={`text-xs ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                  <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>About</div>
+                  <div className={`text-sm leading-relaxed ${isArch ? "text-gray-600" : "text-gray-400"}`}>
                     {isArch 
                       ? "Karthikraj Nadar. Computational Designer & Automation Specialist." 
                       : "BIM/VDC & ISO 19650. Computational Design. Dynamo • Python."}
@@ -3661,7 +3661,7 @@ export default function App() {
                 </div>
                 
                 <div className="space-y-2">
-                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Certification</div>
+                  <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Certification</div>
                   <div className={`p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/30 bg-neon-cyan/5"}`}>
                     <div className="flex items-start gap-4">
                       <div className={`w-12 h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-neon-cyan/50 bg-black"}`}>
@@ -3675,9 +3675,9 @@ export default function App() {
                         />
                       </div>
                       <div>
-                        <div className={`text-xs ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>ISO 19650 EXPERT - LEVEL 3</div>
-                        <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Information Manager Certification</div>
-                        <div className="text-[10px] text-gray-400 mt-2 leading-relaxed">
+                        <div className={`text-sm ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>ISO 19650 EXPERT - LEVEL 3</div>
+                        <div className="text-xs text-gray-500 mt-1 uppercase tracking-wider">Information Manager Certification</div>
+                        <div className="text-xs text-gray-400 mt-2 leading-relaxed">
                           Verified expertise in global digital delivery standards, Common Data Environments (CDE), and information management protocols for large-scale infrastructure.
                         </div>
                       </div>
@@ -3686,60 +3686,60 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Contact</div>
+                  <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Contact</div>
                   <div className="flex flex-col sm:flex-row flex-wrap gap-4 md:gap-6">
-                    <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
-                      <Mail className="w-4 h-4" /> karthikraj.v.nadar@gmail.com
+                    <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                      <Mail className="w-5 h-5" /> karthikraj.v.nadar@gmail.com
                     </a>
-                    <div className={`flex items-center gap-2 transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300"}`}>
-                      <Phone className="w-4 h-4" /> 8779228622
+                    <div className={`flex items-center gap-2 transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300"}`}>
+                      <Phone className="w-5 h-5" /> 8779228622
                     </div>
-                    <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-xs ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
-                      <Linkedin className="w-4 h-4" /> linkedin.com/in/karthikraj-nadar-07083526a
+                    <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                      <Linkedin className="w-5 h-5" /> linkedin.com/in/karthikraj-nadar-07083526a
                     </a>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-4 col-span-1 md:col-span-2">
-                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills Matrix</div>
+                    <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills Matrix</div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Layers className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>BIM Modeling</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Revit, Navisworks, Vectorworks</span>
+                         <Layers className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>BIM Modeling</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Revit, Navisworks, Vectorworks</span>
                       </div>
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Terminal className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Automation</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Python, Dynamo, Revit API</span>
+                         <Terminal className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Automation</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Python, Dynamo, Revit API</span>
                       </div>
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Hexagon className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Computational</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>Rhino, Grasshopper, Wallacei</span>
+                         <Hexagon className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Computational</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Rhino, Grasshopper, Wallacei</span>
                       </div>
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Database className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>VDC & Data</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>ISO 19650, 5D Harvesting</span>
+                         <Database className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>VDC & Data</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>ISO 19650, 5D Harvesting</span>
                       </div>
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Camera className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Visualization</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>D5 Render, Enscape, AI Imagery</span>
+                         <Camera className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Visualization</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>D5 Render, Enscape, AI Imagery</span>
                       </div>
                       <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Code className={`w-4 h-4 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-[10px] font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Web Dev</span>
-                         <span className={`text-[9px] ${isArch ? "text-gray-500" : "text-gray-500"}`}>React, TypeScript, Tailwind</span>
+                         <Code className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Web Dev</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>React, TypeScript, Tailwind</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Languages</div>
-                    <div className={`text-[10px] flex flex-wrap gap-x-4 gap-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                    <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Languages</div>
+                    <div className={`text-sm flex flex-wrap gap-x-4 gap-y-2 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
                       <span>English [Full]</span>
                       <span>Hindi [Native]</span>
                       <span>Tamil [Native]</span>
@@ -3750,8 +3750,8 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className={`text-[10px] uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Achievements</div>
-                  <div className={`text-[10px] space-y-1 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
+                  <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Achievements</div>
+                  <div className={`text-sm space-y-2 ${isArch ? "text-gray-600" : "text-gray-400"}`}>
                     <div>• Grand Winner | Solar Decathlon India (2024–2025)</div>
                     <div>• Citation | 66th Annual NASA Design Competition</div>
                     <div>• ISO 19650 Information Management Expert</div>
@@ -3867,10 +3867,10 @@ export default function App() {
                     <Github className="w-4 h-4" />
                   </a>
                   <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
-                    <Linkedin className="w-4 h-4" />
+                    <Linkedin className="w-5 h-5" />
                   </a>
                   <a href="mailto:karthikraj.v.nadar@gmail.com" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-5 h-5" />
                   </a>
                 </div>
 
