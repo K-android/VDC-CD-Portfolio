@@ -4022,7 +4022,7 @@ export default function App() {
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                             04_Project_Overview
                           </div>
-                          <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
+                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
                             {selectedArsenalItem.details.overview}
                           </p>
                         </div>
@@ -4031,7 +4031,7 @@ export default function App() {
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-orange"}`}>
                             05_The_Challenge
                           </div>
-                          <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
+                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
                             {selectedArsenalItem.details.challenge}
                           </p>
                         </div>
@@ -4040,7 +4040,7 @@ export default function App() {
                           <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
                             06_The_Solution
                           </div>
-                          <p className={`text-sm leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
+                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
                             {selectedArsenalItem.details.solution}
                           </p>
                         </div>

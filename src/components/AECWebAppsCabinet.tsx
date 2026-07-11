@@ -19,7 +19,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { AECWorkflowHub } from "./AECWorkflowHub.tsx";
 
 export const AECWebAppsCabinet: React.FC = () => {
-  const [selectedSandbox, setSelectedSandbox] = useState<boolean>(false);
   const [currentTab1, setCurrentTab1] = useState<"desc" | "features" | "process">("desc");
   const [currentTab2, setCurrentTab2] = useState<"desc" | "features" | "process">("desc");
   const [currentTab3, setCurrentTab3] = useState<"desc" | "features" | "process">("desc");
@@ -232,13 +231,10 @@ export const AECWebAppsCabinet: React.FC = () => {
 
             {/* Glowing Interactive Portal & Vercel Launcher Buttons */}
             <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
-              <button
-                onClick={() => setSelectedSandbox(true)}
-                className="w-full md:w-auto font-mono text-[10.5px] px-3.5 py-2 hover:bg-neutral-900 border border-terminal-border/30 text-gray-400 hover:text-white rounded font-medium transition-all flex items-center justify-center gap-1.5 active:scale-95 text-left"
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>Try Interactive Sandbox</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-neon-orange animate-pulse" />
+                <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest">Status: Production Live</span>
+              </div>
               <a
                 href="https://aec-auto-hub.vercel.app/"
                 target="_blank"
@@ -616,52 +612,7 @@ export const AECWebAppsCabinet: React.FC = () => {
 
       </div>
 
-      {/* FULL PREVIEWS MODAL (INTERACTIVE SANDBOX FOR AEC WORKFLOW HUB) */}
-      <AnimatePresence>
-        {selectedSandbox && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/95 backdrop-blur-md z-[50] flex flex-col p-4 md:p-8"
-          >
-            <div className="w-full max-w-6xl mx-auto flex flex-col h-full bg-[#05080a] border border-terminal-border/40 rounded-lg overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
-              {/* Close Header */}
-              <div className="p-4 border-b border-terminal-border/20 bg-terminal-header flex justify-between items-center bg-black/40">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
-                  <span className="font-mono text-xs text-neon-orange font-bold uppercase tracking-widest">
-                    Interactive AEC Automation Workspace / Sandbox Environment
-                  </span>
-                </div>
-                <button 
-                  onClick={() => setSelectedSandbox(false)}
-                  className="font-mono text-xs px-3 py-1 bg-red-950/20 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all rounded"
-                >
-                  [ESC] Exit Sandbox
-                </button>
-              </div>
-
-              {/* Scrollable Workspace Wrapper */}
-              <div className="flex-grow overflow-y-auto p-4 md:p-8">
-                <div className="text-left max-w-5xl mx-auto space-y-6">
-                  <div>
-                    <h3 className="text-lg font-mono text-white tracking-wide uppercase flex items-center gap-2">
-                      <FolderOpen className="w-5 h-5 text-neon-orange" />
-                      Active Sandbox Console // AI-driven AEC Workflow Hub
-                    </h3>
-                    <p className="text-xs text-gray-400 font-sans mt-1">
-                      Execute draft workflows, isolate parameter indices, and command the generative AI Gemini Advisor directly on live schemas below.
-                    </p>
-                  </div>
-                  
-                  <AECWorkflowHub />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      
     </div>
   );
 };
