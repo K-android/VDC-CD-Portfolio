@@ -100,7 +100,7 @@ export const AECWebAppsCabinet: React.FC = () => {
 
 
             {/* Actual Google Drive Hero Image */}
-            <img 
+            <img loading="lazy" 
               src="https://drive.google.com/thumbnail?id=1uD54l3GD2t-ul_kan00c_rV124uxlOa8&sz=w1000"
               alt="AEC Automator Hub Preview"
               referrerPolicy="no-referrer"
@@ -287,7 +287,7 @@ export const AECWebAppsCabinet: React.FC = () => {
 
 
             {/* Actual Google Drive Hero Image */}
-            <img 
+            <img loading="lazy" 
               src="https://drive.google.com/thumbnail?id=13Rvm3c9bgRm3vDWsufo4b4pvnWvIoCDo&sz=w1000"
               alt="BIM Metric Portal Preview"
               referrerPolicy="no-referrer"
@@ -466,7 +466,7 @@ export const AECWebAppsCabinet: React.FC = () => {
           {/* Hero Image Column */}
           <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
-            <img 
+            <img loading="lazy" 
               src="https://lh3.googleusercontent.com/d/1eQ88zcWYH9cjK0eHaem8THzK3w1_o83Y"
               alt="Rhino Sync Web Console Preview"
               referrerPolicy="no-referrer"

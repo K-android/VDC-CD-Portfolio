@@ -41,7 +41,6 @@ import {
   Code
 } from "lucide-react";
 
-import { AECWebAppsCabinet } from "./components/AECWebAppsCabinet.tsx";
 
 import { playVDCHoverSound, playVDCClickSound } from './utils/audio';
 
@@ -900,7 +899,7 @@ const WorkloadGif = ({
               allowFullScreen
             />
           ) : (
-            <img 
+            <img loading="lazy" 
               src={staticUrl} 
               alt={alt}
               referrerPolicy="no-referrer"
@@ -945,7 +944,7 @@ const WorkloadGif = ({
       onMouseLeave={() => setIsInternalHovered(false)}
     >
       {isVideo ? (
-        <img 
+        <img loading="lazy" 
           src={staticUrl} 
           alt={alt}
           referrerPolicy="no-referrer"
@@ -954,7 +953,7 @@ const WorkloadGif = ({
           className={className}
         />
       ) : active ? (
-        <img 
+        <img loading="lazy" 
           src={src} 
           alt={alt}
           referrerPolicy="no-referrer"
@@ -963,7 +962,7 @@ const WorkloadGif = ({
           className={className}
         />
       ) : (
-        <img 
+        <img loading="lazy" 
           src={staticUrl} 
           alt={alt} 
           className={className} 
@@ -1323,6 +1322,10 @@ const ParallaxSection = ({ children, id, index, setActiveSection }: { children: 
   );
 };
 
+
+const VDCSection = React.lazy(() => import('./components/VDCSection'));
+const ArchSection = React.lazy(() => import('./components/ArchSection'));
+
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [isAppsActive, setIsAppsActive] = useState(false);
@@ -1332,21 +1335,9 @@ export default function App() {
   const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
   const [expandedGrid, setExpandedGrid] = useState<{ title: string; images: string[] } | null>(null);
 
-  const vdcTimelineRef = useRef<HTMLDivElement>(null);
-  const archTimelineRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress: vdcScroll } = useScroll({
-    target: vdcTimelineRef,
-    offset: ["start center", "end center"]
-  });
 
-  const { scrollYProgress: archScroll } = useScroll({
-    target: archTimelineRef,
-    offset: ["start center", "end center"]
-  });
 
-  const vdcScaleY = useSpring(vdcScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  const archScaleY = useSpring(archScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const [mode, setMode] = useState<'bim' | 'arch'>('bim');
   const [isLoading, setIsLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -2998,412 +2989,24 @@ export default function App() {
             </div>
           </div>
         </section>
-
-        {/* STAGE 2: VDC & Systems Architecture Continuous Section */}
-        <section id="vdc-section" className="bg-[#0c0f12] text-gray-300 font-sans w-full py-20 px-6 md:px-12 relative">
-          <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
-            
-            {/* VDC Sub Hero Header Grid */}
-            <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center">
-              <div className="flex flex-col text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 w-fit whitespace-nowrap">
-                  <Activity className="w-3 h-3 shrink-0" /> <span className="pr-1 font-mono">System Online: Data Engineering</span>
-                </div>
-                
-                <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-neon-cyan">
-                  KARTHIKRAJ NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
-                </div>
-                
-                <h1 className="text-2xl md:text-5xl font-mono tracking-tighter leading-[1.1] mb-4 text-white uppercase font-bold">
-                  Automating <span className="text-neon-cyan animate-pulse">AEC workflows</span> and managing <span className="text-neon-orange">ISO 19650</span> facility data.
-                </h1>
-                
-                <p className="text-xs md:text-sm font-mono mb-6 max-w-xl text-gray-400">
-                  Building automated workflows to expedite projects. Using reliable data models to ensure simple and scalable delivery.
-                </p>
-                
-                <div className="mt-4">
-                  <div className="font-mono text-[9px] text-neon-cyan/40 mb-2 tracking-[0.2em] uppercase">
-                    [STACK_COMPONENTS]
-                  </div>
-                  <SoftwareStack isArch={false} />
-                </div>
-                
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                  <button 
-                    onClick={() => {
-                      const el = document.getElementById("vdc-workflows");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-neon-cyan text-black hover:bg-white"
-                  >
-                    Initialize Workflows
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-
-                  <a 
-                    href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group px-6 py-3 font-mono font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-transparent text-neon-cyan hover:bg-neon-cyan/10 border border-neon-cyan hover:shadow-[0_0_20px_rgba(0,242,255,0.2)]"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download Resume
-                  </a>
-                </div>
-              </div>
-
-              {/* Hero Image Component for VDC */}
-              <div className="relative aspect-video lg:aspect-square border border-terminal-border/40 bg-black overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[8px] text-neon-cyan/20 text-right leading-tight z-0">
-                  BIM_DATA_STREAM_8829<br/>
-                  COORD_SYS: WGS84<br/>
-                  LOD: 400
-                </div>
-                <div className="absolute inset-x-0 top-1/2 h-[1px] bg-neon-cyan/20 shadow-[0_0_15px_rgba(0,242,255,0.3)] animate-scan z-20 pointer-events-none" />
-                
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                  <div className="relative w-full h-full group">
-                    <img 
-                      src="https://lh3.googleusercontent.com/d/1KWO0JcGakYmARq4aDTMo6BG7CoK1Kt33" 
-                      alt="BIM Hero GIF"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
-                    />
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-neon-cyan/60 z-30">
-                  [CORE_VD_v2.4_ENGINE]
-                </div>
-              </div>
-            </div>
-
-            {/* VDC WORKFLOWS / PORTFOLIO */}
-            <div id="vdc-workflows" className="pt-16 border-t border-terminal-border/15 scroll-mt-24">
-              <div className="mb-12">
-                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-cyan">
-                  Section_01 // Automation_Stack
-                </h2>
-                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-cyan/80 font-bold">
-                  <span className="opacity-40">{"["}</span> ACTIVE_WORKFLOWS <span className="opacity-40">{"]"}</span>
-                </h3>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-              {bimArsenal.map((item) => (<ProjectCard key={`bim-${item.id}`} 
-                  item={item} 
-                  isArch={false} 
-                  onClick={() => setSelectedArsenalItem(item)} 
-                  onShowScript={(scriptUrl: string, title: string) => {
-                    setExpandedMedia({
-                      src: scriptUrl,
-                      isVideo: false,
-                      googleDriveId: getDriveId(scriptUrl),
-                      alt: `Script: ${title}`
-                    });
-                  }}
-                  onShowVideo={(gifUrl: string, title: string) => {
-                    setExpandedMedia({
-                      src: gifUrl,
-                      isVideo: true,
-                      googleDriveId: getDriveId(gifUrl),
-                      alt: `Video: ${title}`
-                    });
-                  }}
-                />
-              ))}
-            </div>
-
-          {/* VDC WEB APPS / TOOLS */}
-          <div id="vdc-apps" className="pt-16 border-t border-terminal-border/15 scroll-mt-24">
-            <div className="mb-8">
-              <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-orange">
-                Section_02 // Custom_Web_Applications_&_Web_Tools
-              </h2>
-              <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-orange/80 font-bold">
-                <span className="opacity-40">{"["}</span> APPS_&_WEB_TOOLS <span className="opacity-40">{"]"}</span>
-              </h3>
-            </div>
-
-            <AECWebAppsCabinet />
-          </div>
-
-          {/* VDC CAREER HISTORY */}
-          <div className="pt-16 border-t border-terminal-border/15">
-            <div className="mb-12 text-center">
-              <h2 className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] mb-3 text-neon-blue">
-                Section_03 // Professional_Journey
-              </h2>
-              <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-neon-blue font-bold">
-                <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>
-              </h3>
-            </div>
-
-            <div ref={vdcTimelineRef} className="max-w-3xl mx-auto relative px-4 md:px-0">
-              {/* Background Line */}
-              <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-terminal-border/20" />
-              {/* Glowing Interactive Scroll Line */}
-              <motion.div 
-                style={{ scaleY: vdcScaleY }} 
-                className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gradient-to-b from-neon-cyan via-neon-blue to-neon-orange origin-top shadow-[0_0_10px_#00f2ff,0_0_20px_#00f2ff]" 
-              />
-              <div className="space-y-8 md:space-y-12 font-mono">
-                {experience.map((exp, idx) => (
-                  <div 
-                    key={`exp-terminal-${idx}`} 
-                    className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-                  >
-                    <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-black border-neon-cyan shadow-[0_0_10px_rgba(0,255,255,0.5)] z-10" />
-                    <div className={`pl-10 md:pl-0 md:w-1/2 ${idx % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
-                      <span className="text-[10px] md:text-xs font-mono mb-1 block text-neon-orange">
-                        {exp.year}
-                      </span>
-                      <h4 className="text-base md:text-lg font-mono font-medium mb-1 text-white">
-                        {exp.company}
-                      </h4>
-                      <div className="text-[10px] md:text-xs font-mono mb-2 md:mb-3 text-neon-blue">
-                        {exp.role}
-                      </div>
-                      <p className="text-xs md:text-sm leading-relaxed text-gray-400 font-mono">
-                        {exp.description}
-                      </p>
-                    </div>
-                    <div className="hidden md:block md:w-1/2" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          </div>
-        </section>
-
-        {/* STAGE 3: Massive Transition Gate Banner */}
-        <div id="transition-banner" className="w-full min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center relative overflow-hidden bg-gradient-to-b from-[#0c0f12] via-[#0d1013] to-white border-b border-gray-100 py-16 px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="text-center z-10 max-w-2xl w-full px-6 py-10 md:py-12 bg-[#0c0f12]/80 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]"
-          >
-            <div className="inline-block font-mono text-[9px] md:text-xs text-center text-neon-orange tracking-[0.4em] uppercase mb-5 font-bold border border-neon-orange/25 bg-neon-orange/5 px-3.5 py-1 rounded-full">
-              --- MULTI-DISCIPLINARY COUPLING ---
-            </div>
-            
-            <h2 className="text-3xl md:text-5xl font-medium text-white uppercase tracking-wider mb-5 leading-tight font-serif italic">
-              ARCHITECTURAL DESIGN &amp; <br />
-              <span className="font-sans font-light text-neon-cyan tracking-widest block mt-2 text-2xl md:text-4xl not-italic">PROJECT EXECUTION</span>
-            </h2>
-            
-            <p className="text-xs md:text-sm font-mono text-gray-300 max-w-lg mx-auto leading-relaxed">
-              Where computation meets physical space. Connecting the power of automated drawings with sensible, real-world building design.
-            </p>
-            
-            <div className="mt-8 flex justify-center gap-2 items-center font-sans animate-bounce">
-              <div className="w-8 h-[1px] bg-white/20" />
-              <span className="text-[9px] font-mono tracking-widest text-[#00f2ff] font-bold">SCROLL DOWN TO STUDY</span>
-              <div className="w-8 h-[1px] bg-white/20" />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* STAGE 4: Architectural Design Studio Continuous Section */}
-        <section id="arch-section" className="bg-white text-gray-900 font-serif w-full py-20 px-6 md:px-12 border-b border-gray-100 relative">
-          <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
-            
-            {/* Arch Sub-Hero Header Grid */}
-            <div className="grid lg:grid-cols-2 gap-12 md:gap-16 items-center font-serif">
-              <div className="flex flex-col text-left font-serif">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gray-200 bg-gray-50 text-gray-500 text-[8px] md:text-[10px] font-mono uppercase tracking-widest mb-4 w-fit whitespace-nowrap">
-                  <Activity className="w-3 h-3 shrink-0 animate-pulse" /> <span className="pr-1 font-mono">Portfolio: Architectural Design</span>
-                </div>
-                
-                <div className="mb-2 font-mono text-[10px] md:text-sm uppercase tracking-widest text-gray-400">
-                  Karthikraj Nadar, Architect &amp; Spatial Visionary.
-                </div>
-                
-                <h1 className="text-2xl md:text-5xl font-serif font-light tracking-tighter leading-[1.1] mb-4 text-black italic">
-                  Sculpting <span className="text-gray-400 font-normal">Space</span>, Light, and the Human <span className="text-gray-300 font-normal">Experience</span>.
-                </h1>
-                
-                <p className="text-xs md:text-sm font-sans mb-6 max-w-xl text-gray-500 leading-relaxed">
-                  Designing layouts and buildings that put comfort and eco-friendly standards first. Creating spaces with a focus on natural light and structural simplicity.
-                </p>
-                
-                <div className="mt-4">
-                  <div className="font-mono text-[9px] text-gray-400 mb-2 tracking-[0.2em] uppercase font-bold">
-                    [DESIGN_COMPLIANCE]
-                  </div>
-                  <SoftwareStack isArch={true} />
-                </div>
-                
-                <div className="mt-8 flex flex-col sm:flex-row gap-4 font-sans">
-                  <button 
-                    onClick={() => {
-                      const el = document.getElementById("arch-works");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-black text-white hover:bg-gray-800"
-                  >
-                    Explore Works
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-
-                  <a 
-                    href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-white text-black hover:bg-black hover:text-white border border-black hover:shadow-lg"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download Resume
-                  </a>
-                </div>
-              </div>
-
-              {/* Hero Image Component for Arch */}
-              <div className="relative aspect-video lg:aspect-square border border-gray-100 bg-gray-50 overflow-hidden min-h-[350px] md:min-h-[450px] mx-auto w-full max-w-xl lg:max-w-none">
-                <div className="absolute inset-x-0 top-1/2 h-[1px] bg-black/10 z-20 pointer-events-none" />
-                
-                <div className="absolute inset-0 flex items-center justify-center overflow-hidden group/hero">
-                  <img 
-                    src="https://lh3.googleusercontent.com/d/13GmqWLU2dj4391dNM13FuLjcie7fDsKe" 
-                    alt="Arch Hero GIF"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover opacity-100 transition-all duration-1000 pointer-events-none select-none animate-fadeIn"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover/hero:bg-black/10 transition-all duration-300 flex items-end justify-end p-4">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpandedMedia({
-                          src: "https://lh3.googleusercontent.com/d/13L6_w4Eu0yGSNAaxq0zbR9dTiAjc95Df",
-                          isVideo: false,
-                          googleDriveId: getDriveId("https://lh3.googleusercontent.com/d/13L6_w4Eu0yGSNAaxq0zbR9dTiAjc95Df"),
-                          alt: "Architectural Studio Grasshopper Script"
-                        });
-                      }}
-                      className="px-4 py-2 bg-black text-white hover:bg-[#00f2ff] hover:text-black border border-white/20 hover:border-[#00f2ff] text-[10px] font-mono tracking-widest uppercase flex items-center gap-2 shadow-2xl transition-all duration-300 z-30 transform active:scale-95 pointer-events-auto cursor-pointer"
-                    >
-                      <Code2 className="w-4 h-4 animate-pulse" />
-                      Show Script
-                    </button>
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-gray-500 z-30 font-bold">
-                  [ARCH_STUDIO_v1.0]
-                </div>
-              </div>
-            </div>
-
-            {/* ARCH PROJECTS */}
-            <div id="arch-works" className="pt-16 border-t border-gray-100 scroll-mt-24">
-              <div className="mb-12">
-                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
-                  Section_01 // Projects
-                </h2>
-                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-black font-bold">
-                  <span className="opacity-40 font-serif">{"{"}</span> CORE_FOLIO_V1.0 <span className="opacity-40 font-serif">{"}"}</span>
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-                {archArsenal.filter(item => item.category !== 'Fabrication').map((item) => (<ProjectCard key={`arch-nf-${item.id}`} 
-                    item={item} 
-                    isArch={true} 
-                    onClick={() => setSelectedArsenalItem(item)} 
-                    onShowScript={(scriptUrl: string, title: string) => {
-                      setExpandedMedia({
-                        src: scriptUrl,
-                        isVideo: false,
-                        googleDriveId: getDriveId(scriptUrl),
-                        alt: `Script: ${title}`
-                      });
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* ARCH FABRICATION */}
-            <div className="pt-16 border-t border-gray-100 font-serif">
-              <div className="mb-12 font-serif">
-                <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
-                  Section_02 // Fabrication &amp; Hands-on
-                </h2>
-                <h3 className="text-lg md:text-xl font-mono uppercase tracking-[0.1em] text-black italic font-bold">
-                  <span className="opacity-40">{"<"}</span> PHYSICAL_PROTOTYPING <span className="opacity-40">{">"}</span>
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 font-sans">
-                {archArsenal.filter(item => item.category === 'Fabrication').map((item) => (<ProjectCard key={`arch-fab-${item.id}`} 
-                    item={item} 
-                    isArch={true} 
-                    onClick={() => setSelectedArsenalItem(item)} 
-                    onShowScript={(scriptUrl: string, title: string) => {
-                      setExpandedMedia({
-                        src: scriptUrl,
-                        isVideo: false,
-                        googleDriveId: getDriveId(scriptUrl),
-                        alt: `Script: ${title}`
-                      });
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* ARCH CAREER PATH */}
-            <div className="pt-16 border-t border-gray-100 font-serif">
-              <div className="mb-12 text-center font-mono font-bold">
-                <h2 className="text-[10px] md:text-xs uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
-                  Section_03 // Professional_Journey
-                </h2>
-                <h3 className="text-lg md:text-xl uppercase tracking-[0.1em] text-black italic font-serif font-bold">
-                  <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>
-                </h3>
-              </div>
-
-              <div ref={archTimelineRef} className="max-w-3xl mx-auto relative px-4 md:px-0 font-serif">
-                {/* Background Line */}
-                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gray-100" />
-                {/* Glowing Interactive Scroll Line */}
-                <motion.div 
-                  style={{ scaleY: archScaleY }} 
-                  className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-black origin-top shadow-[0_0_10px_rgba(0,0,0,0.25)]" 
-                />
-                <div className="space-y-8 md:space-y-12">
-                  {experience.map((exp, idx) => (
-                    <div 
-                      key={`exp-arch-${idx}`} 
-                      className={`relative flex flex-col md:flex-row gap-4 md:gap-8 ${idx % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-                    >
-                      <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-[6px] mt-1.5 border bg-white border-black z-10" />
-                      <div className={`pl-10 md:pl-0 md:w-1/2 ${idx % 2 === 0 ? "md:pl-12" : "md:pr-12 text-left md:text-right"}`}>
-                        <span className="text-[10px] md:text-xs font-mono mb-1 block text-gray-400 font-bold">
-                          {exp.year}
-                        </span>
-                        <h4 className="text-base md:text-lg font-medium mb-1 text-black italic">
-                          {exp.company}
-                        </h4>
-                        <div className="text-[10px] md:text-xs font-mono mb-2 md:mb-3 text-gray-500 font-sans">
-                          {exp.role}
-                        </div>
-                        <p className="text-xs md:text-sm leading-relaxed text-gray-500 italic">
-                          {exp.description}
-                        </p>
-                      </div>
-                      <div className="hidden md:block md:w-1/2" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
+        <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-[#0c0f12] text-neon-cyan font-mono text-xs">Loading VDC Environment...</div>}>
+          <VDCSection 
+            bimArsenal={bimArsenal} 
+            experience={experience} 
+            setSelectedArsenalItem={setSelectedArsenalItem} 
+            ProjectCard={ProjectCard} 
+            SoftwareStack={SoftwareStack} 
+          />
+        </React.Suspense>
+        <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-white text-black font-serif text-sm">Loading Architecture Portfolio...</div>}>
+          <ArchSection 
+            archArsenal={archArsenal} 
+            experience={experience} 
+            setSelectedArsenalItem={setSelectedArsenalItem} 
+            ProjectCard={ProjectCard} 
+            SoftwareStack={SoftwareStack} 
+          />
+        </React.Suspense>
 
         <ParallaxSection id="terminal" index={visibleSections.indexOf('terminal')} setActiveSection={setActiveSection}>
           <motion.div 
@@ -3443,7 +3046,7 @@ export default function App() {
                   <div className={`p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/30 bg-neon-cyan/5"}`}>
                     <div className="flex items-start gap-4">
                       <div className={`w-12 h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-neon-cyan/50 bg-black"}`}>
-                        <img 
+                        <img loading="lazy" 
                           src="https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt" 
                           alt="Badge" 
                           onContextMenu={(e) => e.preventDefault()}
@@ -3556,45 +3159,69 @@ export default function App() {
                   ) : (
                     <form className="space-y-6" onSubmit={handleFormSubmit}>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                          <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Name</label>
+                        <div className="relative pt-4">
                           <input 
-                            type="text" 
+                            type="text"
+                            id="contactName" 
                             required
                             value={formState.name}
                             onChange={(e) => setFormState(prev => ({ ...prev, name: e.target.value }))}
-                            placeholder="Your Name"
-                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs ${
+                            placeholder=" "
+                            className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs ${
                               isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                             }`}
                           />
+                          <label 
+                            htmlFor="contactName"
+                            className={`absolute left-0 transition-all duration-300 pointer-events-none uppercase tracking-widest
+                            ${formState.name ? "-top-1 text-[10px]" : "top-6 text-xs peer-focus:-top-1 peer-focus:text-[10px]"}
+                            ${isArch ? "text-gray-500 peer-focus:text-black" : "text-gray-500 peer-focus:text-neon-cyan/80"}`}
+                          >
+                            Name
+                          </label>
                         </div>
-                        <div className="space-y-2">
-                          <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Email</label>
+                        <div className="relative pt-4">
                           <input 
-                            type="email" 
+                            type="email"
+                            id="contactEmail" 
                             required
                             value={formState.email}
                             onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                            placeholder="Your Email"
-                            className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs ${
+                            placeholder=" "
+                            className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs ${
                               isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                             }`}
                           />
+                          <label 
+                            htmlFor="contactEmail"
+                            className={`absolute left-0 transition-all duration-300 pointer-events-none uppercase tracking-widest
+                            ${formState.email ? "-top-1 text-[10px]" : "top-6 text-xs peer-focus:-top-1 peer-focus:text-[10px]"}
+                            ${isArch ? "text-gray-500 peer-focus:text-black" : "text-gray-500 peer-focus:text-neon-cyan/80"}`}
+                          >
+                            Email
+                          </label>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className={`text-[10px] uppercase tracking-widest ${isArch ? "text-gray-500" : "text-neon-cyan/80"}`}>Message</label>
+                      <div className="relative pt-4">
                         <textarea 
+                          id="contactMessage"
                           rows={3}
                           required
                           value={formState.message}
                           onChange={(e) => setFormState(prev => ({ ...prev, message: e.target.value }))}
-                          placeholder="Your Message"
-                          className={`w-full bg-transparent border-b p-2 outline-none transition-all duration-700 text-xs resize-none ${
+                          placeholder=" "
+                          className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs resize-none ${
                             isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
                           }`}
                         />
+                        <label 
+                          htmlFor="contactMessage"
+                          className={`absolute left-0 transition-all duration-300 pointer-events-none uppercase tracking-widest
+                          ${formState.message ? "-top-1 text-[10px]" : "top-6 text-xs peer-focus:-top-1 peer-focus:text-[10px]"}
+                          ${isArch ? "text-gray-500 peer-focus:text-black" : "text-gray-500 peer-focus:text-neon-cyan/80"}`}
+                        >
+                          Message
+                        </label>
                       </div>
                       <button 
                         type="submit"
@@ -4345,7 +3972,7 @@ export default function App() {
                                 }`}
                               >
                                 {/* Thumbnail Image */}
-                                <img 
+                                <img loading="lazy" 
                                   src={thumbSrc} 
                                   alt={selectedArsenalItem.details?.captions?.[idx] || (type === 'drawing' ? `Technical Drawing details ${idx + 1}` : `Rendering ${idx + 1}`)}
                                   onContextMenu={(e) => e.preventDefault()}
@@ -4428,7 +4055,7 @@ export default function App() {
                           </h4>
                           <div className={"flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 " + (isArch ? "scrollbar-thin scrollbar-thumb-gray-300" : "scrollbar-thin scrollbar-thumb-terminal-border/50")}>
                             {deck.images.map((img, imgIdx) => (<div key={`deck-img-${imgIdx}`} className="min-w-[85%] sm:min-w-[60%] md:min-w-[45%] lg:min-w-[35%] snap-center shrink-0">
-                                <img
+                                <img loading="lazy"
                                   src={img}
                                   alt={deck.title + " - " + (imgIdx + 1)}
                                   className={"w-full h-48 md:h-56 object-cover rounded shadow-sm border " + (isArch ? "border-gray-200" : "border-terminal-border/20")}
@@ -4492,7 +4119,7 @@ export default function App() {
                       alt: expandedGrid.title + " - Image " + (idx + 1)
                     });
                   }}>
-                    <img
+                    <img loading="lazy"
                       src={img}
                       alt={expandedGrid.title + " - Image " + (idx + 1)}
                       className="w-full h-full object-cover border border-white/10 rounded"
@@ -4584,7 +4211,7 @@ export default function App() {
                     : expandedMedia.src.split('#')[0];
                   return (
                     <div className="w-full h-full relative select-none">
-                      <img 
+                      <img loading="lazy" 
                         src={fullSrc} 
                         alt={expandedMedia.alt}
                         className="w-full h-full object-contain select-none pointer-events-none absolute inset-0"
