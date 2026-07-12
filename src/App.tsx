@@ -3082,6 +3082,9 @@ export default function App() {
                     <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
                       <Linkedin className="w-5 h-5" /> linkedin.com/in/karthikraj-nadar-07083526a
                     </a>
+                    <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                      <Github className="w-5 h-5" /> github.com/k-android
+                    </a>
                   </div>
                 </div>
 
