@@ -2996,6 +2996,8 @@ export default function App() {
             setSelectedArsenalItem={setSelectedArsenalItem} 
             ProjectCard={ProjectCard} 
             SoftwareStack={SoftwareStack} 
+            setExpandedMedia={setExpandedMedia}
+            getDriveId={getDriveId}
           />
         </React.Suspense>
         <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-white text-black font-serif text-sm">Loading Architecture Portfolio...</div>}>
@@ -3005,6 +3007,8 @@ export default function App() {
             setSelectedArsenalItem={setSelectedArsenalItem} 
             ProjectCard={ProjectCard} 
             SoftwareStack={SoftwareStack} 
+            setExpandedMedia={setExpandedMedia}
+            getDriveId={getDriveId}
           />
         </React.Suspense>
 
@@ -3268,7 +3272,7 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
+                  <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
                     <Github className="w-4 h-4" />
                   </a>
                   <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>

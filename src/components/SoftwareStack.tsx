@@ -1,5 +1,6 @@
 import React from 'react';
-import { Code2, Database } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Code2, Database, ChevronRight, ChevronDown, ShieldCheck, Cpu } from 'lucide-react';
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
@@ -785,40 +786,5 @@ const WorkflowFlowchart = ({
     </div>
   );
 };
-
-const WorkloadGif = ({ 
-  src, 
-  alt, 
-  className, 
-  isArch,
-  forcePlay = false,
-  play,
-  isInModal = false
-}: { 
-  src: string; 
-  alt: string; 
-  className?: string; 
-  isArch: boolean;
-  forcePlay?: boolean;
-  play?: boolean;
-  isInModal?: boolean;
-}) => {
-  if (!src) {
-    return <div className={`flex items-center justify-center ${className || 'w-full h-full'}`} />;
-  }
-  const [isInternalHovered, setIsInternalHovered] = useState(false);
-  const active = play !== undefined ? play : (forcePlay || isInternalHovered);
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-
-  const isVideo = React.useMemo(() => {
-    if (!src) return false;
-    return src.includes("#video") || src.toLowerCase().endsWith(".mp4") || src.toLowerCase().endsWith(".mov") || src.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
-  }, [src]);
-
-  React.useEffect(() => {
-    if (isVideo && videoRef.current) {
-      if (active) {
-        videoRef.current.play().catch(() => {});
-
 
 export default SoftwareStack;

@@ -7,7 +7,9 @@ export default function ArchSection({
   experience, 
   setSelectedArsenalItem, 
   ProjectCard, 
-  SoftwareStack 
+  SoftwareStack,
+  setExpandedMedia,
+  getDriveId
 }: any) {
   const archTimelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: archScroll } = useScroll({

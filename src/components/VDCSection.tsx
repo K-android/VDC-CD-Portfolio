@@ -8,7 +8,9 @@ export default function VDCSection({
   experience, 
   setSelectedArsenalItem, 
   ProjectCard, 
-  SoftwareStack 
+  SoftwareStack,
+  setExpandedMedia,
+  getDriveId
 }: any) {
   const vdcTimelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: vdcScroll } = useScroll({
