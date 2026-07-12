@@ -858,6 +858,27 @@ const WorkloadGif = ({
     return src.includes("#video") || src.toLowerCase().endsWith(".mp4") || src.toLowerCase().endsWith(".mov") || src.includes("1h89DNz0NAtQeH_rtLlNxXqN0ZI_9FXuk");
   }, [src]);
 
+  const staticUrl = React.useMemo(() => {
+    if (!src) return "";
+    // Google Drive check
+    if (src.includes('lh3.googleusercontent.com/d/')) {
+      const id = src.split('/').pop()?.split('#')[0];
+      const driveThumb = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+      if (isVideo) {
+        return driveThumb;
+      }
+      return `https://wsrv.nl/?url=${encodeURIComponent(driveThumb)}&output=jpg`;
+    }
+    // Giphy check
+    if (src.includes('giphy.com/media/')) {
+      return src.replace('/giphy.gif', '/giphy_s.gif');
+    }
+    if (isVideo) {
+      return src;
+    }
+    return `https://wsrv.nl/?url=${encodeURIComponent(src)}&output=jpg`;
+  }, [src, isVideo]);
+
   React.useEffect(() => {
     if (isVideo && videoRef.current) {
       if (active) {
@@ -867,20 +888,6 @@ const WorkloadGif = ({
       }
     }
   }, [active, isVideo]);
-
-  const staticUrl = React.useMemo(() => {
-    if (!src) return "";
-    // Google Drive check
-    if (src.includes('lh3.googleusercontent.com/d/')) {
-      const id = src.split('/').pop()?.split('#')[0];
-      return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
-    }
-    // Giphy check
-    if (src.includes('giphy.com/media/')) {
-      return src.replace('/giphy.gif', '/giphy_s.gif');
-    }
-    return src;
-  }, [src]);
 
   if (isVideo && isInModal) {
     const googleDriveId = getDriveId(src);
@@ -911,7 +918,6 @@ const WorkloadGif = ({
         </div>
       );
     }
-
     const cleanSrc = getPlayableVideoUrl(src);
     return (
       <div 
@@ -928,49 +934,48 @@ const WorkloadGif = ({
           className={className}
           poster={staticUrl}
         />
-        {!active && (
-          <div className="absolute inset-0 bg-black/10 flex items-center justify-center pointer-events-none">
-            {/* Subtle overlay when paused */}
-          </div>
-        )}
       </div>
     );
   }
 
+  const fitClass = className?.includes('object-contain') ? 'object-contain' : 'object-cover';
+  
+  // We force a key update to restart the GIF from the beginning on hover
+  // Using active as a key forces remounting, but we only mount it if active
+  const gifKey = React.useMemo(() => active ? Date.now() : 0, [active]);
+
   return (
     <div 
-      className="w-full h-full"
+      className={`relative overflow-hidden cursor-pointer ${className || 'w-full h-full'}`}
       onMouseEnter={() => setIsInternalHovered(true)}
       onMouseLeave={() => setIsInternalHovered(false)}
     >
-      {isVideo ? (
-        <img loading="lazy" 
-          src={staticUrl} 
+      <img loading="lazy" 
+        src={staticUrl} 
+        alt={alt}
+        referrerPolicy="no-referrer"
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+        className={`absolute inset-0 w-full h-full ${fitClass}`}
+        style={{ pointerEvents: 'none' }}
+      />
+      
+      {active && (
+        <img 
+          key={gifKey}
+          src={isVideo ? staticUrl : src} 
           alt={alt}
           referrerPolicy="no-referrer"
           onContextMenu={(e) => e.preventDefault()}
           onDragStart={(e) => e.preventDefault()}
-          className={className}
-        />
-      ) : active ? (
-        <img loading="lazy" 
-          src={src} 
-          alt={alt}
-          referrerPolicy="no-referrer"
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
-          className={className}
-        />
-      ) : (
-        <img loading="lazy" 
-          src={staticUrl} 
-          alt={alt} 
-          className={className} 
+          className={`absolute inset-0 w-full h-full ${fitClass}`}
+          style={{ pointerEvents: 'none', backgroundColor: 'transparent' }}
         />
       )}
     </div>
   );
 };
+
 
 const ProjectCard = ({ 
   item, 
@@ -3363,7 +3368,7 @@ export default function App() {
                                 src="https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F" 
                                 alt="Galapagos Loop"
                                 isArch={false}
-                                forcePlay={true}
+                                forcePlay={false}
                                 isInModal={true}
                                 className="w-full h-full object-contain p-1 pointer-events-none select-none opacity-90 transition-all duration-700"
                               />
@@ -3416,7 +3421,7 @@ export default function App() {
                                 src="https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN" 
                                 alt="Wallacei Engine"
                                 isArch={false}
-                                forcePlay={true}
+                                forcePlay={false}
                                 isInModal={true}
                                 className="w-full h-full object-contain p-1 pointer-events-none select-none opacity-90 transition-all duration-700"
                               />
@@ -3468,7 +3473,7 @@ export default function App() {
                             src={selectedArsenalItem.gifUrl} 
                             alt="Workflow GIF"
                             isArch={isArch}
-                            forcePlay={true}
+                            forcePlay={false}
                             isInModal={true}
                             className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
                           />
