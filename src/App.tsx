@@ -106,6 +106,19 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   );
 };
 
+const getWsrvGifUrl = (src: string): string => {
+  if (!src) return "";
+  if (src.includes('lh3.googleusercontent.com/d/')) {
+    const id = src.split('/').pop()?.split('#')[0];
+    const driveThumb = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    return `https://wsrv.nl/?url=${encodeURIComponent(driveThumb)}&output=gif&n=-1`;
+  }
+  if (src.includes('giphy.com/media/')) {
+    return src;
+  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(src)}&output=gif&n=-1`;
+};
+
 const getDriveId = (url: string) => {
   if (!url) return null;
   const clean = url.split('#')[0];
@@ -860,23 +873,22 @@ const WorkloadGif = ({
 
   const staticUrl = React.useMemo(() => {
     if (!src) return "";
-    // Google Drive check
     if (src.includes('lh3.googleusercontent.com/d/')) {
       const id = src.split('/').pop()?.split('#')[0];
       const driveThumb = `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
-      if (isVideo) {
-        return driveThumb;
-      }
+      if (isVideo) return driveThumb;
       return `https://wsrv.nl/?url=${encodeURIComponent(driveThumb)}&output=jpg`;
     }
-    // Giphy check
     if (src.includes('giphy.com/media/')) {
       return src.replace('/giphy.gif', '/giphy_s.gif');
     }
-    if (isVideo) {
-      return src;
-    }
+    if (isVideo) return src;
     return `https://wsrv.nl/?url=${encodeURIComponent(src)}&output=jpg`;
+  }, [src, isVideo]);
+
+  const animatedUrl = React.useMemo(() => {
+    if (isVideo) return src;
+    return getWsrvGifUrl(src);
   }, [src, isVideo]);
 
   React.useEffect(() => {
@@ -941,7 +953,6 @@ const WorkloadGif = ({
   const fitClass = className?.includes('object-contain') ? 'object-contain' : 'object-cover';
   
   // We force a key update to restart the GIF from the beginning on hover
-  // Using active as a key forces remounting, but we only mount it if active
   const gifKey = React.useMemo(() => active ? Date.now() : 0, [active]);
 
   return (
@@ -950,6 +961,7 @@ const WorkloadGif = ({
       onMouseEnter={() => setIsInternalHovered(true)}
       onMouseLeave={() => setIsInternalHovered(false)}
     >
+      {/* Background static image to hide any decoding flash */}
       <img loading="lazy" 
         src={staticUrl} 
         alt={alt}
@@ -960,10 +972,11 @@ const WorkloadGif = ({
         style={{ pointerEvents: 'none' }}
       />
       
+      {/* Animated GIF overlay */}
       {active && (
         <img 
           key={gifKey}
-          src={isVideo ? staticUrl : src} 
+          src={animatedUrl} 
           alt={alt}
           referrerPolicy="no-referrer"
           onContextMenu={(e) => e.preventDefault()}
@@ -975,7 +988,6 @@ const WorkloadGif = ({
     </div>
   );
 };
-
 
 const ProjectCard = ({ 
   item, 
@@ -2433,7 +2445,7 @@ export default function App() {
             img.onload = () => resolve();
             img.onerror = () => resolve();
             img.referrerPolicy = "no-referrer";
-            img.src = src;
+            img.src = getWsrvGifUrl(src);
           });
         };
 
