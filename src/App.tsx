@@ -2790,39 +2790,45 @@ export default function App() {
       
       {/* Header / Nav */}
       <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b border-white/5 bg-[#0a0a0c]/80`}>
-        <div className="max-w-7xl mx-auto w-full px-6 md:px-12 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-12 py-4 flex justify-between items-center relative">
           <div className="flex items-center gap-6">
-            <div className="flex items-center font-sans text-lg md:text-xl font-bold tracking-tight text-white uppercase">
+            <div className="flex items-center font-serif text-[11px] sm:text-[14px] lg:text-lg font-bold tracking-tight text-white uppercase">
               <span className="text-[#00f2ff] font-mono font-light text-xl opacity-70">{`>`}</span>
               <span className="text-[#00f2ff] font-mono font-light text-xl -ml-0.5 mt-2 opacity-70">{`_`}</span>
               <span className="ml-3 tracking-wide">KARTHIKRAJ_<span className="text-[#3B82F6]">NADAR</span></span>
             </div>
           </div>
         
-        <div className="hidden md:flex flex-1 justify-center gap-10">
-          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+        <div className="hidden lg:flex flex-1 justify-center gap-6 xl:gap-10">
+          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
             Home
           </button>
-          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
             Workflows
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
           </button>
-          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
             Design Projects
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
           </button>
-          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
             Apps / Web
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
           </button>
-          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
             Contact & Bio
           </button>
         </div>
         
-        <div>
-
+        <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 lg:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2 border border-white/10 bg-white/5 rounded-md text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+            >
+              <Box className="w-5 h-5" />
+            </button>
         </div>
+        <div className="hidden lg:block w-[180px]"></div>
         </div>
       </header>
 
@@ -3016,7 +3022,7 @@ export default function App() {
                   const el = document.getElementById("vdc-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-8 py-4 bg-[#3B82F6] text-white rounded-full font-bold font-sans hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                className="w-full sm:w-auto px-8 py-4 bg-[#3B82F6] text-white rounded-full font-bold font-sans hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(59,130,246,0.3)] text-sm md:text-base"
               >
                 View Automation Tools
               </button>
@@ -3025,7 +3031,7 @@ export default function App() {
                   const el = document.getElementById("arch-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300"
+                className="w-full sm:w-auto px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300 text-sm md:text-base"
               >
                 View Design Projects
               </button>
@@ -3034,7 +3040,7 @@ export default function App() {
                   const el = document.getElementById("terminal");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300"
+                className="w-full sm:w-auto px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300 text-sm md:text-base"
               >
                 View Contact & Bio
               </button>
@@ -3042,7 +3048,7 @@ export default function App() {
                 href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-5 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300 flex items-center justify-center gap-2 text-sm md:text-base"
               >
                 <Download className="w-4 h-4" />
                 <span className="text-sm">Download Resume</span>

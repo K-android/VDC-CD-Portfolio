@@ -3,45 +3,34 @@ import re
 with open('src/App.tsx', 'r') as f:
     app = f.read()
 
-old_header_links = """        <div className="hidden md:flex flex-1 justify-center gap-10">
-          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
-            Home
-          </button>
-          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
-            Workflows
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
-          </button>
-          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
-            Apps / Web
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
-          </button>
-          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
-            Bio
-          </button>
-        </div>"""
+app = app.replace(
+    '''        <div className="md:hidden flex items-center">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2 border border-white/10 bg-white/5 rounded-md text-white hover:bg-white/10 transition-colors"
+            >
+              <Box className="w-5 h-5" />
+            </button>
+          </div>
+          
+        <div className="hidden md:flex flex-1 justify-center gap-10">''',
+    '''        <div className="hidden md:flex flex-1 justify-center gap-10">'''
+)
 
-new_header_links = """        <div className="hidden md:flex flex-1 justify-center gap-10">
-          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
-            Home
-          </button>
-          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
-            Workflows
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
-          </button>
-          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
-            Design Projects
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
-          </button>
-          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
-            Apps / Web
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
-          </button>
-          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
-            Contact & Bio
-          </button>
-        </div>"""
+app = app.replace(
+    '''        <div>
 
-app = app.replace(old_header_links, new_header_links)
+        </div>''',
+    '''        <div className="md:hidden flex items-center justify-end">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2 border border-white/10 bg-white/5 rounded-md text-white hover:bg-white/10 transition-colors"
+            >
+              <Box className="w-5 h-5" />
+            </button>
+        </div>
+        <div className="hidden md:block w-[180px]"></div>'''
+)
 
 with open('src/App.tsx', 'w') as f:
     f.write(app)
