@@ -60,7 +60,7 @@ export const AECWebAppsCabinet: React.FC = () => {
   return (
     <div className="space-y-16">
       {/* 2-COLUMN STACKED HIGH-TECH APPS CABINET */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 text-left">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
         
         {/* APP 1: AEC AUTOMATOR HUB */}
         <motion.div 
@@ -73,27 +73,27 @@ export const AECWebAppsCabinet: React.FC = () => {
             scale: 1.015,
             transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
           }}
-          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-neon-orange hover:shadow-[0_0_30px_rgba(249,115,22,0.05)] transition-all duration-700 overflow-hidden relative group"
+          className="flex flex-col border border-white/10 bg-black/80 hover:border-neon-orange hover:shadow-[0_0_30px_rgba(249,115,22,0.05)] transition-all duration-700 overflow-hidden relative group"
         >
           <div className="h-1.5 w-full transition-all duration-700 bg-neon-orange opacity-20 group-hover:opacity-100" />
           
           <div className="p-5 flex flex-col relative z-10">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-neon-orange bg-neon-orange/10 border border-neon-orange/20">
+              <span className="text-[9px] md:text-xs font-sans font-bold px-2 py-0.5 rounded tracking-widest  transition-colors duration-700 text-neon-orange bg-neon-orange/10 border border-neon-orange/20">
                 APP
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+              <span className="text-xs font-sans tracking-widest text-gray-500">
                 DESK_APP_01
               </span>
             </div>
             
-            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-neon-orange transition-colors duration-700">
+            <h3 className="text-base md:text-lg font-bold mb-4 font-sans text-white group-hover:text-neon-orange transition-colors duration-700">
               AEC Automator Hub
             </h3>
           </div>
 
           {/* Interactive Screen Layout Mockup / Hero Image Column */}
-          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-white/10 bg-black/95">
             {/* Visual Engineering Grid Background */}
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
             
@@ -111,7 +111,7 @@ export const AECWebAppsCabinet: React.FC = () => {
             
             {/* Dark gradient mapping overlays matches dashboard design cleanly */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-white/10 px-2.5 py-1 rounded text-[9.5px] font-sans text-gray-300  tracking-wider flex items-center gap-1.5 font-semibold">
               <span className="w-1.5 h-1.5 bg-neon-orange rounded-full animate-pulse" />
               Live System Preview
             </div>
@@ -121,10 +121,10 @@ export const AECWebAppsCabinet: React.FC = () => {
           <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
             <div>
               {/* App Navigation Tab Buttons */}
-              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs font-bold leading-none">
+              <div className="flex bg-black/90 border border-white/10 p-1 rounded font-sans text-xs mb-6 inline-flex max-w-xs font-bold leading-none">
                 <button
                   onClick={() => setCurrentTab1("desc")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab1 === "desc" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -132,7 +132,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setCurrentTab1("features")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab1 === "features" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -140,7 +140,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setCurrentTab1("process")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab1 === "process" ? "bg-neon-orange/15 text-neon-orange border border-neon-orange/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -149,7 +149,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               </div>
 
               {/* Tab Contents */}
-              <div className="min-h-[140px] font-mono">
+              <div className="min-h-[140px] font-sans">
                 <AnimatePresence mode="wait">
                   {currentTab1 === "desc" && (
                     <motion.div
@@ -161,7 +161,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                       <p className="text-gray-300 text-sm leading-relaxed font-sans font-medium">
                         A centralized cloud-based command center developed to discover, rank, and track computational design automation pipelines—bridging the gap between software engineering, AI, and sustainable building performance.
                       </p>
-                      <div className="text-neon-cyan text-[10.5px] border-l-2 border-neon-orange pl-3 py-1 bg-neon-orange/[0.01]">
+                      <div className="text-[#3B82F6] text-[10.5px] border-l-2 border-neon-orange pl-3 py-1 bg-neon-orange/[0.01]">
                         // AEC Automator Hub: An AI-Driven Workflow Optimization & Lifecycle Dashboard.
                       </div>
                     </motion.div>
@@ -200,18 +200,18 @@ export const AECWebAppsCabinet: React.FC = () => {
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                      className="space-y-3 font-sans text-[11px] text-gray-400"
                     >
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-xs">01</span>
                         <span>Track active computational design automation pipelines securely.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-xs">02</span>
                         <span>Formulate regulatory compliance routines and live carbon lifecycle estimates.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-orange/15 border border-neon-orange/35 text-neon-orange flex items-center justify-center font-bold text-xs">03</span>
                         <span>Deliver on-demand PyRevit/Dynamo strategies with the LLM code sandbox.</span>
                       </div>
                     </motion.div>
@@ -222,7 +222,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               {/* Stack tags */}
               <div className="flex flex-wrap gap-2 mt-6">
                 {["React", "Tailwind CSS", "Vercel Deployment", "VDC Strategy", "Generative Design Logic", "LLM API Integration (Gemini)", "Carbon Analytics (LCA) Frameworks"].map((tag) => (
-                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                  <span key={tag} className="text-[9px] font-sans px-2 py-0.5 border border-white/5 text-gray-500 rounded">
                     {tag}
                   </span>
                 ))}
@@ -230,16 +230,16 @@ export const AECWebAppsCabinet: React.FC = () => {
             </div>
 
             {/* Glowing Interactive Portal & Vercel Launcher Buttons */}
-            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="mt-8 pt-4 border-t border-white/10 flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-neon-orange animate-pulse" />
-                <span className="font-mono text-[10px] text-gray-400 uppercase tracking-widest">Status: Production Live</span>
+                <span className="font-sans text-xs text-gray-400  tracking-widest">Status: Production Live</span>
               </div>
               <a
                 href="https://aec-auto-hub.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-neon-orange/15 hover:bg-neon-orange border border-neon-orange/30 text-neon-orange hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(249,115,22,0.1)] active:scale-95"
+                className="w-full md:w-auto font-sans text-xs px-5 py-2.5 bg-neon-orange/15 hover:bg-neon-orange border border-neon-orange/30 text-neon-orange hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(249,115,22,0.1)] active:scale-95"
               >
                 <Globe className="w-4 h-4" />
                 <span>Launch Live Website</span>
@@ -260,27 +260,27 @@ export const AECWebAppsCabinet: React.FC = () => {
             scale: 1.015,
             transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
           }}
-          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-neon-cyan hover:shadow-[0_0_30px_rgba(0,255,255,0.05)] transition-all duration-700 overflow-hidden relative group"
+          className="flex flex-col border border-white/10 bg-black/80 hover:border-white/10 hover:shadow-[0_0_30px_rgba(0,255,255,0.05)] transition-all duration-700 overflow-hidden relative group"
         >
           <div className="h-1.5 w-full transition-all duration-700 bg-neon-cyan opacity-20 group-hover:opacity-100" />
           
           <div className="p-5 flex flex-col relative z-10">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/20">
+              <span className="text-[9px] md:text-xs font-sans font-bold px-2 py-0.5 rounded tracking-widest  transition-colors duration-700 text-[#3B82F6] bg-[#3B82F6]/10 border border-white/10/20">
                 APP
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+              <span className="text-xs font-sans tracking-widest text-gray-500">
                 DESK_APP_02
               </span>
             </div>
             
-            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-neon-cyan transition-colors duration-700">
+            <h3 className="text-base md:text-lg font-bold mb-4 font-sans text-white group-hover:text-[#6366F1] transition-colors duration-700">
               BIM Metric Portal & API Gateway
             </h3>
           </div>
 
           {/* Real-time Telemetry Screen Mockup / Hero Image Column */}
-          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-white/10 bg-black/95">
             {/* Visual Engineering Grid Background */}
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
             
@@ -298,8 +298,8 @@ export const AECWebAppsCabinet: React.FC = () => {
             
             {/* Dark gradient mapping overlays matches dashboard design cleanly */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
-              <span className="w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-white/10 px-2.5 py-1 rounded text-[9.5px] font-sans text-gray-300  tracking-wider flex items-center gap-1.5 font-semibold">
+              <span className="w-1.5 h-1.5 bg-[#6366F1] rounded-full animate-pulse" />
               Live System Preview
             </div>
           </div>
@@ -308,27 +308,27 @@ export const AECWebAppsCabinet: React.FC = () => {
           <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
             <div>
               {/* App Navigation Tab Buttons */}
-              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs">
+              <div className="flex bg-black/90 border border-white/10 p-1 rounded font-sans text-xs mb-6 inline-flex max-w-xs">
                 <button
                   onClick={() => setCurrentTab2("desc")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
-                    currentTab2 === "desc" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
+                    currentTab2 === "desc" ? "bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30" : "text-gray-400 hover:text-white"
                   }`}
                 >
                   Desc
                 </button>
                 <button
                   onClick={() => setCurrentTab2("features")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
-                    currentTab2 === "features" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
+                    currentTab2 === "features" ? "bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30" : "text-gray-400 hover:text-white"
                   }`}
                 >
                   Key Highlights
                 </button>
                 <button
                   onClick={() => setCurrentTab2("process")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
-                    currentTab2 === "process" ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20" : "text-gray-400 hover:text-white"
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
+                    currentTab2 === "process" ? "bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30" : "text-gray-400 hover:text-white"
                   }`}
                 >
                   BIM Process
@@ -336,7 +336,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               </div>
 
               {/* Tab Contents */}
-              <div className="min-h-[140px] font-mono">
+              <div className="min-h-[140px] font-sans">
                 <AnimatePresence mode="wait">
                   {currentTab2 === "desc" && (
                     <motion.div
@@ -348,7 +348,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                       <p className="text-gray-300 text-sm leading-relaxed font-sans font-medium">
                         A live connected Virtual Design & Construction (VDC) data hub designed to eliminate the traditional 3-day wait time for drawing coordination and cost takeoffs by streaming local BIM telemetry straight to a high-availability cloud database.
                       </p>
-                      <div className="text-neon-cyan text-[10.5px] border-l-2 border-neon-cyan pl-3 py-1 bg-neon-cyan/[0.01]">
+                      <div className="text-[#3B82F6] text-[10.5px] border-l-2 border-white/10 pl-3 py-1 bg-neon-cyan/[0.01]">
                         // Cutting data extraction latency down to absolute zero — synchronizing quantities straight from building design saved states to server nodes.
                       </div>
                     </motion.div>
@@ -362,19 +362,19 @@ export const AECWebAppsCabinet: React.FC = () => {
                       className="space-y-2.5 text-xs text-gray-300"
                     >
                       <div className="flex gap-2 items-start">
-                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" />
                         <div>
                           <strong>Real-Time Data Streaming</strong>: Replaced manual spreadsheet compilation with a custom Webhook API, cutting data latency down to absolute zero (<strong>0.01 Hours</strong>).
                         </div>
                       </div>
                       <div className="flex gap-2 items-start">
-                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" />
                         <div>
                           <strong>ISO-19650 Automated Standardizer</strong>: An algorithmic staging area that parses messy element parameters, formatting them automatically to globally compliant BIM structures.
                         </div>
                       </div>
                       <div className="flex gap-2 items-start">
-                        <CheckCircle2 className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" />
                         <div>
                           <strong>Fault-Tolerant Cache Architecture</strong>: Built local fallback configurations that preserve structural data integrity during network drops or Revit/Dynamo application crashes.
                         </div>
@@ -387,18 +387,18 @@ export const AECWebAppsCabinet: React.FC = () => {
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                      className="space-y-3 font-sans text-[11px] text-gray-400"
                     >
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-white/10/35 text-[#3B82F6] flex items-center justify-center font-bold text-xs">01</span>
                         <span>Stream BIM local save metadata to server via custom Dynamo Webhook.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-white/10/35 text-[#3B82F6] flex items-center justify-center font-bold text-xs">02</span>
                         <span>Parse messy parameter values & auto-format to standard ISO-19650 requirements.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-neon-cyan/35 text-neon-cyan flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span className="w-5 h-5 rounded-full bg-neon-cyan/15 border border-white/10/35 text-[#3B82F6] flex items-center justify-center font-bold text-xs">03</span>
                         <span>Update Firestore collections to stream live quantities straight to the Dashboard.</span>
                       </div>
                     </motion.div>
@@ -409,7 +409,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               {/* Stack tags */}
               <div className="flex flex-wrap gap-2 mt-6">
                 {["Node.js API", "Firestore", "React Interface", "Revit & Dynamo Integration", "ISO-19650 Compliance"].map((tag) => (
-                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                  <span key={tag} className="text-[9px] font-sans px-2 py-0.5 border border-white/5 text-gray-500 rounded">
                     {tag}
                   </span>
                 ))}
@@ -417,13 +417,13 @@ export const AECWebAppsCabinet: React.FC = () => {
             </div>
 
             {/* Glowing Website Launcher Button */}
-            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
-              <span className="text-[10px] text-gray-500 font-mono tracking-wider">// CLOUD RUN METRIC GATEWAY</span>
+            <div className="mt-8 pt-4 border-t border-white/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <span className="text-xs text-gray-500 font-sans tracking-wider">// CLOUD RUN METRIC GATEWAY</span>
               <a
                 href="https://bim-metric-portal-boqs-tracker-111136556527.asia-southeast1.run.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-neon-cyan/15 hover:bg-neon-cyan border border-neon-cyan/30 text-neon-cyan hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,242,255,0.1)] active:scale-95"
+                className="w-full md:w-auto font-sans text-xs px-5 py-2.5 bg-neon-cyan/15 hover:bg-neon-cyan border border-white/10/30 text-[#3B82F6] hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,242,255,0.1)] active:scale-95"
               >
                 <Globe className="w-4 h-4" />
                 <span>Launch Live Website</span>
@@ -444,27 +444,27 @@ export const AECWebAppsCabinet: React.FC = () => {
             scale: 1.015,
             transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] }
           }}
-          className="flex flex-col border border-terminal-border/40 bg-black/40 hover:border-[#b4ff39] hover:shadow-[0_0_30px_rgba(180,255,57,0.05)] transition-all duration-700 overflow-hidden relative group"
+          className="flex flex-col border border-white/10 bg-black/80 hover:border-[#b4ff39] hover:shadow-[0_0_30px_rgba(180,255,57,0.05)] transition-all duration-700 overflow-hidden relative group"
         >
           <div className="h-1.5 w-full transition-all duration-700 bg-[#b4ff39] opacity-20 group-hover:opacity-100" />
           
           <div className="p-5 flex flex-col relative z-10">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] md:text-[10px] font-mono font-bold px-2 py-0.5 rounded tracking-widest uppercase transition-colors duration-700 text-[#b4ff39] bg-[#b4ff39]/10 border border-[#b4ff39]/20">
+              <span className="text-[9px] md:text-xs font-sans font-bold px-2 py-0.5 rounded tracking-widest  transition-colors duration-700 text-[#b4ff39] bg-[#b4ff39]/10 border border-[#b4ff39]/20">
                 APP
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-gray-500">
+              <span className="text-xs font-sans tracking-widest text-gray-500">
                 DESK_APP_03
               </span>
             </div>
             
-            <h3 className="text-base md:text-lg font-bold mb-4 font-mono text-white group-hover:text-[#b4ff39] transition-colors duration-700">
+            <h3 className="text-base md:text-lg font-bold mb-4 font-sans text-white group-hover:text-[#b4ff39] transition-colors duration-700">
               Rhino Sync Web Console
             </h3>
           </div>
 
           {/* Hero Image Column */}
-          <div className="relative aspect-[16/8] overflow-hidden group border-b border-terminal-border/10 bg-black/60">
+          <div className="relative aspect-[16/8] overflow-hidden group border-b border-white/10 bg-black/95">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.06] pointer-events-none z-10" />
             <img loading="lazy" 
               src="https://lh3.googleusercontent.com/d/1eQ88zcWYH9cjK0eHaem8THzK3w1_o83Y"
@@ -475,7 +475,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               onDragStart={(e) => e.preventDefault()}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-terminal-border/30 px-2.5 py-1 rounded text-[9.5px] font-mono text-gray-300 uppercase tracking-wider flex items-center gap-1.5 font-semibold">
+            <div className="absolute top-3 left-3 z-20 bg-black/80 backdrop-blur-sm border border-white/10 px-2.5 py-1 rounded text-[9.5px] font-sans text-gray-300  tracking-wider flex items-center gap-1.5 font-semibold">
               <span className="w-1.5 h-1.5 bg-[#b4ff39] rounded-full animate-pulse" />
               Live Server Connection
             </div>
@@ -485,10 +485,10 @@ export const AECWebAppsCabinet: React.FC = () => {
           <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
             <div>
               {/* App Navigation Tab Buttons */}
-              <div className="flex bg-black/50 border border-terminal-border/15 p-1 rounded font-mono text-[10px] mb-6 inline-flex max-w-xs">
+              <div className="flex bg-black/90 border border-white/10 p-1 rounded font-sans text-xs mb-6 inline-flex max-w-xs">
                 <button
                   onClick={() => setCurrentTab3("desc")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab3 === "desc" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -496,7 +496,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setCurrentTab3("features")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab3 === "features" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -504,7 +504,7 @@ export const AECWebAppsCabinet: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setCurrentTab3("process")}
-                  className={`px-3 py-1.5 transition-all text-xs rounded uppercase font-bold tracking-wider ${
+                  className={`px-3 py-1.5 transition-all text-xs rounded  font-bold tracking-wider ${
                     currentTab3 === "process" ? "bg-[#b4ff39]/15 text-[#b4ff39] border border-[#b4ff39]/20" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -513,7 +513,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               </div>
 
               {/* Tab Contents */}
-              <div className="min-h-[140px] font-mono">
+              <div className="min-h-[140px] font-sans">
                 <AnimatePresence mode="wait">
                   {currentTab3 === "desc" && (
                     <motion.div
@@ -564,18 +564,18 @@ export const AECWebAppsCabinet: React.FC = () => {
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="space-y-3 font-mono text-[11px] text-gray-400"
+                      className="space-y-3 font-sans text-[11px] text-gray-400"
                     >
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">01</span>
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-xs">01</span>
                         <span>Boot local Rhino.Compute headless server linked to target Grasshopper files.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">02</span>
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-xs">02</span>
                         <span>Establish secure public endpoint via persistent ngrok tunneling.</span>
                       </div>
                       <div className="flex gap-3 items-center">
-                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-[10px]">03</span>
+                        <span className="w-5 h-5 rounded-full bg-[#b4ff39]/15 border border-[#b4ff39]/35 text-[#b4ff39] flex items-center justify-center font-bold text-xs">03</span>
                         <span>Parse web UI slider changes as JSON payload and return updated geometry meshes.</span>
                       </div>
                     </motion.div>
@@ -586,7 +586,7 @@ export const AECWebAppsCabinet: React.FC = () => {
               {/* Stack tags */}
               <div className="flex flex-wrap gap-2 mt-6">
                 {["Rhino.Compute", "Grasshopper", "REST API", "ngrok", "React Web UI", "Parametric Models"].map((tag) => (
-                  <span key={tag} className="text-[9px] font-mono px-2 py-0.5 border border-terminal-border text-gray-500 rounded">
+                  <span key={tag} className="text-[9px] font-sans px-2 py-0.5 border border-white/5 text-gray-500 rounded">
                     {tag}
                   </span>
                 ))}
@@ -594,13 +594,13 @@ export const AECWebAppsCabinet: React.FC = () => {
             </div>
 
             {/* Glowing Website Launcher Button */}
-            <div className="mt-8 pt-4 border-t border-terminal-border/10 flex flex-col md:flex-row gap-4 items-center justify-between">
-              <span className="text-[10px] text-gray-500 font-mono tracking-wider">// VERCEL HOSTED</span>
+            <div className="mt-8 pt-4 border-t border-white/10 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <span className="text-xs text-gray-500 font-sans tracking-wider">// VERCEL HOSTED</span>
               <a
                 href="https://rhino-gh-sync-web-console.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto font-mono text-xs px-5 py-2.5 bg-[#b4ff39]/15 hover:bg-[#b4ff39] border border-[#b4ff39]/30 text-[#b4ff39] hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(180,255,57,0.1)] active:scale-95"
+                className="w-full md:w-auto font-sans text-xs px-5 py-2.5 bg-[#b4ff39]/15 hover:bg-[#b4ff39] border border-[#b4ff39]/30 text-[#b4ff39] hover:text-black rounded font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(180,255,57,0.1)] active:scale-95"
               >
                 <Globe className="w-4 h-4" />
                 <span>Launch Web Console</span>

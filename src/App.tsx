@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { OrganicBackground } from './components/OrganicBackground';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "motion/react";
 import { 
   Terminal, 
@@ -38,7 +39,9 @@ import {
   Crosshair,
   Network,
   Hexagon,
-  Code
+  Code,
+  Workflow,
+  GitMerge
 } from "lucide-react";
 
 
@@ -46,21 +49,21 @@ import { playVDCHoverSound, playVDCClickSound } from './utils/audio';
 
 const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
   const archTools = [
-    { name: "Rhino / Grasshopper", category: "Computational" },
-    { name: "Autodesk Revit", category: "BIM" },
-    { name: "D5 Render / Enscape", category: "Visualization" },
-    { name: "Adobe Creative Suite", category: "Design" },
-    { name: "Midjourney / Stable Diffusion", category: "AI Imagery" },
-    { name: "Physical Prototyping", category: "Fabrication" },
+    { name: "Rhino / Grasshopper", category: "Computational", icon: Activity },
+    { name: "Autodesk Revit", category: "BIM", icon: Layers },
+    { name: "D5 Render / Enscape", category: "Visualization", icon: MonitorPlay },
+    { name: "Adobe Creative Suite", category: "Design", icon: Component },
+    { name: "Midjourney / Stable Diffusion", category: "AI Imagery", icon: Globe },
+    { name: "Physical Prototyping", category: "Fabrication", icon: Hammer },
   ];
 
   const bimTools = [
-    { name: "Autodesk Revit", category: "Modeling" },
-    { name: "Navisworks Manage", category: "Coordination" },
-    { name: "Dynamo / Python", category: "Automation" },
-    { name: "Excel / SQL", category: "Data" },
-    { name: "Rhino / Grasshopper", category: "Computational" },
-    { name: "ISO 19650 Standards", category: "Management" },
+    { name: "Autodesk Revit", category: "Modeling", icon: Layers },
+    { name: "Navisworks Manage", category: "Coordination", icon: GitMerge },
+    { name: "Dynamo / Python", category: "Automation", icon: Workflow },
+    { name: "Excel / SQL", category: "Data", icon: Database },
+    { name: "Rhino / Grasshopper", category: "Computational", icon: Activity },
+    { name: "ISO 19650 Standards", category: "Management", icon: ShieldCheck },
   ];
 
   const tools = isArch ? archTools : bimTools;
@@ -87,21 +90,29 @@ const SoftwareStack = ({ isArch }: { isArch: boolean }) => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
-      className="flex flex-wrap justify-center lg:justify-start gap-3"
+      className="flex flex-wrap justify-center lg:justify-start gap-2.5"
     >
-      {tools.map((tool, idx) => (
-        <motion.div 
-          key={`${isArch ? 'arch' : 'bim'}-${tool.name}-${idx}`}
-          variants={item}
-          className={`px-3 py-1 border text-[10px] font-mono transition-all duration-700 ${
-            isArch 
-            ? "border-gray-100 bg-gray-50 text-gray-500" 
-            : "border-terminal-border bg-terminal-border/20 text-neon-cyan"
-          }`}
-        >
-          {tool.name} <span className="opacity-30 ml-1">[{tool.category}]</span>
-        </motion.div>
-      ))}
+      {tools.map((tool, idx) => {
+        const Icon = tool.icon;
+        return (
+          <motion.div 
+            key={`${isArch ? 'arch' : 'bim'}-${tool.name}-${idx}`}
+            variants={item}
+            className={`group flex items-center gap-2 px-3 py-1.5 rounded-full border text-[9px] font-mono tracking-wider transition-all duration-300 cursor-default ${
+              isArch 
+              ? "bg-gray-50/50 border-gray-200 text-gray-600 hover:border-black hover:text-black hover:bg-white"
+              : "bg-[#0a0a0c]/80 border-white/5 text-zinc-500 hover:border-white/20 hover:text-white"
+            }`}
+          >
+            {Icon && (
+              <Icon className={`w-3.5 h-3.5 transition-colors duration-300 ${
+                isArch ? "text-gray-400 group-hover:text-black" : "text-blue-400/70 group-hover:text-[#6366F1]"
+              }`} />
+            )}
+            <span>{tool.name}</span>
+          </motion.div>
+        );
+      })}
     </motion.div>
   );
 };
@@ -424,7 +435,7 @@ const getFlowchartData = (projectId: string, steps: string[]) => {
         start: { title: "FEDERATED MODEL", subtitle: "Combined Structural & Trade Systems", desc: "Imports structural and mechanical coordinate grids" },
         nodes: [
           { title: "Intersection Search", subtitle: "Detects physical collisions between various structural and utility paths", metric: "System Clashes" },
-          { title: "Priority Classification", subtitle: "Sorts clashes by location to separate major frame issues from small utility pipe overlaps", metric: "Clash Matrix" },
+          { title: "Priority Classification", subtitle: "Sorts clashes by location to isolate major structural issues from minor utility overlaps.", metric: "Clash Matrix" },
           { title: "Visual Highlights", subtitle: "Applies clear high-contrast coloring to model components for revision review", metric: "Highlight Active" },
           { title: "Coordination Log Compiler", subtitle: "Bundles clash screenshots and camera angles for repair sheets", metric: "Issue Packager" }
         ],
@@ -449,7 +460,7 @@ const getFlowchartData = (projectId: string, steps: string[]) => {
         nodes: [
           { title: "Schedule Sequence Parser", subtitle: "Interprets Gantt tasks into ordered construction stages", metric: "Timeline Loaded" },
           { title: "Revit Model Connector", subtitle: "Binds scheduling dates to corresponding structural 3D objects", metric: "ID Linkages" },
-          { title: "Build State Overlay", subtitle: "Colors components dynamically to show active, pre-built, or demolished phases", metric: "Render Active" },
+          { title: "Build State Overlay", subtitle: "Applies dynamic color overrides to elements to isolate active build phases.", metric: "Render Active" },
           { title: "4D Simulation Solver", subtitle: "Analyzes construction step timing to detect trade site overlap conflicts", metric: "Conflict Solver" }
         ],
         decision: { title: "LOGISTICS CLASH VERIFICATION", gate: "Are worker crew areas clear of timing collisions?", yes: "CLEAR", no: "STAGGER DATES", desc: "Verifies layout spacing during rapid building periods" },
@@ -556,7 +567,7 @@ const WorkflowFlowchart = ({
     <div className={`font-mono text-xs rounded-lg p-4 md:p-6 transition-all duration-700 ${
       isArch 
         ? "bg-gray-50/50 border border-gray-150 text-gray-800" 
-        : "bg-[#04070a] border border-terminal-border/20 text-gray-400"
+        : "bg-[#04070a] border border-white/10 text-gray-400"
     }`}>
       {/* Mobile/Vertical View */}
       <div className="flex flex-col items-center gap-2 lg:hidden w-full">
@@ -583,14 +594,14 @@ const WorkflowFlowchart = ({
               className={`border rounded-xl p-3.5 transition-all duration-500 relative overflow-hidden w-full max-w-sm ${
                 isArch
                   ? "border-black bg-white text-black"
-                  : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+                  : "border-white/10 bg-[#0a0a0c] text-gray-400"
               }`}
             >
               <div className="flex justify-between items-start gap-1 mb-1.5">
                 <span className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-bold tracking-wider ${
                   isArch 
                     ? "bg-black text-white" 
-                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                    : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                 }`}>
                   PHASE 0{i + 1}
                 </span>
@@ -607,7 +618,7 @@ const WorkflowFlowchart = ({
                 <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-full border flex items-center justify-center ${
                   isArch
                     ? "border-black text-black bg-white"
-                    : "border-terminal-border/40 text-gray-400 bg-black/40"
+                    : "border-white/10 text-gray-400 bg-[#0a0a0c]/80"
                 }`}>
                   <Cpu className="w-3 h-3" />
                 </div>
@@ -667,7 +678,7 @@ const WorkflowFlowchart = ({
             {/* Connector Arrow pointing right */}
             <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
               <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
-                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-white/10 bg-black"
               }`} />
             </div>
           </div>
@@ -675,12 +686,12 @@ const WorkflowFlowchart = ({
           {/* Phase 01 */}
           <div className="relative">
             <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
-              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              isArch ? "border-black bg-white text-black" : "border-white/10 bg-[#0a0a0c] text-gray-400"
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                   }`}>PHASE 01</span>
                   {data.nodes[0]?.metric && (
                     <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
@@ -700,7 +711,7 @@ const WorkflowFlowchart = ({
             {/* Connector Arrow pointing right */}
             <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
               <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
-                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-white/10 bg-black"
               }`} />
             </div>
           </div>
@@ -708,12 +719,12 @@ const WorkflowFlowchart = ({
           {/* Phase 02 */}
           <div>
             <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
-              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              isArch ? "border-black bg-white text-black" : "border-white/10 bg-[#0a0a0c] text-gray-400"
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                   }`}>PHASE 02</span>
                   {data.nodes[1]?.metric && (
                     <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
@@ -734,12 +745,12 @@ const WorkflowFlowchart = ({
 
         {/* Transition Downward Connection Line */}
         <div className="flex justify-between items-center px-6 -my-2.5">
-          <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 mr-4 opacity-50"></div>
-          <div className="flex items-center gap-2 font-mono text-[9px] opacity-50 px-3 py-1 rounded bg-black/40 border border-terminal-border/10 text-neon-cyan uppercase">
+          <div className="h-[1px] flex-1 border-t border-dashed border-white/10 mr-4 opacity-50"></div>
+          <div className="flex items-center gap-2 font-mono text-[9px] opacity-50 px-3 py-1 rounded bg-[#0a0a0c]/80 border border-white/10 text-neon-cyan uppercase">
             <span>CONTINUE PROCESSING</span>
             <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
           </div>
-          <div className="h-[1px] flex-1 border-t border-dashed border-terminal-border/20 ml-4 opacity-50"></div>
+          <div className="h-[1px] flex-1 border-t border-dashed border-white/10 ml-4 opacity-50"></div>
         </div>
 
         {/* Row 2: Phase 3 -> Phase 4 -> Dispatch / End */}
@@ -748,12 +759,12 @@ const WorkflowFlowchart = ({
           {/* Phase 03 */}
           <div className="relative">
             <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
-              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              isArch ? "border-black bg-white text-black" : "border-white/10 bg-[#0a0a0c] text-gray-400"
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                   }`}>PHASE 03</span>
                   {data.nodes[2]?.metric && (
                     <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
@@ -773,7 +784,7 @@ const WorkflowFlowchart = ({
             {/* Connector Arrow pointing right */}
             <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
               <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
-                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-white/10 bg-black"
               }`} />
             </div>
           </div>
@@ -781,12 +792,12 @@ const WorkflowFlowchart = ({
           {/* Phase 04 */}
           <div className="relative">
             <div className={`h-full min-h-[110px] border rounded-xl p-4 transition-all duration-500 flex flex-col justify-between ${
-              isArch ? "border-black bg-white text-black" : "border-terminal-border/30 bg-[#080b0e] text-gray-300"
+              isArch ? "border-black bg-white text-black" : "border-white/10 bg-[#0a0a0c] text-gray-400"
             }`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold uppercase tracking-wider ${
-                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                    isArch ? "bg-black text-white" : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                   }`}>PHASE 04</span>
                   {data.nodes[3]?.metric && (
                     <span className={`text-[8px] font-mono font-bold uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
@@ -806,7 +817,7 @@ const WorkflowFlowchart = ({
             {/* Connector Arrow pointing right */}
             <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 z-10 flex items-center justify-center">
               <ChevronRight className={`w-4 h-4 shadow-sm bg-[#04070a] border rounded-full p-0.5 ${
-                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-terminal-border/20 bg-black"
+                isArch ? "text-black border-stone-300 bg-white" : "text-neon-cyan border-white/10 bg-black"
               }`} />
             </div>
           </div>
@@ -1012,10 +1023,10 @@ const ProjectCard = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className={`group relative overflow-hidden border transition-all duration-700 cursor-pointer flex flex-col h-full ${
+      className={`group relative rounded-2xl overflow-hidden border transition-all duration-700 cursor-pointer flex flex-col h-full ${
         isArch 
-        ? "border-gray-100 bg-white hover:border-black hover:shadow-2xl hover:shadow-black/5" 
-        : "border-terminal-border bg-black/40 hover:border-neon-cyan hover:shadow-[0_0_30px_rgba(0,255,255,0.05)]"
+        ? "border-gray-200 bg-white hover:border-black hover:shadow-2xl hover:shadow-black/5" 
+        : "border-white/5 bg-[#111113] hover:border-white/20 hover:shadow-2xl hover:shadow-black/50"
       }`}
     >
       <div className="aspect-[16/11] overflow-hidden relative">
@@ -1030,13 +1041,17 @@ const ProjectCard = ({
             : "opacity-40 group-hover:opacity-80"
           }`}
         />
-        {/* Engineering Scanner Effect */}
-        {!isArch && (
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-neon-cyan/30 shadow-[0_0_10px_rgba(0,255,255,0.5)] opacity-0 group-hover:opacity-100 group-hover:animate-scan z-10" />
+
+        
+        <div className={`absolute inset-0 transition-opacity duration-700 bg-black/0 group-hover:bg-black/10`} />
+        
+        {(item.title === "Net-Zero Worker Housing" || item.title === "Recycled Bus Pavilion") && (
+          <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 bg-black/80 backdrop-blur-md rounded-full border border-yellow-500/30 text-yellow-500 shadow-lg group-hover:border-yellow-400 group-hover:bg-black transition-all duration-500">
+            <Award className="w-4 h-4" />
+            <span className="text-[9px] font-mono tracking-widest font-bold uppercase">{item.title === "Net-Zero Worker Housing" ? "Grand Winner" : "National Citation"}</span>
+          </div>
         )}
-        
-        <div className={`absolute inset-0 transition-opacity duration-700 ${isArch ? "bg-black/5 opacity-0 group-hover:opacity-100" : "bg-neon-cyan/5 opacity-0 group-hover:opacity-100"}`} />
-        
+
         {item.scriptUrl && (
           <button
             onClick={(e) => {
@@ -1048,7 +1063,7 @@ const ProjectCard = ({
             className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-30 pointer-events-auto shadow-md ${
               isArch 
                 ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
-                : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
+                : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-white/10/35"
             }`}
           >
             <Code2 className="w-3.5 h-3.5 animate-pulse" />
@@ -1066,53 +1081,106 @@ const ProjectCard = ({
       </div>
 
       <div className="p-6 md:p-8 flex-grow">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h4 className={`text-xl md:text-2xl font-medium tracking-tight mb-1 transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
+        <div className="flex justify-between items-start mb-6">
+          <div className="flex flex-col gap-3">
+            <h4 className={`text-xl md:text-2xl font-medium tracking-tight transition-colors duration-700 ${isArch ? "text-black font-serif italic" : "text-white font-sans"}`}>
               {item.title}
             </h4>
-            {item.role && (
-              <div className={`text-[10px] md:text-[11px] font-mono tracking-widest uppercase transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-orange"}`}>
-                {item.role}
-              </div>
-            )}
+            
+            <div className="flex flex-col gap-1.5">
+              {item.role && (
+                <div className={`text-[10px] font-mono tracking-widest uppercase transition-colors duration-700 ${isArch ? "text-gray-500" : "text-gray-400"}`}>
+                  {item.role}
+                </div>
+              )}
+              {item.metric && !isArch && (
+                <div className={`text-[10px] font-mono tracking-widest uppercase transition-colors duration-700 ${isArch ? "text-gray-500" : "text-neon-cyan"}`}>
+                  {item.metric}
+                </div>
+              )}
+            </div>
           </div>
           {item.category && (
-            <div className="flex items-center gap-2">
-              <span className={`text-[8px] md:text-[9px] font-mono px-2 py-1 border transition-colors duration-700 ${isArch ? "border-black text-black" : "border-neon-cyan text-neon-cyan"}`}>
+            <div className="flex items-center gap-2 shrink-0 ml-4">
+              <span className={`text-[8px] md:text-[9px] font-mono px-2 py-1 border transition-colors duration-700 ${isArch ? "border-black text-black" : "border-white/10 text-neon-cyan"}`}>
                 {item.category}
               </span>
             </div>
           )}
         </div>
 
-        {item.hook && (
-          <div className={`text-[10px] md:text-[11px] font-mono mb-4 py-2 border-y transition-colors duration-700 border-dashed ${isArch ? "text-gray-600 italic border-gray-100" : "text-neon-cyan border-terminal-border"}`}>
-            {`// ${item.hook}`}
+        {item.problem && item.solution ? (
+          <div className="flex flex-col gap-4 mb-6">
+            <div className="flex flex-col gap-1.5">
+              <span className={`text-[9px] font-mono tracking-widest uppercase ${isArch ? "text-gray-400" : "text-[#3B82F6]"}`}>Problem</span>
+              <p className={`text-sm leading-relaxed ${isArch ? "text-gray-600 italic font-serif" : "text-gray-300 font-sans"}`}>{item.problem}</p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className={`text-[9px] font-mono tracking-widest uppercase ${isArch ? "text-gray-400" : "text-[#00f2ff]"}`}>Solution</span>
+              <p className={`text-sm leading-relaxed ${isArch ? "text-gray-600 italic font-serif" : "text-gray-300 font-sans"}`}>{item.solution}</p>
+            </div>
           </div>
+        ) : (
+          <>
+            {item.hook && (
+              <div className={`text-[10px] md:text-[11px] font-mono mb-4 py-2 border-y transition-colors duration-700 border-dashed ${isArch ? "text-gray-600 italic border-gray-100" : "text-neon-cyan border-white/5"}`}>
+                {`// ${item.hook}`}
+              </div>
+            )}
+            
+            <p className={`text-sm md:text-base mb-8 line-clamp-3 leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
+              {item.description}
+            </p>
+          </>
         )}
-        
-        <p className={`text-sm md:text-base mb-8 line-clamp-3 leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-500 italic" : "text-gray-400 font-mono"}`}>
-          {item.description}
-        </p>
 
         <div className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-6">
             {item.tags.map((tag, idx) => {
               const isProfessional = tag === "Professional Experience" || tag === "IMK Internship" || tag === "Freelance";
               const isCompetition = tag === "Competition";
+              
+              let TagIcon = null;
+              const tagLower = tag.toLowerCase();
+              if (tagLower.includes('revit')) TagIcon = Layers;
+              else if (tagLower.includes('navisworks')) TagIcon = GitMerge;
+              else if (tagLower.includes('dynamo') || tagLower.includes('python')) TagIcon = Workflow;
+              else if (tagLower.includes('excel') || tagLower.includes('sql') || tagLower.includes('json')) TagIcon = Database;
+              else if (tagLower.includes('rhino') || tagLower.includes('grasshopper')) TagIcon = Activity;
+              else if (tagLower.includes('iso')) TagIcon = ShieldCheck;
+              else if (tagLower.includes('api') || tagLower.includes('c#')) TagIcon = Code2;
+
+              if (isProfessional || isCompetition) {
+                 return (
+                  <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${
+                    isArch 
+                      ? isProfessional ? "bg-black text-white border-black font-bold" 
+                        : isCompetition ? "bg-amber-100 text-amber-800 border-amber-400 font-bold"
+                        : "border-gray-100 text-gray-400" 
+                      : isProfessional ? "bg-neon-cyan/20 text-neon-cyan border-white/10 font-bold" 
+                        : isCompetition ? "bg-amber-500/20 text-amber-400 border-amber-500/50 font-bold"
+                        : "border-white/10 text-gray-500 group-hover:text-[#6366F1]/70 group-hover:border-white/10"
+                  }`}>
+                    {tag}
+                  </span>
+                 );
+              }
+              
               return (
-                <span key={`${item.id}-${tag}-${idx}`} className={`text-[8px] md:text-[9px] font-mono px-2 py-0.5 border transition-colors duration-700 ${
-                  isArch 
-                    ? isProfessional ? "bg-black text-white border-black font-bold" 
-                      : isCompetition ? "bg-amber-100 text-amber-800 border-amber-400 font-bold"
-                      : "border-gray-100 text-gray-400" 
-                    : isProfessional ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan font-bold" 
-                      : isCompetition ? "bg-amber-500/20 text-amber-400 border-amber-500/50 font-bold"
-                      : "border-terminal-border/50 text-gray-500 group-hover:text-neon-cyan/70 group-hover:border-neon-cyan/20"
-                }`}>
+                <div key={`${item.id}-${tag}-${idx}`} 
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-mono tracking-wider transition-all duration-300 ${
+                    isArch 
+                      ? "bg-gray-50/50 border-gray-200 text-gray-600 hover:border-black hover:text-black hover:bg-white"
+                      : "bg-[#0a0a0c]/80 border-white/5 text-zinc-500 group-hover:border-white/20 group-hover:text-white"
+                  }`}
+                >
+                  {TagIcon && (
+                    <TagIcon className={`w-3 h-3 transition-colors duration-300 ${
+                      isArch ? "text-gray-400 group-hover:text-black" : "text-blue-400/70 group-hover:text-[#6366F1]"
+                    }`} />
+                  )}
                   {tag}
-                </span>
+                </div>
               );
             })}
           </div>
@@ -1125,7 +1193,7 @@ const ProjectCard = ({
 };
 
 const CodeSnippet = () => (
-  <div className="bg-black p-4 rounded border border-terminal-border font-mono text-xs text-neon-cyan overflow-hidden">
+  <div className="bg-black p-4 rounded border border-white/5 font-mono text-xs text-neon-cyan overflow-hidden">
     <div className="flex gap-2 mb-2 opacity-50">
       <div className="w-2 h-2 rounded-full bg-red-500" />
       <div className="w-2 h-2 rounded-full bg-yellow-500" />
@@ -1189,10 +1257,10 @@ const HeroTerminal = () => {
 };
 
 const DataTable = () => (
-  <div className="bg-black rounded border border-terminal-border font-mono text-[10px] overflow-hidden">
+  <div className="bg-black rounded border border-white/5 font-sans text-[11px] font-medium tracking-wide overflow-hidden">
     <table className="w-full text-left border-collapse">
       <thead>
-        <tr className="border-bottom border-terminal-border bg-terminal-border/30">
+        <tr className="border-bottom border-white/5 bg-terminal-border/30">
           <th className="p-2 text-neon-orange">ID_TAG</th>
           <th className="p-2 text-neon-orange">VOLUME_M3</th>
           <th className="p-2 text-neon-orange">COST_EST</th>
@@ -1205,7 +1273,7 @@ const DataTable = () => (
           ["VDC_003", "210.7", "$21,070"],
           ["VDC_004", "15.4", "$1,540"],
         ].map(([id, vol, cost], i) => (
-          <tr key={`cost-${i}`} className="border-bottom border-terminal-border/50">
+          <tr key={`cost-${i}`} className="border-bottom border-white/10">
             <td className="p-2 text-gray-400">{id}</td>
             <td className="p-2 text-neon-cyan">{vol}</td>
             <td className="p-2 text-white">{cost}</td>
@@ -1562,12 +1630,9 @@ export default function App() {
   const visibleSections = ["landing", "vdc-section", "arch-section", "terminal"];
 
   const menuItems = [
-    { id: "landing", label: "Gateway", isSection: true, index: 0, elementId: "landing" },
-    { id: "vdc-section", label: "VDC Core", isSection: true, index: 1, elementId: "vdc-section" },
-    { id: "vdc-workflows", label: "BIM Workflows", isSection: false, elementId: "vdc-workflows" },
+    { id: "landing", label: "Home", isSection: true, index: 0, elementId: "landing" },
+    { id: "vdc-section", label: "Workflows", isSection: true, index: 1, elementId: "vdc-section" },
     { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
-    { id: "arch-section", label: "Arch Studio", isSection: true, index: 2, elementId: "arch-section" },
-    { id: "arch-works", label: "Design Portfolio", isSection: false, elementId: "arch-works" },
     { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
   ];
 
@@ -2051,9 +2116,8 @@ export default function App() {
     {
       id: "BIM_08",
       title: "Agent-Based Space Planning & Structural Solver",
-      role: "Computational Design Technologist",
-      hook: "Reframing architectural programming as a dynamic physics simulation.",
-      description: "Generative tool treating spaces as physical agents to auto-resolve adjacencies and structural grids.",
+      domain: "GENERATIVE LOGIC // PYRHINO & GEOMETRY API",
+      intel: "Self-resolving architectural space adjacencies using localized vector repulsion and structural grid matching.",
       icon: <Cpu className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "Agentic AI",
@@ -2098,9 +2162,8 @@ export default function App() {
     {
       id: "BIM_07",
       title: "The Multi-Objective Eco-Parametric Solver",
-      role: "Simulation Lead & Computational Designer",
-      hook: "Single vs. Multi-Objective Generative Evolutionary Solvers",
-      description: "Research comparing genetic solvers (Galapagos vs. Wallacei) for optimizing solar window shades.",
+      domain: "ENVIRONMENTAL SIMULATION // EVOLUTIONARY SOLVERS",
+      intel: "Benchmarking genetic algorithms (Galapagos vs. Wallacei) to automate complex solar shading geometry.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
       metric: "Comparative",
@@ -2152,9 +2215,8 @@ export default function App() {
     {
       id: "BIM_01",
       title: "The LLM Fabrication Engine",
-      role: "Computational Design Technologist",
-      hook: "Generative AI API integration with physical CNC digital fabrication.",
-      description: "Python API bridge connecting Gemini models with CNC machines to generate cut sheets from prompts.",
+      domain: "AI INTEGRATION // PYTHON & CNC RUNTIMES",
+      intel: "Headless web API bridge linking Gemini models to automatically generate clean fabrication cut sheets from raw text prompts.",
       icon: <Cpu className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
       metric: "Generative API",
@@ -2193,17 +2255,17 @@ export default function App() {
     {
       id: "BIM_09",
       title: "Rhino-to-Revit API Interoperability Pipeline",
-      role: "Workflow Automation & Computational Research",
-      hook: "AI-driven topology serialization & real-time BIM compilation.",
-      description: "Data bridge streaming high-fidelity topological coordinates from Rhino to Revit at LOD 400.",
+      role: "WORKFLOW AUTOMATION & COMPUTATIONAL RESEARCH",
+      problem: "Traditional IFC/geometry exchanges cause major data degradation and layout latency between teams.",
+      solution: "Built a custom Python data bridge to serialize high-fidelity topological coordinates out of Rhino and compile them directly through the native Revit API.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
-      metric: "LOD 400 Mass",
+      metric: "LOD 400 TOPOLOGY COMPILATION",
       gifUrl: "https://lh3.googleusercontent.com/d/1gApYb78g5bpNXO0OLes5ymrUk9mEV1i8",
-      tags: ["Grasshopper 3D", "Revit API", "Raven AI", "JSON", "Python"],
+      tags: ["Grasshopper 3D", "Revit API", "JSON", "Python"],
       ledger: {
         inputs: "Rhino 3DM NURBS, JSON Topology maps",
-        engine: "Revit API, C# Node Compiler, Raven AI API Serialization",
+        engine: "Revit API, Dynamo Node Compiler, Raven AI API Serialization",
         outputs: "LOD 400 Revit Conceptual Massing, Parameter-Synced Direct Shapes"
       },
       workflow: {
@@ -2248,18 +2310,18 @@ export default function App() {
     {
       id: "BIM_02",
       title: "The Generative Documentation Engine",
-      role: "BIM Automation Lead",
-      hook: "Bypassing Revit UI limitations to automate large-scale sheet generation.",
-      description: "Dynamo script that reads spreadsheets to instantly generate formatted blueprints and sheets in Revit.",
+      role: "BIM AUTOMATION LEAD",
+      problem: "Manual creation and formatting of documentation sheets in Revit consumes massive amounts of unbillable production hours.",
+      solution: "Engineered a Python/Dynamo pipeline that bypasses the Revit UI, reading directly from Excel to generate, format, and place views on hundreds of sheets instantly.",
       icon: <Code2 className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
-      metric: "Firm-Wide Scale",
+      metric: "FIRM-WIDE SCALE",
       content: <CodeSnippet />,
       gifUrl: "https://lh3.googleusercontent.com/d/1SHXNrFYWzgw8f6hMYNzF4I9BQfdF5Xor",
-      tags: ["Revit API", "Dynamo", "Python"],
+      tags: ["Revit API", "Dynamo", "Python", "Excel"],
       ledger: {
         inputs: "3D Revit building models, Excel sheet list schedule",
-        engine: "C# and Python document scripts",
+        engine: "Revit MCP and Python document scripts",
         outputs: "Completed, labeled blueprint rolls, PDF/DWG files"
       },
       workflow: {
@@ -2281,15 +2343,15 @@ export default function App() {
     {
       id: "BIM_03",
       title: "The 5D Data Harvester",
-      role: "VDC Data Engineer",
-      hook: "Scrubbing massive Revit models to extract exact facility parameters.",
-      description: "Data extraction script that pulls precise material quantities from 3D models into Excel logs.",
+      role: "VDC DATA ENGINEER",
+      problem: "Extracting exact facility parameters and material quantities manually is error-prone and labor-intensive.",
+      solution: "Developed a Dynamo script that scrubs massive Revit models to extract and format precise material quantities directly into analytical Excel logs.",
       icon: <Database className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
-      metric: "100% Accuracy",
+      metric: "100% ACCURACY",
       content: <DataTable />,
       gifUrl: "https://lh3.googleusercontent.com/d/1o1McRNTDM1fwtEzORfJEz21-9udMX1CN",
-      tags: ["Dynamo", "Excel"],
+      tags: ["Dynamo", "Excel", "Data Extraction"],
       ledger: {
         inputs: "Combined architectural and plumbing BIM models",
         engine: "Dynamo data harvesting scripts",
@@ -2314,9 +2376,8 @@ export default function App() {
     {
       id: "BIM_05",
       title: "The MEP Component Automator",
-      role: "VDC Engineer",
-      hook: "Automated placement and configuration of MEP systems.",
-      description: "Automated routing script that positions MEP pipes and vents using size and clearance rules.",
+      domain: "BIM PRODUCTION // REVIT API & PYTHON",
+      intel: "Automated local routing script using clearance vector testing to dynamically place pipes and air vents around structural limits.",
       icon: <Cpu className="w-6 h-6 text-neon-orange" />,
       color: "neon-orange",
       metric: "Automation",
@@ -2346,14 +2407,14 @@ export default function App() {
     {
       id: "BIM_04",
       title: "The Clash Matrix Pipeline",
-      role: "BIM Coordinator",
-      hook: "Streamlining multidisciplinary model coordination.",
-      description: "3D collision checker auditing steel structures against MEP elements to flag coordination issues.",
+      role: "BIM COORDINATOR",
+      problem: "Multidisciplinary model coordination requires tedious manual visual inspection, missing critical overlaps between structural and MEP elements.",
+      solution: "Engineered a collision checker that audits steel structures against utility models, automatically flagging and categorizing coordination issues.",
       icon: <Activity className="w-6 h-6 text-neon-cyan" />,
       color: "neon-cyan",
-      metric: "Zero Errors",
+      metric: "ZERO ERRORS",
       gifUrl: "https://lh3.googleusercontent.com/d/1G_5-CuXFQuIf9mft1d6CauX29EmntKOE",
-      tags: ["Navisworks Manage", "Revit NWC Exporter"],
+      tags: ["Navisworks", "Revit", "Clash Detection"],
       ledger: {
         inputs: "Structural frame files, plumbing pipes files, rule matching checklists",
         engine: "Clash check solvers and automated view filters",
@@ -2379,14 +2440,14 @@ export default function App() {
     {
       id: "BIM_06",
       title: "The 4D Matrix (TimeLiner)",
-      role: "Simulation Lead",
-      hook: "Visualizing construction sequences over time.",
-      description: "4D scheduling tool linking timelines with 3D models to simulate and preview building phases.",
+      role: "SIMULATION LEAD",
+      problem: "Static Gantt charts fail to communicate spatial logistics and complex construction sequences over time.",
+      solution: "Developed a 4D scheduling tool that links MS Project timelines directly to 3D model elements, simulating building phases dynamically.",
       icon: <ShieldCheck className="w-6 h-6 text-neon-blue" />,
       color: "neon-blue",
-      metric: "4D Simulation",
+      metric: "4D SIMULATION",
       gifUrl: "https://lh3.googleusercontent.com/d/1qpMsNkw8HaPhf97qubs7GEV1BkZKsydz",
-      tags: ["Navisworks Manage", "TimeLiner"],
+      tags: ["Navisworks", "TimeLiner", "MS Project"],
       ledger: {
         inputs: "3D Revit building model, MS Project build schedule",
         engine: "Timeline player and date linking rules",
@@ -2642,20 +2703,20 @@ export default function App() {
   const isHeaderArch = isArch;
 
   return (
-    <div className={`min-h-screen w-full transition-colors duration-700 ${isArch ? "bg-white text-gray-900 font-serif" : "bg-terminal-bg text-gray-300 font-sans"} relative overflow-x-hidden`}>
+    <div className={`min-h-screen w-full transition-colors duration-700 ${isArch ? "bg-white text-gray-900 font-serif" : "bg-[#0a0a0c] text-gray-400 font-sans"} relative overflow-x-hidden`}>
       <AnimatePresence>
         {isLoading && (
           <motion.div 
             variants={loadingVariants}
             initial="initial"
             exit="exit"
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-terminal-bg"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a0a0c]"
           >
             <div className="w-12 h-12 relative mb-6">
               <motion.div 
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-2 border-neon-cyan/20 rounded-full"
+                className="absolute inset-0 border-2 border-white/10 rounded-full"
               />
               <motion.div 
                 animate={{ rotate: -360 }}
@@ -2670,7 +2731,7 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0.5, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
-              className="font-mono text-[10px] text-neon-cyan tracking-[0.4em] uppercase"
+              className="font-sans text-[11px] font-medium tracking-wide text-neon-cyan tracking-[0.4em] uppercase"
             >
               System_Initializing...
             </motion.div>
@@ -2689,66 +2750,35 @@ export default function App() {
       <AmbientBackground isArch={isArch} />
       
       {/* Header / Nav */}
-      <header className={`fixed top-0 w-full z-[60] backdrop-blur-md border-b px-4 md:px-6 py-3 md:py-3.5 flex justify-between items-center transition-all duration-700 ${isHeaderArch ? "bg-white/80 border-gray-100/80" : "bg-terminal-bg/80 border-terminal-border"}`}>
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className="flex items-center gap-2">
-            <Terminal className={`w-5 h-5 md:w-5 md:h-5 ${isHeaderArch ? "text-gray-400" : "text-neon-cyan"}`} />
-            <span className={`font-mono font-semibold tracking-tighter text-xs md:text-sm transition-colors duration-700 ${isHeaderArch ? "text-black" : "text-white"}`}>KARTHIKRAJ_NADAR</span>
+            <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center bg-[#0a0a0c]/80`}>
+        <div className="flex items-center gap-6 pl-4 md:pl-6 lg:pl-8">
+          <div className="flex items-center font-sans text-lg md:text-xl font-bold tracking-tight text-white uppercase">
+            <span className="text-[#00f2ff] font-mono font-light text-xl opacity-70">{`>`}</span>
+            <span className="text-[#00f2ff] font-mono font-light text-xl -ml-0.5 mt-2 opacity-70">{`_`}</span>
+            <span className="ml-3 tracking-wide">KARTHIKRAJ_<span className="text-[#3B82F6]">NADAR</span></span>
           </div>
-          
-          {/* Snap-thru Jumping Portal instead of a raw state-switch */}
-          <button 
-            onClick={() => {
-              const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[8px] md:text-[9px] font-mono uppercase tracking-widest transition-all duration-500 ${
-              isHeaderArch 
-              ? "bg-black text-white border-black hover:bg-gray-800" 
-              : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan/25"
-            }`}
-          >
-            {isHeaderArch ? <Terminal className="w-2.5 h-2.5 animate-pulse" /> : <Box className="w-2.5 h-2.5" />}
-            <span className="hidden sm:inline">Portal to </span>{isHeaderArch ? "VDC_CORE" : "ARCH_STUDIO"}
+        </div>
+        
+        <div className="hidden md:flex flex-1 justify-center gap-10">
+          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+            Home
+          </button>
+          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+            Workflows
+            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+          </button>
+          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+            Apps / Web
+            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+          </button>
+          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+            Bio
           </button>
         </div>
+        
+        <div>
 
-        {/* Desktop Nav */}
-        <div className={`hidden md:flex gap-6 font-mono text-[10px] md:text-xs uppercase tracking-widest transition-colors duration-700 ${isHeaderArch ? "text-gray-600" : "text-gray-500"}`}>
-          {desktopMenuItems.map((item) => {
-            const isActive = 
-              item.id === "landing" ? activeSection === 0 :
-              item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
-              item.id === "vdc-apps" ? isAppsActive :
-              item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
-              item.id === "terminal" ? activeSection === 3 :
-              false;
-            return (
-              <button 
-                key={`desktop-menu-${item.id}`}
-                onClick={() => {
-                  if (item.isSection) {
-                    handleSectionChange(item.index!);
-                  } else {
-                    const el = document.getElementById(item.elementId);
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className={`hover:text-neon-cyan transition-colors ${isActive ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan") : ""}`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
         </div>
-
-        {/* Mobile Menu Toggle */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`md:hidden p-2 transition-colors ${isHeaderArch ? "text-black hover:bg-gray-100" : "text-neon-cyan hover:bg-white/5"}`}
-        >
-          {isMenuOpen ? <Box className="w-5 h-5 rotate-45" /> : <Layers className="w-5 h-5" />}
-        </button>
       </header>
 
       {/* Mobile Nav Overlay */}
@@ -2759,7 +2789,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             className={`fixed inset-0 z-[70] block p-6 transition-colors duration-700 overflow-y-auto ${
-              isHeaderArch ? "bg-white text-black" : "bg-terminal-bg text-neon-cyan"
+              isHeaderArch ? "bg-white text-black" : "bg-[#0a0a0c] text-neon-cyan"
             }`}
           >
             <div className="min-h-full flex flex-col justify-between items-center w-full max-w-sm mx-auto">
@@ -2790,7 +2820,7 @@ export default function App() {
                           handleSectionChange(item.index!);
                           setIsMenuOpen(false);
                         }}
-                        className={`hover:translate-x-1 py-2 text-left w-full border-b flex justify-between items-center transition-all duration-300 ${
+                        className={`hover:translate-x-1 hover:text-[#6366F1] py-2 text-left w-full border-b flex justify-between items-center transition-all duration-300 ${
                           isHeaderArch ? "border-gray-100" : "border-white/5"
                         } ${isActive ? "font-bold text-sm" : "opacity-80 text-[11px]"}`}
                       >
@@ -2807,7 +2837,7 @@ export default function App() {
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                           setIsMenuOpen(false);
                         }}
-                        className={`hover:translate-x-1 transition-all text-left py-1.5 pl-5 text-[10px] flex items-center gap-1.5 ${
+                        className={`hover:translate-x-1 hover:text-[#6366F1] transition-all text-left py-1.5 pl-5 text-[10px] flex items-center gap-1.5 ${
                           isActive 
                             ? (isHeaderArch ? "text-black font-semibold" : "text-neon-cyan font-semibold") 
                             : "opacity-50 hover:opacity-90"
@@ -2821,27 +2851,56 @@ export default function App() {
                 })}
               </div>
 
-              <div className="pb-6 flex flex-col items-center gap-3.5 w-full">
-                <div className="text-[10px] opacity-40 uppercase tracking-widest font-mono">Jump Portal</div>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById(isHeaderArch ? "vdc-section" : "arch-section");
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    setIsMenuOpen(false);
-                  }}
-                  className={`w-full max-w-[220px] px-5 py-2 border font-mono text-[9px] uppercase tracking-widest transition-all duration-500 rounded-sm shadow text-center ${
-                    isHeaderArch 
-                    ? "bg-black text-white border-black" 
-                    : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30"
-                  }`}
-                >
-                  {isHeaderArch ? "PORTAL TO VDC_CORE" : "PORTAL TO ARCH_STUDIO"}
-                </button>
-              </div>
+
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Mode Selector */}
+      <div className={`fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center p-1.5 rounded-full backdrop-blur-xl border shadow-2xl transition-all duration-700 ${
+        isArch ? "bg-white/80 border-gray-300" : "bg-[#0a0a0c]/80 border-white/10"
+      }`}>
+        <button 
+          onClick={() => {
+            const el = document.getElementById("vdc-section");
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className={`relative flex items-center justify-center px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.15em] transition-all duration-500 z-10 ${
+            !isArch ? "text-black" : "text-gray-500 hover:text-black"
+          }`}
+        >
+          {!isArch && (
+            <motion.div 
+              layoutId="mode-pill"
+              className="absolute inset-0 bg-neon-cyan rounded-full -z-10 shadow-[0_0_15px_rgba(0,242,255,0.4)]"
+            />
+          )}
+          <Terminal className="w-3.5 h-3.5 mr-2" />
+          VDC_DASHBOARD
+        </button>
+        
+        <div className={`w-[1px] h-4 md:h-5 transition-colors duration-700 mx-1 ${isArch ? "bg-gray-300" : "bg-white/20"}`} />
+        
+        <button 
+          onClick={() => {
+            const el = document.getElementById("arch-section");
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className={`relative flex items-center justify-center px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-mono font-bold tracking-[0.15em] transition-all duration-500 z-10 ${
+            isArch ? "text-white" : "text-gray-400 hover:text-white"
+          }`}
+        >
+          {isArch && (
+            <motion.div 
+              layoutId="mode-pill"
+              className="absolute inset-0 bg-black rounded-full -z-10 shadow-lg"
+            />
+          )}
+          <Box className="w-3.5 h-3.5 mr-2" />
+          ARCH_STUDIO
+        </button>
+      </div>
 
       {/* Progress Indicator */}
       <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col gap-4 items-center">
@@ -2859,7 +2918,7 @@ export default function App() {
           className={`p-2 border transition-colors ${
             isHeaderArch 
             ? "border-gray-200 hover:bg-black hover:text-white" 
-            : "brutalist-border hover:bg-neon-cyan hover:text-black"
+            : "brutalist-border rounded-2xl overflow-hidden hover:bg-neon-cyan hover:text-black"
           } disabled:opacity-20`}
         >
           <ChevronUp className="w-4 h-4" />
@@ -2881,7 +2940,7 @@ export default function App() {
           className={`p-2 border transition-colors ${
             isHeaderArch 
             ? "border-gray-200 hover:bg-black hover:text-white" 
-            : "brutalist-border hover:bg-neon-cyan hover:text-black"
+            : "brutalist-border rounded-2xl overflow-hidden hover:bg-neon-cyan hover:text-black"
           } disabled:opacity-20`}
         >
           <ChevronDown className="w-4 h-4" />
@@ -2890,123 +2949,83 @@ export default function App() {
 
       <main className="relative z-10">
         {/* STAGE 1: Vertical Split landing Gateway */}
-        <section id="landing" className="min-h-screen h-[100dvh] md:h-screen w-full relative flex flex-col md:flex-row bg-[#080b0e] overflow-hidden">
-          {/* Central Gateway Divider (Mobile Only) */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex md:hidden flex-col items-center justify-center pointer-events-none">
-            <div className="w-10 h-10 rounded-full border border-terminal-border/30 flex items-center justify-center shadow-2xl overflow-hidden relative">
-              <div className="absolute inset-0 w-full h-full flex flex-col">
-                <div className="flex-1 bg-[#0c0f12]"></div>
-                <div className="flex-1 bg-gray-50"></div>
-              </div>
-              <span className="relative z-10 text-[9px] tracking-[0.2em] ml-[0.2em] font-mono text-gray-400 mix-blend-difference">OR</span>
-            </div>
-          </div>
-
-          {/* VDC Side (Left/Top) */}
-          <div 
-            onMouseEnter={() => setHoveredSide('left')}
-            onMouseLeave={() => setHoveredSide(null)}
-            className={`flex-1 md:flex-none md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 border-b md:border-b-0 md:border-r border-terminal-border/20 ${
-              hoveredSide === 'left' ? 'md:w-[54%] bg-[#06080a]' : hoveredSide === 'right' ? 'md:w-[46%] opacity-40 bg-black' : 'md:w-[50%] bg-[#0c0f12]'
-            }`}
-          >
-            {/* Left Header Overlay */}
-            <div className="absolute top-4 left-4 font-mono text-[8px] text-neon-cyan/30 tracking-[0.2em] hidden md:block">
-              SECURE_LINK::ACTIVE_PORT_3000
-            </div>
-
-            {/* Left Gateway Content */}
-            <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md">
-              <motion.div 
-                animate={{ scale: hoveredSide === 'left' ? 1.05 : 1 }}
-                className="w-10 h-10 md:w-12 md:h-12 rounded border border-neon-cyan/40 bg-black/50 flex items-center justify-center mb-4 md:mb-6"
-              >
-                <Terminal className="w-5 h-5 md:w-6 md:h-6 text-neon-cyan" />
-              </motion.div>
-              
-              <span className="font-mono text-[8px] md:text-[9px] tracking-[0.3em] text-neon-cyan uppercase mb-1.5 md:mb-2 bg-neon-cyan/5 px-2 py-0.5 md:px-2.5 md:py-1 border border-neon-cyan/10">
-                SYSTEMS_CORE_LINK
-              </span>
-              
-              <h2 className="font-mono font-bold text-lg sm:text-xl md:text-[2.25rem] text-white tracking-widest leading-[1.1] mb-3 md:mb-4 uppercase">
-                VDC &amp; SYSTEMS<br />
-                <span className="text-neon-cyan">ARCHITECTURE</span>
-              </h2>
-              
-              <p className="font-mono text-[10px] sm:text-xs md:text-[11px] text-gray-400 mb-6 md:mb-8 max-w-xs leading-relaxed">
-                Platform-level workflow automations, BIM data scripting, and ISO 19650 protocols to drive complex deliveries.
-              </p>
-
-              {/* Action Button */}
-              <button
+                {/* STAGE 1: Premium Unified Hero */}
+                <section id="landing" className={`min-h-screen h-[100dvh] md:h-screen w-full relative flex flex-col justify-center bg-[#0a0a0c]`}>
+          <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_60%)] pointer-events-none" />
+          <OrganicBackground />
+          
+          <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 md:px-12 flex flex-col justify-center h-full pt-16">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[6rem] font-sans font-black tracking-tighter text-white leading-[0.95] mb-6">
+              Automating Architecture.<br/>
+              <span className="text-gray-400">Engineering Compliant</span><br/>
+              <span className="text-[#3B82F6]">BIM Pipelines.</span>
+            </h1>
+            
+            <p className="text-gray-400 font-sans text-base md:text-xl font-medium max-w-2xl leading-relaxed mb-12">
+              Developing custom Python and Dynamo workflows to streamline database extraction, model validation, and scalable ISO 19650 compliance.
+            </p>
+            
+            <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-16">
+              <button 
                 onClick={() => {
                   const el = document.getElementById("vdc-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-5 py-2.5 md:px-6 md:py-3 font-mono text-[10px] md:text-xs uppercase tracking-widest border border-neon-cyan bg-black text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all duration-300"
+                className="px-8 py-4 bg-[#3B82F6] text-white rounded-full font-bold font-sans hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(59,130,246,0.3)]"
               >
-                Access VDC_Core
+                View Automation Tools
               </button>
-            </div>
-            
-            <div className="absolute bottom-4 left-4 font-mono text-[8px] text-gray-500">
-              [VDC_PORTFOLIO_LINK]
-            </div>
-          </div>
-
-          {/* Architecture Side (Right/Bottom) */}
-          <div 
-            onMouseEnter={() => setHoveredSide('right')}
-            onMouseLeave={() => setHoveredSide(null)}
-            className={`flex-1 md:flex-none md:h-full transition-all duration-700 ease-out relative flex flex-col justify-center items-center p-4 sm:p-6 md:p-12 ${
-              hoveredSide === 'right' ? 'md:w-[54%] bg-white' : hoveredSide === 'left' ? 'md:w-[46%] opacity-40 bg-gray-50' : 'md:w-[50%] bg-gray-50'
-            }`}
-          >
-            {/* Right Header Overlay */}
-            <div className="absolute top-4 right-4 font-serif italic text-[10px] text-gray-400 tracking-[0.1em] hidden md:block">
-              Studio Arch // Vol I
-            </div>
-
-            {/* Right Gateway Content */}
-            <div className="z-10 text-center flex flex-col justify-center items-center max-w-sm md:max-w-md font-serif">
-              <motion.div 
-                animate={{ scale: hoveredSide === 'right' ? 1.05 : 1 }}
-                className="w-10 h-10 md:w-12 md:h-12 rounded border border-black/10 bg-white flex items-center justify-center mb-4 md:mb-6"
-              >
-                <Box className="w-5 h-5 md:w-6 md:h-6 text-black" />
-              </motion.div>
-              
-              <span className="italic text-[10px] md:text-xs tracking-widest text-gray-400 mb-1.5 md:mb-2 font-serif font-light">
-                STUDIO_ARCH_v1.0
-              </span>
-              
-              <h2 className="italic font-medium text-lg sm:text-xl md:text-[2.25rem] text-black tracking-tight leading-[1.1] mb-3 md:mb-4 uppercase">
-                ARCHITECTURAL<br />
-                <span className="font-sans font-light tracking-[0.2em] text-gray-500">DESIGN</span>
-              </h2>
-              
-              <p className="font-sans font-light text-[10px] sm:text-xs text-gray-500 mb-6 md:mb-8 max-w-xs leading-relaxed">
-                Designing elegant, functional buildings with a focus on sustainable materials and comfortable layouts.
-              </p>
-
-              {/* Action Button */}
-              <button
+              <button 
                 onClick={() => {
                   const el = document.getElementById("arch-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-5 py-2.5 md:px-6 md:py-3 font-sans font-medium text-[10px] md:text-xs uppercase tracking-widest border border-black bg-black text-white hover:bg-white hover:text-black transition-all duration-300 hover:shadow-lg"
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-white/10 transition-colors duration-300"
               >
-                Enter Arch_Studio
+                View Design Projects
               </button>
+              <button 
+                onClick={() => {
+                  const el = document.getElementById("terminal");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-[#6366F1]/10 hover:border-[#6366F1]/30 hover:text-[#6366F1] transition-colors duration-300"
+              >
+                View Bio
+              </button>
+              <a 
+                href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-[#6366F1]/10 hover:border-[#6366F1]/30 hover:text-[#6366F1] transition-colors duration-300 flex items-center justify-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                Download Resume
+              </a>
             </div>
             
-            <div className="absolute bottom-4 right-4 font-sans text-[8px] text-gray-400 uppercase tracking-widest">
-              [ARCHITECTURAL_WORKS]
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-8 border-t border-white/10">
+              <div>
+                <div className="text-3xl md:text-5xl font-black text-[#3B82F6] tracking-tighter mb-1">11+</div>
+                <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">Automation Scripts</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-5xl font-black text-[#3B82F6] tracking-tighter mb-1">100%</div>
+                <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">ISO 19650 Compliant</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-5xl font-black text-[#3B82F6] tracking-tighter mb-1">Python</div>
+                <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">Dynamo & APIs</div>
+              </div>
+              <div>
+                <div className="text-3xl md:text-5xl font-black text-[#3B82F6] tracking-tighter mb-1">LOD 350</div>
+                <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">MODELING PRECISION</div>
+              </div>
             </div>
           </div>
         </section>
-        <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-[#0c0f12] text-neon-cyan font-mono text-xs">Loading VDC Environment...</div>}>
+        <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-[#0f1115] text-neon-cyan font-mono text-xs">Loading VDC Environment...</div>}>
           <VDCSection 
             bimArsenal={bimArsenal} 
             experience={experience} 
@@ -3043,9 +3062,9 @@ export default function App() {
             <div className={`border p-4 md:p-6 font-mono text-xs relative overflow-hidden transition-all duration-700 ${
               isArch 
               ? "border-gray-100 bg-white" 
-              : "brutalist-border bg-terminal-bg"
+              : "brutalist-border rounded-2xl overflow-hidden bg-[#0a0a0c]"
             }`}>
-              <div className={`flex items-center gap-2 mb-4 md:mb-6 border-b pb-4 transition-colors duration-700 ${isArch ? "border-gray-100" : "border-terminal-border"}`}>
+              <div className={`flex items-center gap-2 mb-4 md:mb-6 border-b pb-4 transition-colors duration-700 ${isArch ? "border-gray-100" : "border-white/5"}`}>
                 <div className={`w-2 h-2 rounded-full ${isArch ? "bg-gray-200" : "bg-red-500/50"}`} />
                 <div className={`w-2 h-2 rounded-full ${isArch ? "bg-gray-200" : "bg-yellow-500/50"}`} />
                 <div className={`w-2 h-2 rounded-full ${isArch ? "bg-gray-200" : "bg-green-500/50"}`} />
@@ -3064,9 +3083,9 @@ export default function App() {
                 
                 <div className="space-y-2">
                   <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Certification</div>
-                  <div className={`p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/30 bg-neon-cyan/5"}`}>
+                  <div className={`p-4 border border-dashed transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-neon-cyan/5"}`}>
                     <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-neon-cyan/50 bg-black"}`}>
+                      <div className={`w-12 h-12 rounded border flex items-center justify-center shrink-0 ${isArch ? "border-gray-200 bg-white" : "border-white/10/50 bg-black"}`}>
                         <img loading="lazy" 
                           src="https://lh3.googleusercontent.com/d/1szL-O1_LuUqLzzsL3lJqB2JzX4K39dnt" 
                           alt="Badge" 
@@ -3090,16 +3109,16 @@ export default function App() {
                 <div className="space-y-2">
                   <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Contact</div>
                   <div className="flex flex-col sm:flex-row flex-wrap gap-4 md:gap-6">
-                    <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                    <a href="mailto:karthikraj.v.nadar@gmail.com" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-400 hover:text-[#6366F1]"}`}>
                       <Mail className="w-5 h-5" /> karthikraj.v.nadar@gmail.com
                     </a>
-                    <div className={`flex items-center gap-2 transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300"}`}>
+                    <div className={`flex items-center gap-2 transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-400"}`}>
                       <Phone className="w-5 h-5" /> 8779228622
                     </div>
-                    <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                    <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-400 hover:text-[#6366F1]"}`}>
                       <Linkedin className="w-5 h-5" /> linkedin.com/in/karthikraj-nadar-07083526a
                     </a>
-                    <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-300 hover:text-neon-cyan"}`}>
+                    <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 hover:underline transition-colors duration-700 text-sm ${isArch ? "text-gray-700" : "text-gray-400 hover:text-[#6366F1]"}`}>
                       <Github className="w-5 h-5" /> github.com/k-android
                     </a>
                   </div>
@@ -3109,32 +3128,32 @@ export default function App() {
                   <div className="space-y-4 col-span-1 md:col-span-2">
                     <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills Matrix</div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                          <Layers className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>BIM Modeling</span>
                          <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Revit, Navisworks, Vectorworks</span>
                       </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                          <Terminal className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Automation</span>
                          <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Python, Dynamo, Revit API</span>
                       </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
-                         <Hexagon className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
+                         <Component className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Computational</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Rhino, Grasshopper, Wallacei</span>
+                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Rhino, Grasshopper (Wallacei, Galapagos, Ladybug Tools, Rhino.Inside)</span>
                       </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                          <Database className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>VDC & Data</span>
                          <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>ISO 19650, 5D Harvesting</span>
                       </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                          <Camera className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Visualization</span>
                          <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>D5 Render, Enscape, AI Imagery</span>
                       </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-terminal-border/30 bg-black/40"}`}>
+                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                          <Code className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
                          <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Web Dev</span>
                          <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>React, TypeScript, Tailwind</span>
@@ -3168,7 +3187,7 @@ export default function App() {
                   Based in Mumbai. Available for corporate VDC, Computational Design, BIM roles starting as soon as possible.
                 </div>
 
-                <div className={`mt-8 p-6 border transition-all duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-neon-cyan/20 bg-black/40"}`}>
+                <div className={`mt-8 p-6 border transition-all duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
                   {isSent ? (
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
@@ -3192,7 +3211,7 @@ export default function App() {
                             onChange={(e) => setFormState(prev => ({ ...prev, name: e.target.value }))}
                             placeholder=" "
                             className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs ${
-                              isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                              isArch ? "border-gray-300 focus:border-black text-black" : "border-white/5 focus:border-white/10 text-white"
                             }`}
                           />
                           <label 
@@ -3213,7 +3232,7 @@ export default function App() {
                             onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
                             placeholder=" "
                             className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs ${
-                              isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                              isArch ? "border-gray-300 focus:border-black text-black" : "border-white/5 focus:border-white/10 text-white"
                             }`}
                           />
                           <label 
@@ -3235,7 +3254,7 @@ export default function App() {
                           onChange={(e) => setFormState(prev => ({ ...prev, message: e.target.value }))}
                           placeholder=" "
                           className={`peer w-full bg-transparent border-b px-0 py-2 outline-none transition-all duration-700 text-xs resize-none ${
-                            isArch ? "border-gray-300 focus:border-black text-black" : "border-terminal-border focus:border-neon-cyan text-white"
+                            isArch ? "border-gray-300 focus:border-black text-black" : "border-white/5 focus:border-white/10 text-white"
                           }`}
                         />
                         <label 
@@ -3250,12 +3269,12 @@ export default function App() {
                       <button 
                         type="submit"
                         disabled={isSending}
-                        className={`w-full py-3 border font-mono text-[10px] uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 ${
+                        className={`w-full py-3 border font-sans text-[11px] font-medium tracking-wide uppercase tracking-widest transition-all duration-700 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 ${
                           isSending ? "opacity-50 cursor-not-allowed" : ""
                         } ${
                           isArch 
                            ? "bg-black text-white hover:bg-gray-800 hover:shadow-lg hover:shadow-black/20" 
-                           : "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,243,255,0.4)]"
+                           : "bg-neon-cyan/10 text-neon-cyan border-white/10 hover:bg-neon-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,243,255,0.4)]"
                         }`}
                       >
                         {isSending ? (
@@ -3284,21 +3303,21 @@ export default function App() {
               </div>
             </div>
             
-            <footer className={`mt-12 md:mt-20 pt-8 border-t transition-colors duration-700 ${isArch ? "border-gray-100" : "border-terminal-border"}`}>
-              <div className="flex flex-col md:flex-row justify-between items-center gap-8 text-gray-400 font-mono text-[10px] uppercase tracking-widest">
+            <footer className={`mt-12 md:mt-20 pt-8 border-t transition-colors duration-700 ${isArch ? "border-gray-100" : "border-white/5"}`}>
+              <div className="flex flex-col md:flex-row justify-between items-center gap-8 text-gray-400 font-sans text-[11px] font-medium tracking-wide uppercase tracking-widest">
                 <div className="flex flex-col items-center md:items-start gap-2">
                   <div className={isArch ? "text-black font-bold" : "text-white"}>© 2026 {isArch ? "KARTHIKRAJ NADAR ARCHITECTURE" : "VDC_CORE_ENGINEERING"}</div>
                   <div className="text-[8px] opacity-60">ALL RIGHTS RESERVED // MUMBAI, INDIA</div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                  <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
+                  <a href="https://github.com/k-android" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-[#6366F1]"}`}>
                     <Github className="w-4 h-4" />
                   </a>
-                  <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
+                  <a href="https://www.linkedin.com/in/karthikraj-nadar-07083526a" target="_blank" rel="noopener noreferrer" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-[#6366F1]"}`}>
                     <Linkedin className="w-5 h-5" />
                   </a>
-                  <a href="mailto:karthikraj.v.nadar@gmail.com" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-neon-cyan"}`}>
+                  <a href="mailto:karthikraj.v.nadar@gmail.com" className={`transition-colors ${isArch ? "hover:text-black" : "hover:text-[#6366F1]"}`}>
                     <Mail className="w-5 h-5" />
                   </a>
                 </div>
@@ -3327,11 +3346,11 @@ export default function App() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className={`w-full max-w-7xl border overflow-hidden flex flex-col h-full md:max-h-[92vh] transition-all duration-700 ${
-                isModalArch ? "bg-white border-gray-200 shadow-2xl" : "bg-terminal-bg border-terminal-border shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+                isModalArch ? "bg-white border-gray-200 shadow-2xl" : "bg-[#0a0a0c] border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.8)]"
               }`}
             >
               {/* Modal Header */}
-              <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-all duration-700 ${isModalArch ? "bg-gray-50 border-gray-100" : "bg-black/50 border-terminal-border"}`}>
+              <div className={`p-4 md:p-6 border-b flex justify-between items-center transition-all duration-700 ${isModalArch ? "bg-gray-50 border-gray-100" : "bg-[#0a0a0c]/90 border-white/5"}`}>
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className={`p-2 rounded border transition-all duration-700 ${
                     isModalArch ? "bg-white border-gray-200 text-black" : `bg-${selectedArsenalItem.color}/10 border-${selectedArsenalItem.color}/20 text-${selectedArsenalItem.color}`
@@ -3349,7 +3368,7 @@ export default function App() {
                 </div>
                 <button 
                   onClick={() => setSelectedArsenalItem(null)}
-                  className={`p-2 transition-colors border ${isArch ? "border-gray-200 hover:bg-black hover:text-white pointer-events-auto cursor-pointer" : "brutalist-border hover:bg-white hover:text-black pointer-events-auto cursor-pointer"}`}
+                  className={`p-2 transition-colors border ${isArch ? "border-gray-200 hover:bg-black hover:text-white pointer-events-auto cursor-pointer" : "brutalist-border rounded-2xl overflow-hidden hover:bg-white hover:text-black pointer-events-auto cursor-pointer"}`}
                 >
                   <Box className="w-4 h-4 md:w-5 md:h-5 rotate-45" />
                 </button>
@@ -3363,19 +3382,19 @@ export default function App() {
                     {selectedArsenalItem.id === "BIM_07" ? (
                       <div className="space-y-4">
                         <div className="text-[10px] font-mono uppercase tracking-widest text-[#00f3ff] flex items-center justify-between">
-                          <span>01_Comparative_Process_Visualization</span>
+                          <span>// 01 . COMPARATIVE PROCESS VISUALIZATION</span>
                           <span className="text-[8px] text-gray-500">[Galapagos vs. Wallacei]</span>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           {/* Option A: Galapagos (Single-Objective) */}
                           <div className="space-y-2 group/pvizg">
-                            <div className="flex justify-between items-center bg-black/45 p-2 border border-terminal-border/15 font-mono text-[9px] uppercase">
+                            <div className="flex justify-between items-center bg-black/45 p-2 border border-white/10 font-mono text-[9px] uppercase">
                               <span className="text-[#00f3ff] font-semibold">Option A: Galapagos</span>
                               <span className="text-gray-500">[Single-Objective]</span>
                             </div>
                             
-                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-terminal-border/20 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
+                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-white/10 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
                               <WorkloadGif 
                                 src="https://lh3.googleusercontent.com/d/1PHbRg6P6mh3Hmmw3yBPfp98sg0ihzO7F" 
                                 alt="Galapagos Loop"
@@ -3386,7 +3405,7 @@ export default function App() {
                               />
                               
                               {/* Direct overlay blocking and status watermark */}
-                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-[#00f3ff] border border-terminal-border/25 select-none pointer-events-none">
+                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-[#00f3ff] border border-white/10 select-none pointer-events-none">
                                 GALAPAGOS_WEIGHTED_RUN: ACTIVE
                               </div>
 
@@ -3408,7 +3427,7 @@ export default function App() {
                                     alt: "Galapagos Single-Objective Evolutionary Study"
                                   });
                                 }}
-                                className="absolute inset-0 bg-black/40 opacity-0 group-hover/pvizg:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
+                                className="absolute inset-0 bg-[#0a0a0c]/80 opacity-0 group-hover/pvizg:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
                               >
                                 <div className="flex items-center gap-1.5 px-2 py-1 border border-[#00f3ff] bg-black/95 text-[#00f3ff] font-mono text-[8px] tracking-wider uppercase shadow-lg">
                                   <Maximize2 className="w-3 h-3" />
@@ -3416,19 +3435,19 @@ export default function App() {
                                 </div>
                               </div>
                             </div>
-                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-terminal-border/10 rounded">
+                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-white/10 rounded">
                               Calibrates a single weighted equation index. Galapagos achieves rapid local convergence but lacks the ability to explore independent Pareto-front trade-offs.
                             </p>
                           </div>
 
                           {/* Option B: Wallacei (Multi-Objective) */}
                           <div className="space-y-2 group/pvizw">
-                            <div className="flex justify-between items-center bg-black/45 p-2 border border-terminal-border/15 font-mono text-[9px] uppercase">
+                            <div className="flex justify-between items-center bg-black/45 p-2 border border-white/10 font-mono text-[9px] uppercase">
                               <span className="text-[#00f3ff] font-semibold">Option B: Wallacei</span>
                               <span className="text-neon-cyan/80">[Multi-Objective]</span>
                             </div>
                             
-                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-terminal-border/25 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
+                            <div className="w-full h-[220px] sm:h-[300px] md:h-[350px] border border-white/10 bg-[#020304] relative overflow-hidden flex items-center justify-center rounded transition-all duration-300">
                               <WorkloadGif 
                                 src="https://lh3.googleusercontent.com/d/1MrB6VdmorBcdtuSIq1eLdV1FTylWXOyN" 
                                 alt="Wallacei Engine"
@@ -3439,7 +3458,7 @@ export default function App() {
                               />
                               
                               {/* Direct overlay blocking and status watermark */}
-                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-neon-cyan border border-terminal-border/20 select-none pointer-events-none">
+                              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/85 backdrop-blur font-mono text-[7px] text-neon-cyan border border-white/10 select-none pointer-events-none">
                                 WALLACEI_PARETO_CLOUD: ACTIVE
                               </div>
 
@@ -3461,15 +3480,15 @@ export default function App() {
                                     alt: "Wallacei Multi-Objective Evolutionary Study"
                                   });
                                 }}
-                                className="absolute inset-0 bg-black/40 opacity-0 group-hover/pvizw:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
+                                className="absolute inset-0 bg-[#0a0a0c]/80 opacity-0 group-hover/pvizw:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-30 pointer-events-auto"
                               >
-                                <div className="flex items-center gap-1.5 px-2 py-1 border border-neon-cyan bg-black/95 text-neon-cyan font-mono text-[8px] tracking-wider uppercase shadow-lg">
+                                <div className="flex items-center gap-1.5 px-2 py-1 border border-white/10 bg-black/95 text-neon-cyan font-mono text-[8px] tracking-wider uppercase shadow-lg">
                                   <Maximize2 className="w-3 h-3" />
                                   Expand Wallacei
                                 </div>
                               </div>
                             </div>
-                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-terminal-border/10 rounded">
+                            <p className="text-[10px] font-mono text-gray-400 leading-relaxed bg-[#020304] p-2 border border-white/10 rounded">
                               Independently loops shading performance, structural mass, and cost factors, dynamically graphing a multi-dimensional Pareto non-dominated solution set.
                             </p>
                           </div>
@@ -3478,9 +3497,9 @@ export default function App() {
                     ) : (
                       <div className="space-y-2">
                         <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-400" : "text-neon-cyan"}`}>
-                          01_{isArch ? "Visual_Narrative" : "Process_Visualization"}
+                          // 01 . {isArch ? "VISUAL NARRATIVE" : "PROCESS VISUALIZATION"}
                         </div>
-                        <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center group/pviz justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border bg-[#020304]"}`}>
+                        <div className={`w-full h-[300px] sm:h-[420px] md:h-[520px] lg:h-[580px] xl:h-[640px] border relative overflow-hidden flex items-center group/pviz justify-center transition-all duration-700 ${isArch ? "border-gray-100 bg-[#f7f8f9]" : "brutalist-border rounded-2xl overflow-hidden bg-[#020304]"}`}>
                           <WorkloadGif 
                             src={selectedArsenalItem.gifUrl} 
                             alt="Workflow GIF"
@@ -3490,7 +3509,7 @@ export default function App() {
                             className={`w-full h-full object-contain p-1 transition-all duration-700 pointer-events-none select-none ${isArch ? "opacity-100" : "opacity-95"}`}
                           />
                           {!isArch && (
-                            <div className="absolute top-3 left-3 px-2 py-1 bg-black/55 backdrop-blur font-mono text-[8px] text-neon-cyan border border-neon-cyan/25">
+                            <div className="absolute top-3 left-3 px-2 py-1 bg-black/55 backdrop-blur font-mono text-[8px] text-neon-cyan border border-white/10/25">
                               RAW_FEED_STREAMING...
                             </div>
                           )}
@@ -3508,7 +3527,7 @@ export default function App() {
                               className={`absolute bottom-3 left-3 px-3 py-1.5 text-[9px] font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 z-[30] pointer-events-auto shadow-md ${
                                 isArch 
                                   ? "bg-white text-black hover:bg-black hover:text-white border border-gray-200" 
-                                  : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-neon-cyan/35"
+                                  : "bg-black/95 text-neon-cyan hover:bg-neon-cyan hover:text-black border border-white/10/35"
                               }`}
                             >
                               <Code2 className="w-3.5 h-3.5 animate-pulse" />
@@ -3528,12 +3547,12 @@ export default function App() {
                                 alt: "Process Visualization"
                               });
                             }}
-                            className="absolute inset-0 bg-black/40 opacity-0 group-hover/pviz:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-20 pointer-events-auto"
+                            className="absolute inset-0 bg-[#0a0a0c]/80 opacity-0 group-hover/pviz:opacity-100 flex items-center justify-center transition-all duration-300 cursor-zoom-in z-20 pointer-events-auto"
                           >
-                            <div className={`flex items-center gap-2 px-3 py-1.5 border font-mono text-[10px] tracking-widest uppercase transition-all duration-500 transform scale-95 group-hover/pviz:scale-100 ${
+                            <div className={`flex items-center gap-2 px-3 py-1.5 border font-sans text-[11px] font-medium tracking-wide tracking-widest uppercase transition-all duration-500 transform scale-95 group-hover/pviz:scale-100 ${
                               isArch 
                                 ? "border-black bg-white text-black font-bold shadow-lg" 
-                                : "border-neon-cyan bg-black/90 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                : "border-white/10 bg-black/90 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
                             }`}>
                               <Maximize2 className="w-3.5 h-3.5" />
                               Expand View
@@ -3545,30 +3564,30 @@ export default function App() {
 
                     {selectedArsenalItem.workflow && (
                       <div className="space-y-4 md:space-y-6">
-                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-terminal-border"}`}>
-                          02_{isArch ? "Methodology" : "Execution_Logic"}
+                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-white/5"}`}>
+                          // 02 . {isArch ? "METHODOLOGY" : "EXECUTION LOGIC"}
                         </div>
                         
                         {["ARCH_02", "ARCH_08"].includes(selectedArsenalItem.id) ? (
                           <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4 md:p-5 rounded-lg ${
                             isArch 
                               ? "bg-gray-50/50 border border-gray-150" 
-                              : "bg-[#04070a] border border-terminal-border/20"
+                              : "bg-[#04070a] border border-white/10"
                           }`}>
                             {selectedArsenalItem.workflow.steps.map((step, i) => (<div key={`step-${i}`} className={`flex gap-3 items-start p-3 border border-dashed rounded transition-colors duration-700 ${
                                 isArch 
                                   ? "border-gray-200 bg-white" 
-                                  : "border-terminal-border/15 bg-black/25 hover:border-terminal-border/30"
+                                  : "border-white/10 bg-black/25 hover:border-white/10"
                               }`}>
-                                <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded shrink-0 ${
+                                <span className={`font-sans text-[11px] font-medium tracking-wide font-bold px-2 py-0.5 rounded shrink-0 ${
                                   isArch 
                                     ? "bg-black text-white" 
-                                    : "bg-terminal-border/10 text-neon-cyan border border-terminal-border/20"
+                                    : "bg-terminal-border/10 text-neon-cyan border border-white/10"
                                 }`}>
                                   0{i + 1}
                                 </span>
                                 <p className={`text-[11px] leading-relaxed ${
-                                  isArch ? "text-stone-700 font-sans" : "text-gray-300 font-mono"
+                                  isArch ? "text-stone-700 font-sans" : "text-gray-400 font-mono"
                                 }`}>
                                   {step}
                                 </p>
@@ -3588,8 +3607,8 @@ export default function App() {
 
                     {!isArch && selectedArsenalItem.content && (
                       <div className="space-y-4">
-                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-terminal-border"}`}>
-                          03_System_Output
+                        <div className={`text-[10px] font-mono uppercase tracking-widest border-b pb-2 transition-colors duration-700 ${isArch ? "text-black border-gray-100" : "text-white border-white/5"}`}>
+                          // 03 . SYSTEM OUTPUT
                         </div>
                         {selectedArsenalItem.content}
                       </div>
@@ -3603,33 +3622,33 @@ export default function App() {
                     {selectedArsenalItem.ledger && (
                       <div className="space-y-3">
                         <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-gray-500" : "text-neon-cyan"}`}>
-                          03_{isArch ? "PROJECT_LEDGER" : "TECHNICAL_LEDGER"}
+                          // 03 . {isArch ? "PROJECT LEDGER" : "TECHNICAL LEDGER"}
                         </div>
                         <div className={`grid grid-cols-1 md:grid-cols-3 gap-3 p-4 border transition-all duration-700 rounded-xl ${
                           isArch 
                             ? "bg-stone-50/70 border-stone-200 text-stone-800" 
-                            : "bg-black/90 border-[#00f3ff]/20 text-gray-300 shadow-[0_0_15px_rgba(0,243,255,0.02)]"
+                            : "bg-black/90 border-[#00f3ff]/20 text-gray-400 shadow-[0_0_15px_rgba(0,243,255,0.02)]"
                         }`}>
                           {/* Inputs */}
                           <div className={`flex flex-col space-y-1 pr-2 ${
-                            isArch ? "border-stone-200" : "border-terminal-border/15"
+                            isArch ? "border-stone-200" : "border-white/10"
                           } border-r-0 md:border-r border-dashed last:border-0`}>
                             <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-neon-cyan"}`}>
                               INPUTS
                             </span>
-                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-400"}`}>
                               {selectedArsenalItem.ledger.inputs}
                             </span>
                           </div>
 
                           {/* Engine / Process */}
                           <div className={`flex flex-col space-y-1 pr-2 ${
-                            isArch ? "border-stone-200" : "border-terminal-border/15"
+                            isArch ? "border-stone-200" : "border-white/10"
                           } border-r-0 md:border-r border-dashed last:border-0`}>
                             <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-neon-orange"}`}>
                               {isArch ? "PROCESS" : "ENGINE"}
                             </span>
-                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-400"}`}>
                               {selectedArsenalItem.ledger.engine}
                             </span>
                           </div>
@@ -3639,7 +3658,7 @@ export default function App() {
                             <span className={`text-[8px] font-mono font-bold tracking-widest uppercase ${isArch ? "text-stone-500" : "text-emerald-400"}`}>
                               OUTPUTS
                             </span>
-                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-300"}`}>
+                            <span className={`text-[10.5px] leading-relaxed font-semibold ${isArch ? "font-sans text-stone-700" : "font-mono text-gray-400"}`}>
                               {selectedArsenalItem.ledger.outputs}
                             </span>
                           </div>
@@ -3670,28 +3689,28 @@ export default function App() {
                         )}
 
                         <div className="space-y-4">
-                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                            04_Project_Overview
+                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>
+                            // 04 . PROJECT OVERVIEW
                           </div>
-                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
+                          <p className={`text-xs tracking-wide leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-700 italic font-serif" : "text-zinc-400 font-mono"}`}>
                             {selectedArsenalItem.details.overview}
                           </p>
                         </div>
 
                         <div className="space-y-4">
-                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-orange"}`}>
-                            05_The_Challenge
+                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black font-bold" : "text-neon-orange"}`}>
+                            // 05 . THE CHALLENGE
                           </div>
-                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
+                          <p className={`text-xs tracking-wide leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-700 italic font-serif" : "text-zinc-400 font-mono"}`}>
                             {selectedArsenalItem.details.challenge}
                           </p>
                         </div>
 
                         <div className="space-y-4">
-                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                            06_The_Solution
+                          <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black font-bold" : "text-neon-cyan"}`}>
+                            // 06 . THE SOLUTION
                           </div>
-                          <p className={`text-sm leading-loose transition-colors duration-700 ${isArch ? "text-gray-700 italic" : "text-gray-300 font-mono"}`}>
+                          <p className={`text-xs tracking-wide leading-relaxed transition-colors duration-700 ${isArch ? "text-gray-700 italic font-serif" : "text-zinc-400 font-mono"}`}>
                             {selectedArsenalItem.details.solution}
                           </p>
                         </div>
@@ -3699,7 +3718,7 @@ export default function App() {
                         {((selectedArsenalItem.details && (selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl || selectedArsenalItem.details.videoUrl)) || selectedArsenalItem.scriptUrl) && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                              07_Documentation
+                              // 07 . DOCUMENTATION
                             </div>
                             <div className="flex flex-wrap gap-4">
                                 {selectedArsenalItem.details?.reportUrl && (
@@ -3710,7 +3729,7 @@ export default function App() {
                                     className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
                                       isArch 
                                       ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                      : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                      : "brutalist-border rounded-2xl overflow-hidden bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
                                     }`}
                                   >
                                     <FileText className="w-3 h-3" />
@@ -3726,7 +3745,7 @@ export default function App() {
                                   className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 ${
                                     isArch 
                                     ? "border-black bg-white text-black hover:bg-black hover:text-white" 
-                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                    : "brutalist-border rounded-2xl overflow-hidden bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
                                   }`}
                                 >
                                   <Layers className="w-3 h-3" />
@@ -3747,7 +3766,7 @@ export default function App() {
                                   className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 pointer-events-auto cursor-pointer ${
                                     isArch 
                                     ? "border-black bg-white text-black hover:bg-black hover:text-white" 
-                                    : "brutalist-border bg-neon-orange/10 text-neon-orange hover:bg-neon-orange hover:text-black"
+                                    : "brutalist-border rounded-2xl overflow-hidden bg-neon-orange/10 text-neon-orange hover:bg-neon-orange hover:text-black"
                                   }`}
                                 >
                                   <Play className="w-3 h-3 animate-pulse" />
@@ -3768,7 +3787,7 @@ export default function App() {
                                   className={`inline-flex items-center gap-2 px-4 py-2 border text-[10px] font-mono uppercase tracking-widest transition-all duration-700 pointer-events-auto cursor-pointer ${
                                     isArch 
                                     ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                                    : "brutalist-border bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                                    : "brutalist-border rounded-2xl overflow-hidden bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
                                   }`}
                                 >
                                   <Code2 className="w-3 h-3 animate-pulse" />
@@ -3782,12 +3801,12 @@ export default function App() {
                         {selectedArsenalItem.details.comparisonTable && (
                           <div className="space-y-4 pt-4">
                             <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-black" : "text-neon-cyan"}`}>
-                              07_Key_Metrics_&_Performance_Impact
+                              // 07 . KEY METRICS & PERFORMANCE IMPACT
                             </div>
-                            <div className="overflow-x-auto border brutalist-border bg-black/40">
-                              <table className={`w-full text-left font-mono text-xs border-collapse ${isArch ? "border-gray-200" : "border-terminal-border/20"}`}>
+                            <div className="overflow-x-auto border brutalist-border rounded-2xl overflow-hidden bg-[#0a0a0c]/80">
+                              <table className={`w-full text-left font-mono text-xs border-collapse ${isArch ? "border-gray-200" : "border-white/10"}`}>
                                 <thead>
-                                  <tr className={isArch ? "bg-gray-100/80 border-b border-gray-200" : "bg-black/60 border-b border-terminal-border/20"}>
+                                  <tr className={isArch ? "bg-gray-100/80 border-b border-gray-200" : "bg-[#0a0a0c]/95 border-b border-white/10"}>
                                     {selectedArsenalItem.details.comparisonTable.headers.map((hdr, idx) => (
                                       <th key={`hdr-${idx}`} className={`p-3 font-bold uppercase tracking-wider text-[10px] ${isArch ? "text-gray-700 font-sans" : "text-neon-cyan"}`}>
                                         {hdr}
@@ -3838,10 +3857,10 @@ export default function App() {
                     : `https://drive.google.com/file/d/${sheetDriveId || "1G2zBH44ll0Yq8nb-djHHUwc14fW4jXAp"}/preview`;
 
                   return (
-                    <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
+                    <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-white/10"}`}>
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
                         <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
-                          08_Thesis_Presentation_Sheets
+                          // 08 . THESIS PRESENTATION SHEETS
                         </div>
                         
                         <a
@@ -3851,7 +3870,7 @@ export default function App() {
                           className={`shrink-0 px-3 py-1 font-mono text-[9px] uppercase tracking-wider rounded transition-all flex items-center justify-center gap-1.5 shadow ${
                             isArch 
                               ? "border-black bg-black text-white hover:bg-white hover:text-black" 
-                              : "border-neon-cyan bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
+                              : "border-white/10 bg-neon-cyan/10 text-neon-cyan hover:bg-neon-cyan hover:text-black"
                           }`}
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -3862,7 +3881,7 @@ export default function App() {
                       <div className={`p-4 border rounded transition-colors duration-700 ${
                         isArch 
                           ? "bg-amber-50/50 border-amber-200/60" 
-                          : "bg-[#04070a] border-terminal-border/20 text-gray-400"
+                          : "bg-[#04070a] border-white/10 text-gray-400"
                       }`}>
                         <h4 className={`text-xs font-bold uppercase tracking-wider ${isArch ? "text-stone-900 font-sans" : "text-neon-cyan font-mono"}`}>
                           Academic Presentation Boards
@@ -3873,7 +3892,7 @@ export default function App() {
                       </div>
                       
                       <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
-                        isArch ? "border-gray-200 bg-white" : "border-terminal-border/25 bg-[#020304]"
+                        isArch ? "border-gray-200 bg-white" : "border-white/10 bg-[#020304]"
                       }`}>
                         <iframe
                           src={embedSrc}
@@ -3888,10 +3907,10 @@ export default function App() {
 
                 {/* Full-width Technical Gallery */}
                 {selectedArsenalItem.details?.images && selectedArsenalItem.details.images.length > 0 && (
-                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-terminal-border/15"}`}>
+                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-white/10"}`}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
                       <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
-                        09_{isArch ? "Technical_Gallery_&_Visuals" : "System_Drawings_&_Analytics"}
+                        // 09 . {isArch ? "TECHNICAL GALLERY & VISUALS" : "SYSTEM DRAWINGS & ANALYTICS"}
                       </div>
                       
                       {/* Gallery Navigation Tabs (Renders vs. Drawings) */}
@@ -3903,10 +3922,10 @@ export default function App() {
                             galleryFilter === 'all'
                               ? isArch
                                 ? "bg-black text-white border-black font-bold"
-                                : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                : "bg-neon-cyan/25 text-neon-cyan border-white/10 font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
                               : isArch
                                 ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                : "border-white/10 text-gray-400 hover:text-[#6366F1] hover:border-white/10 bg-[#0a0a0c]/80"
                           }`}
                         >
                           All ({selectedArsenalItem.details.images.length})
@@ -3919,10 +3938,10 @@ export default function App() {
                               galleryFilter === 'render'
                                 ? isArch
                                   ? "bg-black text-white border-black font-bold"
-                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-white/10 font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
                                 : isArch
                                   ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  : "border-white/10 text-gray-400 hover:text-[#6366F1] hover:border-white/10 bg-[#0a0a0c]/80"
                             }`}
                           >
                             Renders ({
@@ -3939,10 +3958,10 @@ export default function App() {
                               galleryFilter === 'drawing'
                                 ? isArch
                                   ? "bg-black text-white border-black font-bold"
-                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-white/10 font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
                                 : isArch
                                   ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  : "border-white/10 text-gray-400 hover:text-[#6366F1] hover:border-white/10 bg-[#0a0a0c]/80"
                             }`}
                           >
                             Drawings ({
@@ -3958,10 +3977,10 @@ export default function App() {
                               galleryFilter === 'video'
                                 ? isArch
                                   ? "bg-black text-white border-black font-bold"
-                                  : "bg-neon-cyan/25 text-neon-cyan border-neon-cyan font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
+                                  : "bg-neon-cyan/25 text-neon-cyan border-white/10 font-bold shadow-[0_0_6px_rgba(1,242,255,0.2)]"
                                 : isArch
                                   ? "border-gray-200 text-gray-500 hover:text-black hover:border-black bg-white"
-                                  : "border-terminal-border/40 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan bg-black/40"
+                                  : "border-white/10 text-gray-400 hover:text-[#6366F1] hover:border-white/10 bg-[#0a0a0c]/80"
                             }`}
                           >
                             Videos ({
@@ -3992,7 +4011,7 @@ export default function App() {
                                   });
                                 }}
                                 className={`aspect-video border relative overflow-hidden transition-all duration-700 cursor-zoom-in rounded ${
-                                  isArch ? "border-gray-150 bg-gray-50 hover:border-black shadow-sm" : "brutalist-border bg-black hover:border-neon-cyan shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                                  isArch ? "border-gray-150 bg-gray-50 hover:border-black shadow-sm" : "brutalist-border rounded-2xl overflow-hidden bg-black hover:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                                 }`}
                               >
                                 {/* Thumbnail Image */}
@@ -4021,11 +4040,11 @@ export default function App() {
                                 </div>
 
                                 {/* Play / Expand Overlay */}
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
+                                <div className="absolute inset-0 bg-[#0a0a0c]/80 opacity-0 group-hover/gal:opacity-100 flex items-center justify-center transition-all duration-300">
                                   <div className={`p-2.5 rounded-full border transition-all duration-500 transform scale-95 group-hover/gal:scale-100 ${
                                     isArch 
                                       ? "bg-white border-black text-black shadow-lg" 
-                                      : "bg-black/90 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
+                                      : "bg-black/90 border-white/10 text-neon-cyan shadow-[0_0_15px_rgba(0,243,255,0.25)]"
                                   }`}>
                                     {isVideo ? <Play className="w-4 h-4 fill-current ml-0.5" /> : <Maximize2 className="w-4 h-4" />}
                                   </div>
@@ -4047,16 +4066,16 @@ export default function App() {
 
                 {/* Presentation Grids Section */}
                 {selectedArsenalItem.details?.presentationGrids && selectedArsenalItem.details.presentationGrids.length > 0 && (
-                  <div className={"space-y-4 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-terminal-border/15")}>
+                  <div className={"space-y-4 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-white/10")}>
                     <div className={"text-[10px] font-mono uppercase tracking-widest border-b pb-3 transition-colors duration-700 " + (isArch ? "text-stone-900 font-bold" : "text-neon-cyan")}>
-                      10_{isArch ? "Detailed_Drawings_&_Presentations" : "Executive_Briefings"}
+                      // 10 . {isArch ? "DETAILED DRAWINGS & PRESENTATIONS" : "EXECUTIVE BRIEFINGS"}
                     </div>
                     <div className="flex flex-wrap gap-4">
                       {selectedArsenalItem.details.presentationGrids.map((grid, idx) => (
                         <button
                           key={"grid-" + idx}
                           onClick={() => setExpandedGrid(grid)}
-                          className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-neon-cyan text-neon-cyan hover:bg-neon-cyan/10")}
+                          className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-white/10 text-neon-cyan hover:bg-neon-cyan/10")}
                         >
                           {grid.buttonLabel}
                         </button>
@@ -4067,9 +4086,9 @@ export default function App() {
 
                 {/* Slide Decks Section */}
                 {selectedArsenalItem.details?.slideDecks && selectedArsenalItem.details.slideDecks.length > 0 && (
-                  <div className={"space-y-8 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-terminal-border/15")}>
+                  <div className={"space-y-8 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-white/10")}>
                     <div className={"text-[10px] font-mono uppercase tracking-widest border-b pb-3 transition-colors duration-700 " + (isArch ? "text-stone-900 font-bold" : "text-neon-cyan")}>
-                      11_{isArch ? "Site_Visits_&_Progress" : "Executive_Briefings"}
+                      // 11 . {isArch ? "SITE VISITS & PROGRESS" : "EXECUTIVE BRIEFINGS"}
                     </div>
                     <div className="space-y-8">
                       {selectedArsenalItem.details.slideDecks.map((deck, idx) => (
@@ -4082,7 +4101,7 @@ export default function App() {
                                 <img loading="lazy"
                                   src={img}
                                   alt={deck.title + " - " + (imgIdx + 1)}
-                                  className={"w-full h-48 md:h-56 object-cover rounded shadow-sm border " + (isArch ? "border-gray-200" : "border-terminal-border/20")}
+                                  className={"w-full h-48 md:h-56 object-cover rounded shadow-sm border " + (isArch ? "border-gray-200" : "border-white/10")}
                                 />
                               </div>
                             ))}
@@ -4095,7 +4114,7 @@ export default function App() {
               </div>
 
               {/* Modal Footer */}
-              <div className={`p-4 border-t flex justify-between items-center font-mono text-[10px] text-gray-600 transition-all duration-700 ${isArch ? "bg-gray-50 border-gray-100" : "bg-black/30 border-terminal-border"}`}>
+              <div className={`p-4 border-t flex justify-between items-center font-sans text-[11px] font-medium tracking-wide text-gray-600 transition-all duration-700 ${isArch ? "bg-gray-50 border-gray-100" : "bg-black/30 border-white/5"}`}>
                 <div>{isArch ? "ARCH_REF: " : "VDC_REF: "}{selectedArsenalItem.id}</div>
                 <div className="flex gap-4">
                   <span className={isArch ? "text-black" : "text-neon-cyan"}>{isArch ? "DOCUMENTATION_COMPLETE" : "DATA_INTEGRITY_VERIFIED"}</span>
@@ -4148,7 +4167,7 @@ export default function App() {
                       alt={expandedGrid.title + " - Image " + (idx + 1)}
                       className="w-full h-full object-cover border border-white/10 rounded"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#0a0a0c]/90 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Maximize2 className="w-6 h-6 text-white" />
                     </div>
                   </div>
@@ -4186,7 +4205,7 @@ export default function App() {
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               onClick={(e) => e.stopPropagation()}
               className={`relative w-full max-w-5xl max-h-[82vh] aspect-video overflow-hidden flex items-center justify-center shadow-2xl pointer-events-auto border transition-all duration-700 ${
-                isArch ? "border-gray-800 bg-black shadow-[0_30px_100px_rgba(0,0,0,0.9)]" : "border-terminal-border bg-black shadow-[0_0_80px_rgba(0,243,255,0.15)]"
+                isArch ? "border-gray-800 bg-black shadow-[0_30px_100px_rgba(0,0,0,0.9)]" : "border-white/5 bg-black shadow-[0_0_80px_rgba(0,243,255,0.15)]"
               }`}
             >
               {expandedMedia.isVideo ? (
@@ -4260,7 +4279,7 @@ export default function App() {
                 className={`absolute top-4 right-4 p-2 transition-all z-25 border text-white ${
                   isArch 
                     ? "bg-white/10 hover:bg-white hover:text-black border-white/20" 
-                    : "bg-black/80 hover:bg-white hover:text-black border-terminal-border hover:border-white"
+                    : "bg-black/80 hover:bg-white hover:text-black border-white/5 hover:border-white"
                 }`}
               >
                 <Box className="w-4 h-4 rotate-45" />
@@ -4281,7 +4300,7 @@ export default function App() {
             className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 p-3 md:p-4 rounded-full shadow-lg border transition-all duration-300 ${
               isArch 
                 ? "bg-white text-black border-gray-200 hover:shadow-2xl hover:-translate-y-1" 
-                : "bg-black/60 text-neon-cyan border-neon-cyan/30 hover:border-neon-cyan hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:-translate-y-1 backdrop-blur-sm"
+                : "bg-[#0a0a0c]/95 text-neon-cyan border-white/10 hover:border-white/10 hover:shadow-[0_0_20px_rgba(0,255,255,0.4)] hover:-translate-y-1 backdrop-blur-sm"
             }`}
           >
             <ArrowUp className="w-5 h-5 md:w-6 md:h-6" />

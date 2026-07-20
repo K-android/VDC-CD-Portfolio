@@ -107,7 +107,7 @@ const CONCEPT_IDEAS = [
     title: "Autonomous Regulatory Compliance Auditor",
     subtitle: "AI Model (NeuroCode) + Speckle Code Checker",
     description: "Tools like NeuroCode that use Large Language Models (LLMs) and NLP to read local building codes and automatically flag non-compliant design elements in a live Revit or Speckle environment.",
-    tech: ["Gemini AI", "Speckle API", "NLP Parser", "C# Revit Client"],
+    tech: ["Gemini AI", "Speckle API", "NLP Parser", "Revit API Client"],
     nodes: ["Active Drawing Sync", "Speckle Stream JSON", "NLP Code Read", "Token Matching & Constraints Checker", "Live Warning Injection"],
     simulation: {
       initialState: { doorsChecked: 0, violations: [], complianceRate: 100 },
@@ -241,24 +241,24 @@ export const AECWorkflowHub: React.FC = () => {
     const lines = text.split("\n");
     return lines.map((line, idx) => {
       if (line.startsWith("###")) {
-        return <h4 key={idx} className="text-sm font-semibold tracking-wide text-neon-orange mt-6 mb-2 font-mono uppercase pb-1 border-b border-terminal-border/20">{line.replace("###", "").trim()}</h4>;
+        return <h4 key={idx} className="text-sm font-semibold tracking-wide text-neon-orange mt-6 mb-2 font-sans  pb-1 border-b border-white/10">{line.replace("###", "").trim()}</h4>;
       }
       if (line.startsWith("##")) {
-        return <h3 key={idx} className="text-base font-bold tracking-widest text-neon-cyan mt-6 mb-2 font-mono uppercase pb-1 border-b border-terminal-border/30">{line.replace("##", "").trim()}</h3>;
+        return <h3 key={idx} className="text-base font-bold tracking-widest text-[#3B82F6] mt-6 mb-2 font-sans  pb-1 border-b border-white/10">{line.replace("##", "").trim()}</h3>;
       }
       if (line.startsWith("- ")) {
         return (
           <div key={idx} className="flex gap-2 items-start py-0.5 pl-2">
-            <span className="text-neon-orange font-mono mt-1 text-xs">•</span>
-            <span className="text-xs text-gray-300 font-sans">{line.replace("- ", "").trim()}</span>
+            <span className="text-neon-orange font-sans mt-1 text-xs">•</span>
+            <span className="text-xs text-gray-400 font-sans">{line.replace("- ", "").trim()}</span>
           </div>
         );
       }
       if (line.match(/^\d+\./)) {
         return (
           <div key={idx} className="flex gap-2 items-start py-1 pl-2">
-            <span className="text-neon-cyan font-mono text-xs font-bold">{line.match(/^\d+\./)?.[0]}</span>
-            <span className="text-xs text-gray-300 font-sans">{line.replace(/^\d+\./, "").trim()}</span>
+            <span className="text-[#3B82F6] font-sans text-xs font-bold">{line.match(/^\d+\./)?.[0]}</span>
+            <span className="text-xs text-gray-400 font-sans">{line.replace(/^\d+\./, "").trim()}</span>
           </div>
         );
       }
@@ -273,7 +273,7 @@ export const AECWorkflowHub: React.FC = () => {
           <p key={idx} className="text-xs font-sans text-gray-300 leading-relaxed py-0.5">
             {parts.map((part, pIdx) => (
               pIdx % 2 === 1 
-                ? <code key={pIdx} className="bg-terminal-block/80 border border-terminal-border/20 px-1 py-0.5 rounded font-mono text-[11px] text-neon-cyan">{part}</code>
+                ? <code key={pIdx} className="bg-terminal-block/80 border border-white/10 px-1 py-0.5 rounded font-sans text-[11px] text-[#3B82F6]">{part}</code>
                 : part
             ))}
           </p>
@@ -284,25 +284,25 @@ export const AECWorkflowHub: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-terminal-block/10 border border-terminal-border/15 rounded-lg overflow-hidden flex flex-col min-h-[600px] text-left">
+    <div className="w-full bg-terminal-block/10 border border-white/10 rounded-lg overflow-hidden flex flex-col min-h-[600px] text-left">
       {/* Title Bar */}
-      <div className="bg-terminal-header py-3.5 px-5 border-b border-terminal-border/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-terminal-header py-3.5 px-5 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="p-1.5 bg-neon-orange/10 border border-neon-orange/30 rounded">
             <Brain className="w-5 h-5 text-neon-orange" />
           </div>
           <div>
-            <h4 className="text-sm font-bold font-mono tracking-wider text-white uppercase">
+            <h4 className="text-sm font-bold font-sans tracking-wider text-white ">
               AEC_Workflow_Hub_v1.2 // Centralized Automation Dashboard
             </h4>
-            <p className="text-[10px] font-mono text-gray-400">
+            <p className="text-xs font-sans text-gray-400">
               Computational Design, Autopilot Pipings & AI Script Orchestrator
             </p>
           </div>
         </div>
 
         {/* Workspace Hub Navigator Tabs */}
-        <div className="flex bg-black/40 border border-terminal-border/20 p-1 rounded font-mono text-xs gap-1">
+        <div className="flex bg-black/80 border border-white/10 p-1 rounded font-sans text-xs gap-1">
           <button
             onClick={() => setActiveTab("pipelines")}
             className={`px-3 py-1.5 transition-all flex items-center gap-2 rounded ${
@@ -318,7 +318,7 @@ export const AECWorkflowHub: React.FC = () => {
             onClick={() => setActiveTab("discovery")}
             className={`px-3 py-1.5 transition-all flex items-center gap-2 rounded ${
               activeTab === "discovery"
-                ? "bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/20"
+                ? "bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30"
                 : "text-gray-400 hover:text-white"
             }`}
           >
@@ -353,22 +353,22 @@ export const AECWorkflowHub: React.FC = () => {
             >
               {/* Left Column: Pipelines Table */}
               <div className="xl:col-span-2 space-y-6">
-                <div className="bg-black/35 border border-terminal-border/10 rounded p-4 flex flex-col h-full justify-between">
+                <div className="bg-black/35 border border-white/10 rounded p-4 flex flex-col h-full justify-between">
                   <div>
                     <div className="flex justify-between items-center mb-4">
                       <div>
-                        <h5 className="font-mono text-xs text-white uppercase font-bold flex items-center gap-2">
+                        <h5 className="font-sans text-xs text-white  font-bold flex items-center gap-2">
                           <Activity className="w-3.5 h-3.5 text-neon-orange animate-pulse" />
                           Live Pipelines Registry
                         </h5>
-                        <p className="text-[10px] text-gray-400 font-sans mt-0.5">
+                        <p className="text-xs text-gray-400 font-sans mt-0.5">
                           Active operational design scripts running across localized and cloud networks.
                         </p>
                       </div>
                       <button
                         onClick={handleCleanDuplicates}
                         disabled={isCleaning || pipelines.filter(p => p.status === "Duplicate").length === 0}
-                        className="font-mono text-[10px] px-3 py-1.5 bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded flex items-center gap-2 disabled:opacity-40 disabled:hover:bg-transparent"
+                        className="font-sans text-xs px-3 py-1.5 bg-red-950/20 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded flex items-center gap-2 disabled:opacity-40 disabled:hover:bg-transparent"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>{isCleaning ? "Purging..." : "Purge Duplicates"}</span>
@@ -376,9 +376,9 @@ export const AECWorkflowHub: React.FC = () => {
                     </div>
 
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left font-mono text-[11px] border-collapse">
+                      <table className="w-full text-left font-sans text-[11px] border-collapse">
                         <thead>
-                          <tr className="border-b border-terminal-border/20 text-gray-400 text-[10px] uppercase">
+                          <tr className="border-b border-white/10 text-gray-400 text-xs ">
                             <th className="py-2.5 px-2">Script Name</th>
                             <th className="py-2.5 px-2">AEC Scope</th>
                             <th className="py-2.5 px-2">Complexity</th>
@@ -396,7 +396,7 @@ export const AECWorkflowHub: React.FC = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0, x: -50 }}
-                                className={`border-b border-terminal-border/5 hover:bg-white/5 transition-colors ${
+                                className={`border-b border-white/10 hover:bg-white/5 transition-colors ${
                                   item.status === "Duplicate" ? "bg-red-950/10 text-red-300" : "text-gray-300"
                                 }`}
                               >
@@ -418,11 +418,11 @@ export const AECWorkflowHub: React.FC = () => {
                                     {item.complexity}
                                   </span>
                                 </td>
-                                <td className="py-2.5 px-2 text-neon-cyan font-bold">{item.roi}%</td>
+                                <td className="py-2.5 px-2 text-[#3B82F6] font-bold">{item.roi}%</td>
                                 <td className="py-2.5 px-2 text-white">{item.hoursSaved} hrs</td>
                                 <td className="py-2.5 px-2 text-right">
-                                  <span className={`px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider ${
-                                    item.status === "Ready" ? "text-neon-cyan" :
+                                  <span className={`px-1.5 py-0.5 rounded text-[9px]  tracking-wider ${
+                                    item.status === "Ready" ? "text-[#3B82F6]" :
                                     item.status === "Testing" ? "text-neon-orange animate-pulse" :
                                     "text-red-400 line-through font-bold"
                                   }`}>
@@ -439,9 +439,9 @@ export const AECWorkflowHub: React.FC = () => {
 
                   {/* Duplicate Scruber Mini Logger */}
                   {cleanLog.length > 0 && (
-                    <div className="font-mono text-[10px] mt-4 p-3 bg-black/60 rounded border border-terminal-border/10 space-y-1 max-h-[110px] overflow-y-auto">
+                    <div className="font-sans text-xs mt-4 p-3 bg-black/95 rounded border border-white/10 space-y-1 max-h-[110px] overflow-y-auto">
                       {cleanLog.map((log, i) => (
-                        <p key={i} className={log.includes("SUCCESS") ? "text-neon-cyan" : log.includes("ALERT") ? "text-red-400" : "text-gray-400"}>
+                        <p key={i} className={log.includes("SUCCESS") ? "text-[#3B82F6]" : log.includes("ALERT") ? "text-red-400" : "text-gray-400"}>
                           {log}
                         </p>
                       ))}
@@ -452,17 +452,17 @@ export const AECWorkflowHub: React.FC = () => {
 
               {/* Right Column: Automation Potential Ranking */}
               <div className="space-y-6">
-                <div className="bg-black/35 border border-terminal-border/10 rounded p-4 h-full flex flex-col justify-between">
+                <div className="bg-black/35 border border-white/10 rounded p-4 h-full flex flex-col justify-between">
                   <div>
-                    <h5 className="font-mono text-xs text-white uppercase font-bold flex items-center gap-2 mb-2">
-                      <TrendingUp className="w-3.5 h-3.5 text-neon-cyan" />
+                    <h5 className="font-sans text-xs text-white  font-bold flex items-center gap-2 mb-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-[#3B82F6]" />
                       Automation Potential Ranking
                     </h5>
-                    <p className="text-[10px] text-gray-400 font-sans mb-4">
+                    <p className="text-xs text-gray-400 font-sans mb-4">
                       Tap specific discipline modules to review diagnostic statistics and feasibility rankings.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-2 mb-4 font-mono text-[10px]">
+                    <div className="grid grid-cols-2 gap-2 mb-4 font-sans text-xs">
                       {Object.keys(CATEGORY_POTENTIALS).map((cat) => {
                         const active = selectedCat === cat;
                         const data = CATEGORY_POTENTIALS[cat as keyof typeof CATEGORY_POTENTIALS];
@@ -472,12 +472,12 @@ export const AECWorkflowHub: React.FC = () => {
                             onClick={() => setSelectedCat(cat as any)}
                             className={`p-2.5 rounded text-left border transition-all flex flex-col justify-between ${
                               active
-                                ? "bg-neon-cyan/15 border-neon-cyan text-white"
-                                : "bg-black/30 border-terminal-border/10 text-gray-400 hover:bg-white/5"
+                                ? "bg-[#6366F1]/15 border-[#6366F1]/30 text-white"
+                                : "bg-black/30 border-white/10 text-gray-400 hover:bg-white/5"
                             }`}
                           >
                             <span className="font-bold">{cat}</span>
-                            <span className="text-[9px] text-neon-cyan mt-1 font-semibold">
+                            <span className="text-[9px] text-[#3B82F6] mt-1 font-semibold">
                               {data.hours} hrs/wk saving
                             </span>
                           </button>
@@ -486,44 +486,44 @@ export const AECWorkflowHub: React.FC = () => {
                     </div>
 
                     {/* Potential Ranking Results Block */}
-                    <div className="bg-black/50 p-4 rounded border border-terminal-border/10 font-mono">
-                      <div className="flex justify-between items-center pb-2.5 border-b border-terminal-border/10 mb-3">
-                        <span className="text-gray-400 text-[9px] uppercase uppercase tracking-wider">
+                    <div className="bg-black/90 p-4 rounded border border-white/10 font-sans">
+                      <div className="flex justify-between items-center pb-2.5 border-b border-white/10 mb-3">
+                        <span className="text-gray-400 text-[9px]   tracking-wider">
                           Efficiency Level:
                         </span>
-                        <span className="text-neon-cyan text-xs font-bold uppercase">
+                        <span className="text-[#3B82F6] text-xs font-bold ">
                           {CATEGORY_POTENTIALS[selectedCat].priority}
                         </span>
                       </div>
 
                       <div className="space-y-2.5">
                         <div className="flex justify-between">
-                          <span className="text-gray-400 text-[10px]">Save Capacity:</span>
+                          <span className="text-gray-400 text-xs">Save Capacity:</span>
                           <span className="text-white text-xs font-bold">
                             {CATEGORY_POTENTIALS[selectedCat].hours} Hours / Project Week
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400 text-[10px]">Feasibility Index:</span>
+                          <span className="text-gray-400 text-xs">Feasibility Index:</span>
                           <span className="text-white text-xs font-bold">
                             {CATEGORY_POTENTIALS[selectedCat].feasibility}
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400 text-[10px]">Rank Position:</span>
-                          <span className="text-neon-cyan text-xs font-bold uppercase">
+                          <span className="text-gray-400 text-xs">Rank Position:</span>
+                          <span className="text-[#3B82F6] text-xs font-bold ">
                             {CATEGORY_POTENTIALS[selectedCat].rank}
                           </span>
                         </div>
-                        <p className="text-[10px] text-gray-400 font-sans leading-relaxed pt-2 border-t border-terminal-border/10">
+                        <p className="text-xs text-gray-400 font-sans leading-relaxed pt-2 border-t border-white/10">
                           {CATEGORY_POTENTIALS[selectedCat].desc}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-[10px] font-sans text-gray-400 mt-4 leading-relaxed pt-3 border-t border-terminal-border/10 flex items-start gap-2 bg-neon-cyan/[0.02] p-2.5 rounded">
-                    <Lightbulb className="w-4 h-4 text-neon-cyan shrink-0 mt-0.5" />
+                  <div className="text-xs font-sans text-gray-400 mt-4 leading-relaxed pt-3 border-t border-white/10 flex items-start gap-2 bg-neon-cyan/[0.02] p-2.5 rounded">
+                    <Lightbulb className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" />
                     <span>
                       <strong>Optimization Strategy:</strong> Standardizing BIM templates combined with custom computational scripts scales structural delivery times by up to <strong>35%</strong>.
                     </span>
@@ -544,7 +544,7 @@ export const AECWorkflowHub: React.FC = () => {
             >
               {/* Left Selector Panel */}
               <div className="xl:col-span-1 space-y-3">
-                <div className="text-xs font-mono uppercase tracking-wider text-neon-cyan font-bold mb-1">
+                <div className="text-xs font-sans  tracking-wider text-[#3B82F6] font-bold mb-1">
                   High-ROI Computational Concepts
                 </div>
                 {CONCEPT_IDEAS.map((concept) => (
@@ -557,20 +557,20 @@ export const AECWorkflowHub: React.FC = () => {
                     }}
                     className={`p-4 rounded text-left border transition-all flex flex-col gap-1 w-full relative overflow-hidden ${
                       selectedConcept.id === concept.id
-                        ? "bg-neon-cyan/15 border-neon-cyan text-white shadow-[0_0_15px_rgba(0,242,255,0.08)]"
-                        : "bg-black/30 border-terminal-border/10 text-gray-400 hover:bg-white/5"
+                        ? "bg-[#6366F1]/15 border-[#6366F1]/30 text-white shadow-[0_0_15px_rgba(0,242,255,0.08)]"
+                        : "bg-black/30 border-white/10 text-gray-400 hover:bg-white/5"
                     }`}
                   >
                     {selectedConcept.id === concept.id && (
-                      <div className="absolute right-3 top-3 w-1.5 h-1.5 bg-neon-cyan rounded-full animate-pulse" />
+                      <div className="absolute right-3 top-3 w-1.5 h-1.5 bg-[#6366F1] rounded-full animate-pulse" />
                     )}
-                    <span className="font-bold text-xs font-mono tracking-wide text-white uppercase">
+                    <span className="font-bold text-xs font-sans tracking-wide text-white ">
                       {concept.title}
                     </span>
-                    <span className="text-[10px] text-gray-400 font-mono tracking-tight font-medium">
+                    <span className="text-xs text-gray-400 font-sans tracking-tight font-medium">
                       {concept.subtitle}
                     </span>
-                    <p className="text-[10px] text-gray-400 line-clamp-2 mt-1.5 font-sans leading-relaxed">
+                    <p className="text-xs text-gray-400 line-clamp-2 mt-1.5 font-sans leading-relaxed">
                       {concept.description}
                     </p>
                   </button>
@@ -579,16 +579,16 @@ export const AECWorkflowHub: React.FC = () => {
 
               {/* Right Simulation and Flow Workspace */}
               <div className="xl:col-span-2 space-y-6">
-                <div className="bg-black/35 border border-terminal-border/10 rounded p-5 flex flex-col h-full justify-between">
+                <div className="bg-black/35 border border-white/10 rounded p-5 flex flex-col h-full justify-between">
                   <div>
                     {/* Header and description */}
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h4 className="font-mono text-sm uppercase text-white font-bold flex items-center gap-2">
-                          <Cpu className="w-4 h-4 text-neon-cyan" />
+                        <h4 className="font-sans text-sm  text-white font-bold flex items-center gap-2">
+                          <Cpu className="w-4 h-4 text-[#3B82F6]" />
                           {selectedConcept.title}
                         </h4>
-                        <p className="text-[10px] text-gray-400 font-sans mt-0.5">
+                        <p className="text-xs text-gray-400 font-sans mt-0.5">
                           {selectedConcept.description}
                         </p>
                       </div>
@@ -596,7 +596,7 @@ export const AECWorkflowHub: React.FC = () => {
                       <button
                         onClick={() => handleTriggerSimulation(selectedConcept)}
                         disabled={isSimulating}
-                        className="font-mono text-[10px] px-3 py-1.5 bg-neon-cyan/25 border border-neon-cyan/35 text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all rounded font-bold flex items-center gap-2 disabled:opacity-40 shrink-0"
+                        className="font-sans text-xs px-3 py-1.5 bg-[#6366F1]/20 border border-[#6366F1]/30 text-[#6366F1] hover:bg-[#6366F1] hover:text-black transition-all rounded font-bold flex items-center gap-2 disabled:opacity-40 shrink-0"
                       >
                         <Play className="w-3.5 h-3.5" />
                         <span>{isSimulating ? "Simulating..." : "Trigger Simulation"}</span>
@@ -605,22 +605,22 @@ export const AECWorkflowHub: React.FC = () => {
 
                     {/* Node Pathway Map */}
                     <div className="mb-6">
-                      <div className="text-[9px] font-mono text-gray-400 uppercase tracking-widest mb-3">
+                      <div className="text-[9px] font-sans text-gray-400  tracking-widest mb-3">
                         Automation Pipeline Nodes:
                       </div>
                       <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 flex-wrap">
                         {selectedConcept.nodes.map((node, nIdx) => (
                           <div key={nIdx} className="flex items-center gap-2 md:gap-3">
-                            <div className={`px-2.5 py-1.5 border rounded font-mono text-[10px] tracking-tight ${
+                            <div className={`px-2.5 py-1.5 border rounded font-sans text-xs tracking-tight ${
                               nIdx <= simStepIdx 
-                                ? "bg-neon-cyan/20 border-neon-cyan text-white shadow-[0_0_10px_rgba(0,242,255,0.15)]"
-                                : "bg-black/45 border-terminal-border/15 text-gray-400"
+                                ? "bg-[#6366F1]/25 border-[#6366F1]/40 text-white shadow-[0_0_10px_rgba(99,102,241,0.2)]"
+                                : "bg-black/45 border-white/10 text-gray-400"
                             }`}>
                               {node}
                             </div>
                             {nIdx < selectedConcept.nodes.length - 1 && (
                               <ArrowRight className={`w-3.5 h-3.5 shrink-0 hidden md:block ${
-                                nIdx < simStepIdx ? "text-neon-cyan" : "text-gray-600"
+                                nIdx < simStepIdx ? "text-[#3B82F6]" : "text-gray-600"
                               }`} />
                             )}
                           </div>
@@ -629,7 +629,7 @@ export const AECWorkflowHub: React.FC = () => {
                     </div>
 
                     {/* Technology Badge listing */}
-                    <div className="flex flex-wrap gap-2 mb-6 font-mono text-[9px] text-gray-400">
+                    <div className="flex flex-wrap gap-2 mb-6 font-sans text-[9px] text-gray-400">
                       <span>Stack Profile:</span>
                       {selectedConcept.tech.map((tech) => (
                         <span key={tech} className="bg-white/5 border border-white/10 px-1.5 py-0.5 rounded text-gray-300">
@@ -640,17 +640,17 @@ export const AECWorkflowHub: React.FC = () => {
                   </div>
 
                   {/* Interactive Terminal / Simulator Logs */}
-                  <div className="bg-[#030608] border border-terminal-border/20 rounded p-4 flex flex-col justify-between select-none">
-                    <div className="flex justify-between items-center pb-2 border-b border-terminal-border/10 mb-3 font-mono text-[9px] text-gray-500">
+                  <div className="bg-[#030608] border border-white/10 rounded p-4 flex flex-col justify-between select-none">
+                    <div className="flex justify-between items-center pb-2 border-b border-white/10 mb-3 font-sans text-[9px] text-gray-500">
                       <span className="flex items-center gap-1.5">
-                        <Terminal className="w-3 h-3 text-neon-cyan" />
+                        <Terminal className="w-3 h-3 text-[#3B82F6]" />
                         AEC_SIMULATOR_LOGS.log
                       </span>
                       <span>ACTIVE VIEWPORT</span>
                     </div>
 
                     {/* Stream Logs */}
-                    <div className="font-mono text-[11px] h-[140px] overflow-y-auto space-y-1.5 text-left mb-4">
+                    <div className="font-sans text-[11px] h-[140px] overflow-y-auto space-y-1.5 text-left mb-4">
                       {simLog.length === 0 ? (
                         <div className="text-gray-500 text-xs italic flex flex-col items-center justify-center h-full gap-2">
                           <Compass className="w-6 h-6 text-gray-600 animate-spin" />
@@ -662,7 +662,7 @@ export const AECWorkflowHub: React.FC = () => {
                           if (log.includes("[SUCCESS]")) color = "text-emerald-400 font-semibold";
                           if (log.includes("[SYS]")) color = "text-gray-300 font-bold";
                           if (log.includes("FLAG_VIOLATION")) color = "text-red-400 font-semibold animate-pulse";
-                          if (log.includes("SYNCHRONIZED")) color = "text-neon-cyan font-bold";
+                          if (log.includes("SYNCHRONIZED")) color = "text-[#3B82F6] font-bold";
                           return (
                             <p key={i} className={color}>
                               {log}
@@ -674,7 +674,7 @@ export const AECWorkflowHub: React.FC = () => {
 
                     {/* Simulated Results Indicators */}
                     {simStepIdx >= 0 && (
-                      <div className="border-t border-terminal-border/15 pt-3 font-mono text-[10px] grid grid-cols-3 gap-2 text-center">
+                      <div className="border-t border-white/10 pt-3 font-sans text-xs grid grid-cols-3 gap-2 text-center">
                         {selectedConcept.id === "embodied_carbon" && (
                           <>
                             <div className="bg-black/35 p-2 rounded">
@@ -685,7 +685,7 @@ export const AECWorkflowHub: React.FC = () => {
                             </div>
                             <div className="bg-black/35 p-2 rounded">
                               <span className="text-gray-500 block text-[9px] mb-0.5">ESTIMATED CO₂ kg</span>
-                              <span className="text-neon-cyan font-bold block text-[11px]">
+                              <span className="text-[#3B82F6] font-bold block text-[11px]">
                                 {selectedConcept.simulation.steps[simStepIdx].carbon} kgCO2e
                               </span>
                             </div>
@@ -714,7 +714,7 @@ export const AECWorkflowHub: React.FC = () => {
                             </div>
                             <div className="bg-black/35 p-2 rounded">
                               <span className="text-gray-500 block text-[9px] mb-0.5">COMPLIANCE INDEX</span>
-                              <span className="text-neon-cyan font-bold block text-[11px]">
+                              <span className="text-[#3B82F6] font-bold block text-[11px]">
                                 {selectedConcept.simulation.steps[simStepIdx].complianceRate}% Compliant
                               </span>
                             </div>
@@ -731,13 +731,13 @@ export const AECWorkflowHub: React.FC = () => {
                             </div>
                             <div className="bg-black/35 p-2 rounded">
                               <span className="text-gray-500 block text-[9px] mb-0.5">CV MATCH POINTS</span>
-                              <span className="text-neon-cyan font-bold block text-[11px]">
+                              <span className="text-[#3B82F6] font-bold block text-[11px]">
                                 {selectedConcept.simulation.steps[simStepIdx].matchingPoints} pts
                               </span>
                             </div>
                             <div className="bg-black/35 p-2 rounded">
                               <span className="text-gray-500 block text-[9px] mb-0.5">INTEGRATION STATE</span>
-                              <span className="text-neon-orange font-bold uppercase block text-[10px] truncate">
+                              <span className="text-neon-orange font-bold  block text-xs truncate">
                                 {selectedConcept.simulation.steps[simStepIdx].status}
                               </span>
                             </div>
@@ -762,21 +762,21 @@ export const AECWorkflowHub: React.FC = () => {
             >
               {/* Left Form Panel */}
               <div className="xl:col-span-1 space-y-6">
-                <div className="bg-black/35 border border-terminal-border/10 rounded p-4 h-full flex flex-col justify-between">
+                <div className="bg-black/35 border border-white/10 rounded p-4 h-full flex flex-col justify-between">
                   <div className="space-y-4">
                     <div>
-                      <h5 className="font-mono text-xs text-white uppercase font-bold flex items-center gap-2">
+                      <h5 className="font-sans text-xs text-white  font-bold flex items-center gap-2">
                         <Sparkles className="w-3.5 h-3.5 text-neon-blue animate-pulse" />
                         Advisor Command Console
                       </h5>
-                      <p className="text-[10px] text-gray-400 font-sans mt-0.5">
+                      <p className="text-xs text-gray-400 font-sans mt-0.5">
                         Describe any manual, repetitive AEC design drafting, scheduling, structural task, or parameter check to generate a bespoke computational script model.
                       </p>
                     </div>
 
                     {/* Pre-built prompts */}
                     <div className="space-y-2">
-                      <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest block font-bold">
+                      <span className="text-[9px] font-sans text-gray-500  tracking-widest block font-bold">
                         Choose Template Task:
                       </span>
                       {templates.map((tmpl) => (
@@ -786,7 +786,7 @@ export const AECWorkflowHub: React.FC = () => {
                             setUserInput(tmpl);
                             handleAskAdvisor(tmpl);
                           }}
-                          className="w-full text-left p-3 rounded font-mono text-[10px] bg-black/45 border border-terminal-border/10 hover:border-neon-blue/30 text-gray-300 hover:text-white transition-all text-xs"
+                          className="w-full text-left p-3 rounded font-sans text-xs bg-black/45 border border-white/10 hover:border-neon-blue/30 text-gray-300 hover:text-white transition-all text-xs"
                         >
                           {tmpl}
                         </button>
@@ -795,7 +795,7 @@ export const AECWorkflowHub: React.FC = () => {
 
                     {/* Custom Input */}
                     <div className="space-y-2">
-                      <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest block font-bold">
+                      <span className="text-[9px] font-sans text-gray-500  tracking-widest block font-bold">
                         Describe Custom Design Obstacle:
                       </span>
                       <textarea
@@ -803,7 +803,7 @@ export const AECWorkflowHub: React.FC = () => {
                         onChange={(e) => setUserInput(e.target.value)}
                         placeholder="E.g., How can I automate exporting Revit room ceiling heights directly into an excel sheet using Python?"
                         rows={5}
-                        className="w-full bg-[#05080a] border border-terminal-border/10 hover:border-terminal-border/20 focus:border-neon-blue/50 text-xs font-mono text-gray-200 p-3 rounded outline-none resize-none leading-relaxed"
+                        className="w-full bg-[#05080a] border border-white/10 hover:border-white/10 focus:border-neon-blue/50 text-xs font-sans text-gray-200 p-3 rounded outline-none resize-none leading-relaxed"
                       />
                     </div>
                   </div>
@@ -811,7 +811,7 @@ export const AECWorkflowHub: React.FC = () => {
                   <button
                     onClick={() => handleAskAdvisor()}
                     disabled={isLoading || !userInput.trim()}
-                    className="w-full font-mono text-xs py-3 bg-neon-blue/20 hover:bg-neon-blue text-neon-blue hover:text-white border border-neon-blue/35 rounded font-bold transition-all mt-4 flex items-center justify-center gap-2 disabled:opacity-40"
+                    className="w-full font-sans text-xs py-3 bg-neon-blue/20 hover:bg-neon-blue text-neon-blue hover:text-white border border-neon-blue/35 rounded font-bold transition-all mt-4 flex items-center justify-center gap-2 disabled:opacity-40"
                   >
                     {isLoading ? (
                       <>
@@ -830,23 +830,23 @@ export const AECWorkflowHub: React.FC = () => {
 
               {/* Right Output Panels */}
               <div className="xl:col-span-2 space-y-6">
-                <div className="bg-black/35 border border-terminal-border/10 rounded p-5 h-full flex flex-col justify-between">
+                <div className="bg-black/35 border border-white/10 rounded p-5 h-full flex flex-col justify-between">
                   <div>
-                    <div className="flex justify-between items-center pb-2.5 border-b border-terminal-border/10 mb-4 text-xs font-mono">
-                      <span className="text-gray-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <div className="flex justify-between items-center pb-2.5 border-b border-white/10 mb-4 text-xs font-sans">
+                      <span className="text-gray-400 font-bold  tracking-wider flex items-center gap-1.5">
                         <Terminal className="w-3.5 h-3.5 text-neon-blue" />
                         Actionable Solution Blueprint
                       </span>
-                      <span className="text-[10px] bg-neon-blue/15 text-neon-blue/80 border border-neon-blue/20 px-1.5 py-0.5 rounded font-bold">
+                      <span className="text-xs bg-neon-blue/15 text-neon-blue/80 border border-neon-blue/20 px-1.5 py-0.5 rounded font-bold">
                         GEMINI COGNITIVE LAYER
                       </span>
                     </div>
 
-                    <div className="font-mono text-xs max-h-[460px] overflow-y-auto pr-2 space-y-4 py-1">
+                    <div className="font-sans text-xs max-h-[460px] overflow-y-auto pr-2 space-y-4 py-1">
                       {isLoading ? (
                         <div className="flex flex-col items-center justify-center h-[300px] gap-3">
                           <Cpu className="w-8 h-8 text-neon-blue animate-spin" />
-                          <p className="text-xs text-gray-400 font-mono tracking-wide animate-pulse">
+                          <p className="text-xs text-gray-400 font-sans tracking-wide animate-pulse">
                             [THINKING] Formulating step-by-step computational routine...
                           </p>
                         </div>
@@ -863,7 +863,7 @@ export const AECWorkflowHub: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="font-sans text-[10px] text-gray-500 border-t border-terminal-border/10 pt-3 leading-relaxed">
+                  <div className="font-sans text-xs text-gray-500 border-t border-white/10 pt-3 leading-relaxed">
                     <strong>Note:</strong> Strategies generated compile compliant API guidelines across standard models. Review assemblies in localized sandbox folders before executing Revit database transactions.
                   </div>
                 </div>

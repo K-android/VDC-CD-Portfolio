@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
-import { Activity, ChevronRight, Download, Code2, Terminal, Database, Layers, Workflow, CheckCircle2, ChevronDown, ShieldCheck } from 'lucide-react';
+import { Activity, ChevronRight, Download, Code2, Terminal, Database, Layers, Workflow, CheckCircle2, ChevronDown, ShieldCheck , Hammer , Award } from 'lucide-react';
 
 export default function ArchSection({ 
   archArsenal, 
@@ -60,15 +60,7 @@ export default function ArchSection({
                     <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
 
-                  <a 
-                    href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group px-6 py-3 font-semibold uppercase tracking-tighter flex items-center justify-center gap-3 transition-all duration-300 bg-white text-black hover:bg-black hover:text-white border border-black hover:shadow-lg"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download Resume
-                  </a>
+                  
                 </div>
               </div>
 
@@ -118,21 +110,46 @@ export default function ArchSection({
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-                {archArsenal.filter(item => item.category !== 'Fabrication').map((item) => (<ProjectCard key={`arch-nf-${item.id}`} 
-                    item={item} 
-                    isArch={true} 
-                    onClick={() => setSelectedArsenalItem(item)} 
-                    onShowScript={(scriptUrl: string, title: string) => {
-                      setExpandedMedia({
-                        src: scriptUrl,
-                        isVideo: false,
-                        googleDriveId: getDriveId(scriptUrl),
-                        alt: `Script: ${title}`
-                      });
-                    }}
-                  />
-                ))}
+              <div className="space-y-16">
+                {/* Row 1: The Anchors */}
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {archArsenal.filter(item => ["ARCH_08", "ARCH_01"].includes(item.id)).map((item) => (<ProjectCard key={`arch-r1-${item.id}`} 
+                        item={item} 
+                        isArch={true} 
+                        onClick={() => setSelectedArsenalItem(item)} 
+                        onShowScript={(scriptUrl: string, title: string) => {
+                          setExpandedMedia({
+                            src: scriptUrl,
+                            isVideo: false,
+                            googleDriveId: getDriveId(scriptUrl),
+                            alt: `Script: ${title}`
+                          });
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Row 2: The Typology Matrix */}
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {archArsenal.filter(item => ["ARCH_05", "ARCH_09", "ARCH_02"].includes(item.id)).map((item) => (<ProjectCard key={`arch-r2-${item.id}`} 
+                        item={item} 
+                        isArch={true} 
+                        onClick={() => setSelectedArsenalItem(item)} 
+                        onShowScript={(scriptUrl: string, title: string) => {
+                          setExpandedMedia({
+                            src: scriptUrl,
+                            isVideo: false,
+                            googleDriveId: getDriveId(scriptUrl),
+                            alt: `Script: ${title}`
+                          });
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -147,20 +164,41 @@ export default function ArchSection({
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 font-sans">
-                {archArsenal.filter(item => item.category === 'Fabrication').map((item) => (<ProjectCard key={`arch-fab-${item.id}`} 
-                    item={item} 
-                    isArch={true} 
-                    onClick={() => setSelectedArsenalItem(item)} 
-                    onShowScript={(scriptUrl: string, title: string) => {
-                      setExpandedMedia({
-                        src: scriptUrl,
-                        isVideo: false,
-                        googleDriveId: getDriveId(scriptUrl),
-                        alt: `Script: ${title}`
-                      });
-                    }}
-                  />
+              <div className="flex flex-col border border-gray-200 rounded-xl bg-white overflow-hidden font-sans">
+                {archArsenal.filter(item => ["ARCH_06", "ARCH_07", "ARCH_04"].includes(item.id) || item.category === 'Fabrication').map((item: any, index: number, arr: any[]) => (
+                  <div 
+                    key={`arch-fab-${item.id}`}
+                    onClick={() => setSelectedArsenalItem(item)}
+                    className={`group cursor-pointer p-5 flex items-start gap-4 hover:bg-gray-50 transition-colors ${index !== arr.length - 1 ? 'border-b border-gray-100' : ''}`}
+                  >
+                    <div className="mt-1">
+                      <Hammer className="w-4 h-4 text-gray-400 group-hover:text-black transition-colors" />
+                    </div>
+                    <div className="flex flex-col gap-1.5 flex-1">
+                      <h4 className="font-bold text-sm text-gray-800 group-hover:text-black transition-colors flex items-center gap-2">
+                        {item.title}
+                        {item.title === "Recycled Bus Pavilion" && (
+                          <div className="flex items-center gap-1 px-2 py-0.5 bg-yellow-500/10 text-yellow-600 rounded-full border border-yellow-500/20">
+                            <Award className="w-3 h-3" />
+                            <span className="text-[8px] font-mono tracking-widest font-bold uppercase">National Citation</span>
+                          </div>
+                        )}
+                      </h4>
+                      <div className="text-[9px] font-mono tracking-widest text-gray-500 uppercase">
+                        {item.role || item.category}
+                      </div>
+                      <p className="text-xs text-gray-500 italic font-serif leading-relaxed mt-1 line-clamp-2">
+                        {item.details?.overview || item.problem}
+                      </p>
+                    </div>
+                    <div className="hidden sm:flex flex-wrap gap-2 justify-end max-w-[200px]">
+                      {item.tags?.slice(0, 3).map((tag: string, i: number) => (
+                        <span key={i} className="text-[8px] font-mono px-2 py-0.5 border border-gray-200 text-gray-500 rounded-sm bg-white">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
