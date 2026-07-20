@@ -2750,14 +2750,15 @@ export default function App() {
       <AmbientBackground isArch={isArch} />
       
       {/* Header / Nav */}
-            <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center bg-[#0a0a0c]/80`}>
-        <div className="flex items-center gap-6 pl-4 md:pl-6 lg:pl-8">
-          <div className="flex items-center font-sans text-lg md:text-xl font-bold tracking-tight text-white uppercase">
-            <span className="text-[#00f2ff] font-mono font-light text-xl opacity-70">{`>`}</span>
-            <span className="text-[#00f2ff] font-mono font-light text-xl -ml-0.5 mt-2 opacity-70">{`_`}</span>
-            <span className="ml-3 tracking-wide">KARTHIKRAJ_<span className="text-[#3B82F6]">NADAR</span></span>
+      <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b border-white/5 bg-[#0a0a0c]/80`}>
+        <div className="max-w-7xl mx-auto w-full px-6 md:px-12 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center font-sans text-lg md:text-xl font-bold tracking-tight text-white uppercase">
+              <span className="text-[#00f2ff] font-mono font-light text-xl opacity-70">{`>`}</span>
+              <span className="text-[#00f2ff] font-mono font-light text-xl -ml-0.5 mt-2 opacity-70">{`_`}</span>
+              <span className="ml-3 tracking-wide">KARTHIKRAJ_<span className="text-[#3B82F6]">NADAR</span></span>
+            </div>
           </div>
-        </div>
         
         <div className="hidden md:flex flex-1 justify-center gap-10">
           <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
@@ -2778,6 +2779,7 @@ export default function App() {
         
         <div>
 
+        </div>
         </div>
       </header>
 
@@ -2954,8 +2956,8 @@ export default function App() {
           <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_60%)] pointer-events-none" />
           <OrganicBackground />
           
-          <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 md:px-12 flex flex-col justify-center h-full pt-16">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[6rem] font-sans font-black tracking-tighter text-white leading-[0.95] mb-6">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full pt-28">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-sans font-black tracking-tighter text-white leading-[0.95] mb-6">
               Automating Architecture.<br/>
               <span className="text-gray-400">Engineering Compliant</span><br/>
               <span className="text-[#3B82F6]">BIM Pipelines.</span>
@@ -2965,7 +2967,7 @@ export default function App() {
               Developing custom Python and Dynamo workflows to streamline database extraction, model validation, and scalable ISO 19650 compliance.
             </p>
             
-            <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-16">
+            <div className="flex flex-wrap items-center gap-4 mb-16">
               <button 
                 onClick={() => {
                   const el = document.getElementById("vdc-section");
@@ -2980,7 +2982,7 @@ export default function App() {
                   const el = document.getElementById("arch-section");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-white/10 transition-colors duration-300"
+                className="px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300"
               >
                 View Design Projects
               </button>
@@ -2989,18 +2991,18 @@ export default function App() {
                   const el = document.getElementById("terminal");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-[#6366F1]/10 hover:border-[#6366F1]/30 hover:text-[#6366F1] transition-colors duration-300"
+                className="px-6 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300"
               >
-                View Bio
+                View Contact & Bio
               </button>
               <a 
                 href="https://drive.google.com/file/d/1NedDKu8KdPfHPTFxYKGncsrrbla5c5Hc/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full font-bold font-sans hover:bg-[#6366F1]/10 hover:border-[#6366F1]/30 hover:text-[#6366F1] transition-colors duration-300 flex items-center justify-center gap-2"
+                className="px-5 py-3 bg-transparent border border-white/10 text-zinc-300 rounded-full font-bold font-sans hover:border-indigo-500 hover:text-white transition-colors duration-300 flex items-center justify-center gap-2"
               >
-                <Download className="w-5 h-5" />
-                Download Resume
+                <Download className="w-4 h-4" />
+                <span className="text-sm">Download Resume</span>
               </a>
             </div>
             
