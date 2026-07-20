@@ -1634,33 +1634,33 @@ export default function App() {
   const telemetryDomains = [
     {
       id: 1,
-      title: "BIM & VDC Core Engine",
+      title: "BIM DATA & COORDINATION",
       icon: <Layers className="w-4 h-4" />,
-      pills: ['Revit', 'Navisworks Manage', 'Vectorworks', 'ISO 19650 Standards', '5D Quantity Harvesting']
+      pills: ['Revit', 'Navisworks Manage', 'Vectorworks', 'Excel', 'ISO 19650 Standards', '5D Quantity Harvesting']
     },
     {
       id: 2,
       title: "Automation & Runtime API",
       icon: <Terminal className="w-4 h-4" />,
-      pills: ['Python', 'Dynamo', 'Revit API core', 'JSON Data Serialization', 'Script Automation']
+      pills: ['Python', 'Dynamo', 'Revit API core', 'Data Serialization (JSON)', 'Workflow Automation']
     },
     {
       id: 3,
-      title: "Computational Geometry Suite",
+      title: "COMPUTATIONAL DESIGN & SIMULATION",
       icon: <Component className="w-4 h-4" />,
-      pills: ['Rhino 3D', 'Grasshopper', 'Wallacei', 'Galapagos', 'Ladybug Tools', 'Rhino.Inside.Revit']
+      pills: ['Rhino 3D', 'Grasshopper', 'Evolutionary Solvers (Wallacei/Galapagos)', 'Ladybug Tools', 'Rhino.Inside.Revit']
     },
     {
       id: 4,
-      title: "Full-Stack Systems (Web)",
+      title: "DISTRIBUTED WEB APPLICATIONS",
       icon: <Cpu className="w-4 h-4" />,
-      pills: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js REST APIs', 'Firestore Database', 'Web Hosting (Vercel)']
+      pills: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js REST APIs', 'Cloud Databases (Firestore)', 'Vercel Deployment']
     },
     {
       id: 5,
       title: "Reality Capture & Rendering",
       icon: <Monitor className="w-4 h-4" />,
-      pills: ['D5 Render', 'Twinmotion', 'Enscape', 'Adobe Creative Suite', 'Stable Diffusion Prompting']
+      pills: ['D5 Render', 'Twinmotion', 'Enscape', 'Adobe Creative Suite', 'Generative AI (Stable Diffusion)']
     }
   ];
   const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
