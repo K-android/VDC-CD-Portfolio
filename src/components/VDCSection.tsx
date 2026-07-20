@@ -21,7 +21,7 @@ export default function VDCSection({
 
   return (<>
         {/* STAGE 2: VDC & Systems Architecture Continuous Section */}
-        <section id="vdc-section" className="bg-[#0a0a0c] text-gray-400 font-sans w-full py-20 px-6 md:px-12 relative">
+        <section id="vdc-section" className="bg-[#0a0a0c] text-gray-400 font-sans w-full pt-48 pb-32 px-6 md:px-12 relative mt-16 md:mt-0">
           <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
             
             {/* VDC Sub Hero Header Grid */}
@@ -178,7 +178,7 @@ export default function VDCSection({
             </div>
 
           {/* VDC WEB APPS / TOOLS */}
-          <div id="vdc-apps" className="pt-16 border-t border-white/10 scroll-mt-24">
+          <div id="vdc-apps" className="pt-32 mt-24 border-t border-white/10 scroll-mt-24">
             <div className="mb-8">
               <h2 className="text-xs font-sans  tracking-[0.3em] mb-3 text-neon-orange">
                 Section_02 // Custom_Web_Applications_&_Web_Tools

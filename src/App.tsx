@@ -29,6 +29,7 @@ import {
   Play,
   Zap,
   Maximize2,
+  Monitor,
   MonitorPlay,
   Globe,
   Award,
@@ -1632,6 +1633,7 @@ export default function App() {
   const menuItems = [
     { id: "landing", label: "Home", isSection: true, index: 0, elementId: "landing" },
     { id: "vdc-section", label: "Workflows", isSection: true, index: 1, elementId: "vdc-section" },
+    { id: "arch-section", label: "Design Projects", isSection: true, index: 2, elementId: "arch-section" },
     { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
     { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
   ];
@@ -2768,12 +2770,16 @@ export default function App() {
             Workflows
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
           </button>
+          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+            Design Projects
+            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+          </button>
           <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
             Apps / Web
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
           </button>
           <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
-            Bio
+            Contact & Bio
           </button>
         </div>
         
@@ -2952,12 +2958,12 @@ export default function App() {
       <main className="relative z-10">
         {/* STAGE 1: Vertical Split landing Gateway */}
                 {/* STAGE 1: Premium Unified Hero */}
-                <section id="landing" className={`min-h-screen h-[100dvh] md:h-screen w-full relative flex flex-col justify-center bg-[#0a0a0c]`}>
+                <section id="landing" className={`min-h-screen w-full relative flex flex-col justify-center bg-[#0a0a0c]`}>
           <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_60%)] pointer-events-none" />
           <OrganicBackground />
           
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center h-full pt-28">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-sans font-black tracking-tighter text-white leading-[0.95] mb-6">
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center min-h-screen pt-52 md:pt-64 pb-24">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-sans font-black tracking-tighter text-white leading-[1.1] mb-6">
               Automating Architecture.<br/>
               <span className="text-gray-400">Engineering Compliant</span><br/>
               <span className="text-[#3B82F6]">BIM Pipelines.</span>
@@ -3006,8 +3012,103 @@ export default function App() {
               </a>
             </div>
             
+            {/* HARDWARE & SOFTWARE TELEMETRY */}
+            <div className="pt-16 mt-16 md:mt-24 border-t border-white/10 w-full mb-12">
+              <h2 className="text-[10px] md:text-xs font-mono tracking-[0.2em] text-[#3B82F6] mb-8 uppercase">
+                // Hardware & Software Telemetry
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12 md:pb-20">
+                
+                {/* Card 1 */}
+                <div className="border border-white/10 bg-[#0a0a0c]/80 p-6 rounded-xl hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-2.5 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                      <Layers className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-sans font-bold text-gray-200 text-sm md:text-base tracking-wide">1. BIM & VDC Core Engine</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['Revit', 'Navisworks Manage', 'Vectorworks', 'ISO 19650 Standards', '5D Quantity Harvesting'].map(t => (
+                      <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/5 rounded-md text-[10px] md:text-[11px] font-mono text-gray-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card 2 */}
+                <div className="border border-white/10 bg-[#0a0a0c]/80 p-6 rounded-xl hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-2.5 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                      <Terminal className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-sans font-bold text-gray-200 text-sm md:text-base tracking-wide">2. Automation & Runtime API</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['Python', 'Dynamo', 'Revit API core', 'JSON Data Serialization', 'Script Automation'].map(t => (
+                      <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/5 rounded-md text-[10px] md:text-[11px] font-mono text-gray-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card 3 */}
+                <div className="border border-white/10 bg-[#0a0a0c]/80 p-6 rounded-xl hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-2.5 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                      <Component className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-sans font-bold text-gray-200 text-sm md:text-base tracking-wide">3. Computational Geometry Suite</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['Rhino 3D', 'Grasshopper', 'Wallacei', 'Galapagos', 'Ladybug Tools', 'Rhino.Inside.Revit'].map(t => (
+                      <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/5 rounded-md text-[10px] md:text-[11px] font-mono text-gray-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card 4 */}
+                <div className="border border-white/10 bg-[#0a0a0c]/80 p-6 rounded-xl hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-2.5 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                      <Cpu className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-sans font-bold text-gray-200 text-sm md:text-base tracking-wide">4. Full-Stack Systems (Web)</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['React', 'TypeScript', 'Tailwind CSS', 'Node.js REST APIs', 'Firestore Database', 'Web Hosting (Vercel)'].map(t => (
+                      <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/5 rounded-md text-[10px] md:text-[11px] font-mono text-gray-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Card 5 */}
+                <div className="border border-white/10 bg-[#0a0a0c]/80 p-6 rounded-xl hover:border-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-2.5 bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                      <Monitor className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-sans font-bold text-gray-200 text-sm md:text-base tracking-wide">5. Reality Capture & Rendering</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {['D5 Render', 'Twinmotion', 'Enscape', 'Adobe Creative Suite', 'Stable Diffusion Prompting'].map(t => (
+                      <span key={t} className="px-2.5 py-1 bg-white/5 border border-white/5 rounded-md text-[10px] md:text-[11px] font-mono text-gray-400">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-8 border-t border-white/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-12 mt-12 md:mt-24 border-t border-white/10">
               <div>
                 <div className="text-3xl md:text-5xl font-black text-[#3B82F6] tracking-tighter mb-1">11+</div>
                 <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">Automation Scripts</div>
@@ -3025,6 +3126,7 @@ export default function App() {
                 <div className="text-[10px] md:text-xs font-bold tracking-widest text-gray-500 uppercase">MODELING PRECISION</div>
               </div>
             </div>
+
           </div>
         </section>
         <React.Suspense fallback={<div className="h-[50vh] flex items-center justify-center bg-[#0f1115] text-neon-cyan font-mono text-xs">Loading VDC Environment...</div>}>
@@ -3051,7 +3153,8 @@ export default function App() {
         </React.Suspense>
 
         <ParallaxSection id="terminal" index={visibleSections.indexOf('terminal')} setActiveSection={setActiveSection}>
-          <motion.div 
+          <motion.div
+            className="w-full pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto" 
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.05 }}
@@ -3059,8 +3162,7 @@ export default function App() {
               hidden: { opacity: 0, y: 10 },
               show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
             }}
-            className="w-full"
-          >
+            >
             <div className={`border p-4 md:p-6 font-mono text-xs relative overflow-hidden transition-all duration-700 ${
               isArch 
               ? "border-gray-100 bg-white" 
@@ -3127,41 +3229,7 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4 col-span-1 md:col-span-2">
-                    <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Skills Matrix</div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Layers className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>BIM Modeling</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Revit, Navisworks, Vectorworks</span>
-                      </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Terminal className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Automation</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Python, Dynamo, Revit API</span>
-                      </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Component className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Computational</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>Rhino, Grasshopper (Wallacei, Galapagos, Ladybug Tools, Rhino.Inside)</span>
-                      </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Database className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>VDC & Data</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>ISO 19650, 5D Harvesting</span>
-                      </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Camera className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Visualization</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>D5 Render, Enscape, AI Imagery</span>
-                      </div>
-                      <div className={`flex flex-col gap-2 p-3 border transition-colors duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>
-                         <Code className={`w-5 h-5 ${isArch ? "text-gray-600" : "text-neon-cyan"}`} />
-                         <span className={`text-xs font-bold ${isArch ? "text-black" : "text-gray-200"}`}>Web Dev</span>
-                         <span className={`text-[11px] leading-tight ${isArch ? "text-gray-500" : "text-gray-400"}`}>React, TypeScript, Tailwind</span>
-                      </div>
-                    </div>
-                  </div>
+
 
                   <div className="space-y-2">
                     <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>Languages</div>
@@ -3893,28 +3961,15 @@ export default function App() {
                         </p>
                       </div>
                       
-                      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border shadow-inner rounded ${
-                        isArch ? "border-gray-200 bg-gray-50" : "border-white/10 bg-[#020304]"
+                      <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
+                        isArch ? "border-gray-200 bg-white" : "border-white/10 bg-[#020304]"
                       }`}>
-                        {selectedArsenalItem.details.images.map((img: string, idx: number) => (
-                           <img 
-                             key={`hospice-sheet-${idx}`} 
-                             src={getStaticThumbnailUrl(img)} 
-                             alt={`Hospice Sheet ${idx + 1}`} 
-                             referrerPolicy="no-referrer"
-                             className={`w-full h-auto rounded border shadow-sm cursor-zoom-in transition-transform hover:scale-[1.02] ${
-                               isArch ? "border-gray-300" : "border-gray-800"
-                             }`}
-                             onClick={() => {
-                               setExpandedMedia({
-                                 src: img,
-                                 isVideo: false,
-                                 googleDriveId: getDriveId(img),
-                                 alt: `Hospice Sheet ${idx + 1}`
-                               });
-                             }}
-                           />
-                        ))}
+                        <iframe
+                          src={`https://drive.google.com/embeddedfolderview?id=1ow-E8p-3WvpReBLDsSdUR5DnheaNVJ4M#grid`}
+                          className="w-full h-full border-0"
+                          title="Karunya Hospice and Palliative Care Center Thesis Sheets Viewer Layout"
+                          allow="autoplay"
+                        ></iframe>
                       </div>
                     </div>
                   );
