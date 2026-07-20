@@ -21,7 +21,7 @@ export default function VDCSection({
 
   return (<>
         {/* STAGE 2: VDC & Systems Architecture Continuous Section */}
-        <section id="vdc-section" className="bg-[#0a0a0c] text-gray-400 font-sans w-full pt-48 pb-32 px-6 md:px-12 relative mt-16 md:mt-0">
+        <section id="vdc-section" className="bg-[#0a0a0c] text-gray-400 font-sans w-full pt-24 md:pt-32 pb-32 px-6 md:px-12 relative">
           <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
             
             {/* VDC Sub Hero Header Grid */}
