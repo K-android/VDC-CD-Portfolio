@@ -52,3 +52,33 @@
     @apply font-mono text-sm tracking-tight;
   }
 }
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+.carousel-track:active {
+  animation-play-state: paused;
+}
+
+.carousel-item {
+  width: 280px;
+  flex-shrink: 0;
+}
+@media (min-width: 640px) {
+  .carousel-item {
+    width: 350px;
+  }
+}
+@media (min-width: 1024px) {
+  .carousel-item {
+    width: 450px;
+  }
+}

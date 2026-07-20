@@ -3893,22 +3893,35 @@ export default function App() {
                         </p>
                       </div>
                       
-                      <div className={`w-full h-[580px] sm:h-[680px] xl:h-[780px] border shadow-inner relative overflow-hidden rounded ${
-                        isArch ? "border-gray-200 bg-white" : "border-white/10 bg-[#020304]"
+                      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border shadow-inner rounded ${
+                        isArch ? "border-gray-200 bg-gray-50" : "border-white/10 bg-[#020304]"
                       }`}>
-                        <iframe
-                          src={embedSrc}
-                          className="w-full h-full border-0"
-                          title="Karunya Hospice and Palliative Care Center Thesis Sheets Viewer Layout"
-                          allow="autoplay"
-                        ></iframe>
+                        {selectedArsenalItem.details.images.map((img: string, idx: number) => (
+                           <img 
+                             key={`hospice-sheet-${idx}`} 
+                             src={getStaticThumbnailUrl(img)} 
+                             alt={`Hospice Sheet ${idx + 1}`} 
+                             referrerPolicy="no-referrer"
+                             className={`w-full h-auto rounded border shadow-sm cursor-zoom-in transition-transform hover:scale-[1.02] ${
+                               isArch ? "border-gray-300" : "border-gray-800"
+                             }`}
+                             onClick={() => {
+                               setExpandedMedia({
+                                 src: img,
+                                 isVideo: false,
+                                 googleDriveId: getDriveId(img),
+                                 alt: `Hospice Sheet ${idx + 1}`
+                               });
+                             }}
+                           />
+                        ))}
                       </div>
                     </div>
                   );
                 })()}
 
                 {/* Full-width Technical Gallery */}
-                {selectedArsenalItem.details?.images && selectedArsenalItem.details.images.length > 0 && (
+                {selectedArsenalItem.id !== "ARCH_05" && selectedArsenalItem.details?.images && selectedArsenalItem.details.images.length > 0 && (
                   <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-white/10"}`}>
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
                       <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
@@ -3993,16 +4006,22 @@ export default function App() {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {selectedArsenalItem.details.images
-                        .map((img, idx) => ({ img, idx, type: getGalleryItemType(img, idx, selectedArsenalItem.id) }))
+                    <div className="overflow-hidden relative w-full">
+                      <div className="carousel-track flex gap-6">
+                        {/* Duplicate the array to create an infinite loop effect */}
+                        {[...selectedArsenalItem.details.images, ...selectedArsenalItem.details.images]
+                        .map((img, idx) => ({ 
+                          img, 
+                          idx: idx % selectedArsenalItem.details.images.length, 
+                          type: getGalleryItemType(img, idx % selectedArsenalItem.details.images.length, selectedArsenalItem.id) 
+                        }))
                         .filter(item => galleryFilter === 'all' || item.type === galleryFilter)
-                        .map(({ img, idx, type }) => {
+                        .map(({ img, idx, type }, uniqueIdx) => {
                           const isVideo = type === 'video';
                           const googleDriveId = getDriveId(img);
                           const thumbSrc = getStaticThumbnailUrl(img);
                           return (
-                            <div key={`gallery-${selectedArsenalItem.id}-${idx}`} className="flex flex-col gap-3 group/gal">
+                            <div key={`gallery-${selectedArsenalItem.id}-${uniqueIdx}`} className="flex flex-col gap-3 group/gal carousel-item">
                               <div 
                                 onClick={() => {
                                   setExpandedMedia({
@@ -4062,6 +4081,7 @@ export default function App() {
                             </div>
                           );
                         })}
+                      </div>
                     </div>
                   </div>
                 )}
