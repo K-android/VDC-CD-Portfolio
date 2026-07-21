@@ -957,9 +957,11 @@ const ArchSection = React.lazy(() => import('./components/ArchSection'));
 
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
+  const [isSkillsActive, setIsSkillsActive] = useState(false);
   const [isAppsActive, setIsAppsActive] = useState(false);
   const [isWorkflowsActive, setIsWorkflowsActive] = useState(false);
   const [isArchWorksActive, setIsArchWorksActive] = useState(false);
+  const [isPrototypingActive, setIsPrototypingActive] = useState(false);
   const [selectedArsenalItem, setSelectedArsenalItem] = useState<ArsenalItem | null>(null);
   const [expandedMedia, setExpandedMedia] = useState<{ src: string; isVideo: boolean; isGif?: boolean; googleDriveId: string | null; alt: string } | null>(null);
   const [expandedGrid, setExpandedGrid] = useState<{ title: string; images: string[] } | null>(null);
@@ -1208,17 +1210,21 @@ export default function App() {
 
   const menuItems = [
     { id: "landing", label: "Home", isSection: true, index: 0, elementId: "landing" },
+    { id: "skills", label: "Skills", isSection: false, elementId: "skills" },
     { id: "vdc-section", label: "Workflows", isSection: true, index: 1, elementId: "vdc-section" },
-    { id: "arch-section", label: "Design Projects", isSection: true, index: 2, elementId: "arch-section" },
     { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
+    { id: "arch-section", label: "Design Projects", isSection: true, index: 2, elementId: "arch-section" },
+    { id: "arch-prototyping", label: "Prototyping", isSection: false, elementId: "arch-prototyping" },
     { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
   ];
 
   const desktopMenuItems = [
     { id: "landing", label: "Gateway", isSection: true, index: 0, elementId: "landing" },
-    { id: "vdc-section", label: "VDC Core", isSection: true, index: 1, elementId: "vdc-section" },
+    { id: "skills", label: "Skills", isSection: false, elementId: "skills" },
+    { id: "vdc-section", label: "Workflows", isSection: true, index: 1, elementId: "vdc-section" },
     { id: "vdc-apps", label: "Apps / Web", isSection: false, elementId: "vdc-apps" },
-    { id: "arch-section", label: "Arch Studio", isSection: true, index: 2, elementId: "arch-section" },
+    { id: "arch-section", label: "Design Projects", isSection: true, index: 2, elementId: "arch-section" },
+    { id: "arch-prototyping", label: "Prototyping", isSection: false, elementId: "arch-prototyping" },
     { id: "terminal", label: "Contact & Bio", isSection: true, index: 3, elementId: "terminal" },
   ];
 
@@ -2197,18 +2203,27 @@ export default function App() {
         }
       });
 
-      // Track sub-sections
-      const vdcSecEl = document.getElementById("vdc-section");
+      // Track sub-sections      const vdcSecEl = document.getElementById("vdc-section");
+      const skillsEl = document.getElementById("skills");
       const workflowsEl = document.getElementById("vdc-workflows");
       const appsEl = document.getElementById("vdc-apps");
+
       const archSecEl = document.getElementById("arch-section");
       const worksEl = document.getElementById("arch-works");
+      const prototypingEl = document.getElementById("arch-prototyping");
       const terminalEl = document.getElementById("terminal");
 
       if (vdcSecEl) {
+        const skillsTop = skillsEl ? (vdcSecEl.offsetTop + skillsEl.offsetTop) : vdcSecEl.offsetTop;
         const workflowsTop = workflowsEl ? (vdcSecEl.offsetTop + workflowsEl.offsetTop) : vdcSecEl.offsetTop;
         const appsTop = appsEl ? (vdcSecEl.offsetTop + appsEl.offsetTop) : vdcSecEl.offsetTop;
         const archTop = archSecEl ? archSecEl.offsetTop : vdcSecEl.offsetTop + vdcSecEl.offsetHeight;
+
+        if (scrollPosition >= skillsTop && scrollPosition < workflowsTop) {
+          setIsSkillsActive(true);
+        } else {
+          setIsSkillsActive(false);
+        }
 
         // vdc-workflows is active between workflowsTop and appsTop
         if (scrollPosition >= workflowsTop && scrollPosition < appsTop) {
@@ -2224,21 +2239,30 @@ export default function App() {
           setIsAppsActive(false);
         }
       } else {
+        setIsSkillsActive(false);
         setIsWorkflowsActive(false);
         setIsAppsActive(false);
       }
 
       if (archSecEl) {
         const worksTop = worksEl ? (archSecEl.offsetTop + worksEl.offsetTop) : archSecEl.offsetTop;
+        const prototypingTop = prototypingEl ? (archSecEl.offsetTop + prototypingEl.offsetTop) : archSecEl.offsetTop;
         const terminalTop = terminalEl ? terminalEl.offsetTop : archSecEl.offsetTop + archSecEl.offsetHeight;
 
-        if (scrollPosition >= worksTop && scrollPosition < terminalTop) {
+        if (scrollPosition >= worksTop && scrollPosition < prototypingTop) {
           setIsArchWorksActive(true);
         } else {
           setIsArchWorksActive(false);
         }
+
+        if (scrollPosition >= prototypingTop && scrollPosition < terminalTop) {
+          setIsPrototypingActive(true);
+        } else {
+          setIsPrototypingActive(false);
+        }
       } else {
         setIsArchWorksActive(false);
+        setIsPrototypingActive(false);
       }
     };
 
@@ -2346,18 +2370,39 @@ export default function App() {
           <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-black" : "text-gray-400 hover:text-white"}`}>
             Home
           </button>
-          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
-            Workflows
-            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#00f2ff]"}`}></span>
+          
+          <button onClick={() => document.getElementById("skills")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-black" : "text-gray-400 hover:text-white"}`}>
+            Skills
           </button>
-          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#3B82F6]"}`}>
-            Design Projects
-            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#3B82F6]"}`}></span>
-          </button>
-          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
-            Apps / Web
-            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#00f2ff]"}`}></span>
-          </button>
+
+          <div className="relative group flex items-center h-full py-4">
+            <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
+              Workflows
+              <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#00f2ff]"}`}></span>
+            </button>
+            <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-[-10px] pt-4 hidden group-hover:flex flex-col gap-2 min-w-[140px]`}>
+              <div className={`p-3 rounded-lg shadow-xl border backdrop-blur-xl transition-all flex flex-col gap-2 ${isHeaderArch ? "bg-white/95 border-gray-200" : "bg-[#0a0a0c]/95 border-white/10"}`}>
+                <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className={`text-left whitespace-nowrap font-serif text-xs font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-600 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
+                  Apps / Web
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative group flex items-center h-full py-4">
+            <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#3B82F6]"}`}>
+              Design Projects
+              <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#3B82F6]"}`}></span>
+            </button>
+            <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-[-10px] pt-4 hidden group-hover:flex flex-col gap-2 min-w-[140px]`}>
+              <div className={`p-3 rounded-lg shadow-xl border backdrop-blur-xl transition-all flex flex-col gap-2 ${isHeaderArch ? "bg-white/95 border-gray-200" : "bg-[#0a0a0c]/95 border-white/10"}`}>
+                <button onClick={() => document.getElementById("arch-prototyping")?.scrollIntoView({ behavior: "smooth" })} className={`text-left whitespace-nowrap font-serif text-xs font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-600 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#3B82F6]"}`}>
+                  Prototyping
+                </button>
+              </div>
+            </div>
+          </div>
+
           <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-black" : "text-gray-400 hover:text-white"}`}>
             Contact & Bio
           </button>
@@ -2402,11 +2447,13 @@ export default function App() {
                 {menuItems.map((item) => {
                   const isActive = 
                     item.id === "landing" ? activeSection === 0 :
-                    item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive) :
+                    item.id === "skills" ? isSkillsActive :
+                    item.id === "vdc-section" ? (activeSection === 1 && !isWorkflowsActive && !isAppsActive && !isSkillsActive) :
                     item.id === "vdc-workflows" ? isWorkflowsActive :
                     item.id === "vdc-apps" ? isAppsActive :
-                    item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive) :
+                    item.id === "arch-section" ? (activeSection === 2 && !isArchWorksActive && !isPrototypingActive) :
                     item.id === "arch-works" ? isArchWorksActive :
+                    item.id === "arch-prototyping" ? isPrototypingActive :
                     item.id === "terminal" ? activeSection === 3 :
                     false;
 

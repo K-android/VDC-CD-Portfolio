@@ -154,7 +154,7 @@ export default function ArchSection({
             </div>
 
             {/* ARCH FABRICATION */}
-            <div className="pt-16 border-t border-gray-100 font-serif">
+            <div id="arch-prototyping" className="pt-16 border-t border-gray-100 font-serif">
               <div className="mb-12 font-serif">
                 <h2 className="text-xs font-mono uppercase tracking-[0.3em] mb-4 text-gray-800 font-bold">
                   Section_02 // Fabrication &amp; Hands-on
