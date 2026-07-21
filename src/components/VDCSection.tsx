@@ -31,7 +31,7 @@ export default function VDCSection({
                   <Activity className="w-3 h-3 shrink-0" /> <span className="pr-1 font-sans">System Online: Data Engineering</span>
                 </div>
                 
-                <div className="mb-2 font-sans text-xs md:text-sm  tracking-widest text-[#3B82F6]">
+                <div className="mb-2 font-sans text-xs md:text-sm  tracking-widest text-[#8fa4bc]">
                   KARTHIKRAJ NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
                 </div>
                 
@@ -252,16 +252,16 @@ export default function VDCSection({
                }} 
           />
 
-          {/* High-speed structural grid of thin vertical lines */}
-          <div className="absolute inset-0 flex z-0 pointer-events-none">
-            {[...Array(12)].map((_, i) => (
+          {/* Base Layer: High-speed sweeping structural grid of thin vertical dark lines */}
+          <div className="absolute inset-0 flex z-10 pointer-events-none">
+            {[...Array(24)].map((_, i) => (
               <motion.div 
                 key={i}
-                className="flex-1 border-r border-black/[0.05] h-full origin-top"
-                initial={{ scaleY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ delay: i * 0.03 + 0.5, duration: 0.8, ease: "circOut" }}
+                className="flex-1 border-r border-black/[0.03] h-full"
+                initial={{ scaleY: 0, x: "-100%" }}
+                whileInView={{ scaleY: 1, x: "0%" }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ delay: i * 0.03, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               />
             ))}
           </div>
@@ -312,30 +312,44 @@ export default function VDCSection({
             </motion.div>
           </div>
 
-          {/* Top Dark Charcoal Layer that clips out horizontally */}
+          {/* Top Dark Charcoal Layer that clips out vertically */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-[#0a0a0c] to-white z-30 flex flex-col items-center justify-center overflow-hidden pointer-events-none"
+            className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-[#0a0a0c] to-neutral-900 z-30 flex flex-col items-center justify-center overflow-hidden pointer-events-none"
             initial={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
-            whileInView={{ clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)" }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1.5, ease: [0.77, 0, 0.17, 1] }} 
+            whileInView={{ clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1.8, ease: [0.77, 0, 0.17, 1] }} 
           >
             {/* Ambient Background Glow (Dark) */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-96 bg-[#3B82F6]/10 blur-[120px] rounded-full" />
 
+            {/* High-speed sweeping structural grid of thin vertical lines (white/[0.02]) */}
+            <div className="absolute inset-0 flex z-10 pointer-events-none">
+              {[...Array(24)].map((_, i) => (
+                <motion.div 
+                  key={i}
+                  className="flex-1 border-r border-white/[0.02] h-full"
+                  initial={{ scaleY: 0, x: "-100%" }}
+                  whileInView={{ scaleY: 1, x: "0%" }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ delay: i * 0.03, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                />
+              ))}
+            </div>
+
             {/* Ghosted Outline Text inside the dark layer to show what it is transitioning from */}
-            <div className="text-center z-20 max-w-4xl w-full relative px-4 opacity-40 blur-[1px]">
-              <div className="inline-block font-sans text-[9px] md:text-xs text-center text-neon-orange tracking-[0.4em] mb-8 font-bold border border-neon-orange/20 bg-neon-orange/5 px-4 py-1.5 rounded-full">
+            <div className="text-center z-20 max-w-4xl w-full relative px-4 opacity-70">
+              <div className="inline-block font-sans text-[9px] md:text-xs text-center text-neon-cyan tracking-[0.4em] mb-8 font-bold border border-[#00f2ff]/20 bg-[#00f2ff]/5 px-4 py-1.5 rounded-full">
                 --- MULTI-DISCIPLINARY COUPLING ---
               </div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-medium text-transparent bg-clip-text bg-gradient-to-b from-white/80 to-white/20 tracking-widest mb-6 leading-tight font-serif italic">
-                ARCHITECTURAL DESIGN <br />
-                <span className="font-sans font-light bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan to-blue-400 tracking-[0.25em] block mt-4 text-lg sm:text-xl md:text-3xl lg:text-4xl not-italic">PROJECT EXECUTION</span>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-medium text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 tracking-widest mb-6 leading-tight font-serif italic">
+                COMPUTATIONAL CORE <br />
+                <span className="font-sans font-light bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan to-blue-400 tracking-[0.25em] block mt-4 text-lg sm:text-xl md:text-3xl lg:text-4xl not-italic">VDC EXECUTION</span>
               </h2>
 
               <p className="text-xs md:text-sm font-sans text-gray-400 max-w-lg mx-auto leading-loose">
-                Where computation meets physical space. Connecting the power of automated drawings with sensible, real-world building design.
+                Where automated scripts meet building modeling structures. Processing dynamic ISO metadata pipelines into pure interactive architecture.
               </p>
             </div>
           </motion.div>

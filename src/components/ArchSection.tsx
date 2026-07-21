@@ -19,7 +19,7 @@ export default function ArchSection({
   const archScaleY = useSpring(archScroll, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (<>
-<section id="arch-section" className="bg-white text-gray-900 font-serif w-full pt-48 pb-32 px-6 md:px-12 border-b border-gray-100 relative mt-16 md:mt-0">
+<section id="arch-section" className="bg-white text-gray-900 font-serif w-full pt-48 pb-32 px-6 md:px-12 border-b border-gray-100 relative mt-0">
           <div className="max-w-7xl mx-auto space-y-24 md:space-y-32">
             
             {/* Arch Sub-Hero Header Grid */}

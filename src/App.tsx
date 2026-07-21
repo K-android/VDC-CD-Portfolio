@@ -2789,46 +2789,54 @@ export default function App() {
       <AmbientBackground isArch={isArch} />
       
       {/* Header / Nav */}
-      <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b border-white/5 bg-[#0a0a0c]/80`}>
+      <header className={`fixed top-0 w-full z-[60] backdrop-blur-xl border-b transition-colors duration-700 ${
+        isHeaderArch 
+          ? "border-stone-200 bg-white/80 text-stone-900" 
+          : "border-white/5 bg-[#0a0a0c]/80 text-white"
+      }`}>
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 md:px-12 py-4 flex justify-between items-center relative">
           <div className="flex items-center gap-6">
-            <div className="flex items-center font-serif text-[11px] sm:text-[14px] lg:text-lg font-bold tracking-tight text-white uppercase">
-              <span className="text-[#00f2ff] font-mono font-light text-xl opacity-70">{`>`}</span>
-              <span className="text-[#00f2ff] font-mono font-light text-xl -ml-0.5 mt-2 opacity-70">{`_`}</span>
+            <div className={`flex items-center font-serif text-[11px] sm:text-[14px] xl:text-lg font-bold tracking-tight uppercase transition-colors duration-700 ${isHeaderArch ? "text-stone-900" : "text-white"}`}>
+              <span className={`font-mono font-light text-xl opacity-70 transition-colors duration-700 ${isHeaderArch ? "text-[#3B82F6]" : "text-[#00f2ff]"}`}>{`>`}</span>
+              <span className={`font-mono font-light text-xl -ml-0.5 mt-2 opacity-70 transition-colors duration-700 ${isHeaderArch ? "text-[#3B82F6]" : "text-[#00f2ff]"}`}>{`_`}</span>
               <span className="ml-3 tracking-wide">KARTHIKRAJ_<span className="text-[#3B82F6]">NADAR</span></span>
             </div>
           </div>
         
-        <div className="hidden lg:flex flex-1 justify-center gap-6 xl:gap-10">
-          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+        <div className="hidden xl:flex flex-1 justify-center gap-6 xl:gap-10">
+          <button onClick={() => document.getElementById("landing")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-black" : "text-gray-400 hover:text-white"}`}>
             Home
           </button>
-          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("vdc-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
             Workflows
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#00f2ff]"}`}></span>
           </button>
-          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("arch-section")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#3B82F6]"}`}>
             Design Projects
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#3B82F6]"}`}></span>
           </button>
-          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-[#6366F1] transition-colors duration-300">
+          <button onClick={() => document.getElementById("vdc-apps")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-[#3B82F6]" : "text-gray-400 hover:text-[#00f2ff]"}`}>
             Apps / Web
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full"></span>
+            <span className={`absolute -bottom-1 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isHeaderArch ? "bg-[#3B82F6]" : "bg-[#00f2ff]"}`}></span>
           </button>
-          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className="relative group font-serif text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300">
+          <button onClick={() => document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" })} className={`relative group font-serif text-sm font-medium transition-colors duration-300 ${isHeaderArch ? "text-stone-500 hover:text-black" : "text-gray-400 hover:text-white"}`}>
             Contact & Bio
           </button>
         </div>
         
-        <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 lg:hidden">
+        <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 xl:hidden">
             <button 
               onClick={() => setIsMenuOpen(true)}
-              className="p-2 border border-white/10 bg-white/5 rounded-md text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+              className={`p-2 transition-colors duration-700 flex items-center justify-center focus:outline-none ${
+                isHeaderArch 
+                  ? "text-stone-800 hover:text-black" 
+                  : "text-white hover:text-[#00f2ff]"
+              }`}
             >
-              <Box className="w-5 h-5" />
+              <Box className="w-6 h-6 transition-transform hover:scale-110 active:scale-95" />
             </button>
         </div>
-        <div className="hidden lg:block w-[180px]"></div>
+        <div className="hidden xl:block w-[180px]"></div>
         </div>
       </header>
 
