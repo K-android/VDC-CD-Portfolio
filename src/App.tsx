@@ -2203,7 +2203,8 @@ export default function App() {
         }
       });
 
-      // Track sub-sections      const vdcSecEl = document.getElementById("vdc-section");
+      // Track sub-sections
+      const vdcSecEl = document.getElementById("vdc-section");
       const skillsEl = document.getElementById("skills");
       const workflowsEl = document.getElementById("vdc-workflows");
       const appsEl = document.getElementById("vdc-apps");
