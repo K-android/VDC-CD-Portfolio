@@ -46,10 +46,11 @@ export const PyRevitToolbar = () => {
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
   return (
-    <div className="mb-16 border border-white/10 rounded-xl bg-black/40 overflow-hidden font-sans shadow-2xl relative group/toolbar">
+    <div className="mb-16 border border-white/10 rounded-xl bg-[#0a0a0c]/90 backdrop-blur-xl overflow-hidden font-sans shadow-[0_20px_60px_-15px_rgba(0,0,0,1)] ring-1 ring-white/5 relative group/toolbar">
       {/* Decorative Header */}
-      <div className="bg-[#0f1115] border-b border-white/5 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="bg-[#12141a]/90 border-b border-white/5 px-4 py-3 flex items-center justify-between relative">
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <div className="flex items-center gap-3 relative z-10">
           <Terminal className="w-4 h-4 text-neon-cyan" />
           <h3 className="text-sm font-semibold tracking-wide text-gray-200 flex items-center gap-2">
             AEC Automator <span className="text-gray-600 font-normal">|</span> PyRevit AI Suite
@@ -88,24 +89,25 @@ export const PyRevitToolbar = () => {
                  </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 pt-4">
-                 <div className="space-y-2 bg-white/5 p-5 rounded-lg border border-white/5 hover:border-white/10 transition-colors">
-                    <div className="text-xs font-mono tracking-widest text-[#3B82F6] uppercase mb-3 flex items-center gap-2">
+              <div className="grid md:grid-cols-3 gap-6 pt-6 relative">
+                 <div className="absolute top-0 left-10 right-10 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                 <div className="space-y-3 bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:bg-white/[0.04] transition-all duration-300 hover:shadow-[0_0_30px_-10px_rgba(59,130,246,0.3)]">
+                    <div className="text-xs font-mono tracking-widest text-[#3B82F6] uppercase mb-4 flex items-center gap-2">
                       <span className="opacity-50">01.</span> Self-Diagnosing Engine
                     </div>
-                    <p className="text-xs text-gray-400 leading-relaxed">Employs fuzzy-logic matching to auto-correct slight parameter misspellings (e.g., mapping "fire code" to "Fire Rating"). Generates diagnostic reports if a parameter doesn't exist.</p>
+                    <p className="text-[13px] text-gray-400 leading-relaxed">Employs fuzzy-logic matching to auto-correct slight parameter misspellings (e.g., mapping "fire code" to "Fire Rating"). Generates diagnostic reports if a parameter doesn't exist.</p>
                  </div>
-                 <div className="space-y-2 bg-white/5 p-5 rounded-lg border border-white/5 hover:border-white/10 transition-colors">
-                    <div className="text-xs font-mono tracking-widest text-[#10B981] uppercase mb-3 flex items-center gap-2">
+                 <div className="space-y-3 bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:bg-white/[0.04] transition-all duration-300 hover:shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]">
+                    <div className="text-xs font-mono tracking-widest text-[#10B981] uppercase mb-4 flex items-center gap-2">
                       <span className="opacity-50">02.</span> Dynamic Unit Math
                     </div>
-                    <p className="text-xs text-gray-400 leading-relaxed">Automatically extracts units (mm, cm, m, in, ft) from prompts and dynamically converts them to Revit's internal Decimal Feet format on the fly, ensuring safe dimensional scaling.</p>
+                    <p className="text-[13px] text-gray-400 leading-relaxed">Automatically extracts units (mm, cm, m, in, ft) from prompts and dynamically converts them to Revit's internal Decimal Feet format on the fly, ensuring safe dimensional scaling.</p>
                  </div>
-                 <div className="space-y-2 bg-white/5 p-5 rounded-lg border border-white/5 hover:border-white/10 transition-colors">
-                    <div className="text-xs font-mono tracking-widest text-neon-cyan uppercase mb-3 flex items-center gap-2">
+                 <div className="space-y-3 bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:bg-white/[0.04] transition-all duration-300 hover:shadow-[0_0_30px_-10px_rgba(0,243,255,0.3)]">
+                    <div className="text-xs font-mono tracking-widest text-neon-cyan uppercase mb-4 flex items-center gap-2">
                       <span className="opacity-50">03.</span> Keyword Isolation
                     </div>
-                    <p className="text-xs text-gray-400 leading-relaxed">Prevents accidental bulk-editing by isolating elements via Family Names, Type Names, Marks, and Comments prior to transaction execution.</p>
+                    <p className="text-[13px] text-gray-400 leading-relaxed">Prevents accidental bulk-editing by isolating elements via Family Names, Type Names, Marks, and Comments prior to transaction execution.</p>
                  </div>
               </div>
             </motion.div>
@@ -120,32 +122,44 @@ export const PyRevitToolbar = () => {
            <p className="text-xs text-gray-500 mt-2">The suite consists of four specialized tools, structured for maximum predictability and model safety.</p>
         </div>
 
-        <div className="bg-[#353b48] border border-[#2d3436] rounded-md shadow-lg w-full max-w-4xl overflow-hidden flex flex-col items-center">
-          <div className="flex w-full divide-x divide-transparent">
+        <div className="bg-[#1e232b] bg-opacity-80 backdrop-blur-md border border-[#2d3436] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] w-full max-w-4xl overflow-hidden flex flex-col items-center relative">
+          {/* Subtle top glow */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+          <div className="flex w-full divide-x divide-white/5 relative z-10">
             {tools.map((tool) => (
               <button
                 key={tool.id}
                 onClick={() => setActiveTool(activeTool === tool.id ? null : tool.id)}
-                className={`flex-1 flex flex-col items-center justify-center gap-3 py-6 px-2 transition-all duration-200
+                className={`flex-1 flex flex-col items-center justify-center gap-4 py-8 px-2 transition-all duration-300 relative group overflow-hidden
                   ${activeTool === tool.id 
-                    ? 'bg-black/20 text-white' 
-                    : 'text-gray-200 hover:bg-white/5 hover:text-white'
+                    ? 'bg-gradient-to-b from-black/40 to-neon-cyan/5 text-white' 
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   }
                 `}
               >
-                <div className={`transition-transform duration-200 ${activeTool === tool.id ? 'scale-110 text-neon-cyan' : 'text-gray-300'}`}>
+                {/* Active Tool Glowing Indicator */}
+                {activeTool === tool.id && (
+                  <motion.div 
+                    layoutId="activeToolGlow"
+                    className="absolute top-0 left-0 w-full h-full bg-neon-cyan/5 pointer-events-none"
+                  >
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-neon-cyan shadow-[0_0_15px_2px_rgba(0,243,255,0.8)]"></div>
+                  </motion.div>
+                )}
+
+                <div className={`transition-all duration-300 relative z-10 ${activeTool === tool.id ? 'scale-110 text-neon-cyan drop-shadow-[0_0_8px_rgba(0,243,255,0.6)]' : 'text-gray-500 group-hover:scale-105 group-hover:text-gray-300'}`}>
                   {tool.icon}
                 </div>
-                <span className="text-[13px] tracking-wide text-center leading-tight">
+                <span className={`text-[13px] tracking-wide text-center leading-tight transition-all duration-300 relative z-10 ${activeTool === tool.id ? 'font-semibold text-neon-cyan' : 'font-medium'}`}>
                   {tool.title}
                 </span>
               </button>
             ))}
           </div>
           
-          <div className="w-full text-center pb-2 pt-4 relative">
-            <div className="absolute top-0 left-[2%] right-[2%] h-[1px] bg-white/10" />
-            <span className="text-[11px] font-mono tracking-wider text-gray-300">Smart_Tools</span>
+          <div className="w-full text-center pb-3 pt-4 relative bg-black/20 mt-auto border-t border-white/5">
+            <span className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">Smart_Tools</span>
           </div>
         </div>
 
@@ -161,8 +175,10 @@ export const PyRevitToolbar = () => {
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="mt-6 overflow-hidden w-full"
             >
-              <div className="p-6 md:p-8 bg-[#0a0a0c] border border-white/10 rounded-lg relative">
-                <div className="absolute top-0 left-0 w-1 h-full bg-neon-cyan rounded-l-lg"></div>
+              <div className="p-6 md:p-8 bg-gradient-to-br from-[#12141a] to-[#0a0a0c] border border-white/5 shadow-2xl rounded-lg relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-1 h-full bg-neon-cyan shadow-[0_0_20px_rgba(0,243,255,0.8)]"></div>
+                {/* Subtle top reflection */}
+                <div className="absolute top-0 left-1 right-0 h-[1px] bg-gradient-to-r from-neon-cyan/40 via-white/10 to-transparent"></div>
                 
                 {(() => {
                   const activeData = tools.find(t => t.id === activeTool);
@@ -211,42 +227,43 @@ export const PyRevitToolbar = () => {
               exit={{ opacity: 0, height: 0 }}
               className="w-full max-w-5xl overflow-hidden"
             >
-              <div className="mt-16 grid md:grid-cols-2 gap-8 border-t border-white/10 pt-12">
-                  <div className="space-y-4">
-                     <h4 className="text-sm font-bold text-gray-200 font-mono tracking-widest uppercase flex items-center gap-2">
-                       <Terminal className="w-4 h-4 text-gray-500" /> Technical Stack
+              <div className="mt-16 grid md:grid-cols-2 gap-8 border-t border-white/5 pt-12 relative">
+                  <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                  <div className="space-y-6 bg-white/[0.02] p-6 md:p-8 rounded-2xl border border-white/5 hover:bg-white/[0.04] transition-colors">
+                     <h4 className="text-sm font-bold text-gray-200 font-mono tracking-widest uppercase flex items-center gap-3">
+                       <Terminal className="w-4 h-4 text-neon-cyan" /> Technical Stack
                      </h4>
-                     <ul className="text-xs text-gray-400 space-y-3 font-mono">
-                        <li className="flex items-start gap-2">
+                     <ul className="text-xs text-gray-400 space-y-4 font-mono">
+                        <li className="flex items-start gap-3">
                           <span className="text-gray-600 mt-0.5">&gt;</span>
-                          <div><span className="text-gray-300">Environment:</span> Revit, PyRevit</div>
+                          <div><span className="text-gray-300">Environment:</span><br/>Revit, PyRevit</div>
                         </li>
-                        <li className="flex items-start gap-2">
+                        <li className="flex items-start gap-3">
                           <span className="text-gray-600 mt-0.5">&gt;</span>
-                          <div><span className="text-gray-300">Languages:</span> Python, C# (.NET Framework)</div>
+                          <div><span className="text-gray-300">Languages:</span><br/>Python, C# (.NET Framework)</div>
                         </li>
-                        <li className="flex items-start gap-2">
+                        <li className="flex items-start gap-3">
                           <span className="text-gray-600 mt-0.5">&gt;</span>
-                          <div><span className="text-gray-300">API Integration:</span> Autodesk Revit API, Google Gemini 2.5 Flash REST API</div>
+                          <div><span className="text-gray-300">API Integration:</span><br/>Autodesk Revit API, Google Gemini 2.5 Flash REST API</div>
                         </li>
                      </ul>
                   </div>
-                  <div className="space-y-4">
-                     <h4 className="text-sm font-bold text-gray-200 font-mono tracking-widest uppercase flex items-center gap-2">
-                       <ClipboardCheck className="w-4 h-4 text-gray-500" /> Installation
+                  <div className="space-y-6 bg-white/[0.02] p-6 md:p-8 rounded-2xl border border-white/5 hover:bg-white/[0.04] transition-colors">
+                     <h4 className="text-sm font-bold text-gray-200 font-mono tracking-widest uppercase flex items-center gap-3">
+                       <ClipboardCheck className="w-4 h-4 text-[#10B981]" /> Installation
                      </h4>
-                     <ul className="text-xs text-gray-400 space-y-3">
-                        <li className="flex items-start gap-2">
+                     <ul className="text-[13px] text-gray-400 space-y-4">
+                        <li className="flex items-start gap-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-gray-600 mt-1.5 shrink-0" />
-                          <p>Install PyRevit and add the cloned extension folder via settings.</p>
+                          <p className="leading-relaxed">Install PyRevit and add the cloned extension folder via settings.</p>
                         </li>
-                        <li className="flex items-start gap-2">
+                        <li className="flex items-start gap-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-neon-cyan mt-1.5 shrink-0 shadow-[0_0_8px_rgba(0,243,255,0.5)]" />
-                          <p>Securely set <code className="bg-black text-neon-cyan px-1.5 py-0.5 rounded border border-white/10 font-mono text-[10px]">GEMINI_API_KEY</code> in Windows Environment Variables to authenticate the AI.</p>
+                          <p className="leading-relaxed">Securely set <code className="bg-black/50 text-neon-cyan px-2 py-1 rounded border border-neon-cyan/20 font-mono text-[11px] shadow-inner">GEMINI_API_KEY</code> in Windows Environment Variables to authenticate the AI.</p>
                         </li>
-                        <li className="flex items-start gap-2">
+                        <li className="flex items-start gap-3">
                           <div className="w-1.5 h-1.5 rounded-full bg-gray-600 mt-1.5 shrink-0" />
-                          <p>Reload PyRevit to initialize the ribbon.</p>
+                          <p className="leading-relaxed">Reload PyRevit to initialize the ribbon.</p>
                         </li>
                      </ul>
                   </div>
