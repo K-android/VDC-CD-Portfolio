@@ -35,6 +35,7 @@ interface ArsenalItem {
     reportUrl?: string;
     reportLabel?: string;
     videoUrl?: string;
+    githubUrl?: string;
     sheetsUrl?: string;
     publication?: string;
     comparisonTable?: {

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { Activity, ChevronRight, Download, Terminal, Database, Code2, Layers, Workflow, CheckCircle2, ChevronDown, ShieldCheck } from 'lucide-react';
 import { AECWebAppsCabinet } from './AECWebAppsCabinet';
+import { PyRevitToolbar } from './PyRevitToolbar';
 
 export default function VDCSection({ 
   bimArsenal, 
@@ -104,6 +105,9 @@ export default function VDCSection({
             </div>
 
             <div className="space-y-16">
+              {/* AEC Automator Toolbar */}
+              <PyRevitToolbar />
+
               {/* Tier 1: Heavy Hitters */}
               <div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">

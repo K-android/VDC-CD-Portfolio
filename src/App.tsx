@@ -865,6 +865,7 @@ interface ArsenalItem {
     reportUrl?: string;
     reportLabel?: string;
     videoUrl?: string;
+    githubUrl?: string;
     sheetsUrl?: string;
     publication?: string;
     comparisonTable?: {
@@ -3352,6 +3353,13 @@ export default function App() {
                             {selectedArsenalItem.details.solution}
                           </p>
                         </div>
+                        {selectedArsenalItem.details.githubUrl && (
+                          <div className="pt-4 mt-4">
+                            <a href={selectedArsenalItem.details.githubUrl} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 px-6 py-3 font-mono text-xs font-bold uppercase tracking-widest border transition-all duration-300 rounded ${isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:text-black"}`}>
+                              View Source Code
+                            </a>
+                          </div>
+                        )}
 
                         {((selectedArsenalItem.details && (selectedArsenalItem.details.reportUrl || selectedArsenalItem.details.sheetsUrl || selectedArsenalItem.details.videoUrl)) || selectedArsenalItem.scriptUrl) && (
                           <div className="space-y-4 pt-4">
