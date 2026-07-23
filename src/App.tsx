@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { OrganicBackground } from './components/OrganicBackground';
+import { AutoCarousel } from './components/AutoCarousel';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "motion/react";
 import { 
   Terminal, 
@@ -1275,6 +1276,48 @@ export default function App() {
           "4. Auto Tile Placer Plugin - Saving Manual Drafting Time and Generating Iterations quickly",
           "5. Procurement/ BOQs List & Estimate"
         ],
+        autoCarousels: [
+          {
+            title: "Interior & Furniture Drawings",
+            folderUrl: "https://drive.google.com/drive/folders/1HbGADolqwIpNgNhrnckg2GuF8mZW_pKI",
+            images: [
+              "https://lh3.googleusercontent.com/d/1G5BTk-sb5d7oLGpmd4XorJbnBn4qljzW",
+              "https://lh3.googleusercontent.com/d/1ShgLr1N6pCrhMCqNLvAg64qbAaMU071R",
+              "https://lh3.googleusercontent.com/d/1Jz90SM98_Vnnf_5yqSiqD7pwch_6u-ql",
+              "https://lh3.googleusercontent.com/d/1scJv7FULra2Ex_oP9rbv_MyLGSIW8tKr",
+              "https://lh3.googleusercontent.com/d/1HKTRsbq4MvgCi_6LgMMU64botdoaWca1",
+              "https://lh3.googleusercontent.com/d/1BPH4KjFOtLQnJY5rjJVQXB3ZaYZoBiZ5",
+              "https://lh3.googleusercontent.com/d/18ce0mKs0REZgsjFtQJoysyPWoYLBVITt",
+              "https://lh3.googleusercontent.com/d/17XZ9XjqMv4KhCJpEJsEpmWW26cD_r2d3",
+              "https://lh3.googleusercontent.com/d/1pEpkFokNcWmor1uwtQscgA5QZPKvbiMZ",
+              "https://lh3.googleusercontent.com/d/1-draVzh0OdpOwltODME92uQjLRkXfhfL",
+              "https://lh3.googleusercontent.com/d/1dxg65WuFAJnS6J4nVVcH13xdgoQoqcf4",
+              "https://lh3.googleusercontent.com/d/1ogiC2qal0b9AyupRXDKVhXk4bREhDTcr",
+              "https://lh3.googleusercontent.com/d/1ao9bf6ywwuzZXz90CfmbqrH05AYHyEro",
+              "https://lh3.googleusercontent.com/d/1D1nEk_TiUS2gaomj3RWZe7EaPvn017z8",
+              "https://lh3.googleusercontent.com/d/1CMbNxS9Zciogij6iX8hqlZGeH-QuUvzM",
+              "https://lh3.googleusercontent.com/d/13xTtDteSgBS0MfmLYude3WKeyDCdi7_7"
+            ],
+            titles: [
+              "Aman's Bedroom Details",
+              "Villa 04 - Sana's Bedroom",
+              "Den Cabinet & TV Console Detail",
+              "Villa 04 - Den Elevations",
+              "Dining Table w Top Plans & Section",
+              "V4 Aman's Study Table",
+              "V4 SJK Study Table Details",
+              "Sana's Bookshelf Elev w Light",
+              "SJK Bookshelf Elev",
+              "Villa 04 - Railing - Room Elev",
+              "Villa 04 - RKSJK Room Elevs",
+              "Villa 04 - Wardrobes Revised",
+              "Villa 04 - Aman's Wardrobe",
+              "Villa 04 - Guest's Wardrobe",
+              "Villa 04 - RK's Wardrobe",
+              "Villa 04 - SJK Wardrobe"
+            ]
+          }
+        ],
         presentationGrids: [
           {
             title: "Staff Block GFC Drawings",
@@ -1291,6 +1334,12 @@ export default function App() {
               "https://lh3.googleusercontent.com/d/1J0HrgFjxIFEsnBT0Suewm4hWJqbi5itH#drawing",
               "https://lh3.googleusercontent.com/d/1uhANYvjGx0AHXxEyrvylrDdDewNwhNDb#drawing"
             ]
+          },
+          {
+            title: "Hotel Glazing and Facade Details",
+            buttonLabel: "Hotel Glazing and Facade Details",
+            images: [],
+            externalUrl: "https://drive.google.com/drive/folders/1MBSVWR9e3bNbTOKGnAb6FyDmag4emUCU?usp=sharing"
           }
         ],
         slideDecks: [
@@ -3782,6 +3831,56 @@ export default function App() {
                   </div>
                 )}
 
+                {/* Embedded Folders Section */}
+                {selectedArsenalItem.details?.embeddedFolders && selectedArsenalItem.details.embeddedFolders.length > 0 && (
+                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-white/10"}`}>
+                    <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 border-b pb-3 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
+                      // 11.5 . {isArch ? "DOCUMENTATION FOLDERS" : "DATA REPOSITORIES"}
+                    </div>
+                    <div className="space-y-8">
+                      {selectedArsenalItem.details.embeddedFolders.map((folder, idx) => (
+                        <div key={"folder-" + idx} className="space-y-3">
+                          <h4 className={`text-xs font-bold ${isArch ? "text-stone-800" : "text-gray-200"}`}>
+                            {folder.title}
+                          </h4>
+                          <div className={`w-full overflow-hidden rounded-xl border ${isArch ? "border-gray-300" : "border-white/10"}`}>
+                            <iframe 
+                              src={`https://drive.google.com/embeddedfolderview?id=${folder.folderId}#grid`} 
+                              style={{ width: '100%', height: '500px', border: 0 }} 
+                              title={folder.title}
+                              allow="autoplay"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Auto Carousels Section */}
+                {selectedArsenalItem.details?.autoCarousels && selectedArsenalItem.details.autoCarousels.length > 0 && (
+                  <div className={`space-y-6 pt-10 mt-10 border-t transition-all duration-700 ${isArch ? "border-gray-200" : "border-white/10"}`}>
+                    <div className={`text-[10px] font-mono uppercase tracking-widest transition-colors duration-700 border-b pb-3 ${isArch ? "text-stone-900 font-bold" : "text-neon-cyan"}`}>
+                      // 11.6 . {isArch ? "DRAWINGS CAROUSEL" : "DATA CAROUSEL"}
+                    </div>
+                    <div className="space-y-8">
+                      {selectedArsenalItem.details.autoCarousels.map((carousel, idx) => (
+                        <div key={"carousel-" + idx} className="space-y-3">
+                          <h4 className={`text-xs font-bold ${isArch ? "text-stone-800" : "text-gray-200"}`}>
+                            {carousel.title}
+                          </h4>
+                          <AutoCarousel 
+                            images={carousel.images} 
+                            titles={carousel.titles} 
+                            folderUrl={carousel.folderUrl} 
+                            isArch={isArch} 
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Presentation Grids Section */}
                 {selectedArsenalItem.details?.presentationGrids && selectedArsenalItem.details.presentationGrids.length > 0 && (
                   <div className={"space-y-4 pt-10 mt-10 border-t transition-all duration-700 " + (isArch ? "border-gray-200" : "border-white/10")}>
@@ -3790,13 +3889,25 @@ export default function App() {
                     </div>
                     <div className="flex flex-wrap gap-4">
                       {selectedArsenalItem.details.presentationGrids.map((grid, idx) => (
-                        <button
-                          key={"grid-" + idx}
-                          onClick={() => setExpandedGrid(grid)}
-                          className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-white/10 text-neon-cyan hover:bg-neon-cyan/10")}
-                        >
-                          {grid.buttonLabel}
-                        </button>
+                        grid.externalUrl ? (
+                          <a
+                            key={"grid-" + idx}
+                            href={grid.externalUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all inline-block " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-white/10 text-neon-cyan hover:bg-neon-cyan/10")}
+                          >
+                            {grid.buttonLabel}
+                          </a>
+                        ) : (
+                          <button
+                            key={"grid-" + idx}
+                            onClick={() => setExpandedGrid(grid)}
+                            className={"px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded transition-all " + (isArch ? "border-black text-black hover:bg-black hover:text-white" : "border-white/10 text-neon-cyan hover:bg-neon-cyan/10")}
+                          >
+                            {grid.buttonLabel}
+                          </button>
+                        )
                       ))}
                     </div>
                   </div>

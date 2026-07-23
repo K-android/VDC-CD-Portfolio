@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Terminal, FileSearch, FileEdit, Eye, ClipboardCheck } from 'lucide-react';
+import { Terminal, FileSearch, FileEdit, Eye, ClipboardCheck, Play, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const tools = [
@@ -41,29 +41,41 @@ const tools = [
   }
 ];
 
-export const PyRevitToolbar = () => {
+export const PyRevitToolbar = ({ onShowVideo }: { onShowVideo?: () => void }) => {
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState<boolean>(false);
 
   return (
     <div className="mb-16 border border-white/10 rounded-xl bg-[#0a0a0c]/90 backdrop-blur-xl overflow-hidden font-sans shadow-[0_20px_60px_-15px_rgba(0,0,0,1)] ring-1 ring-white/5 relative group/toolbar">
       {/* Decorative Header */}
-      <div className="bg-[#12141a]/90 border-b border-white/5 px-4 py-3 flex items-center justify-between relative">
+      <div className="bg-[#12141a]/90 border-b border-white/5 px-4 py-3 flex items-center justify-between relative overflow-x-auto">
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div className="flex items-center gap-3 relative z-10">
-          <Terminal className="w-4 h-4 text-neon-cyan" />
-          <h3 className="text-sm font-semibold tracking-wide text-gray-200 flex items-center gap-2">
+        <div className="flex items-center gap-3 relative z-10 shrink-0 pr-4">
+          <img 
+            src="https://raw.githubusercontent.com/pyrevitlabs/pyRevit/master/docs/static/pyRevitLogo.svg" 
+            alt="pyRevit" 
+            className="w-5 h-5 drop-shadow-[0_0_8px_rgba(255,204,0,0.5)]" 
+          />
+          <h3 className="text-sm font-semibold tracking-wide text-gray-200 flex items-center gap-2 whitespace-nowrap">
             AEC Automator <span className="text-gray-600 font-normal">|</span> PyRevit AI Suite
           </h3>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          {onShowVideo && (
+            <button 
+              onClick={onShowVideo}
+              className="text-[10px] uppercase tracking-widest text-[#3B82F6] hover:text-white transition-colors px-3 py-1 rounded-full border border-[#3B82F6]/30 bg-[#3B82F6]/10 hover:bg-[#3B82F6]/30 flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <Play className="w-3 h-3" /> Show Video
+            </button>
+          )}
           <button 
             onClick={() => setShowInfo(!showInfo)}
-            className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-neon-cyan transition-colors px-3 py-1 rounded-full border border-white/5 bg-white/5 hover:bg-neon-cyan/10"
+            className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-neon-cyan transition-colors px-3 py-1 rounded-full border border-white/5 bg-white/5 hover:bg-neon-cyan/10 whitespace-nowrap"
           >
             {showInfo ? 'Hide Info' : 'Project Info'}
           </button>
-          <a href="https://github.com/K-android/AEC-Automator-PyRevit-Suite" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-neon-cyan transition-colors px-3 py-1 rounded-full border border-white/5 bg-white/5 hover:bg-neon-cyan/10 hidden md:block">
+          <a href="https://github.com/K-android/AEC-Automator-PyRevit-Suite" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-neon-cyan transition-colors px-3 py-1 rounded-full border border-white/5 bg-white/5 hover:bg-neon-cyan/10 hidden md:block whitespace-nowrap">
             View Repository
           </a>
         </div>
@@ -117,7 +129,7 @@ export const PyRevitToolbar = () => {
         {/* The Toolbar UI to match the image */}
         <div className="w-full text-center mb-6">
            <h4 className="text-sm font-mono tracking-widest text-gray-200 uppercase flex items-center justify-center gap-2">
-             <Terminal className="w-4 h-4 text-neon-cyan" /> The Toolkit
+             <Settings className="w-4 h-4 text-neon-cyan" /> The Toolkit
            </h4>
            <p className="text-xs text-gray-500 mt-2">The suite consists of four specialized tools, structured for maximum predictability and model safety.</p>
         </div>

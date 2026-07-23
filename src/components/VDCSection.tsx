@@ -106,7 +106,7 @@ export default function VDCSection({
 
             <div className="space-y-16">
               {/* AEC Automator Toolbar */}
-              <PyRevitToolbar />
+              <PyRevitToolbar onShowVideo={() => setExpandedMedia({ src: 'https://drive.google.com/file/d/1yOTNxsA3yW69wSv7pJrqGpYczqf3eO25/view?usp=sharing', isVideo: true, googleDriveId: '1yOTNxsA3yW69wSv7pJrqGpYczqf3eO25', alt: 'AEC Automator Video' })} />
 
               {/* Tier 1: Heavy Hitters */}
               <div>

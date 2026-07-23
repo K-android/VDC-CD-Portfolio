@@ -31,7 +31,10 @@ interface ArsenalItem {
     images?: string[];
     captions?: string[];
     slideDecks?: { title: string; images: string[] }[];
-    presentationGrids?: { title: string; buttonLabel: string; images: string[] }[];
+    presentationGrids?: { title: string; buttonLabel: string; images: string[]; externalUrl?: string }[];
+    autoCarousels?: { title: string; images: string[]; titles?: string[]; folderUrl?: string }[];
+    embeddedFolders?: { title: string; folderId: string }[];
+    externalLinks?: { label: string; url: string }[];
     reportUrl?: string;
     reportLabel?: string;
     videoUrl?: string;
