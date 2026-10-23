@@ -35,7 +35,7 @@ export default function VDCSection({
                 </div>
                 
                 <div className="mb-2 font-sans text-xs md:text-sm  tracking-widest text-[#8fa4bc]">
-                  KARTHIKRAJ NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER
+                  KARTHIKRAJ NADAR // COMPUTATIONAL DESIGNER &amp; VDC ENGINEER — WSP INDIA
                 </div>
                 
                 <h1 className="text-2xl md:text-5xl font-sans tracking-tight leading-[1.1] mb-4 text-white font-bold">

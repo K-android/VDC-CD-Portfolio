@@ -2320,6 +2320,12 @@ export default function App() {
 
   const experience: ExperienceData[] = [
     {
+      year: "2026 - Present",
+      company: "WSP India",
+      role: "Computational Designer & VDC Engineer",
+      description: "Spearheading computational design pipelines, C# and Python Revit automation add-ins, and automated QA/QC workflows across large-scale multidisciplinary projects under ISO 19650 standards."
+    },
+    {
       year: "Dec 2025 - June 2026",
       company: "IMK Architects, Mumbai",
       role: "Architectural Intern",
@@ -3078,8 +3084,8 @@ export default function App() {
                   <div className={`text-xs uppercase tracking-widest font-bold ${isArch ? "text-black" : "text-neon-cyan"}`}>About</div>
                   <div className={`text-sm leading-relaxed ${isArch ? "text-gray-600" : "text-gray-400"}`}>
                     {isArch 
-                      ? "Karthikraj Nadar. Computational Designer & Automation Specialist." 
-                      : "BIM/VDC & ISO 19650. Computational Design. Dynamo • Python."}
+                      ? "Karthikraj Nadar. Computational Designer & Automation Specialist at WSP India." 
+                      : "Computational Designer & VDC Engineer at WSP India. BIM/VDC Automation & ISO 19650 Standards. C# • Python • Dynamo."}
                   </div>
                 </div>
                 
@@ -3171,7 +3177,7 @@ export default function App() {
                 </div>
 
                 <div className={`text-xs pt-4 ${isArch ? "text-black" : "text-white"}`}>
-                  Based in Mumbai. Available for corporate VDC, Computational Design, BIM roles starting as soon as possible.
+                  Based in Mumbai, India. Currently working with WSP India. Open to high-impact technical discussions, computational research, and engineering collaborations.
                 </div>
 
                 <div className={`mt-8 p-6 border transition-all duration-700 ${isArch ? "border-gray-200 bg-gray-50/50" : "border-white/10 bg-[#0a0a0c]/80"}`}>

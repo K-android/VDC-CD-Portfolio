@@ -64,7 +64,7 @@ Showcasing production-ready, compiled desktop plugins engineered for enterprise 
 
 ## 📝 Contact
 **Karthikraj Nadar**  
-Computational Designer & VDC Engineer / Architect  
+Computational Designer & VDC Engineer at **WSP India** / Architect  
 [karthikraj.v.nadar@gmail.com](mailto:karthikraj.v.nadar@gmail.com)  
 [LinkedIn Profile](https://www.linkedin.com/in/karthikraj-nadar-07083526a)
 
