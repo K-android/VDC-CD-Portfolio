@@ -20,6 +20,15 @@ This portfolio is built from scratch as a modern Single Page Application (SPA), 
 - **Build Engine:** Vite 6
 - **Server:** Built on a full-stack Node.js + Express setup for routing, mail bridging, and deploying static files smoothly on customized hosting pipelines.
 
+## 🧩 Enterprise Revit & Rhino Add-in Suite (.NET / C#)
+
+Showcasing production-ready, compiled desktop plugins engineered for enterprise AEC environments:
+
+- **[BIM Command Center & Live Control Room](https://github.com/K-android/bim-control-room)**: Decoupled 4-tier Revit ribbon dispatcher with zero-dependency Node.js Server-Sent Events (SSE) server for multi-user coordination across office LAN / ACC Cloud, featuring an interactive Figma-style real-time floor plan radar.
+- **[BIMHealthCheck Audit Engine](https://github.com/K-android/revit-model-health-checker)**: Multi-targeted (.NET 8 & .NET Framework 4.8) Revit add-in calculating an automated 0–100 quantitative model quality scorecard across 14 specialized QA/QC audits with click-to-zoom 3D navigation and HTML report exports.
+- **[ParametricFamilyForge](https://github.com/K-android/ParametricFamilyCreator)**: Google Gemini Vision AI and procedural rule engine translating manufacturer cut-sheets and natural language prompts into native, fully constrained parametric Revit Families (`.rfa`) with background document generation.
+- **[Rhino-to-Revit Transfer (RIR Pipeline)](https://github.com/K-android/rhino-to-revit-transfer)**: Controlled 6-stage computational pipeline running in Rhino.Inside.Revit (RIR), utilizing geometric fingerprinting and trilingual NLP to map Rhino B-Reps to native Revit building elements with persistent `ExtensibleStorage` revision synchronization.
+
 ## ✨ Key Technical Features
 
 - **Dual-Identity Architecture in React:** Seamless, fully animated transition logic to instantly swap the website between a dark-mode "developer terminal" style and a pristine, high-contrast typography "architecture layout" without full-page reloads.

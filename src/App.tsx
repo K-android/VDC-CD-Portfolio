@@ -1027,6 +1027,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [isSkillsActive, setIsSkillsActive] = useState(false);
   const [isAppsActive, setIsAppsActive] = useState(false);
+  const [isPluginsActive, setIsPluginsActive] = useState(false);
   const [isWorkflowsActive, setIsWorkflowsActive] = useState(false);
   const [isArchWorksActive, setIsArchWorksActive] = useState(false);
   const [isPrototypingActive, setIsPrototypingActive] = useState(false);

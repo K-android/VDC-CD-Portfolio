@@ -4,6 +4,7 @@ import { Activity, ChevronRight, Download, Terminal, Database, Code2, Layers, Wo
 import { AECWebAppsCabinet } from './AECWebAppsCabinet';
 import { PyRevitToolbar } from './PyRevitToolbar';
 import { BIMHeroModel } from './BIMHeroModel';
+import { EnterprisePluginsCabinet } from './EnterprisePluginsCabinet';
 
 export default function VDCSection({ 
   bimArsenal, 
@@ -163,11 +164,25 @@ export default function VDCSection({
               </div>
             </div>
 
+          {/* VDC ENTERPRISE PLUGINS (.NET & C#) */}
+          <div id="vdc-plugins" className="pt-32 mt-24 border-t border-white/10 scroll-mt-24">
+            <div className="mb-8">
+              <h2 className="text-xs font-sans tracking-[0.3em] mb-3 text-[#00f2ff]">
+                Section_02 // Enterprise_Revit_&amp;_Rhino_Plugins
+              </h2>
+              <h3 className="text-lg md:text-xl font-sans tracking-[0.1em] text-[#00f2ff]/80 font-bold">
+                <span className="opacity-40">{"["}</span> COMPILED_DESKTOP_ADD-INS <span className="opacity-40">{"]"}</span>
+              </h3>
+            </div>
+
+            <EnterprisePluginsCabinet />
+          </div>
+
           {/* VDC WEB APPS / TOOLS */}
           <div id="vdc-apps" className="pt-32 mt-24 border-t border-white/10 scroll-mt-24">
             <div className="mb-8">
               <h2 className="text-xs font-sans  tracking-[0.3em] mb-3 text-neon-orange">
-                Section_02 // Custom_Web_Applications_&_Web_Tools
+                Section_03 // Custom_Web_Applications_&_Web_Tools
               </h2>
               <h3 className="text-lg md:text-xl font-sans  tracking-[0.1em] text-neon-orange/80 font-bold">
                 <span className="opacity-40">{"["}</span> APPS_&_WEB_TOOLS <span className="opacity-40">{"]"}</span>
@@ -181,10 +196,10 @@ export default function VDCSection({
           <div className="pt-16 border-t border-white/10">
             <div className="mb-12 text-center">
               <h2 className="text-xs md:text-xs font-sans  tracking-[0.3em] mb-3 text-neon-blue">
-                Section_03 // Professional_Journey
+                Section_04 // Professional_Journey
               </h2>
               <h3 className="text-lg md:text-xl font-sans  tracking-[0.1em] text-neon-blue font-bold">
-                <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_03 <span className="opacity-40">{"}"}</span>
+                <span className="opacity-40">{"{"}</span> EXPERIENCE_LOG_04 <span className="opacity-40">{"}"}</span>
               </h3>
             </div>
 
