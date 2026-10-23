@@ -2320,10 +2320,10 @@ export default function App() {
 
   const experience: ExperienceData[] = [
     {
-      year: "2026 - Present",
+      year: "Aug 24, 2026 - Present",
       company: "WSP India",
-      role: "Computational Designer & VDC Engineer",
-      description: "Spearheading computational design pipelines, C# and Python Revit automation add-ins, and automated QA/QC workflows across large-scale multidisciplinary projects under ISO 19650 standards."
+      role: "Trainee Architect",
+      description: "Contributing to multidisciplinary architectural and BIM delivery, computational design automation, and digital coordination standards across global infrastructure projects."
     },
     {
       year: "Dec 2025 - June 2026",
